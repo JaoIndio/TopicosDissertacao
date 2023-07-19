@@ -1,0 +1,26 @@
+skinparam backgroundColor #FFFFFF
+skinparam classAttributeFontColor #000000
+skinparam classAttributeBackgroundColor #FFFFFF
+
+
+@startuml
+start
+partition #lightGreen "1"{
+  :Emissão [1];
+}
+partition #Cyan "2"{
+  :Manipulação [2];
+}
+partition #Khaki "3"{
+  :Reação [3];
+}
+partition #Moccasin "4"{
+  :Detecção [4];
+}
+partition #Tomato "5"{
+  :Processamento [5];
+}
+
+@enduml
+
+
