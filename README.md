@@ -61,10 +61,26 @@
   Acido fosfórico:  H<sub>2</sub>PO<sub>4</sub><sup>-1</sup>, HPO<sub>4</sub><sup>-2</sup> .    
 
   Porém, como foi afirmado anteriormente, estamos analisando um elemento altamente rativo, o que significa que além do P<sub>disp</sub>
-  há muitos outros tipos de concentração (também chamadas de **piscina (pool)**). [1] Aborda o ciclo do fósforo no ambiente seprando-o em 4 psicinas. P soluvel P<sub>disp</sub>, P adsovrivdo P<sub>ads</sub>, P mineral P<sub>min</sub> e P organico P<sub>org</sub>. A piscinas e suas respectivas interções são mostradas na Figura 1.  
+  há muitos outros tipos de concentração (também chamadas de **piscina (pool)**). [1] Aborda o ciclo do fósforo no ambiente seprando-o em 4 psicinas. P soluvel P<sub>disp</sub>, P adsovrivdo P<sub>ads</sub>, P mineral P<sub>min</sub> e P organico P<sub>org</sub>. As piscinas e suas respectivas interções são mostradas na Figura 1.  
 
 ![Alt text](./img1.png)  
   **Figura 1**. Fonte: Referencia [1].
+
+  Quando se propoẽ analisar os Latossolos (Oxisoils) é imporante compreender que 
+  tratam-se de solos ácidos (4 < PH < 5.5) e que passaram por longos processo de 
+  inteperizaçao. O que significa dizer que há uma grande quantidade de argila e 
+  que por isso há uma grande parcela de fósforo imo bilizado na forma de P<sub>min</sub>, o também chamado de porção de P não-lábil.
+  No contexto das terras tropicais e subtropicais, são os oxidróxidos de Fe, Al e
+  Si; presentes na porção de argila que interagem com o P<sub>ads</sub> e P<sub>min</sub>. Os fatores principais que regem essas duas concentrações são PH, matéria
+  organica (OM). Seja o P<sub>ads</sub> ou P<sub>min</sub>; do ponto de vista 
+  fisico-quimico, ambos são fosfatos (PO<sub>4</sub>) ligados aos oxidróxidos
+  de Fe, Al e Si via grupos funcionais (OH) e ions Fe<sup>3+</sup>, Al<sup>3+</sup>, Si<sup>+</sup>.  
+  A diferença é o grau de "força" dessas ligações [7], pois quando P é lábil diz-se que o P esta adsorvido com algum mineral por meio de uma ligação do tipo **monodentada (monodentate)**. Nesse contexto um oxigênio do fosfato é ligado ao metal.  
+  Quando o P é não lábil P<sub>min</sub>, a ligação com os possiveis metais é mais
+  forte, portanto, a disponibilidade de P para as plantas é dificultada. Os possivies tipos de ligação são as **bidentadas (bidentates)** ou **binucleadas (binuclear)**. Uma ligação bidentada é tal que dois oxigênios do fosfato são ligados a um metal. Já a binucleada é aquela em que dois oxigênios do fosfato são ligados a dois átomos de metal. A figura 2, proveninte de [8] ilustra essas 3 possivies configrações.  
+
+![Alt text](./img2.png)
+  **Fgura 2**. Fonte: Referencia [8].
 
 
 
@@ -88,6 +104,13 @@
 <a name="sec6"></a>
 ##### [6]: On the tropical soils; The influence of organic matter (OM) on phosphate bioavailability<br />
   [6]: #sec6
+<a name="sec7"></a>
+##### [7]: O elemento P: formas e dinâmica em solos tropicais<br />
+  [7]: #sec7
+<a name="sec8"></a>
+##### [8]: Phosphorus immobilization in water and sediment using iron-basedmaterials: A review <br />
+  [8]: #sec7
+
 
 ## Deteccao
 ------------------
