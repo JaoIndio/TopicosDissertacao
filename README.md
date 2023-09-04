@@ -52,7 +52,7 @@
 
   A caracterização espectral do fósforo presente no solo exige a compreensão das escolhas metodologias que já foram empregadas
   no passado. Quando se observa os trabalhos já desenvolvidos pela literatura é constante a preocupação de se determinar a 
-  dinamica do fósforo com os demais compostos presentes no ambiente. Quando [6] discute o ciclo do fósforo nas culturas, ele 
+  dinamica do fósforo com os demais compostos presentes no ambiente. Quando [[6]] discute o ciclo do fósforo nas culturas, ele 
   explica que o P é um elemento altamente reativo e que portanto não é encontrado na sua forma pura.
   Diz-se que o fósforo esta em sua composição **disponivel** ou **soluvel** (P<sub>disp</sub>), quando pode ser absorvdio 
   pelas plantas. Isso acontece quando ele esta da seguintes formas:   
@@ -61,10 +61,10 @@
   Acido fosfórico:  H<sub>2</sub>PO<sub>4</sub><sup>-1</sup>, HPO<sub>4</sub><sup>-2</sup> .    
 
   Porém, como foi afirmado anteriormente, estamos analisando um elemento altamente rativo, o que significa que além do P<sub>disp</sub>
-  há muitos outros tipos de concentração (também chamadas de **piscina (pool)**). [1] Aborda o ciclo do fósforo no ambiente seprando-o em 4 psicinas. P soluvel P<sub>disp</sub>, P adsovrivdo P<sub>ads</sub>, P mineral P<sub>min</sub> e P organico P<sub>org</sub>. As piscinas e suas respectivas interções são mostradas na Figura 1.  
+  há muitos outros tipos de concentração (também chamadas de **piscina (pool)**). [[1]] Aborda o ciclo do fósforo no ambiente seprando-o em 4 psicinas. P soluvel P<sub>disp</sub>, P adsovrivdo P<sub>ads</sub>, P mineral P<sub>min</sub> e P organico P<sub>org</sub>. As piscinas e suas respectivas interções são mostradas na Figura 1.  
 
 ![Alt text](./img1.png)  
-  **Figura 1**. Fonte: Referencia [1].
+  **Figura 1**. Fonte: Referencia [[1]].
 
   Quando se propõe analisar os Latossolos (Oxisoils) é imporante compreender que 
   tratam-se de solos ácidos (4 < PH < 5.5) e que passaram por longos processo de 
@@ -75,25 +75,25 @@
   organica (OM). Seja o P<sub>ads</sub> ou P<sub>min</sub>; do ponto de vista 
   fisico-quimico, ambos são fosfatos (PO<sub>4</sub>) ligados aos oxidróxidos
   de Fe, Al e Si via grupos funcionais (OH) e ions Fe<sup>3+</sup>, Al<sup>3+</sup>, Si<sup>+</sup>.  
-  A diferença é o grau de "força" dessas ligações [7], pois quando P é lábil diz-se que o P esta adsorvido com algum mineral por meio de uma ligação do tipo **monodentada (monodentate)**. Nesse contexto um oxigênio do fosfato é ligado ao metal.  
+  A diferença é o grau de "força" dessas ligações [[7]], pois quando P é lábil diz-se que o P esta adsorvido com algum mineral por meio de uma ligação do tipo **monodentada (monodentate)**. Nesse contexto um oxigênio do fosfato é ligado ao metal.  
   Quando o P é não lábil P<sub>min</sub>, a ligação com os possiveis metais é mais
-  forte, portanto, a disponibilidade de P para as plantas é dificultada. Os possivies tipos de ligação são as **bidentadas (bidentates)** ou **binucleadas (binuclear)**. Uma ligação bidentada é tal que dois oxigênios do fosfato são ligados a um metal. Já a binucleada é aquela em que dois oxigênios do fosfato são ligados a dois átomos de metal. A figura 2, proveninte de [8] ilustra essas 3 possivies configrações.  
+  forte, portanto, a disponibilidade de P para as plantas é dificultada. Os possivies tipos de ligação são as **bidentadas (bidentates)** ou **binucleadas (binuclear)**. Uma ligação bidentada é tal que dois oxigênios do fosfato são ligados a um metal. Já a binucleada é aquela em que dois oxigênios do fosfato são ligados a dois átomos de metal. A figura 2, proveninte de [[8]] ilustra essas 3 possivies configrações.  
    
 ![Alt text](./img2.png)  
-  **Fgura 2**. Fonte: Referencia [8].  
+  **Fgura 2**. Fonte: Referencia [[8]].  
      
   Com essas explicações é intuitivo compreender o porque, quase que a totalidade
-  dos estudos que investigam técnicas de quantificar o P<sub>disp</sub> via espectroscopia se preocupam tanto em quantificar o P<sub>ads</sub> em suas abordagens de regressão e interpretação de espectro, uma vez que trata-se um tipo de composto cuja ligação é monodentada. [1] e várias outras fontes salietam que o P<sub>ads</sub> mantém uma relação de equilíbrio com o P<sub>disp</sub>, ou seja a porção lábil passa por processos de dessorção a medida que as porção soluvel é reduzida (seja por perda, ou por absorção radicular).
-  [1], [3] e [4] são alguns dos muitos trabalhos, os quais afirmam que aumentar o PH (ir de ácidos para básico) e aumentar a OM irão elevar o P<sub>disp</sub>, reduzindo o P<sub>ads</sub>. [3] verificou que culturas que sofreram incremento de PH, reduziram a adsorção de P com oxidróxidos de Al, porém não com os de Fe. Ele também identificou que adsorção com Al ocorreu com as formas menos **cristalinas**.  
+  dos estudos que investigam técnicas de quantificar o P<sub>disp</sub> via espectroscopia se preocupam tanto em quantificar o P<sub>ads</sub> em suas abordagens de regressão e interpretação de espectro, uma vez que trata-se um tipo de composto cuja ligação é monodentada. [[1]] e várias outras fontes salietam que o P<sub>ads</sub> mantém uma relação de equilíbrio com o P<sub>disp</sub>, ou seja a porção lábil passa por processos de dessorção a medida que as porção soluvel é reduzida (seja por perda, ou por absorção radicular).
+  [[1]], [[3]] e [[4]] são alguns dos muitos trabalhos, os quais afirmam que aumentar o PH (ir de ácidos para básico) e aumentar a OM irão elevar o P<sub>disp</sub>, reduzindo o P<sub>ads</sub>. [[3]] verificou que culturas que sofreram incremento de PH, reduziram a adsorção de P com oxidróxidos de Al, porém não com os de Fe. Ele também identificou que adsorção com Al ocorreu com as formas menos **cristalinas**.  
      
     -Ainda não me é claro o papel da cristalização, não sei se ela eleva a disponibilidade ou a fixação, preciptaçãoainda
     -É possivel quantificar cristalinidade via espectroscopia?   
     
-  Em seu trabalho, [1] descreve que os grupos funcionais negativamente carregados em substâncias **orgânicas** podem interagir com minerais positivamente carregados, tais como os oxidróxidos de Fe e Al. Ele explica que o aumento da OM cria uma "competição" entre P<sub>ads</sub> e os ions dos compostos organicos, eventualmente reduzindo a adsorção. A OM também inibe o crescimento de cristais. elevando a area de superficie especifica (SSA), reduzindo a difusão do fosfato.  
+  Em seu trabalho, [[1]] descreve que os grupos funcionais negativamente carregados em substâncias **orgânicas** podem interagir com minerais positivamente carregados, tais como os oxidróxidos de Fe e Al. Ele explica que o aumento da OM cria uma "competição" entre P<sub>ads</sub> e os ions dos compostos organicos, eventualmente reduzindo a adsorção. A OM também inibe o crescimento de cristais. elevando a area de superficie especifica (SSA), reduzindo a difusão do fosfato.  
       
     -Nao entendi o que ele quis dizer com difusão. Acho que relaciona-se com elevação da porsão não lábil.  
  
-  Entretanto, esses eventos não são perfeitamente algébricos; sendo melhores explicados via análises e ferramentas estatisticas, pois a OM também  pode fazer surgir as chamadas **pontes de cations**, a qual eleva a concentração de P<sub>ads</sub>, contudo trata-se de uma ligação facilmente reversivel pois é uma ligação de baixa energia, em comparação com as demais explicadas anteriormente. É salientado por [1] que a OM em si não gera a dessorção, mas apenas facilita o processo. [6] converge em muitos aspectos a [1], porém ele adiciona que apesar de proporcionar a redução da porção adsorvida via liberação de fosfatos (acidos, ou não), não significa que haverá uma elevação equivalente em P<sub>disp</sub>, pois há também em jogo os processos de lixiviação e escoamento superificial, as quais são classificadas como perdas na Figura 1 e também a elevação da porção de P<sub>org</sub>.  
+  Entretanto, esses eventos não são perfeitamente algébricos; sendo melhores explicados via análises e ferramentas estatisticas, pois a OM também  pode fazer surgir as chamadas **pontes de cations**, a qual eleva a concentração de P<sub>ads</sub>, contudo trata-se de uma ligação facilmente reversivel pois é uma ligação de baixa energia, em comparação com as demais explicadas anteriormente. É salientado por [[1]] que a OM em si não gera a dessorção, mas apenas facilita o processo. [[6]] converge em muitos aspectos a [[1]], porém ele adiciona que apesar de proporcionar a redução da porção adsorvida via liberação de fosfatos (acidos, ou não), não significa que haverá uma elevação equivalente em P<sub>disp</sub>, pois há também em jogo os processos de lixiviação e escoamento superificial, as quais são classificadas como perdas na Figura 1 e também a elevação da porção de P<sub>org</sub>.  
     
    Para PHs entre 5 e 8 [[2]] destaca que há baixa concentração de H<sup>+</sup> e que portanto a cocentração de acidos fosfóricos ( H<sub>2</sub>PO<sub>4</sub><sup>-1</sup> e HPO<sub>4</sub><sup>-2</sup> )são baixas. É por essa razão que o P<sub>disp</sub> irá se ligar com ions suplementares com a tendência de gerar composotos mais estáveis.
 
