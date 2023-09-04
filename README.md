@@ -50,10 +50,10 @@
     -Quais são seus picos?
     -Como quantificar ele?
 
-  A caracterização espectral do fósforo presente no solo exige a compreensão das escolhas metodologias que já foram em-
-  pregadas no passado. Quando se observa os trabalhos já desenvolvidos pela literatura é constante a preocupação de se 
-  compreeender a dinamica do fósforo com os demais compostos presentes no ambiente. Quando [6] discute o ciclo do fós-
-  foro nas culturas ele explica que o P é um elemento altamente reativo e 
+  A caracterização espectral do fósforo presente no solo exige a compreensão das escolhas metodologias que já foram empregadas
+  no passado. Quando se observa os trabalhos já desenvolvidos pela literatura é constante a preocupação de se compreeender a 
+  dinamica do fósforo com os demais compostos presentes no ambiente. Quando [6] discute o ciclo do fósforo nas culturas ele 
+  explica que o P é um elemento altamente reativo e 
 
 
 ### Referencias_Reacao
