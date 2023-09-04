@@ -40,12 +40,19 @@
 
 ## Reacao
 ------------------
+  <!--ts-->
+  -[Referencias Reacao](#Referencias Reacao)<br />
   Caracteriza-se por descrever o perfil comportamental do fósforo (picos, intervalos de 
   comprimento de onda usados para quantificação).  
     
     -Qual é o perfil espectrométrico do fósforo?
     -Quais são seus picos?
     -Como quantificar ele?
+
+### Referencias Reacao
+------------------
+  [1] Doc1
+  [2] Doc3
 
 ## Deteccao
 ------------------
