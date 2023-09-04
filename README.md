@@ -43,14 +43,18 @@
 <!--ts-->
   -[Referencias_Reacao](#Referencias_Reacao)<br />
 <!--te-->
-  Caracteriza-se por descrever [1] o perfil [2] comportamental [3] do [4] fósforo (picos, intervalos de 
+  Caracteriza-se por descrever o perfil comportamental do fósforo (picos, intervalos de 
   comprimento de onda usados para quantificação).  
     
     -Qual é o perfil espectrométrico do fósforo?
     -Quais são seus picos?
     -Como quantificar ele?
 
-  [6] a b
+  A caracterização espectral do fósforo presente no solo exige a compreensão das escolhas metodologias que já foram em-
+  pregadas no passado. Quando se observa os trabalhos já desenvolvidos pela literatura é constante a preocupação de se 
+  compreeender a dinamica do fósforo com os demais compostos presentes no ambiente. Quando [6] discute o ciclo do fós-
+  foro nas culturas ele explica que o P é um elemento altamente reativo e 
+
 
 ### Referencias_Reacao
 ------------------
