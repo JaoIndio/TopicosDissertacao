@@ -51,16 +51,20 @@
     -Como quantificar ele?
 
   A caracterização espectral do fósforo presente no solo exige a compreensão das escolhas metodologias que já foram empregadas
-  no passado. Quando se observa os trabalhos já desenvolvidos pela literatura é constante a preocupação de se compreeender a 
-  dinamica do fósforo com os demais compostos presentes no ambiente. Quando [6] discute o ciclo do fósforo nas culturas ele 
+  no passado. Quando se observa os trabalhos já desenvolvidos pela literatura é constante a preocupação de se determinar a 
+  dinamica do fósforo com os demais compostos presentes no ambiente. Quando [6] discute o ciclo do fósforo nas culturas, ele 
   explica que o P é um elemento altamente reativo e que portanto não é encontrado na sua forma pura.
-  Diz-se que o fósforo esta em sua composição **disponivel** ou **soluvel** (P<sub>disp</sub>)quando ele pode ser absorvdio 
+  Diz-se que o fósforo esta em sua composição **disponivel** ou **soluvel** (P<sub>disp</sub>), quando pode ser absorvdio 
   pelas plantas. Isso acontece quando ele esta da seguintes formas:   
      
   Ortofosfato:      PO<sub>4</sub><sup>-2</sup>, PO<sub>4</sub><sup>-3</sup> .  
   Acido fosfórico:  H<sub>2</sub>PO<sub>4</sub><sup>-1</sup>, HPO<sub>4</sub><sup>-2</sup> .    
 
   Porém, como foi afirmado anteriormente, estamos analisando um elemento altamente rativo, o que significa que além do P<sub>disp</sub>
+  há muitos outros tipos de concentração (também chamadas de **piscina (pool)**). [1] Aborda o ciclo do fósforo no ambiente seprando-o em 4 psicinas. P soluvel P<sub>disp</sub>, P adsovrivdo P<sub>ads</sub>, P mineral P<sub>min</sub> e P organico P<sub>org</sub>. A piscinas e suas respectivas interções são mostradas na Figura 1.  
+
+  ![Alt text](./img1.svg)  
+  **Figura 1**. Fonte: Referencia [1].
 
 
 
