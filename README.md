@@ -66,12 +66,12 @@
 ![Alt text](./img1.png)  
   **Figura 1**. Fonte: Referencia [1].
 
-  Quando se propoẽ analisar os Latossolos (Oxisoils) é imporante compreender que 
+  Quando se propõe analisar os Latossolos (Oxisoils) é imporante compreender que 
   tratam-se de solos ácidos (4 < PH < 5.5) e que passaram por longos processo de 
   inteperizaçao. O que significa dizer que há uma grande quantidade de argila e 
-  que por isso há uma grande parcela de fósforo imo bilizado na forma de P<sub>min</sub>, o também chamado de porção de P não-lábil.
+  que por isso há uma grande parcela de fósforo imobilizado na forma de P<sub>min</sub>, o também chamado de porção de P não-lábil.
   No contexto das terras tropicais e subtropicais, são os oxidróxidos de Fe, Al e
-  Si; presentes na porção de argila que interagem com o P<sub>ads</sub> e P<sub>min</sub>. Os fatores principais que regem essas duas concentrações são PH, matéria
+  Si; presentes na porção de argila que interagem com o P<sub>ads</sub> e P<sub>min</sub>. Os fatores principais que regem essas duas concentrações são PH e matéria
   organica (OM). Seja o P<sub>ads</sub> ou P<sub>min</sub>; do ponto de vista 
   fisico-quimico, ambos são fosfatos (PO<sub>4</sub>) ligados aos oxidróxidos
   de Fe, Al e Si via grupos funcionais (OH) e ions Fe<sup>3+</sup>, Al<sup>3+</sup>, Si<sup>+</sup>.  
@@ -80,10 +80,15 @@
   forte, portanto, a disponibilidade de P para as plantas é dificultada. Os possivies tipos de ligação são as **bidentadas (bidentates)** ou **binucleadas (binuclear)**. Uma ligação bidentada é tal que dois oxigênios do fosfato são ligados a um metal. Já a binucleada é aquela em que dois oxigênios do fosfato são ligados a dois átomos de metal. A figura 2, proveninte de [8] ilustra essas 3 possivies configrações.  
    
 ![Alt text](./img2.png)  
-  **Fgura 2**. Fonte: Referencia [8].
-
-
-
+  **Fgura 2**. Fonte: Referencia [8].  
+     
+  Com essas explicações é intuitivo compreender o porque, quase que a totalidade
+  dos estudos que investigam técnicas de quantificar o P<sub>disp</sub> via espectroscopia se preocupam tanto em quantificar o P<sub>ads</sub> em suas abordagens de regressão e interpretação de espectro, uma vez que trata-se um tipo de composto cuja ligação é monodentada. [1] e várias outras fontes salietam que o P<sub>ads</sub> mantém uma relação de equilíbrio com o P<sub>disp</sub>, ou seja a porção lábil passa por processos de dessorção a medida que as porção soluvel é reduzida (seja por perda, ou por absorção radicular).
+  [1], [3] e [4] são alguns dos muitos trabalhos, os quais afirmam que aumentar o PH (ir de ácidos para básico) e aumentar a OM irão elevar o P<sub>disp</sub>, reduzindo o P<sub>ads</sub>. [3] verificou que culturas que sofreram incremento de PH, reduziram a adsorção de P com oxidróxidos de Al, porém não com os de Fe. Ele também identificou que adsorção com Al ocorreu com as formas menos **cristalinas**.  
+     
+   -ainda não me é claro o papel da cristalização, não sei se ela eleva a disponibilidade ou a fixação, preciptaçãoainda não me é claro o papel da cristalização, não sei se ela eleva a disponibilidade ou a fixação, preciptação. 
+   -É possivel quantificar cristalinidade via espectroscopia? 
+    
 ### Referencias_Reacao
 ------------------
 <a name="sec1"></a> 
