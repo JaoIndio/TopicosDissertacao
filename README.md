@@ -78,8 +78,8 @@
   A diferença é o grau de "força" dessas ligações [7], pois quando P é lábil diz-se que o P esta adsorvido com algum mineral por meio de uma ligação do tipo **monodentada (monodentate)**. Nesse contexto um oxigênio do fosfato é ligado ao metal.  
   Quando o P é não lábil P<sub>min</sub>, a ligação com os possiveis metais é mais
   forte, portanto, a disponibilidade de P para as plantas é dificultada. Os possivies tipos de ligação são as **bidentadas (bidentates)** ou **binucleadas (binuclear)**. Uma ligação bidentada é tal que dois oxigênios do fosfato são ligados a um metal. Já a binucleada é aquela em que dois oxigênios do fosfato são ligados a dois átomos de metal. A figura 2, proveninte de [8] ilustra essas 3 possivies configrações.  
-
-![Alt text](./img2.png)
+   
+![Alt text](./img2.png)  
   **Fgura 2**. Fonte: Referencia [8].
 
 
