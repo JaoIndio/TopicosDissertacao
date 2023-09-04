@@ -2,17 +2,16 @@
 ----------------------------
 
 ![Alt text](./diagrama.svg)
-<img src="./diagrama.svg">
 
 <!--ts-->
-  -[Emissão](#Emissão)<br />
-  -[Manipulação](#Manipulação)<br />
-  -[Reação](#Reação)<br />
-  -[Detecção](#Detecção)<br />
+  -[Emissao](#Emissao)<br />
+  -[Manipulacao](#Manipulacao)<br />
+  -[Reacao](#Reacao)<br />
+  -[Deteccao](#Deteccao)<br />
   -[Processamento](#Processamento)<br />
 <!--te-->
 
-## Emissão
+## Emissao
 ------------------
   Diz respeito a fonte geradora de luz.
 
@@ -27,7 +26,7 @@
     -`Existe algum parametro óptico que possa ser usado como referência de controle
      para alterar o comportamento da fonte de luz?`
 
-## Manipulação
+## Manipulacao
 ------------------
   Trata-se dos processos que fazem uso de difração, foco, colimação, interferência
   da luz proveniente da fonte.
@@ -39,7 +38,7 @@
       ou alterar os angulos verticais e horizontais dos espelhos?`
     -Qual fenomeno óptico deve ser mensurado (reflectancia, absorção, difração, turbidez)? 
 
-## Reação
+## Reacao
 ------------------
   Caracteriza-se por descrever o perfil comportamental do fósforo (picos, intervalos de 
   comprimento de onda usados para quantificação).  
@@ -48,7 +47,7 @@
     -Quais são seus picos?
     -Como quantificar ele?
 
-## Detecção
+## Deteccao
 ------------------
   Elemento(s) utilizados para converter uma grandeza óptica (reflectância, difração, 
   tranmissão, etc) em sinal elétrico.
