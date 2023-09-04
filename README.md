@@ -40,9 +40,9 @@
 
 ## Reacao
 ------------------
-  <!--ts-->
+<!--ts-->
   -[Referencias Reacao](#Referencias Reacao)<br />
-  <!--te-->
+<!--te-->
   Caracteriza-se por descrever o perfil comportamental do fósforo (picos, intervalos de 
   comprimento de onda usados para quantificação).  
     
