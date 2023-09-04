@@ -53,7 +53,9 @@
   A caracterização espectral do fósforo presente no solo exige a compreensão das escolhas metodologias que já foram empregadas
   no passado. Quando se observa os trabalhos já desenvolvidos pela literatura é constante a preocupação de se compreeender a 
   dinamica do fósforo com os demais compostos presentes no ambiente. Quando [6] discute o ciclo do fósforo nas culturas ele 
-  explica que o P é um elemento altamente reativo e 
+  explica que o P é um elemento altamente reativo e que portanto não é encontrado na sua forma pura. Q
+
+  H<sub>2</sub>SO<sub>4</sub><sup>-2</sup>
 
 
 ### Referencias_Reacao
