@@ -52,8 +52,8 @@
 
 ### Referencias_Reacao
 ------------------
-<a name="section1"></a>
-  [1]: #section1 [ 1 ]: Nome1
+<a name="sec1"></a> [1]: Nome1
+  [1]:#sec1
 <a name="section2"></a>
   [2]: #section2 [ 2 ]: Nome2
 <a name="section3"></a>
