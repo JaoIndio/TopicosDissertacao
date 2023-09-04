@@ -86,8 +86,15 @@
   dos estudos que investigam técnicas de quantificar o P<sub>disp</sub> via espectroscopia se preocupam tanto em quantificar o P<sub>ads</sub> em suas abordagens de regressão e interpretação de espectro, uma vez que trata-se um tipo de composto cuja ligação é monodentada. [1] e várias outras fontes salietam que o P<sub>ads</sub> mantém uma relação de equilíbrio com o P<sub>disp</sub>, ou seja a porção lábil passa por processos de dessorção a medida que as porção soluvel é reduzida (seja por perda, ou por absorção radicular).
   [1], [3] e [4] são alguns dos muitos trabalhos, os quais afirmam que aumentar o PH (ir de ácidos para básico) e aumentar a OM irão elevar o P<sub>disp</sub>, reduzindo o P<sub>ads</sub>. [3] verificou que culturas que sofreram incremento de PH, reduziram a adsorção de P com oxidróxidos de Al, porém não com os de Fe. Ele também identificou que adsorção com Al ocorreu com as formas menos **cristalinas**.  
      
-    -Ainda não me é claro o papel da cristalização, não sei se ela eleva a disponibilidade ou a fixação, preciptaçãoainda não me é claro o papel da cristalização, não sei se ela eleva a disponibilidade ou a fixação, preciptação. 
-    -É possivel quantificar cristalinidade via espectroscopia? 
+    -Ainda não me é claro o papel da cristalização, não sei se ela eleva a disponibilidade ou a fixação, preciptaçãoainda
+    -É possivel quantificar cristalinidade via espectroscopia?   
+    
+  Em seu trabalho, [1] descreve que os grupos funcionais negativamente carregados em substâncias orgânicas podem interagir com minerais positivamente carregados, tais como os oxidróxidos de Fe e Al. Ele explica que o aumento da OM cria uma "competição" entre P<sub>ads</sub> e os ions dos compostos organicos, eventualmente reduzindo a adsorção. A OM também inibe o crescimento de cristais. elevando a area de superficie especifica (SSA), reduzindo a difusão do fosfato.  
+      
+    -Nao entendi o que ele quis dizer com difusão. Acho que relaciona-se com elevação da porsão não lábil.  
+ 
+  Entretanto, esses eventos não são perfeitamente algébricos; sendo melhores explicados via análises e ferramentas estatisticas, pois a OM também  pode fazer surgir as chamadas **pontes de cations**, a qual eleva a concentração de P<sub>ads</sub>, contudo trata-se de uma ligação facilmente reversivel pois é uma ligação de baixa energia, em comparação com as demais explicadas anteriormente. É salientado por [1] que a OM em si não gera a dessorção, mas apenas facilita o processo.
+
     
 ### Referencias_Reacao
 ------------------
