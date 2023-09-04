@@ -43,7 +43,7 @@
 <!--ts-->
   -[Referencias_Reacao](#Referencias_Reacao)<br />
 <!--te-->
-  Caracteriza-se por descrever o perfil comportamental do fósforo (picos, intervalos de 
+  Caracteriza-se por descrever [1] o perfil comportamental do fósforo (picos, intervalos de 
   comprimento de onda usados para quantificação).  
     
     -Qual é o perfil espectrométrico do fósforo?
@@ -52,8 +52,8 @@
 
 ### Referencias_Reacao
 ------------------
-  [1] Doc1
-  [2] Doc3
+  [1]: Doc1
+  [2]: Doc3
 
 ## Deteccao
 ------------------
