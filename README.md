@@ -89,7 +89,7 @@
     -Ainda não me é claro o papel da cristalização, não sei se ela eleva a disponibilidade ou a fixação, preciptaçãoainda
     -É possivel quantificar cristalinidade via espectroscopia?   
     
-  Em seu trabalho, [1] descreve que os grupos funcionais negativamente carregados em substâncias orgânicas podem interagir com minerais positivamente carregados, tais como os oxidróxidos de Fe e Al. Ele explica que o aumento da OM cria uma "competição" entre P<sub>ads</sub> e os ions dos compostos organicos, eventualmente reduzindo a adsorção. A OM também inibe o crescimento de cristais. elevando a area de superficie especifica (SSA), reduzindo a difusão do fosfato.  
+  Em seu trabalho, [1] descreve que os grupos funcionais negativamente carregados em substâncias **orgânicas** podem interagir com minerais positivamente carregados, tais como os oxidróxidos de Fe e Al. Ele explica que o aumento da OM cria uma "competição" entre P<sub>ads</sub> e os ions dos compostos organicos, eventualmente reduzindo a adsorção. A OM também inibe o crescimento de cristais. elevando a area de superficie especifica (SSA), reduzindo a difusão do fosfato.  
       
     -Nao entendi o que ele quis dizer com difusão. Acho que relaciona-se com elevação da porsão não lábil.  
  
