@@ -65,13 +65,13 @@
   [3]: #sec3 
 <a name="sec4"></a> 
 ##### [4]: Phosphorus speciation by P-XANES in an Oxisol under long-term no-till cultivation<br />
-  [1]:#sec4
+  [4]:#sec4
 <a name="sec5"></a>
 ##### [5]: Phosphorus speciation in soils with low to high degree of saturation due to swine slurry application<br />
-  [2]: #sec5 
+  [5]: #sec5 
 <a name="sec6"></a>
 ##### [6]: On the tropical soils; The influence of organic matter (OM) on phosphate bioavailability<br />
-  [3]: #sec6
+  [6]: #sec6
 
 ## Deteccao
 ------------------
