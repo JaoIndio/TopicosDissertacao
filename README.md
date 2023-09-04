@@ -53,9 +53,13 @@
   A caracterização espectral do fósforo presente no solo exige a compreensão das escolhas metodologias que já foram empregadas
   no passado. Quando se observa os trabalhos já desenvolvidos pela literatura é constante a preocupação de se compreeender a 
   dinamica do fósforo com os demais compostos presentes no ambiente. Quando [6] discute o ciclo do fósforo nas culturas ele 
-  explica que o P é um elemento altamente reativo e que portanto não é encontrado na sua forma pura. Q
+  explica que o P é um elemento altamente reativo e que portanto não é encontrado na sua forma pura.
+  Diz-se que o fósforo esta em sua composição **disponivel** ou **soluvel** quando ele pode ser absorvdio pelas plantas. Isso
+  acontece quando ele esta da seguintes formas:   
+     
+  Ortofosfato:      PO<sub>4</sub><sup>-2</sup>, PO<sub>4</sub><sup>-3</sup> .  
+  Acido fosfórico:  H<sub>2</sub>PO<sub>4</sub><sup>-1</sup>, HPO<sub>4</sub><sup>-2</sup> .    
 
-  H<sub>2</sub>SO<sub>4</sub><sup>-2</sup>
 
 
 ### Referencias_Reacao
