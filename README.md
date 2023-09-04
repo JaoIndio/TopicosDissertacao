@@ -63,7 +63,7 @@
   Porém, como foi afirmado anteriormente, estamos analisando um elemento altamente rativo, o que significa que além do P<sub>disp</sub>
   há muitos outros tipos de concentração (também chamadas de **piscina (pool)**). [1] Aborda o ciclo do fósforo no ambiente seprando-o em 4 psicinas. P soluvel P<sub>disp</sub>, P adsovrivdo P<sub>ads</sub>, P mineral P<sub>min</sub> e P organico P<sub>org</sub>. A piscinas e suas respectivas interções são mostradas na Figura 1.  
 
-![Alt text](./img1.svg)  
+![Alt text](./img1.png)  
   **Figura 1**. Fonte: Referencia [1].
 
 
