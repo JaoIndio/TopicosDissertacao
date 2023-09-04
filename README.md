@@ -43,22 +43,35 @@
 <!--ts-->
   -[Referencias_Reacao](#Referencias_Reacao)<br />
 <!--te-->
-  Caracteriza-se por descrever [1] o perfil [2] comportamental [3] do fósforo (picos, intervalos de 
+  Caracteriza-se por descrever [1] o perfil [2] comportamental [3] do [4] fósforo (picos, intervalos de 
   comprimento de onda usados para quantificação).  
     
     -Qual é o perfil espectrométrico do fósforo?
     -Quais são seus picos?
     -Como quantificar ele?
 
+  [6] a b
+
 ### Referencias_Reacao
 ------------------
 <a name="sec1"></a> 
-##### [1]: Nome1 <br />
+##### [1]: Iron oxides and organic matter on soil phosphorus availability <br />
   [1]:#sec1
-<a name="section2"></a>
-  [2]: #section2 [ 2 ]: Nome2
-<a name="section3"></a>
-  [2]: #section3 [ 3 ]: Nome3
+<a name="sec2"></a>
+##### [2]: ATR–FTIR Spectroscopic Investigation on Phosphate Adsorption Mechanisms at the Ferrihydrite–Water Interface <br />
+  [2]: #sec2 
+<a name="sec3"></a>
+##### [3]: Phosphorus speciation and distribution in a variable-charge Oxisol under no-till amended with lime and/or phosphogypsum for 18 years<br />
+  [3]: #sec3 
+<a name="sec4"></a> 
+##### [4]: Phosphorus speciation by P-XANES in an Oxisol under long-term no-till cultivation<br />
+  [1]:#sec4
+<a name="sec5"></a>
+##### [5]: Phosphorus speciation in soils with low to high degree of saturation due to swine slurry application<br />
+  [2]: #sec5 
+<a name="sec6"></a>
+##### [6]: On the tropical soils; The influence of organic matter (OM) on phosphate bioavailability<br />
+  [3]: #sec6
 
 ## Deteccao
 ------------------
