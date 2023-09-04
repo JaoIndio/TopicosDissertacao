@@ -43,9 +43,7 @@
 <!--ts-->
   -[Referencias_Reacao](#Referencias_Reacao)<br />
 <!--te-->
-<a name="section1"></a>
-# Section 1
-  Caracteriza-se por descrever [1] o perfil comportamental do fósforo (picos, intervalos de 
+  Caracteriza-se por descrever [1] o perfil [2] comportamental [3] do fósforo (picos, intervalos de 
   comprimento de onda usados para quantificação).  
     
     -Qual é o perfil espectrométrico do fósforo?
@@ -54,8 +52,12 @@
 
 ### Referencias_Reacao
 ------------------
-  [1]: #section1
-  [2]: Doc3.
+<a name="section1"></a>
+  [1]: #section1 [ 1 ]: Nome1
+<a name="section2"></a>
+  [2]: #section2 [ 2 ]: Nome2
+<a name="section3"></a>
+  [2]: #section3 [ 3 ]: Nome3
 
 ## Deteccao
 ------------------
