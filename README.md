@@ -52,8 +52,8 @@
 
 ### Referencias_Reacao
 ------------------
-  [1]: Doc1
-  [2]: Doc3
+  [1]: Doc1.
+  [2]: Doc3.
 
 ## Deteccao
 ------------------
