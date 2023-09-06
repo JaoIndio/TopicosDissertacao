@@ -97,7 +97,8 @@
     
    Para PHs entre 5 e 8 [[2]] destaca que há baixa concentração de H<sup>+</sup> e que portanto a cocentração de acidos fosfóricos 
 ( H<sub>2</sub>PO<sub>4</sub><sup>-1</sup> e HPO<sub>4</sub><sup>-2</sup> )são baixas. É por essa razão que o P<sub>disp</sub>
-irá se ligar com ions suplementares com a tendência de gerar composotos mais estáveis.
+irá se ligar com ions suplementares com a tendência de gerar composotos mais estáveis.  
+
     -Fatores Para serem levados em consideração  
        *Concentração de oxidróxidos de Fe e Al
                  -> Adsorção de P
