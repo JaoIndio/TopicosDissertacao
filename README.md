@@ -1,4 +1,4 @@
-# Elementos Presentes na Espectroscopia s
+# Elementos Presentes na Espectroscopia 
 ----------------------------
 
 ![Alt text](./diagrama.svg)
@@ -95,7 +95,20 @@
  
   Entretanto, esses eventos não são perfeitamente algébricos; sendo melhores explicados via análises e ferramentas estatisticas, pois a OM também  pode fazer surgir as chamadas **pontes de cations**, a qual eleva a concentração de P<sub>ads</sub>, contudo trata-se de uma ligação facilmente reversivel pois é uma ligação de baixa energia, em comparação com as demais explicadas anteriormente. É salientado por [[1]] que a OM em si não gera a dessorção, mas apenas facilita o processo. [[6]] converge em muitos aspectos a [[1]], porém ele adiciona que apesar de proporcionar a redução da porção adsorvida via liberação de fosfatos (acidos, ou não), não significa que haverá uma elevação equivalente em P<sub>disp</sub>, pois há também em jogo os processos de lixiviação e escoamento superificial, as quais são classificadas como perdas na Figura 1 e também a elevação da porção de P<sub>org</sub>.  
     
-   Para PHs entre 5 e 8 [[2]] destaca que há baixa concentração de H<sup>+</sup> e que portanto a cocentração de acidos fosfóricos ( H<sub>2</sub>PO<sub>4</sub><sup>-1</sup> e HPO<sub>4</sub><sup>-2</sup> )são baixas. É por essa razão que o P<sub>disp</sub> irá se ligar com ions suplementares com a tendência de gerar composotos mais estáveis.
+   Para PHs entre 5 e 8 [[2]] destaca que há baixa concentração de H<sup>+</sup> e que portanto a cocentração de acidos fosfóricos 
+( H<sub>2</sub>PO<sub>4</sub><sup>-1</sup> e HPO<sub>4</sub><sup>-2</sup> )são baixas. É por essa razão que o P<sub>disp</sub>
+irá se ligar com ions suplementares com a tendência de gerar composotos mais estáveis.
+    -Fatores Para serem levados em consideração  
+       *Concentração de oxidróxidos de Fe e Al
+                 -> Adsorção de P
+                 -> grau de Crisalização
+       *Nível de PH
+       *Concentração de OM
+    -Como gerar uma relação de equilibrio entre FeOx, AlOx, suas respectivas cristalizações, adsorção (ligação monodentada), PH e Matéria Organica???
+    -Será que é necessário estimar P não-lábil e P<sub>org</sub>?? Ou será que conhecendo a relação de equilibrio entre P<sub>ads</sub> e P<sub>disp</sub> e a concentração de P<sub>ads</sub> já é possivel obter bons resultados???
+
+  
+
 
     
 ### Referencias_Reacao
