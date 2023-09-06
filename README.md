@@ -1,4 +1,4 @@
-# Elementos Presentes na Espectroscopia
+# Elementos Presentes na Espectroscopia s
 ----------------------------
 
 ![Alt text](./diagrama.svg)
