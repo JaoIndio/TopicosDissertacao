@@ -109,6 +109,8 @@ irá se ligar com ions suplementares com a tendência de gerar composotos mais e
     -Será que é necessário estimar P não-lábil e Porg?? Ou será que conhecendo a relação de equilibrio entre Pads e Pdisp e a concentração
     de Pads já é possivel obter bons resultados???
 
+  <span>style="color:red;">.Aritgos [[4]] e [[5]] abordam estratégias de estimar Pdisp, considerando muitos desses aspectos em suas regressões. Entretanto eu ainda não consegui entender muito bem COMO eles organizaram essas ideias e transpareceram elas nas técnicas estatisticas.</span>
+
   
 
 
