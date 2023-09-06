@@ -110,12 +110,24 @@ irá se ligar com ions suplementares com a tendência de gerar composotos mais e
     de Pads já é possivel obter bons resultados???
   
 ```diff
--  Aritgos 4 e 5 abordam estratégias de estimar Pdisp, considerando muitos desses aspectos em suas regressões. Entretanto eu ainda não consegui entender muito bem COMO eles organizaram essas ideias e transpareceram elas nas técnicas estatisticas.
-```
+-  Aritgos 3 e 4 abordam estratégias de estimar Pdisp, considerando muitos desses aspectos em suas regressões. Entretanto eu ainda não consegui entender muito bem COMO eles organizaram essas ideias e transpareceram elas nas técnicas estatisticas.
+```  
 
+````diff
+@  Aritgo 5 trata-se de um estudo que investiga o impacto ambiental do ponto de vista da concentração de fósforo. Na sessão 3.1 ele cita o Manual Regional de Fertilidade do Solo, o qual afirma que 18 mg.Kg⁻¹ extraído de Mehlich-1 é considerado nível critico.  
+```  
+    -Se eu não me engano Mehlich-1 fornece uma estimativa de Pads.  
   
+````diff
+@  Nos comentários da tabela 4 do Aritgos 4 ele cita 2 trbalhos que afirmam que 10% < NRMSE < 20% é considerado um ajuste bom.  
+```
+   
+  Fazendo uma estimativa um tanto quanto grosseira suponho que uma
+  RMSE toleravel flutuaria entre 1,8 e 3,6 mg.kg⁻¹.
 
-
+    -Esses números são razoaveis? 
+    -Será que a incerteza poderia ser maior?
+    -Será que a incerteza precisa ser menor??
     
 ### Referencias_Reacao
 ------------------
