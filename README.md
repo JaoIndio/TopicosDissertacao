@@ -106,7 +106,8 @@ irá se ligar com ions suplementares com a tendência de gerar composotos mais e
        *Nível de PH
        *Concentração de OM
     -Como gerar uma relação de equilibrio entre FeOx, AlOx, suas respectivas cristalizações, adsorção (ligação monodentada), PH e Matéria Organica???
-    -Será que é necessário estimar P não-lábil e P<sub>org</sub>?? Ou será que conhecendo a relação de equilibrio entre P<sub>ads</sub> e P<sub>disp</sub> e a concentração de P<sub>ads</sub> já é possivel obter bons resultados???
+    -Será que é necessário estimar P não-lábil e Porg?? Ou será que conhecendo a relação de equilibrio entre Pads e Pdisp e a concentração
+    de Pads já é possivel obter bons resultados???
 
   
 
