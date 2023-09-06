@@ -110,8 +110,8 @@ irá se ligar com ions suplementares com a tendência de gerar composotos mais e
     de Pads já é possivel obter bons resultados???
   
 ```diff
--  Aritgos 4 e 5 abordam estratégias de estimar Pdisp, considerando muitos desses aspectos em suas 
-regressões. Entretanto eu ainda não consegui entender muito bem COMO eles organizaram essas ideias e transpareceram elas nas técnicas 
+-  Aritgos [[4]] e [[5]] abordam estratégias de estimar Pdisp, considerando muitos desses aspectos em suas
+regressões. Entretanto eu ainda não consegui entender muito bem COMO eles organizaram essas ideias e transpareceram elas nas técnicas
 estatisticas
 ```
 
