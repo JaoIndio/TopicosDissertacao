@@ -124,11 +124,11 @@ irá se ligar com ions suplementares com a tendência de gerar composotos mais e
    
   Fazendo uma estimativa um tanto quanto grosseira suponho que uma
   RMSE toleravel flutuaria entre 1,8 e 3,6 mg.kg⁻¹.
-
-    -Esses números são razoaveis? 
-    -Será que a incerteza poderia ser maior?
-    -Será que a incerteza precisa ser menor??
-    
+  
+    -Esses números são razoaveis?   
+    -Será que a incerteza poderia ser maior?  
+    -Será que a incerteza precisa ser menor??  
+      
 ### Referencias_Reacao
 ------------------
 <a name="sec1"></a> 
