@@ -114,12 +114,12 @@ irá se ligar com ions suplementares com a tendência de gerar composotos mais e
 ```  
 
 ````diff
-@  Aritgo 5 trata-se de um estudo que investiga o impacto ambiental do ponto de vista da concentração de fósforo. Na sessão 3.1 ele cita o Manual Regional de Fertilidade do Solo, o qual afirma que 18 mg.Kg⁻¹ extraído de Mehlich-1 é considerado nível critico.  
+@@  Aritgo 5 trata-se de um estudo que investiga o impacto ambiental do ponto de vista da concentração de fósforo. Na sessão 3.1 ele cita o Manual Regional de Fertilidade do Solo, o qual afirma que 18 mg.Kg⁻¹ extraído de Mehlich-1 é considerado nível critico.  
 ```  
     -Se eu não me engano Mehlich-1 fornece uma estimativa de Pads.  
   
 ````diff
-@  Nos comentários da tabela 4 do Aritgos 4 ele cita 2 trbalhos que afirmam que 10% < NRMSE < 20% é considerado um ajuste bom.  
+@@  Nos comentários da tabela 4 do Aritgos 4 ele cita 2 trbalhos que afirmam que 10% < NRMSE < 20% é considerado um ajuste bom.  
 ```
    
   Fazendo uma estimativa um tanto quanto grosseira suponho que uma
