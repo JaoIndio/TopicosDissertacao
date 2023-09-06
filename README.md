@@ -66,7 +66,7 @@
 ![Alt text](./img1.png)  
   **Figura 1**. Fonte: Referencia [[1]].
 
-  Quando se propõe analisar os Latossolos (Oxisoils) é imporante compreender que 
+  Quando se propõe analisar os Latossolos (Oxisols) é imporante compreender que 
   tratam-se de solos ácidos (4 < PH < 5.5) e que passaram por longos processo de 
   inteperizaçao. O que significa dizer que há uma grande quantidade de argila e 
   que por isso há uma grande parcela de fósforo imobilizado na forma de P<sub>min</sub>, o também chamado de porção de P não-lábil.
