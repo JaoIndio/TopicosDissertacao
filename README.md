@@ -175,3 +175,19 @@ irá se ligar com ions suplementares com a tendência de gerar composotos mais e
     -Quais processamentos de dados serão necessários (filtros SG, PCA, PLSR)?
 
   **Designs anteriores e os fundamentos de espectroscopia são o caminho para responder essas perguntas**
+
+## Estudos de Caso relacionados com Espectroscopia de Nutrientes do Solo e Técnicas de Regressão
+--------------
+  Accuracy Evaluation of the Crop-Weather Yield Predictive Models of Italian Ryegrass and Forage Rye Using Cross-Validation
+
+  Determination of chemical speciation by XAFS
+
+  Determining the composition of mineral-organic mixes using UV–vis–NIR diffuse reflectance spectroscopy
+  
+  Evaluation and application of the OILCROP– SUN model for sunflower in southern Italy Evaluation of nickel stabilization in a calcareous soil amended with biochars using mathematical adsorption models
+
+  INFLUÊNCIA DA GRANULOMETRIA E DA MINERALOGIA SOBRE A RETENÇÃO DO FÓSFORO EM LATOSSOLOS SOB PASTAGENS NO CERRADO
+
+  Yield Prediction Modeling for Sorghum–Sudangrass Hybrid Based on Climatic, Soil, and Cultivar Data in the Republic of Korea
+
+  Quantitative analysis of sulfur functional groups in natural organic matter by XANES spectroscopy
