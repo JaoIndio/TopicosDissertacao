@@ -22,37 +22,6 @@ from sklearn.metrics import mean_squared_error, r2_score
       Step 3. Normalização  |  Baseados em Médias ou em Picos MSC, ou SNV
 
 """
-def snv(dataSet):
-  
-  output_data = np.zeros_like(dataSet)
-  for i in range(dataSet.shape[0]):
-                 
-    # Apply correction
-    output_data[i,:] = (dataSet[i,:] - np.mean(dataSet[i,:])) / np.std(dataSet[i,:])
-                                  
-  return output_data
-
-def PlotGeneric(dataSet):
-  wl = np.arange(1001.06, 2500, 0.964568855 )
-  print(len(wl))
-  
-  plt.plot(wl, dataSet.T)
-  plt.xlabel("Wavelengths (nm)")
-  plt.ylabel("Absorbance")
-  
-  plt.show()
-
-
-def msc(dataSet):
-  ref_specValue = dataSet.mean(axis=0) 
-  data_msc = np.zeros_like(dataSet)
-
-  for i in range(dataSet.shape[0]):
-    fit = np.polyfit(ref_specValue, dataSet[i,:], 1, full=True)
-    # Apply correction
-    data_msc[i,:] = (dataSet[i,:] - fit[0][1]) / fit[0][0] 
-                                     
-  return data_msc
 
 def Centralization(dataSet):
   
@@ -128,27 +97,27 @@ print(X.shape[0], " - ", Y.shape, " - ", spectral_sheet.shape)
 
 #, " | ", X[0][0], X[0][len(X)-1], " | ", spectral_sheet.values.shape)
 #"""
+wl = np.arange(1001.06, 2500, 0.964568855 )
+print(len(wl))
 
-# Pré Processamento Step 1  | Centralização de Média
+"""
+plt.plot(wl, X.T)
+plt.xlabel("Wavelengths (nm)")
+plt.ylabel("Absorbance")
 
-print("Original")
-PlotGeneric(X)
-print("Centralizado")
+plt.show()
+
+"""
+# Pré Processamento Step 1
 X = Centralization(X)
-PlotGeneric(X)
 
-# Pré Processamento Step 2  |  Suavização 
-X  = savgol_filter(X, 11, polyorder=3, deriv=0)
-X1 = savgol_filter(X, 11, polyorder=3, deriv=1)
-X2 = savgol_filter(X, 11, polyorder=3, deriv=2)
-print("Suavizado")
-PlotGeneric(X)
+# Pré Processamento Step 2
+X  = savgol_filter(X, 17, polyorder=3, deriv=0)
+X1 = savgol_filter(X, 17, polyorder=3, deriv=1)
+X2 = savgol_filter(X, 17, polyorder=3, deriv=2)
 
-# Pré Processamento Step 3  |  Normalização
-#X  = msc(X) 
-print("Normalizado")
-X  = snv(X) 
-#PlotGeneric(X)
+# Pré Processamento Step 3
+
 
 r2s = []
 mses = []
