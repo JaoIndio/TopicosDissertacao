@@ -178,6 +178,7 @@ def optimise_pls_cv(X, y, n_comp):
                     "max_rpd=       ", max_rpd,    "\n"\
                     "max_r2=        ", max_r2,     "\n"\
                     "random_numbers | ", idx_rpd, " | ", idx_r2, "\n"\
+                    "random_numbers | ", random_num, "\n"\
      )
     if random_num==2147483647:
       random_num=0
