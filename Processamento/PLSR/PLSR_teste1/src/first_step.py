@@ -148,7 +148,10 @@ def optimise_pls_cv(X, y, n_comp):
   random_values= []
   max_r2=0
   max_rpd=0
-
+  best_randomR2=0
+  best_randomRpd=0
+  
+  random_num = 72051
   while random_num > 0:
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.30, random_state=random_num)
 
@@ -164,26 +167,26 @@ def optimise_pls_cv(X, y, n_comp):
     mse = mean_squared_error(y_test, y_cv)
     rpd = y_test.std()/np.sqrt(mse)
     
-    rpd_list.append(rpd)
-    r2_list.append(r2)
     random_num+=1
     
-    idx_rpd = np.argmax(rpd_list)
-    max_rpd = rpd_list[idx_rpd]
+    if r2>max_r2:
+      max_r2 = r2
+      best_randomR2 = random_num
 
-    idx_r2 = np.argmax(r2_list)
-    max_r2 = r2_list[idx_r2]
+    if rpd>max_rpd:
+      max_rpd = rpd
+      best_randomRpd= random_num
 
     print("**..-> ", (random_num/2147483647)*100, "%\n"\
                     "max_rpd=       ", max_rpd,    "\n"\
                     "max_r2=        ", max_r2,     "\n"\
-                    "random_numbers | ", idx_rpd, " | ", idx_r2, "\n"\
+                    "random_numbers | ", best_randomR2, " | ", best_randomRpd, "\n"\
                     "random_numbers | ", random_num, "\n"\
      )
     if random_num==2147483647:
       random_num=0
   
-  random_values.append(idx_rpd, idx_r2)
+  random_values.append(best_randomRpd, best_randomR2)
   return (y_test, y_cv, r2, mse, rpd, random_values)
 
 def plot_metrics(vals, ylabel, objective):
