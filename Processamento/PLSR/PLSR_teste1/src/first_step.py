@@ -142,7 +142,7 @@ def optimise_pls_cv(X, y, n_comp):
   """
   #print("optimize PLS ", y_test.shape)
   
-  random_num=11078
+  random_num=2147483647
   control_print=0
   rpd_list = []
   r2_list= []
@@ -192,9 +192,9 @@ def optimise_pls_cv(X, y, n_comp):
       control_print=0
 
     control_print+=1
-    random_num+=1
+    random_num-=1
     n_comp=1
-    if random_num==2147483647:
+    if random_num==1:
       random_num=0
   file.close()
   random_values.append(best_randomRpd)
@@ -258,7 +258,7 @@ plt.xlabel("Wavelengths (nm)")
 plt.ylabel("Absorbance")
 plt.show()
 """
-X = Centralization(X)
+#X = Centralization(X)
 Xmc= X.copy()
 #PlotGeneric("Concentracoes", Y, X)
 
