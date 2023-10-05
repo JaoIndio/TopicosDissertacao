@@ -1,0 +1,4 @@
+max_rpd= 1.6461359249624354 
+ max_r2=   0.6309641021783522  
+ bestRumbers | R2: 79 | RPD: 79 | NcompR2: 9 | NcompRPD: 9 
+ random_numbers | 79 

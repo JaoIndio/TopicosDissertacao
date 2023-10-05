@@ -155,7 +155,7 @@ def optimise_pls_cv(X, y, n_comp):
   n_compBestRPD=0
   #random_num = 99296
   while random_num > 0:
-    while n_comp<40:
+    while n_comp<20:
       X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.35, random_state=random_num)
 
       # Initialize and fit the PLS regression model
@@ -180,16 +180,12 @@ def optimise_pls_cv(X, y, n_comp):
         max_rpd = rpd
         best_randomRpd= random_num
         n_compBestRPD=n_comp
-
-      print("**..-> ", (random_num/2147483647)*100, "%\n"\
-                      "max_rpd=       ", max_rpd,    "\n"\
-                      "max_r2=        ", max_r2,     "\n"\
-                      "bestRumbers | R2: ", best_randomR2, " | RPD: ", best_randomRpd, " | NcompR2: ", n_compBestR2, " | NcompRPD: ", n_compBestRPD , "\n"\
-                      "random_numbers | ", random_num, "\n"\
-        )
-      
+        with open('bestFit.txt', 'w') as file:
+          data=f"max_rpd= {max_rpd} \n max_r2=   {max_r2}  \n bestRumbers | R2: {best_randomR2} | RPD: {best_randomRpd} | NcompR2: {n_compBestR2} | NcompRPD: {n_compBestRPD} \n random_numbers | {random_num} \n"
+          file.write(data)
       n_comp+=1
 
+    print("**..-> ", random_num)
     random_num+=1
     n_comp=1
     if random_num==2147483647:
