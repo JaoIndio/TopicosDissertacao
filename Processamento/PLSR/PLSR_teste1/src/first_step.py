@@ -150,43 +150,53 @@ def optimise_pls_cv(X, y, n_comp):
   max_rpd=0
   best_randomR2=0
   best_randomRpd=0
-  
-  random_num = 72051
+  n_comp=1
+  n_compBestR2=0
+  n_compBestRPD=0
+  #random_num = 99296
   while random_num > 0:
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.30, random_state=random_num)
+    while n_comp<40:
+      X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.35, random_state=random_num)
 
-    # Initialize and fit the PLS regression model
-    pls_model = PLSRegression(n_components=n_comp)
-    pls_model.fit(X_train, y_train)
+      # Initialize and fit the PLS regression model
+      pls_model = PLSRegression(n_components=n_comp)
+      pls_model.fit(X_train, y_train)
 
-    # Predict the target variable on the test set
-    y_cv = pls_model.predict(X_test)
+      # Predict the target variable on the test set
+      y_cv = pls_model.predict(X_test)
 
-    # Calculate scores
-    r2 = r2_score(y_test, y_cv)
-    mse = mean_squared_error(y_test, y_cv)
-    rpd = y_test.std()/np.sqrt(mse)
-    
+      # Calculate scores
+      r2 = r2_score(y_test, y_cv)
+      mse = mean_squared_error(y_test, y_cv)
+      rpd = y_test.std()/np.sqrt(mse)
+      
+      
+      if r2>max_r2:
+        max_r2 = r2
+        best_randomR2 = random_num
+        n_compBestR2=n_comp
+
+      if rpd>max_rpd:
+        max_rpd = rpd
+        best_randomRpd= random_num
+        n_compBestRPD=n_comp
+
+      print("**..-> ", (random_num/2147483647)*100, "%\n"\
+                      "max_rpd=       ", max_rpd,    "\n"\
+                      "max_r2=        ", max_r2,     "\n"\
+                      "bestRumbers | R2: ", best_randomR2, " | RPD: ", best_randomRpd, " | NcompR2: ", n_compBestR2, " | NcompRPD: ", n_compBestRPD , "\n"\
+                      "random_numbers | ", random_num, "\n"\
+        )
+      
+      n_comp+=1
+
     random_num+=1
-    
-    if r2>max_r2:
-      max_r2 = r2
-      best_randomR2 = random_num
-
-    if rpd>max_rpd:
-      max_rpd = rpd
-      best_randomRpd= random_num
-
-    print("**..-> ", (random_num/2147483647)*100, "%\n"\
-                    "max_rpd=       ", max_rpd,    "\n"\
-                    "max_r2=        ", max_r2,     "\n"\
-                    "random_numbers | ", best_randomR2, " | ", best_randomRpd, "\n"\
-                    "random_numbers | ", random_num, "\n"\
-     )
+    n_comp=1
     if random_num==2147483647:
       random_num=0
   
-  random_values.append(best_randomRpd, best_randomR2)
+  random_values.append(best_randomRpd)
+  random_values.append(best_randomR2)
   return (y_test, y_cv, r2, mse, rpd, random_values)
 
 def plot_metrics(vals, ylabel, objective):
@@ -246,9 +256,9 @@ plt.xlabel("Wavelengths (nm)")
 plt.ylabel("Absorbance")
 plt.show()
 """
-#X = Centralization(X)
+X = Centralization(X)
 Xmc= X.copy()
-PlotGeneric("Concentracoes", Y, X)
+#PlotGeneric("Concentracoes", Y, X)
 
 # Pré Processamento Step 2  |  Suavização 
 X   = savgol_filter(X, 51, polyorder=2, deriv=0)
@@ -276,7 +286,7 @@ X2  = snv(X2)
 #"""
 
 Xnorm = X.copy()
-PlotGeneric(None, None, Xorg, Xmc, Xsg, Xnorm)
+#PlotGeneric(None, None, Xorg, Xmc, Xsg, Xnorm)
 
 
 r2s = []
@@ -292,21 +302,23 @@ mses_sg1 = []
 rpds_sg1 = []
 
 xticks = np.arange(1, 21)
-for n_comp in xticks:
-  y_test, y_cv, r2, mse, rpd, random_1 = optimise_pls_cv(X, Y, n_comp)
-  r2s.append(r2)
-  mses.append(mse)
-  rpds.append(rpd)
-  
-  y_test, y_cv, r2, mse, rpd, random_2= optimise_pls_cv(X1, Y, n_comp)
-  r2s_sg1.append(r2)
-  mses_sg1.append(mse)
-  rpds_sg1.append(rpd)
+#for n_comp in xticks:
+"""
+y_test, y_cv, r2, mse, rpd, random_1 = optimise_pls_cv(X, Y, n_comp)
+r2s.append(r2)
+mses.append(mse)
+rpds.append(rpd)
+"""
 
-  y_test, y_cv, r2, mse, rpd, random_3= optimise_pls_cv(X2, Y, n_comp)
-  r2s_sg2.append(r2)
-  mses_sg2.append(mse)
-  rpds_sg2.append(rpd)
+y_test, y_cv, r2, mse, rpd, random_2= optimise_pls_cv(X1, Y, 1)
+r2s_sg1.append(r2)
+mses_sg1.append(mse)
+rpds_sg1.append(rpd)
+
+y_test, y_cv, r2, mse, rpd, random_3= optimise_pls_cv(X2, Y, 1)
+r2s_sg2.append(r2)
+mses_sg2.append(mse)
+rpds_sg2.append(rpd)
 
 
 best_pls=plot_metrics(mses, 'MSE PLSR', 'min')
