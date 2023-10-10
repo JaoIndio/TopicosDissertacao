@@ -163,15 +163,25 @@ def optimise_SVR_cv(X, y, n_comp):
 
 
   pca_variance = np.arange(0.75, 0.95, 0.05)
+  pca_control = np.arange(0, 4, 1)
+  j=0
+  X_pcaAll=[]
+  for varia in pca_variance:
+    #print(j)
+    #print(varia)
+    #print("================")
+    pca_comps=PCA(varia)
+    X_pca = pca_comps.fit_transform(X)
+    X_pcaAll.append(X_pca)
+    j+=1
+
   while random_num < 2147483647:
     while C<100000:
       while Gamma<100000:
         
-        for varia in pca_variance:
-          pca_comps=PCA(varia)
-          X_pca=pca_comps.fit_transform(X)
-          
-          X_train, X_test, y_train, y_test = train_test_split(X_pca, y, test_size=0.35, random_state=random_num)
+        for i in pca_control:
+          #print(i)
+          X_train, X_test, y_train, y_test = train_test_split(X_pcaAll[i], y, test_size=0.35, random_state=random_num)
 
           # Initialize and fit the PLS regression model
           SVR_model = SVR(kernel='rbf', gamma=Gamma, C=C, cache_size=2000)
@@ -205,7 +215,7 @@ def optimise_SVR_cv(X, y, n_comp):
       C*=10
       Gamma=0.0001
     C=0.0001 
-    if control_print==5:
+    if control_print==25:
       print("**..-> ", random_num)
       with open('SVR_BackUp.txt', 'a') as file:
         data=f"C= {C} \n Gamma= {Gamma}  \n | random_numbers {random_num} | PCA Variancia={varia} |\n****************************************************\n\n"
@@ -375,4 +385,4 @@ plt.ylabel('Predicted')
 plt.legend()
 plt.plot()
 
-p
+plt.show()
