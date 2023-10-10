@@ -8,7 +8,8 @@ import matplotlib.pyplot as plt
 
 from scipy.signal import savgol_filter
 
-from sklearn.cross_decomposition import PLSRegression
+from sklearn.svm import SVR
+from sklearn.decomposition import PCA
 from sklearn.model_selection import cross_val_predict
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error, r2_score
@@ -111,7 +112,7 @@ def Centralization(dataSet):
 
   return dataSet
 
-def optimise_pls_cv(X, y, n_comp):
+def optimise_SVR_cv(X, y, n_comp):
   
   """
   X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.3, random_state=0)
@@ -142,63 +143,84 @@ def optimise_pls_cv(X, y, n_comp):
   """
   #print("optimize PLS ", y_test.shape)
   
-  random_num=1153905
+  
+  random_num=0
   control_print=0
   rpd_list = []
   r2_list= []
   random_values= []
-  max_r2=0
-  max_rpd=0
+  max_r2=0.6074734930240134
+  max_rpd=1.596119873907366
   best_randomR2=0
   best_randomRpd=0
-  n_comp=8
-  n_compBestR2=0
-  n_compBestRPD=0
+  C=0.001
+  Gamma=0.001
+  C_BestR2=0
+  C_BestRPD=0
+  Gamma_BestR2=0
+  Gamma_BestRPD=0
   #random_num = 99296
 
-  #while random_num > 0:
-  #  while n_comp<12:
-  X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.35, random_state=random_num)
 
-  # Initialize and fit the PLS regression model
-  pls_model = PLSRegression(n_components=n_comp)
-  pls_model.fit(X_train, y_train)
+  pca_variance = np.arange(0.75, 0.95, 0.05)
+  while random_num < 2147483647:
+    while C<100000:
+      while Gamma<100000:
+        
+        for varia in pca_variance:
+          pca_comps=PCA(varia)
+          X_pca=pca_comps.fit_transform(X)
+          
+          X_train, X_test, y_train, y_test = train_test_split(X_pca, y, test_size=0.35, random_state=random_num)
 
-  # Predict the target variable on the test set
-  y_cv = pls_model.predict(X_test)
+          # Initialize and fit the PLS regression model
+          SVR_model = SVR(kernel='rbf', gamma=Gamma, C=C, cache_size=2000)
+          SVR_model.fit(X_train, y_train)
 
-  # Calculate scores
-  r2 = r2_score(y_test, y_cv)
-  mse = mean_squared_error(y_test, y_cv)
-  rpd = y_test.std()/np.sqrt(mse)
+          # Predict the target variable on the test set
+          y_cv = SVR_model.predict(X_test)
+
+          # Calculate scores
+          r2 = r2_score(y_test, y_cv)
+          mse = mean_squared_error(y_test, y_cv)
+          rpd = y_test.std()/np.sqrt(mse)
+          
+          
+          if r2>max_r2:
+            max_r2 = r2
+            best_randomR2 = random_num
+            C_BestR2=C
+            Gamma_BestR2=Gamma
+
+          if rpd>max_rpd:
+            max_rpd = rpd
+            best_randomRpd= random_num
+            C_BestRPD=C
+            Gamma_BestRPD=Gamma
+            with open('bestFit_SVR.txt', 'a') as file:
+              data=f"max_rpd= {max_rpd} \n max_r2=   {max_r2}  \n bestRumbers | R2: {best_randomR2} | RPD: {best_randomRpd} | C R2: {C_BestR2} | Gama R2: {Gamma_BestR2} \n | C Rpd: {C_BestRPD} | Gama RPD: {Gamma_BestRPD} |\n  random_numbers | {random_num} \n PCA Variancia={varia}\n==========================================================\n\n"
+              file.write(data)
+              file.close()
+        Gamma*=10
+      C*=10
+      Gamma=0.0001
+    C=0.0001 
+    if control_print==5:
+      print("**..-> ", random_num)
+      with open('SVR_BackUp.txt', 'a') as file:
+        data=f"C= {C} \n Gamma= {Gamma}  \n | random_numbers {random_num} | PCA Variancia={varia} |\n****************************************************\n\n"
+        file.write(data)
+        file.close()
+      control_print=0
+
+    control_print+=1
+    random_num+=1
   
+    if random_num==2147483647:
+      random_num=0
   
-  if r2>max_r2:
-    max_r2 = r2
-    best_randomR2 = random_num
-    n_compBestR2=n_comp
-
-  if rpd>max_rpd:
-    max_rpd = rpd
-    best_randomRpd= random_num
-    n_compBestRPD=n_comp
-    #with open('bestFit.txt', 'a') as file:
-    #     data=f"max_rpd= {max_rpd} \n max_r2=   {max_r2}  \n bestRumbers | R2: {best_randomR2} | RPD: {best_randomRpd} | NcompR2: {n_compBestR2} | NcompRPD: {n_compBestRPD} \n random_numbers | {random_num} \n ==========================================================\n\n"
-    #     file.write(data)
-    # n_comp+=1
-   
-  #if control_print==75:
-  #  print("**..-> ", random_num)
-  #  control_print=0
-
-  control_print+=1
-  random_num-=1
-  n_comp=1
-  if random_num==1:
-     random_num=0
-  #file.close()
-  #random_values.append(best_randomRpd)
-  #random_values.append(best_randomR2)
+  random_values.append(best_randomRpd)
+  random_values.append(best_randomR2)
   return (y_test, y_cv, r2, mse, rpd, random_values)
 
 def plot_metrics(vals, ylabel, objective):
@@ -304,42 +326,26 @@ r2s_sg1 = []
 mses_sg1 = []
 rpds_sg1 = []
 
-xticks = np.arange(1, 21)
-#for n_comp in xticks:
-"""
-y_test, y_cv, r2, mse, rpd, random_1 = optimise_pls_cv(X, Y, n_comp)
-r2s.append(r2)
-mses.append(mse)
-rpds.append(rpd)
-"""
-
-y_test, y_cv, r2, mse, rpd, random_1= optimise_pls_cv(X1, Y, 1)
-r2s_sg1.append(r2)
-mses_sg1.append(mse)
-rpds_sg1.append(rpd)
-r2s_sg1.append(r2)
-mses_sg1.append(mse)
-rpds_sg1.append(rpd)
-r2s_sg1.append(r2)
-mses_sg1.append(mse)
-rpds_sg1.append(rpd)
-r2s_sg1.append(r2)
-mses_sg1.append(mse)
-rpds_sg1.append(rpd)
-
-y_test, y_cv, r2, mse, rpd, random_3= optimise_pls_cv(X2, Y, 1)
-r2s_sg2.append(r2)
-mses_sg2.append(mse)
-rpds_sg2.append(rpd)
-r2s_sg2.append(r2)
-mses_sg2.append(mse)
-rpds_sg2.append(rpd)
-r2s_sg2.append(r2)
-mses_sg2.append(mse)
-rpds_sg2.append(rpd)
-r2s_sg2.append(r2)
-mses_sg2.append(mse)
-rpds_sg2.append(rpd)
+pca_variance = np.arange(0.75, 0.95, 0.05)
+for varia in pca_variance:
+  """
+  y_test, y_cv, r2, mse, rpd, random_1 = optimise_pls_cv(X, Y, n_comp)
+  r2s.append(r2)
+  mses.append(mse)
+  rpds.append(rpd)
+  """
+  
+  y_test, y_cv, r2, mse, rpd, random_1= optimise_SVR_cv(X1, Y, 1)
+  r2s_sg1.append(r2)
+  mses_sg1.append(mse)
+  rpds_sg1.append(rpd)
+  
+  X2_pca = pca_comps.fit_transform(X2)
+  y_test, y_cv, r2, mse, rpd, random_3= optimise_SVR_cv(X2, Y, 1)
+  r2s_sg2.append(r2)
+  mses_sg2.append(mse)
+  rpds_sg2.append(rpd)
+ 
 
 #best_pls=plot_metrics(mses, 'MSE PLSR', 'min')
 #best_pls=plot_metrics(rpds, 'RPD PLSR', 'max')
@@ -353,7 +359,7 @@ best_plsSG2=plot_metrics(mses_sg2, 'MSE PLSR + SG2', 'min')
 best_plsSG2=plot_metrics(rpds_sg2, 'RPD PLSR + SG2', 'max')
 best_plsSG2=plot_metrics(r2s_sg2, 'R2 PLSR + SG2', 'max')
 
-y_test, y_cv, r2, mse, rpd, random_4 = optimise_pls_cv(X1, Y, best_plsSG1)
+#y_test, y_cv, r2, mse, rpd, random_4 = optimise_SVR_cv(X1, Y, best_plsSG1)
 print(best_plsSG1)
 print(random_1)
 #print(random_2)
@@ -369,4 +375,4 @@ plt.ylabel('Predicted')
 plt.legend()
 plt.plot()
 
-plt.show()
+p
