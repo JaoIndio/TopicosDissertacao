@@ -158,16 +158,16 @@ def optimise_SVR_cv(X, y, n_comp):
   rpd_list = []
   r2_list= []
   random_values= []
-  max_r2=0.6074734930240134
-  max_rpd=1.596119873907366
+  max_r2=0
+  max_rpd=0
   best_randomR2=0
   best_randomRpd=0
   C=0.001
-  Gamma=0.001
+  epislon=0.001
   C_BestR2=0
   C_BestRPD=0
-  Gamma_BestR2=0
-  Gamma_BestRPD=0
+  epislon_BestR2=0
+  epislon_BestRPD=0
   #random_num = 99296
 
 
@@ -179,7 +179,7 @@ def optimise_SVR_cv(X, y, n_comp):
   for varia in pca_variance:
     #print(j)
     #print(varia)
-    print(len(X[0,:]))
+    #print(len(X[0,:]))
     pca_comps=PCA(varia)
     #for i in spec_interation:
     #print("\n\n\n================")
@@ -188,19 +188,19 @@ def optimise_SVR_cv(X, y, n_comp):
     X_pca = pca_comps.fit_transform(X) # X.shape = (40, 1554) <- Whole DataSet
     X_pcaAll.append(X_pca)
      #print(X_pca.shape)
-      print("================\n\n\n")
+    print("================\n\n\n")
     j+=1
 
   while random_num < 2147483647:
     while C<100000:
-      while Gamma<100000:
+      while epislon<1:
         
         for i in pca_control:
           #print(i)
           X_train, X_test, y_train, y_test = train_test_split(X_pcaAll[i], y, test_size=0.35, random_state=random_num)
 
           # Initialize and fit the PLS regression model
-          SVR_model = SVR(kernel='rbf', gamma=Gamma, C=C, cache_size=2000)
+          SVR_model = SVR(kernel='linear', epsilon=epislon, C=C, cache_size=2000)
           SVR_model.fit(X_train, y_train)
 
           # Predict the target variable on the test set
@@ -216,25 +216,25 @@ def optimise_SVR_cv(X, y, n_comp):
             max_r2 = r2
             best_randomR2 = random_num
             C_BestR2=C
-            Gamma_BestR2=Gamma
+            epislon_BestR2=epislon
 
           if rpd>max_rpd:
             max_rpd = rpd
             best_randomRpd= random_num
             C_BestRPD=C
-            Gamma_BestRPD=Gamma
-            with open('bestFit_SVR.txt', 'a') as file:
-              data=f"max_rpd= {max_rpd} \n max_r2=   {max_r2}  \n bestRumbers | R2: {best_randomR2} | RPD: {best_randomRpd} | C R2: {C_BestR2} | Gama R2: {Gamma_BestR2} \n | C Rpd: {C_BestRPD} | Gama RPD: {Gamma_BestRPD} |\n  random_numbers | {random_num} \n PCA Variancia={varia}\n==========================================================\n\n"
+            epislon_BestRPD=epislon
+            with open('bestFit_SVR_linear.txt', 'a') as file:
+              data=f"max_rpd= {max_rpd} \n max_r2=   {max_r2}  \n bestRumbers | R2: {best_randomR2} | RPD: {best_randomRpd} | C R2: {C_BestR2} | epislon: {epislon_BestR2} \n | C Rpd: {C_BestRPD} | epislon RPD: {epislon_BestRPD} |\n  random_numbers: {random_num} \n PCA Variancia={i}\n==========================================================\n\n"
               file.write(data)
               file.close()
-        Gamma*=10
+        epislon*=10
       C*=10
-      Gamma=0.0001
-    C=0.0001 
+      epislon=0.001
+    C=0.00001 
     if control_print==25:
       print("**..-> ", random_num)
-      with open('SVR_BackUp.txt', 'a') as file:
-        data=f"C= {C} \n Gamma= {Gamma}  \n | random_numbers {random_num} | PCA Variancia={varia} |\n****************************************************\n\n"
+      with open('SVR_linear_BackUp.txt', 'a') as file:
+        data=f"C= {C} \n epislon= {epislon}  \n | random_numbers {random_num} | PCA Variancia={i} |\n****************************************************\n\n"
         file.write(data)
         file.close()
       control_print=0
