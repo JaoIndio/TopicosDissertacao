@@ -1,0 +1,144 @@
+C= 1e-05 
+ epislon= 0.001  
+ | random_numbers 25 | PCA Variancia=4 |
+****************************************************
+
+C= 1e-05 
+ epislon= 0.001  
+ | random_numbers 50 | PCA Variancia=4 |
+****************************************************
+
+C= 1e-05 
+ epislon= 0.001  
+ | random_numbers 75 | PCA Variancia=4 |
+****************************************************
+
+C= 1e-05 
+ epislon= 0.001  
+ | random_numbers 100 | PCA Variancia=4 |
+****************************************************
+
+C= 1e-05 
+ epislon= 0.001  
+ | random_numbers 125 | PCA Variancia=4 |
+****************************************************
+
+C= 1e-05 
+ epislon= 0.001  
+ | random_numbers 150 | PCA Variancia=4 |
+****************************************************
+
+C= 1e-05 
+ epislon= 0.001  
+ | random_numbers 175 | PCA Variancia=4 |
+****************************************************
+
+C= 1e-05 
+ epislon= 0.001  
+ | random_numbers 200 | PCA Variancia=4 |
+****************************************************
+
+C= 1e-05 
+ epislon= 0.001  
+ | random_numbers 225 | PCA Variancia=4 |
+****************************************************
+
+C= 1e-05 
+ epislon= 0.001  
+ | random_numbers 250 | PCA Variancia=4 |
+****************************************************
+
+C= 1e-05 
+ epislon= 0.001  
+ | random_numbers 275 | PCA Variancia=4 |
+****************************************************
+
+C= 1e-05 
+ epislon= 0.001  
+ | random_numbers 300 | PCA Variancia=4 |
+****************************************************
+
+C= 1e-05 
+ epislon= 0.001  
+ | random_numbers 325 | PCA Variancia=4 |
+****************************************************
+
+C= 1e-05 
+ epislon= 0.001  
+ | random_numbers 350 | PCA Variancia=4 |
+****************************************************
+
+C= 1e-05 
+ epislon= 0.001  
+ | random_numbers 375 | PCA Variancia=4 |
+****************************************************
+
+C= 1e-05 
+ epislon= 0.001  
+ | random_numbers 400 | PCA Variancia=4 |
+****************************************************
+
+C= 1e-05 
+ epislon= 0.001  
+ | random_numbers 425 | PCA Variancia=4 |
+****************************************************
+
+C= 1e-05 
+ epislon= 0.001  
+ | random_numbers 450 | PCA Variancia=4 |
+****************************************************
+
+C= 1e-05 
+ epislon= 0.001  
+ | random_numbers 475 | PCA Variancia=4 |
+****************************************************
+
+C= 1e-05 
+ epislon= 0.001  
+ | random_numbers 500 | PCA Variancia=4 |
+****************************************************
+
+C= 1e-05 
+ epislon= 0.001  
+ | random_numbers 525 | PCA Variancia=4 |
+****************************************************
+
+C= 1e-05 
+ epislon= 0.001  
+ | random_numbers 550 | PCA Variancia=4 |
+****************************************************
+
+C= 1e-05 
+ epislon= 0.001  
+ | random_numbers 575 | PCA Variancia=4 |
+****************************************************
+
+C= 1e-05 
+ epislon= 0.001  
+ | random_numbers 600 | PCA Variancia=4 |
+****************************************************
+
+C= 1e-05 
+ epislon= 0.001  
+ | random_numbers 625 | PCA Variancia=4 |
+****************************************************
+
+C= 1e-05 
+ epislon= 0.001  
+ | random_numbers 650 | PCA Variancia=4 |
+****************************************************
+
+C= 1e-05 
+ epislon= 0.001  
+ | random_numbers 675 | PCA Variancia=4 |
+****************************************************
+
+C= 1e-05 
+ epislon= 0.001  
+ | random_numbers 700 | PCA Variancia=4 |
+****************************************************
+
+C,epsilon,PCA Variancia, random Numbers
+        1e-05,0.001,4,25
+****************************************************
+
