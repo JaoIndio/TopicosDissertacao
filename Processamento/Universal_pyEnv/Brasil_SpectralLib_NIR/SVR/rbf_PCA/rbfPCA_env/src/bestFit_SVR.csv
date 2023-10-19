@@ -1,0 +1,172 @@
+max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,epsilon_R2,C_RPD,epsilon_RPD,PCA Variancia,random_numbers
+              0.8711813206251775,0,              0,0,              0,0,              0.001,0.001,0.9500000000000002,              0
+              ==============================================================
+
+max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,epsilon_R2,C_RPD,epsilon_RPD,PCA Variancia,random_numbers
+              0.8736813797911933,0,              0,0,              0,0,              0.001,0.001,0.9500000000000002,              0
+              ==============================================================
+
+max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,epsilon_R2,C_RPD,epsilon_RPD,PCA Variancia,random_numbers
+              0.8785712736357097,0,              0,0,              0,0,              0.01,0.001,0.9500000000000002,              0
+              ==============================================================
+
+max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,epsilon_R2,C_RPD,epsilon_RPD,PCA Variancia,random_numbers
+              0.9103986684504565,0,              0,0,              0,0,              0.01,0.001,0.9500000000000002,              0
+              ==============================================================
+
+max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,epsilon_R2,C_RPD,epsilon_RPD,PCA Variancia,random_numbers
+              0.9104115719266803,0,              0,0,              0,0,              0.1,0.001,0.9500000000000002,              0
+              ==============================================================
+
+max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,epsilon_R2,C_RPD,epsilon_RPD,PCA Variancia,random_numbers
+              0.9107634888743162,0,              0,0,              0,0,              1.0,0.001,0.9500000000000002,              0
+              ==============================================================
+
+max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,epsilon_R2,C_RPD,epsilon_RPD,PCA Variancia,random_numbers
+              0.9116052521536899,0,              0,0,              0,0,              10000.0,0.001,0.9500000000000002,              0
+              ==============================================================
+
+max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,epsilon_R2,C_RPD,epsilon_RPD,PCA Variancia,random_numbers
+              0.9435942415454652,0,              0,2,              0,0,              0.01,0.001,0.9500000000000002,              2
+              ==============================================================
+
+max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,epsilon_R2,C_RPD,epsilon_RPD,PCA Variancia,random_numbers
+              0.9437393834779954,0,              0,2,              0,0,              0.01,0.01,0.9500000000000002,              2
+              ==============================================================
+
+max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,epsilon_R2,C_RPD,epsilon_RPD,PCA Variancia,random_numbers
+              0.9451576798353228,0,              0,2,              0,0,              0.01,0.1,0.9500000000000002,              2
+              ==============================================================
+
+max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,epsilon_R2,C_RPD,epsilon_RPD,PCA Variancia,random_numbers
+              0.951253812086748,0,              0,2,              0,0,              0.1,0.001,0.9500000000000002,              2
+              ==============================================================
+
+max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,epsilon_R2,C_RPD,epsilon_RPD,PCA Variancia,random_numbers
+              0.9516239563075194,0,              0,2,              0,0,              0.1,0.01,0.9500000000000002,              2
+              ==============================================================
+
+max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,epsilon_R2,C_RPD,epsilon_RPD,PCA Variancia,random_numbers
+              0.9552671317865772,0,              0,2,              0,0,              0.1,0.1,0.9500000000000002,              2
+              ==============================================================
+
+max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,epsilon_R2,C_RPD,epsilon_RPD,PCA Variancia,random_numbers
+              1.0097688375041047,0.019255068410757636,              4,4,              10.0,0.001,              10.0,0.001,0.9500000000000002,              4
+              ==============================================================
+
+max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,epsilon_R2,C_RPD,epsilon_RPD,PCA Variancia,random_numbers
+              1.009776922807894,0.019270774036002636,              4,4,              100.0,0.001,              100.0,0.001,0.9500000000000002,              4
+              ==============================================================
+
+max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,epsilon_R2,C_RPD,epsilon_RPD,PCA Variancia,random_numbers
+              1.0098212641453124,0.01935689995216794,              4,4,              1000.0,0.001,              1000.0,0.001,0.9500000000000002,              4
+              ==============================================================
+
+max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,epsilon_R2,C_RPD,epsilon_RPD,PCA Variancia,random_numbers
+              1.0102719311311432,0.020231604839673456,              4,4,              10000.0,0.001,              10000.0,0.001,0.9500000000000002,              4
+              ==============================================================
+
+max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,epsilon_R2,C_RPD,epsilon_RPD,PCA Variancia,random_numbers
+              1.0382342557810307,0.0722962930212917,              5,5,              0.01,0.001,              0.01,0.001,0.9500000000000002,              5
+              ==============================================================
+
+max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,epsilon_R2,C_RPD,epsilon_RPD,PCA Variancia,random_numbers
+              1.0497714190628111,0.09257547893205675,              5,5,              0.01,0.001,              0.01,0.001,0.9500000000000002,              5
+              ==============================================================
+
+max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,epsilon_R2,C_RPD,epsilon_RPD,PCA Variancia,random_numbers
+              1.0499245806114532,0.09284020729483278,              5,5,              0.1,0.001,              0.1,0.001,0.9500000000000002,              5
+              ==============================================================
+
+max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,epsilon_R2,C_RPD,epsilon_RPD,PCA Variancia,random_numbers
+              1.0574892299114664,0.10577235057665013,              5,5,              1.0,0.001,              1.0,0.001,0.9500000000000002,              5
+              ==============================================================
+
+max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,epsilon_R2,C_RPD,epsilon_RPD,PCA Variancia,random_numbers
+              1.0577578386077615,0.10622645607470083,              5,5,              1.0,0.01,              1.0,0.01,0.9500000000000002,              5
+              ==============================================================
+
+max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,epsilon_R2,C_RPD,epsilon_RPD,PCA Variancia,random_numbers
+              1.06019124722469,0.11032462280834798,              5,5,              1.0,0.1,              1.0,0.1,0.9500000000000002,              5
+              ==============================================================
+
+max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,epsilon_R2,C_RPD,epsilon_RPD,PCA Variancia,random_numbers
+              0.8711813206251775,0,              0,0,              0,0,              0.001,0.001,0.9500000000000002,              0
+              ==============================================================
+
+max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,epsilon_R2,C_RPD,epsilon_RPD,PCA Variancia,random_numbers
+              0.8736813797911933,0,              0,0,              0,0,              0.001,0.001,0.9500000000000002,              0
+              ==============================================================
+
+max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,epsilon_R2,C_RPD,epsilon_RPD,PCA Variancia,random_numbers
+              0.8785712736357097,0,              0,0,              0,0,              0.01,0.001,0.9500000000000002,              0
+              ==============================================================
+
+max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,epsilon_R2,C_RPD,epsilon_RPD,PCA Variancia,random_numbers
+              0.9103986684504565,0,              0,0,              0,0,              0.01,0.001,0.9500000000000002,              0
+              ==============================================================
+
+max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,epsilon_R2,C_RPD,epsilon_RPD,PCA Variancia,random_numbers
+              0.9104115719266803,0,              0,0,              0,0,              0.1,0.001,0.9500000000000002,              0
+              ==============================================================
+
+max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,epsilon_R2,C_RPD,epsilon_RPD,PCA Variancia,random_numbers
+              0.9107634888743162,0,              0,0,              0,0,              1.0,0.001,0.9500000000000002,              0
+              ==============================================================
+
+max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,epsilon_R2,C_RPD,epsilon_RPD,PCA Variancia,random_numbers
+              0.9116052521536899,0,              0,0,              0,0,              10000.0,0.001,0.9500000000000002,              0
+              ==============================================================
+
+max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,epsilon_R2,C_RPD,epsilon_RPD,PCA Variancia,random_numbers
+              0.8711813206251775,0,              0,0,              0,0,              0.001,0.001,0.9500000000000002,              0
+              ==============================================================
+
+max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,epsilon_R2,C_RPD,epsilon_RPD,PCA Variancia,random_numbers
+              0.8736813797911933,0,              0,0,              0,0,              0.001,0.001,0.9500000000000002,              0
+              ==============================================================
+
+max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,epsilon_R2,C_RPD,epsilon_RPD,PCA Variancia,random_numbers
+              0.8785712736357097,0,              0,0,              0,0,              0.01,0.001,0.9500000000000002,              0
+              ==============================================================
+
+max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,epsilon_R2,C_RPD,epsilon_RPD,PCA Variancia,random_numbers
+              0.9103986684504565,0,              0,0,              0,0,              0.01,0.001,0.9500000000000002,              0
+              ==============================================================
+
+max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,epsilon_R2,C_RPD,epsilon_RPD,PCA Variancia,random_numbers
+              0.9104115719266803,0,              0,0,              0,0,              0.1,0.001,0.9500000000000002,              0
+              ==============================================================
+
+max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,epsilon_R2,C_RPD,epsilon_RPD,PCA Variancia,random_numbers
+              0.9107634888743162,0,              0,0,              0,0,              1.0,0.001,0.9500000000000002,              0
+              ==============================================================
+
+max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,epsilon_R2,C_RPD,epsilon_RPD,PCA Variancia,random_numbers
+              0.9116052521536899,0,              0,0,              0,0,              10000.0,0.001,0.9500000000000002,              0
+              ==============================================================
+
+max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,epsilon_R2,C_RPD,epsilon_RPD,PCA Variancia,random_numbers
+              0.9435942415454652,0,              0,2,              0,0,              0.01,0.001,0.9500000000000002,              2
+              ==============================================================
+
+max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,epsilon_R2,C_RPD,epsilon_RPD,PCA Variancia,random_numbers
+              0.9437393834779954,0,              0,2,              0,0,              0.01,0.01,0.9500000000000002,              2
+              ==============================================================
+
+max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,epsilon_R2,C_RPD,epsilon_RPD,PCA Variancia,random_numbers
+              0.9451576798353228,0,              0,2,              0,0,              0.01,0.1,0.9500000000000002,              2
+              ==============================================================
+
+max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,epsilon_R2,C_RPD,epsilon_RPD,PCA Variancia,random_numbers
+              0.951253812086748,0,              0,2,              0,0,              0.1,0.001,0.9500000000000002,              2
+              ==============================================================
+
+max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,epsilon_R2,C_RPD,epsilon_RPD,PCA Variancia,random_numbers
+              0.9516239563075194,0,              0,2,              0,0,              0.1,0.01,0.9500000000000002,              2
+              ==============================================================
+
+max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,epsilon_R2,C_RPD,epsilon_RPD,PCA Variancia,random_numbers
+              0.9552671317865772,0,              0,2,              0,0,              0.1,0.1,0.9500000000000002,              2
+              ==============================================================
+
