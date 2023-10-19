@@ -167,6 +167,6 @@ max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,epsilon_R2,C_RPD,epsilon_RPD,PCA Variancia,ra
               ==============================================================
 
 max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,epsilon_R2,C_RPD,epsilon_RPD,PCA Variancia,random_numbers
-              0.9552671317865772,0,              0,2,              0,0,              0.1,0.1,0.9500000000000002,              2
+              0,0,              0,2,              0,0,              0.1,0.1,0.9500000000000002,              2
               ==============================================================
 
