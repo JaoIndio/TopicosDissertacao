@@ -15,7 +15,7 @@ GradBoost=(f"{generalPath}/GradientBoost/GradBoost_env/src/GradBoost.py")
 
 BrLib_MIR_path       =(f"{generalPath}/Brasil_SpectralLib_MIR")
 SVRPath              =(f"{BrLib_MIR_path}/SVR")
-#linear_PCA_BrLib_MIR =(f"{SVRPath}/linear_PCA/linearPCA_env/src/SVR_linear.py")
+linear_PCA_BrLib_MIR =(f"{SVRPath}/linear_PCA/linearPCA_env/src/SVR_linear.py")
 #rbf_PCA_BrLib_MIR    =(f"{SVRPath}/rbf_PCA/rbfPCA_env/src/SVR.py")
 #rbf_BrLib_MIR        =(f"{SVRPath}/rbf/rbf_env/src/SVR.py")
 #dt_BrLib_MIR         =(f"{BrLib_MIR_path}/DecisionTree/DecisionTree_env/src/DecisionTree.py")   
@@ -35,17 +35,16 @@ PLSR_BrLib_MIR       =(f"{BrLib_MIR_path}/PLSR/PLSR_env/src/PLSR.py")
 
 
 # List of scripts to run
-                   # DataSet com 40 amostras
-scripts_to_run = [linear_PCA, rbf_PCA, rbf, \
-                 
-                # DataSet da Biblioteca Nacional
-                     #linear_PCA_BrLib_MI,\ 
-                     #rbf_PCA_BrLib_MIR,  \
-                     #rbf_BrLib_MIR,      \
-                     #dt_BrLib_MIR,       \
-                     #rf_BrLib_MIR,       \
-                     #GradBoost_BrLib_MIR,\
-                     PLSR_BrLib_MIR     \
+scripts_to_run = [ # DataSet com 40 amostras """ \
+                      # linear_PCA, rbf_PCA, rbf, \
+  #DataSet da Biblioteca Nacional 
+                      linear_PCA_BrLib_MIR, \
+                      #rbf_PCA_BrLib_MIR,   \
+                      #rbf_BrLib_MIR,       \
+                      #dt_BrLib_MIR,        \
+                      #rf_BrLib_MIR,        \
+                      #GradBoost_BrLib_MIR, \
+                      PLSR_BrLib_MIR     \
 
                 # DataSet da Biblioteca Nacional
                      #linear_PCA_BrLib_MI,\   
