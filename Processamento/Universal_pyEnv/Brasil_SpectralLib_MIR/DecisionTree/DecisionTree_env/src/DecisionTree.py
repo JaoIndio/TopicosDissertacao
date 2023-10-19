@@ -24,7 +24,7 @@ from sklearn.metrics import mean_squared_error, r2_score
 """
 figure_counter = 0
 
-generalPahth=(f"Universal_pyEnv")
+generalPahth=(f"Universal_pyEnv/Brasil_SpectralLib_MIR")
 SVRPahth=(f"{generalPahth}/DecisionTree")
 rbf=(f"{SVRPahth}/DecisionTree_env/src/")
 
@@ -191,6 +191,7 @@ def optimise_DecisionTree_cv(X, y, n_comp):
     random_num     = int(AllData[3])
   """
   while random_num < 2147483647:
+    #print("**... Decision Tree MIR random----------------> ", random_num)
     #print(i)
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.35, random_state=random_num)
 
@@ -232,7 +233,7 @@ def optimise_DecisionTree_cv(X, y, n_comp):
         file.write(data)
         file.close()
     if control_print==2400:
-      print("**... Decision Tree -> ", random_num)
+      print("**... Decision Tree MIR-> ", random_num)
       with open(Bkp_file, 'w') as file:
         data=(f"C,Gamma,epsilon,random_num\n\
         {C},{Gamma},{epsilon},{random_num}\n\
@@ -279,19 +280,17 @@ def plot_metrics(vals, ylabel, objective):
   return xticks[idx]
   #plt.show()
                                                                                
-soil_sheet     = pd.read_excel("../data_bases/NIR_spectra_Data_Soil.xlsx", \
-                               "soil_prop_Y")
-spectral_sheet = pd.read_csv("../data_bases/NIR_googleDrive.csv")
+soil_sheet     = pd.read_csv("../data_bases/BrLib_MIR.csv")
 
 soil_sheet.head()
-spectral_sheet.head()
-spectral_sheet.replace(to_replace=',', value='.')
+#spectral_sheet.replace(to_replace=',', value='.')
 #PLSR assigns
-Y = soil_sheet["P (ppm)"].values
-X = spectral_sheet.values[:, 4:]
+Y = soil_sheet["P_mgkg"].values
+X = soil_sheet.values[:, 21:]
 
 
-print(X.shape[0], " - ", Y.shape, " - ", spectral_sheet.shape)
+print(X.shape, " - ", Y.shape, " - ", soil_sheet.shape)
+print(Y)
 
 #, " | ", X[0][0], X[0][len(X)-1], " | ", spectral_sheet.values.shape)
 #
@@ -314,13 +313,13 @@ Xmc= X.copy()
 #PlotGeneric("Concentracoes", Y, X)
 
 # Pré Processamento Step 2  |  Suavização 
-X   = savgol_filter(X, 51, polyorder=2, deriv=0)
+X   = savgol_filter(X, 25, polyorder=2, deriv=0)
 Xsg = X.copy()
 
-X1   = savgol_filter(X, 51, polyorder=2, deriv=1)
+X1   = savgol_filter(X, 25, polyorder=2, deriv=1)
 Xsg1 = X1.copy()
 
-X2 = savgol_filter(X, 51, polyorder=2, deriv=2)
+X2 = savgol_filter(X, 25, polyorder=2, deriv=2)
 print("Suavizado")
 #PlotGeneric(Xorg)
 
@@ -365,7 +364,7 @@ for varia in pca_variance:
   #mses.append(mse)
   #rpds.append(rpd)
   
-  y_test, y_cv, r2, mse, rpd, random_1= optimise_DecisionTree_cv(X1, Y, 1)
+  y_test, y_cv, r2, mse, rpd, random_1= optimise_DecisionTree_cv(X2, Y, 1)
   r2s_sg1.append(r2)
   mses_sg1.append(mse)
   rpds_sg1.append(rpd)
