@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # Set the source file to be copied
-source_file="../../data_bases/BrLib_MIR.csv"
+source_file="GradientBoost/GradBoost_env/src/bestFit_GradBoost.csv"
+source_output="Brasil_SpectralLib_MIR/GradientBoost/GradBoost_env/src"
 
 # Define a function to copy the file to a data_bases directory
 copy_to_data_bases() {
@@ -12,13 +13,14 @@ copy_to_data_bases() {
   #mkdir -p "$destination_dir"
               
   # Copy the source file to the destination directory
+  #echo $(pwd)
   cp "$source_file" "$data_bases_dir"
 }
 
 # Find and copy to data_bases directories
-find . -type d -name "data_bases" | while read -r data_bases_dir; do
-                                      copy_to_data_bases "$data_bases_dir"
-                                    done
+find "$source_output" -type d -name src | while read -r data_bases_dir; do
+                                            copy_to_data_bases "$data_bases_dir"
+                                          done
 
 echo "File copied to all data_bases directories."
 
