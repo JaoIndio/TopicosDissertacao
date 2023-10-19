@@ -178,3 +178,79 @@ max_rpd= 2.3071243381233484
  random_numbers | 2147427704 
  ==========================================================
 
+max_rpd,max_r,bestRumbers,BestR2,BestRPD,NcompR2,NcompRPD,random_number
+          0.9727193175254403, 0, 0, 0,          0,1,0
+          ==============================================================
+
+max_rpd,max_r,bestRumbers,BestR2,BestRPD,NcompR2,NcompRPD,random_number
+          0.9783584049644857, 0, 0, 0,          0,2,0
+          ==============================================================
+
+max_rpd,max_r,bestRumbers,BestR2,BestRPD,NcompR2,NcompRPD,random_number
+          0.9867641082032519, 0, 0, 1,          0,1,1
+          ==============================================================
+
+max_rpd,max_r,bestRumbers,BestR2,BestRPD,NcompR2,NcompRPD,random_number
+          0.9877303833619224, 0, 0, 1,          0,2,1
+          ==============================================================
+
+max_rpd,max_r,bestRumbers,BestR2,BestRPD,NcompR2,NcompRPD,random_number
+          0.9907317320450981, 0, 0, 3,          0,2,3
+          ==============================================================
+
+max_rpd,max_r,bestRumbers,BestR2,BestRPD,NcompR2,NcompRPD,random_number
+          1.007404335152459, 0.014645806618086898, 4, 4,          1,1,4
+          ==============================================================
+
+max_rpd,max_r,bestRumbers,BestR2,BestRPD,NcompR2,NcompRPD,random_number
+          1.0411704976138219, 0.07752141506919008, 4, 4,          2,2,4
+          ==============================================================
+
+max_rpd,max_r,bestRumbers,BestR2,BestRPD,NcompR2,NcompRPD,random_number
+          1.0522115170667046, 0.09677926749687382, 4, 4,          3,3,4
+          ==============================================================
+
+max_rpd,max_r,bestRumbers,BestR2,BestRPD,NcompR2,NcompRPD,random_number
+          1.0554102097531877, 0.1022458574631877, 21, 21,          17,17,21
+          ==============================================================
+
+max_rpd,max_r,bestRumbers,BestR2,BestRPD,NcompR2,NcompRPD,random_number
+          0.9727193175254403, 0, 0, 0,          0,1,0
+          ==============================================================
+
+max_rpd,max_r,bestRumbers,BestR2,BestRPD,NcompR2,NcompRPD,random_number
+          0.9783584049644857, 0, 0, 0,          0,2,0
+          ==============================================================
+
+max_rpd,max_r,bestRumbers,BestR2,BestRPD,NcompR2,NcompRPD,random_number
+          0.9867641082032519, 0, 0, 1,          0,1,1
+          ==============================================================
+
+max_rpd,max_r,bestRumbers,BestR2,BestRPD,NcompR2,NcompRPD,random_number
+          0.9877303833619224, 0, 0, 1,          0,2,1
+          ==============================================================
+
+max_rpd,max_r,bestRumbers,BestR2,BestRPD,NcompR2,NcompRPD,random_number
+          0.9907317320450981, 0, 0, 3,          0,2,3
+          ==============================================================
+
+max_rpd,max_r,bestRumbers,BestR2,BestRPD,NcompR2,NcompRPD,random_number
+          1.007404335152459, 0.014645806618086898, 4, 4,          1,1,4
+          ==============================================================
+
+max_rpd,max_r,bestRumbers,BestR2,BestRPD,NcompR2,NcompRPD,random_number
+          1.0411704976138219, 0.07752141506919008, 4, 4,          2,2,4
+          ==============================================================
+
+max_rpd,max_r,bestRumbers,BestR2,BestRPD,NcompR2,NcompRPD,random_number
+          1.0522115170667046, 0.09677926749687382, 4, 4,          3,3,4
+          ==============================================================
+
+max_rpd,max_r,bestRumbers,BestR2,BestRPD,NcompR2,NcompRPD,random_number
+          1.0554102097531877, 0.1022458574631877, 21, 21,          17,17,21
+          ==============================================================
+
+max_rpd,max_r,bestRumbers,BestR2,BestRPD,NcompR2,NcompRPD,random_number
+          1.0645195288623015, 0.11754466337488423, 182, 182,          18,18,182
+          ==============================================================
+

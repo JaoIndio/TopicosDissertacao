@@ -23,7 +23,7 @@ from sklearn.metrics import mean_squared_error, r2_score
 
 """
 figure_counter = 0
-generalPahth=(f"Universal_pyEnv")
+generalPahth=(f"./Universal_pyEnv")
 SVRPahth=(f"{generalPahth}/Brasil_SpectralLib_MIR")
 rbf=(f"{SVRPahth}/PLSR/PLSR_env/src/")
 
@@ -133,21 +133,20 @@ def optimise_pls_cv(X, y, n_comp):
   max_rpd=0
   best_randomR2=0
   best_randomRpd=0
-  n_comp=0
+  n_comp=1
   n_compBestR2=0
   n_compBestRPD=0
   bestFit_file=(f"{rbf}bestFit_PLSR.csv")
   Bkp_file=(f"{rbf}PLSR_BackUp.csv")
-
   #random_num = 99296
-"""
+  #"""
   with open(bestFit_file, 'r') as file:
     lines=file.readlines()
 
   AllData = lines[-3].strip().split(',');
   
   print("\
-  RBF Backup  Best Fit Analyse\n\
+  PLSR BrLib Backup  Best Fit Analyse\n\
   \t\tMaxRPD:          ",AllData[0],"\n\
   \t\tMaxR2:           ",AllData[1],"\n\
   \t\tbest_randomR2:   ",AllData[2],"\n\
@@ -166,17 +165,17 @@ def optimise_pls_cv(X, y, n_comp):
 
   AllData = lines[-3].strip().split(',');
   print("\
-  RBF Backup Analyse\n\
+  PLSR BrLib Bakup Analyse\n\
   \t\tNum Comp     ",AllData[0],"\n\
-  \t\tRandomNumber ",AllData[3],"\n")
+  \t\tRandomNumber ",AllData[1],"\n")
   #file.close()
   
-  if int(AllData[3]) > random_num:
+  if int(AllData[1]) > random_num:
     n_comp         = int(AllData[0]) 
     random_num     = int(AllData[1])
-"""
-
-  while random_num < 2147483647:
+  #"""
+  
+  while random_num<2147483647:
     while n_comp<20:
       X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.35, random_state=random_num)
 
@@ -201,18 +200,18 @@ def optimise_pls_cv(X, y, n_comp):
         max_rpd = rpd
         best_randomRpd= random_num
         n_compBestRPD=n_comp
-        with open('bestFit.txt', 'a') as file:
+        with open(bestFit_file, 'a+') as file:
           data=(f"max_rpd,max_r,bestRumbers,BestR2,BestRPD,NcompR2,NcompRPD,random_number\n\
-            {max_rpd}, {max_r2}, {best_randomR2}, {best_randomRpd},\
-            {n_compBestR2},{n_compBestRPD},{random_num}\n\
-            ==============================================================\n\n")
+          {max_rpd}, {max_r2}, {best_randomR2}, {best_randomRpd},\
+          {n_compBestR2},{n_compBestRPD},{random_num}\n\
+          ==============================================================\n\n")
           file.write(data)
       n_comp+=1
        
     if control_print==75:
       print("**.. PLSR -> ", random_num)
       control_print=0
-      with open(Bkp_file, 'w') as file:
+      with open(Bkp_file, 'w+') as file:
         data=(f"NumComp,random_num\n\
         {n_comp},{random_num}\n\
         ******************************************\n\n")
