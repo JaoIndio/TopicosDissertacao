@@ -20,7 +20,7 @@ rbf_PCA_BrLib_MIR    =(f"{SVRPath}/rbf_PCA/rbfPCA_env/src/SVR.py")
 rbf_BrLib_MIR        =(f"{SVRPath}/rbf/rbf_env/src/SVR.py")
 #dt_BrLib_MIR         =(f"{BrLib_MIR_path}/DecisionTree/DecisionTree_env/src/DecisionTree.py")   
 rf_BrLib_MIR         =(f"{BrLib_MIR_path}/RandomForest/rf_env/src/RandomForest.py")            
-#GradBoost_BrLib_MIR  =(f"{BrLib_MIR_path}/GradientBoost/GradBoost_env/src/GradBoost.py")      
+GradBoost_BrLib_MIR  =(f"{BrLib_MIR_path}/GradientBoost/GradBoost_env/src/GradBoost.py")      
 PLSR_BrLib_MIR       =(f"{BrLib_MIR_path}/PLSR/PLSR_env/src/PLSR.py")                             
 
 #BrLib_NIR_path       =(f"{generalPath}/Brasil_SpectralLib_NIR")
@@ -43,7 +43,7 @@ scripts_to_run = [ # DataSet com 40 amostras """ \
                       rbf_BrLib_MIR,       \
                       #dt_BrLib_MIR,        \
                       rf_BrLib_MIR,        \
-                      #GradBoost_BrLib_MIR, \
+                      GradBoost_BrLib_MIR, \
                       PLSR_BrLib_MIR     \
 
                 # DataSet da Biblioteca Nacional NIR
