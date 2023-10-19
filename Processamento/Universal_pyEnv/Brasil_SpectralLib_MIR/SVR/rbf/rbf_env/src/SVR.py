@@ -25,9 +25,9 @@ from sklearn.metrics import mean_squared_error, r2_score
 """
 figure_counter = 0
 
-generalPahth="Universal_pyEnv"
-SVRPahth=(f"{generalPahth}/SVR")
-rbf=(f"{SVRPahth}/rbf/rbf_env/src/")
+generalPahth=(f"Universal_pyEnv/Brasil_SpectralLib_MIR/SVR") 
+SVRPahth=(f"{generalPahth}/rbf/rbf_env")
+rbf=(f"{SVRPahth}/src/")
 
 def snv(dataSet):
   
@@ -128,36 +128,6 @@ def Centralization(dataSet):
 
 def optimise_SVR_cv(X, y, n_comp):
   
-  """
-  X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.3, random_state=0)
-  X1_train, X1_test, Y1_train, Y1_test = train_test_split(X1, Y1, test_size=0.3, random_state=0)
-  X2_train, X2_test, Y2_train, Y2_test = train_test_split(X2, Y2, test_size=0.3, random_state=0)
-  """
-  
-  """
-  # Define PLS object
-  pls = PLSRegression(n_components=n_comp)
-
-  # Cross-validation
-  y_cv = cross_val_predict(pls, X, y, cv=5, verbose=1) #avaliar melhor esse cros validadtion:w!
-                                                        #principalmente parametro cv
-  """
-
-  """
-  train_num = [2,3,4,9,11,14,23,32,0,19,6,13, 39, 28, 36, 21, 1, 33, 25, 8, 26, 12, 22, 38]
-  test_num  = [i for i in range(len(Y)) if i not in train_num] 
-  
-  X_train = pd.DataFrame([X[i] for i in train_num])
-  X_test  = pd.DataFrame([X[i] for i in test_num])
-  
-  y_train = pd.DataFrame([Y[i] for i in train_num])
-  y_test  = pd.DataFrame([Y[i] for i in test_num])
-  
-  y_test = y_test[0].squeeze()
-  """
-  #print("optimize PLS ", y_test.shape)
-  
-  
   random_num=0
   control_print=0
   rpd_list = []
@@ -223,8 +193,11 @@ def optimise_SVR_cv(X, y, n_comp):
     random_num     = int(AllData[3])
   
   while random_num < 2147483647:
+    #print("RBF MIR ---------> random", random_num)
     while C<100000:
+      #print("RBF MIR C", C)
       while Gamma<100000:
+        #print("RBF MIR Gamma", Gamma)
         while epsilon<1:
           #print(i)
           X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.35, random_state=random_num)
@@ -273,7 +246,7 @@ def optimise_SVR_cv(X, y, n_comp):
       C*=10
     C=0.0001 
     if control_print==25:
-      print("**... RBF -> ", random_num)
+      print("**... RBF MIR-> ", random_num)
       with open(Bkp_file, 'a') as file:
         data=(f"C,Gamma,epsilon,random_num\n\
         {C},{Gamma},{epsilon},{random_num}\n\
@@ -320,19 +293,15 @@ def plot_metrics(vals, ylabel, objective):
   return xticks[idx]
   #plt.show()
                                                                                
-soil_sheet     = pd.read_excel("../data_bases/NIR_spectra_Data_Soil.xlsx", \
-                               "soil_prop_Y")
-spectral_sheet = pd.read_csv("../data_bases/NIR_googleDrive.csv")
-
+soil_sheet     = pd.read_csv("../data_bases/BrLib_MIR.csv")
 soil_sheet.head()
-spectral_sheet.head()
-spectral_sheet.replace(to_replace=',', value='.')
 #PLSR assigns
-Y = soil_sheet["P (ppm)"].values
-X = spectral_sheet.values[:, 4:]
 
+Y = soil_sheet["P_mgkg"].values
+X = soil_sheet.values[:, 21:]
 
-print(X.shape[0], " - ", Y.shape, " - ", spectral_sheet.shape)
+print(X.shape, " - ", Y.shape, " - ", soil_sheet.shape)
+print(Y)
 
 #, " | ", X[0][0], X[0][len(X)-1], " | ", spectral_sheet.values.shape)
 #
@@ -355,13 +324,13 @@ Xmc= X.copy()
 #PlotGeneric("Concentracoes", Y, X)
 
 # Pré Processamento Step 2  |  Suavização 
-X   = savgol_filter(X, 51, polyorder=2, deriv=0)
+X   = savgol_filter(X,  25, polyorder=2, deriv=0)
 Xsg = X.copy()
 
-X1   = savgol_filter(X, 51, polyorder=2, deriv=1)
+X1   = savgol_filter(X, 25, polyorder=2, deriv=1)
 Xsg1 = X1.copy()
 
-X2 = savgol_filter(X, 51, polyorder=2, deriv=2)
+X2 = savgol_filter(X,   25, polyorder=2, deriv=2)
 print("Suavizado")
 #PlotGeneric(Xorg)
 
@@ -406,7 +375,7 @@ for varia in pca_variance:
   #mses.append(mse)
   #rpds.append(rpd)
   
-  y_test, y_cv, r2, mse, rpd, random_1= optimise_SVR_cv(X1, Y, 1)
+  y_test, y_cv, r2, mse, rpd, random_1= optimise_SVR_cv(X2, Y, 1)
   r2s_sg1.append(r2)
   mses_sg1.append(mse)
   rpds_sg1.append(rpd)

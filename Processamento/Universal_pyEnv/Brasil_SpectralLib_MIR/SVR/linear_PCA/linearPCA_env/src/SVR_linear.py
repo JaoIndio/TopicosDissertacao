@@ -25,9 +25,9 @@ from sklearn.metrics import mean_squared_error, r2_score
 """
 figure_counter = 0
 
-generalPahth=(f"Universal_pyEnv/Brasil_SpectralLib_MIR/SVR")
-SVRPahth=(f"{generalPahth}/linear_PCA/linearPCA_env")
-linear_PCA=(f"{SVRPahth}/src/")
+generalPahth=(f"Universal_pyEnv/Brasil_SpectralLib_MIR/SVR") 
+SVRPahth    =(f"{generalPahth}/linear_PCA/linearPCA_env")    
+linear_PCA  =(f"{SVRPahth}/src/")                             
 
 
 def snv(dataSet):
