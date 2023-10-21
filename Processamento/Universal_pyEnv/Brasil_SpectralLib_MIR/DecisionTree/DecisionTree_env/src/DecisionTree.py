@@ -128,126 +128,221 @@ def Centralization(dataSet):
 def optimise_DecisionTree_cv(X, y, n_comp):
     
   random_num=0
+  random_check= [67, 68, 69, 1402, 4186, 9063, 15919, 67537]
   control_print=0
   max_r2=0
   max_rpd=0
   best_randomR2=0
   best_randomRpd=0
-  C=0.001
-  Gamma=0.001
-  epsilon=0.0001
   
-  C_BestR2=0
-  C_BestRPD=0
-  Gamma_BestR2=0
-  Gamma_BestRPD=0
-  epsilon_BestR2=0
-  epsilon_BestRPD=0
+  criterior                 = ["squared_error", "friedman_mse", "absolute_error", "poisson"]
+  splitter                  = ["best", "random"]                    
+  max_depth                 = [5, 25, 125, 625, None]                  
+  min_samples_split         = [2, 4, 8, 16, 32, 64]          
+  min_samples_leaf          = [1, 2, 4, 8, 16, 32, 64, 128]        
+  features                  = [None, "auto", "log2", "sqrt"]      
+  min_weight_fraction_leaf  = [0, 0.01, 0.1, 0.2, 0.4, 0.5]    
+  max_leaf_nodes            = [None, 2, 4, 8, 16, 32, 64, 128]  
+  
+  crit_BestR2                        = ""         
+  splitter_BestR2                    = ""       
+  max_depth_BestR2                   = 0  
+  min_samples_split_BestR2           = 0
+  min_samples_leaf_BestR2            = 0
+  features_BestR2                    = ""  
+  min_weight_fraction_leaf_BestR2    = 0
+  max_leaf_nodes_BestR2              = 0
+  
+  crit_BestRPD                      = ""
+  splitter_BestRPD                  = ""
+  max_depth_BestRPD                 = 0 
+  min_samples_split_BestRPD         = 0
+  min_samples_leaf_BestRPD          = 0
+  features_BestRPD                  = ""
+  min_weight_fraction_leaf_BestRPD  = 0
+  max_leaf_nodes_BestRPD            = 0
+ 
   #random_num = 99296
   bestFit_file=(f"{rbf}bestFit_DecisionTree.csv")
   Bkp_file=(f"{rbf}DecisionTree_BackUp.csv")
   
-  """
+  #"""
   with open(bestFit_file, 'r') as file:
     lines=file.readlines()
 
   AllData = lines[-3].strip().split(',');
   
   print("\
-  RBF Backup  Best Fit Analyse\n\
+  BrLib-MIR Decision Tree Backup  Best Fit Analyse\n\
   \t\tMaxRPD:          ",AllData[0],"\n\
   \t\tMaxR2:           ",AllData[1],"\n\
-  \t\tbest_randomR2:   ",AllData[2],"\n\
-  \t\tBest RPD random: ",AllData[3],"\n\
-  \t\tC R2:            ",AllData[4],"\n\
-  \t\tGamma R2:        ",AllData[5],"\n\
-  \t\tEpsilon R2:      ",AllData[6],"\n\
-  \t\tC RPD:           ",AllData[7],"\n\
-  \t\tGamma RPD:       ",AllData[8],"\n\
-  \t\tEpsilon RPD:     ",AllData[9],"\n\
-  \t\tRandom Numbers:  ",AllData[10],"\n")
-  #file.close()
+  \t\tsplitter_BestR2                   ",AllData[2],"\n\
+  \t\tmax_depth_BestR2                : ",AllData[3],"\n\
+  \t\tcrit_BestR2                       ",AllData[4],"\n\
+  \t\tmin_samples_split_BestR2          ",AllData[5],"\n\
+  \t\tmin_samples_leaf_BestR2           ",AllData[6],"\n\
+  \t\tfeatures_BestR2                   ",AllData[7],"\n\
+  \t\tmin_weight_fraction_leaf_BestR2   ",AllData[8],"\n\
+  \t\tmax_leaf_nodes_BestR2             ",AllData[9],"\n\
+  \t\tsplitter_BestRPD                  ",AllData[10],"\n\
+  \t\tsplitter_BestRPD                  ",AllData[11],"\n\
+  \t\tmax_depth_BestRPD                 ",AllData[12],"\n\
+  \t\tmin_samples_split_BestRPD         ",AllData[13],"\n\
+  \t\tmin_samples_leaf_BestRPD          ",AllData[14],"\n\
+  \t\tfeatures_BestRPD                  ",AllData[15],"\n\
+  \t\tmin_weight_fraction_leaf_BestRPD  ",AllData[16],"\n\
+  \t\tmax_leaf_nodes_BestRPD            ",AllData[17],"\n\
+  \t\tRandom Numbers:                  ",AllData[18],"\n")
+  file.close()
   
   if float(AllData[0]) > max_rpd:
     max_r2  = float(AllData[1])
     max_rpd = float(AllData[0])
-
+  #"""
   with open(Bkp_file, 'r') as file:
     lines=file.readlines()
 
   AllData = lines[-3].strip().split(',');
   print("\
-  RBF Backup Analyse\n\
-  \t\tC            ",AllData[0],"\n\
-  \t\tGamma        ",AllData[1],"\n\
-  \t\tEpsilon:     ",AllData[2],"\n\
-  \t\tRandomNumber ",AllData[3],"\n")
-  #file.close()
+  BrLib-MIR Decision Tree BackUp Analyse\n\
+    		crit", 		        AllData[0],"\n\
+        split" ,          AllData[1],"\n\
+        m_depth" , 	      AllData[2],"\n\
+        min_samp_split",  AllData[3],"\n\
+        samp_splitLea",   AllData[4],"\n\
+        feat",            AllData[5],"\n\
+        weight",          AllData[6],"\n\
+        leafNode",        AllData[7],"\n\
+        random_num",      AllData[8], "\n")
+
+  file.close()
   
-  if int(AllData[3]) > random_num:
-    C              = float(AllData[0]) 
-    Gamma          = float(AllData[1])
-    Epsilon        = float(AllData[2])
-    random_num     = int(AllData[3])
-  """
+  if int(AllData[8]) > random_num:
+    crit= 		        float(AllData[0])
+    split=            float(AllData[1])
+    m_depth=  	      float(AllData[2])
+    min_samp_split=   float(AllData[3])
+    samp_splitLea=    float(AllData[4])
+    feat=             float(AllData[5])
+    weight=           float(AllData[6])
+    leafNode=         float(AllData[7])
+    random_num=       float(AllData[8])
+
+
+  progress_execution=0
+  progress_percentage=0
+  total_per_random = len(criterior)* len(splitter)* \
+    len(max_depth)* len(min_samples_split)*len(min_samples_leaf)* len(features)*len(min_weight_fraction_leaf)*len(max_leaf_nodes)
+
+
   while random_num < 2147483647:
     #print("**... Decision Tree MIR random----------------> ", random_num)
-    #print(i)
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.35, random_state=random_num)
+    for crit in criterior:
+      #print("**... Decision Tree MIR     crit")
+      for split in splitter:
+        #print("**... Decision Tree MIR split")
+        for m_depth in max_depth:
+          #print("**... Decision Tree MIR           depth ", m_depth)
+          print(f"Progress per random", progress_percentage," %")
+          for min_samp_split in min_samples_split:
+            #print("**... Decision Tree MIR     sampSplit")
+            for samp_splitLeaf in min_samples_leaf:
+              #print("**... Decision Tree MIR SampLeaf")
+              for feat in features:
+                #print("**... Decision Tree MIR            Feat")
+                for weight in min_weight_fraction_leaf:
+                  #print("**... Decision Tree MIR     weight")
+                  for leafNode in max_leaf_nodes:         
+                    #print("**... Decision Tree MIR Node")
+                    #print("**... Decision Tree MIR random----------------> ", random_num)
+                    #print(i)
+                    progress_execution+=1
+                    progress_percentage = (progress_execution / total_per_random) * 100
 
-    # Initialize and fit the PLS regression model
-    DT_model = DecisionTreeRegressor(max_depth=5)
-    DT_model.fit(X_train, y_train)
-    #print(epsilon)
+                    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.35, random_state=random_num)
 
-    # Predict the target variable on the test set
-    y_cv = DT_model.predict(X_test)
+                    # Initialize and fit the DecisionTree regression modela
+                    DT_model = DecisionTreeRegressor(criterion=crit, splitter=split, max_depth=m_depth, \
+                                                     min_samples_split=min_samp_split, min_samples_leaf=samp_splitLeaf, \
+                                                     min_weight_fraction_leaf=weight, max_features=feat, max_leaf_nodes=leafNode, \
+                                                     random_state=10)
+                    DT_model.fit(X_train, y_train)
+                    #print("\n\nParamnetros \n==========================================")
+                    #print(random_num)
+                    #print("n features:     ",DT_model.n_features_in_)
+                    #print("node Count:     ",DT_model.tree_.node_count)
+                    #print("max depth:      ",DT_model.tree_.max_depth)
+                    #print("samples/node:   ",DT_model.tree_.n_node_samples)
+                    #print("weight/samples: ",DT_model.tree_.weighted_n_node_samples)
 
-    # Calculate scores
-    r2 = r2_score(y_test, y_cv)
-    mse = mean_squared_error(y_test, y_cv)
-    rpd = y_test.std()/np.sqrt(mse)
-    
-    
-    if r2>max_r2:
-      max_r2 = r2
-      best_randomR2 = random_num
-      C_BestR2=C
-      Gamma_BestR2=Gamma
-      epsilon_BestR2=epsilon
+                    # Predict the target variable on the test set
+                    y_cv = DT_model.predict(X_test)
 
-    if rpd>max_rpd:
-      max_rpd = rpd
-      best_randomRpd= random_num
-      C_BestRPD=C
-      epsilon_BestRPD=epsilon
-      Gamma_BestRPD=Gamma
-      with open(bestFit_file, 'a') as file:
-        data=(f"max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers\n\
-        {max_rpd},{max_r2},\
-        {best_randomR2},{best_randomRpd},\
-        {C_BestR2},{Gamma_BestR2},{epsilon_BestR2},\
-        {C_BestRPD},{Gamma_BestRPD},{epsilon_BestRPD},\
-        {random_num}\n\
-        ==============================================================\n\n")
-        file.write(data)
-        file.close()
-    if control_print==2400:
-      print("**... Decision Tree MIR-> ", random_num)
-      with open(Bkp_file, 'w') as file:
-        data=(f"C,Gamma,epsilon,random_num\n\
-        {C},{Gamma},{epsilon},{random_num}\n\
-        ******************************************\n\n")
-        file.write(data)
-        file.close()
-      control_print=0
+                    # Calculate scores
+                    r2 = r2_score(y_test, y_cv)
+                    mse = mean_squared_error(y_test, y_cv)
+                    rpd = y_test.std()/np.sqrt(mse)
+                    
+                    #print("R2:  ",r2)
+                    #print("RPD: ",rpd)
+                    #print("MSE: ",mse)
+                    #print("\n=========================")
+                    
+                    
+                    if r2>max_r2:
+                      max_r2 = r2
+                      best_randomR2 = random_num
 
-    control_print+=1
+                      crit_BestR2                     = crit               
+                      splitter_BestR2                 = split             
+                      max_depth_BestR2                = m_depth          
+                      min_samples_split_BestR2        = min_samp_split  
+                      min_samples_leaf_BestR2         = samp_splitLeaf    
+                      features_BestR2                 = feat               
+                      min_weight_fraction_leaf_BestR2 = weight            
+                      max_leaf_nodes_BestR2           = leafNode           
+
+                    if rpd>max_rpd:
+                      max_rpd = rpd
+                      best_randomRpd= random_num
+                      
+                      crit_BestRPD                     = crit            
+                      splitter_BestRPD                 = split           
+                      max_depth_BestRPD                = m_depth         
+                      min_samples_split_BestRPD        = min_samp_split
+                      min_samples_leaf_BestRPD         = samp_splitLeaf  
+                      features_BestRPD                 = feat            
+                      min_weight_fraction_leaf_BestRPD = weight          
+                      max_leaf_nodes_BestRPD           = leafNode        
+                      
+                      with open(bestFit_file, 'a') as file:
+                        data=(f"max_rpd,max_r2,criterio_R2,splitter_BestR2,max_depth_BestR2,min_samples_split_BestR2,min_samples_leaf_BestR2,features_BestR2,min_weight_fraction_leaf_BestR2, max_leaf_nodes_BestR2,criterio_BestRPD,splitter_BestRPD,max_depth_BestRPD,min_samples_split_BestRPD,min_samples_leaf_BestRPD,features_BestRPD,min_weight_fraction_leaf_BestRPD,max_leaf_nodes_BestRPD,random_num\n\
+         {max_rpd}, {max_r2}, {crit_BestR2}, {splitter_BestR2}, {max_depth_BestR2}, {min_samples_split_BestR2}, {min_samples_leaf_BestR2}, {features_BestR2}, {min_weight_fraction_leaf_BestR2}, {max_leaf_nodes_BestR2}, {crit_BestRPD}, {splitter_BestRPD}, {max_depth_BestRPD}, {min_samples_split_BestRPD}, {min_samples_leaf_BestRPD}, {features_BestRPD}, {min_weight_fraction_leaf_BestRPD}, {max_leaf_nodes_BestRPD}, {random_num}\n\
+         =============================================================\n\n")
+                        file.write(data)
+                        file.close()
+                      #"""
+          #if control_print==2400:
+          print("**... Decision Tree MIR-> ", random_num)
+          #"""
+          with open(Bkp_file, 'w') as file:
+            data=(f"criterior,splitter,max_depth,min_samples_split,min_samples_leaf,features,min_weight_fraction_leaf, max_leaf_nodes, random_num\n\
+                  {crit}, {split}, {m_depth}, {min_samp_split}, {samp_splitLeaf}, {feat}, {weight}, {leafNode}, {random_num}\n\
+ ******************************************\n\n")
+            file.write(data)
+          file.close()
+      #"""
+      #control_print=0
+
+    #control_print+=1
     random_num+=1
   
     if random_num==2147483647:
       random_num=0
   
+  print("Done")
+  while True:
+    a=1
   random_values.append(best_randomRpd)
   random_values.append(best_randomR2)
   return (y_test, y_cv, r2, mse, rpd, random_values)
