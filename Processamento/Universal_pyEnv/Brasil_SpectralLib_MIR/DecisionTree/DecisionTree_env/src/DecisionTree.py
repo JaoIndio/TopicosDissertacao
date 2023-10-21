@@ -134,35 +134,40 @@ def optimise_DecisionTree_cv(X, y, n_comp):
   max_rpd=0
   best_randomR2=0
   best_randomRpd=0
+
+  nearBest_crit = 0.50
   
   criterior                 = ["squared_error", "friedman_mse", "absolute_error", "poisson"]
   splitter                  = ["best", "random"]                    
-  max_depth                 = [5, 25, 125, 625, None]                  
+  max_depth                 = [5, 25, 125, 625]                  
   min_samples_split         = [2, 4, 8, 16, 32, 64]          
   min_samples_leaf          = [1, 2, 4, 8, 16, 32, 64, 128]        
   features                  = [None, "auto", "log2", "sqrt"]      
   min_weight_fraction_leaf  = [0, 0.01, 0.1, 0.2, 0.4, 0.5]    
   max_leaf_nodes            = [None, 2, 4, 8, 16, 32, 64, 128]  
   
-  crit_BestR2                        = ""         
-  splitter_BestR2                    = ""       
+  crit_BestR2                        = 0         
+  splitter_BestR2                    = 0       
   max_depth_BestR2                   = 0  
   min_samples_split_BestR2           = 0
   min_samples_leaf_BestR2            = 0
-  features_BestR2                    = ""  
+  features_BestR2                    = 0  
   min_weight_fraction_leaf_BestR2    = 0
   max_leaf_nodes_BestR2              = 0
   
-  crit_BestRPD                      = ""
-  splitter_BestRPD                  = ""
+  crit_BestRPD                      = 0
+  splitter_BestRPD                  = 0
   max_depth_BestRPD                 = 0 
   min_samples_split_BestRPD         = 0
   min_samples_leaf_BestRPD          = 0
-  features_BestRPD                  = ""
+  features_BestRPD                  = 0
   min_weight_fraction_leaf_BestRPD  = 0
   max_leaf_nodes_BestRPD            = 0
  
   #random_num = 99296
+  NearbestFit_R2_file=(f"{rbf}NearBestR2.csv")
+  NearbestFit_RPD_file=(f"{rbf}NearBestRPD.csv")
+  bestFit_file=(f"{rbf}bestFit_DecisionTree.csv")
   bestFit_file=(f"{rbf}bestFit_DecisionTree.csv")
   Bkp_file=(f"{rbf}DecisionTree_BackUp.csv")
   
@@ -176,15 +181,15 @@ def optimise_DecisionTree_cv(X, y, n_comp):
   BrLib-MIR Decision Tree Backup  Best Fit Analyse\n\
   \t\tMaxRPD:          ",AllData[0],"\n\
   \t\tMaxR2:           ",AllData[1],"\n\
-  \t\tsplitter_BestR2                   ",AllData[2],"\n\
-  \t\tmax_depth_BestR2                : ",AllData[3],"\n\
-  \t\tcrit_BestR2                       ",AllData[4],"\n\
+  \t\tsplitter_BestR2                   ",AllData[3],"\n\
+  \t\tmax_depth_BestR2                : ",AllData[4],"\n\
+  \t\tcrit_BestR2                       ",AllData[2],"\n\
   \t\tmin_samples_split_BestR2          ",AllData[5],"\n\
   \t\tmin_samples_leaf_BestR2           ",AllData[6],"\n\
   \t\tfeatures_BestR2                   ",AllData[7],"\n\
   \t\tmin_weight_fraction_leaf_BestR2   ",AllData[8],"\n\
   \t\tmax_leaf_nodes_BestR2             ",AllData[9],"\n\
-  \t\tsplitter_BestRPD                  ",AllData[10],"\n\
+  \t\tcrit_BestRPD                      ",AllData[10],"\n\
   \t\tsplitter_BestRPD                  ",AllData[11],"\n\
   \t\tmax_depth_BestRPD                 ",AllData[12],"\n\
   \t\tmin_samples_split_BestRPD         ",AllData[13],"\n\
@@ -217,42 +222,63 @@ def optimise_DecisionTree_cv(X, y, n_comp):
 
   file.close()
   
-  if int(AllData[8]) > random_num:
-    crit= 		        float(AllData[0])
-    split=            float(AllData[1])
-    m_depth=  	      float(AllData[2])
-    min_samp_split=   float(AllData[3])
-    samp_splitLea=    float(AllData[4])
-    feat=             float(AllData[5])
-    weight=           float(AllData[6])
-    leafNode=         float(AllData[7])
-    random_num=       float(AllData[8])
-
+  crit= 		      0 
+  split=          0
+  m_depth=  	    0
+  min_samp_split= 0
+  samp_splitLeaf= 0
+  feat=           0
+  weight=         0
+  leafNode=       0
+  random_num=     0
+  
+  
+  if float(AllData[8]) >= random_num:
+    crit= 		        int(float(AllData[0]))
+    split=            int(float(AllData[1]))
+    m_depth=  	      int(float(AllData[2]))
+    min_samp_split =  int(float(AllData[3]))
+    samp_splitLeaf =  int(float(AllData[4]))
+    feat=             int(float(AllData[5]))
+    weight=           int(float(AllData[6]))
+    leafNode=         int(float(AllData[7]))
+    random_num=       int(float(AllData[8]))
+  
 
   progress_execution=0
   progress_percentage=0
   total_per_random = len(criterior)* len(splitter)* \
     len(max_depth)* len(min_samples_split)*len(min_samples_leaf)* len(features)*len(min_weight_fraction_leaf)*len(max_leaf_nodes)
 
-
+  # tem q fazer um loop de whiles pra associar com o backup
   while random_num < 2147483647:
     #print("**... Decision Tree MIR random----------------> ", random_num)
-    for crit in criterior:
+    while crit < len(criterior):
       #print("**... Decision Tree MIR     crit")
-      for split in splitter:
-        #print("**... Decision Tree MIR split")
-        for m_depth in max_depth:
-          #print("**... Decision Tree MIR           depth ", m_depth)
-          print(f"Progress per random", progress_percentage," %")
-          for min_samp_split in min_samples_split:
-            #print("**... Decision Tree MIR     sampSplit")
-            for samp_splitLeaf in min_samples_leaf:
-              #print("**... Decision Tree MIR SampLeaf")
-              for feat in features:
-                #print("**... Decision Tree MIR            Feat")
-                for weight in min_weight_fraction_leaf:
-                  #print("**... Decision Tree MIR     weight")
-                  for leafNode in max_leaf_nodes:         
+      #print("**... Decision Tree MIR split")
+      while m_depth < len(max_depth):
+        #print("**... Decision Tree MIR           depth ", m_depth)
+        #print(f"Progress per random Depth ", progress_percentage," %")
+        while min_samp_split < len(min_samples_split):
+          #print(f"Progress per random Sampsplit ", progress_percentage," %")
+          #print("**... Decision Tree MIR     sampSplit")
+          while samp_splitLeaf < len(min_samples_leaf):
+            #print("**... Decision Tree MIR SampLeaf")
+            while feat < len(features):
+              #print("**... Decision Tree MIR            Feat")
+              while weight < len(min_weight_fraction_leaf):
+                #print("**... Decision Tree MIR     weight")
+                while leafNode < len(max_leaf_nodes):        
+                  while split < len(splitter):
+                    """
+                    print(f"Progress per random Leaf ", progress_percentage," %")
+                    print("**...  weight", weight)
+                    print("**...  feat ", feat)
+                    print("**...  leaf ", leafNode)
+                    print("**...  samp_splitLeaf", samp_splitLeaf)
+                    print("**...  minSampsplit ", min_samp_split)
+                    print("**...  m_depth ", m_depth)
+                    """
                     #print("**... Decision Tree MIR Node")
                     #print("**... Decision Tree MIR random----------------> ", random_num)
                     #print(i)
@@ -262,9 +288,9 @@ def optimise_DecisionTree_cv(X, y, n_comp):
                     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.35, random_state=random_num)
 
                     # Initialize and fit the DecisionTree regression modela
-                    DT_model = DecisionTreeRegressor(criterion=crit, splitter=split, max_depth=m_depth, \
-                                                     min_samples_split=min_samp_split, min_samples_leaf=samp_splitLeaf, \
-                                                     min_weight_fraction_leaf=weight, max_features=feat, max_leaf_nodes=leafNode, \
+                    DT_model = DecisionTreeRegressor(criterion=criterior[crit], splitter=splitter[split], max_depth=max_depth[m_depth], \
+                                                     min_samples_split=min_samples_split[min_samp_split], min_samples_leaf=min_samples_leaf[samp_splitLeaf], \
+                                                     min_weight_fraction_leaf=min_weight_fraction_leaf[weight], max_features=features[feat], max_leaf_nodes=max_leaf_nodes[leafNode], \
                                                      random_state=10)
                     DT_model.fit(X_train, y_train)
                     #print("\n\nParamnetros \n==========================================")
@@ -301,6 +327,13 @@ def optimise_DecisionTree_cv(X, y, n_comp):
                       features_BestR2                 = feat               
                       min_weight_fraction_leaf_BestR2 = weight            
                       max_leaf_nodes_BestR2           = leafNode           
+                    
+                    elif r2>=max_r2*nearBest_crit and rpd>=max_rpd*nearBest_crit :
+                       
+                      with open(NearbestFit_R2_file, 'a') as file:
+                        data=(f"criterior,splitter,max_depth,min_samples_split,min_samples_leaf,features,min_weight_fraction_leaf, max_leaf_nodes, random_num, max_r2, r2, rpd, max_rpd, \n\
+                  {crit}, {split}, {m_depth}, {min_samp_split}, {samp_splitLeaf}, {feat}, {weight}, {leafNode}, {random_num}, {max_r2}, {r2}, {rpd}, {max_rpd}\n\
+ *****  ***********************************\n\n")   
 
                     if rpd>max_rpd:
                       max_rpd = rpd
@@ -321,25 +354,47 @@ def optimise_DecisionTree_cv(X, y, n_comp):
          =============================================================\n\n")
                         file.write(data)
                         file.close()
+                        
                       #"""
-          #if control_print==2400:
-          print("**... Decision Tree MIR-> ", random_num)
-          #"""
-          with open(Bkp_file, 'w') as file:
-            data=(f"criterior,splitter,max_depth,min_samples_split,min_samples_leaf,features,min_weight_fraction_leaf, max_leaf_nodes, random_num\n\
+                    split+=1
+                  #split
+                  split=0
+                  leafNode+=1
+                #leafNode
+                leafNode=0
+                weight+=1
+              #weight
+              weight=0
+              feat+=1
+            #feat
+            feat=0
+            samp_splitLeaf+=1
+          #samp_splitLeaf
+          samp_splitLeaf=0
+          min_samp_split+=1
+        #min_samp_split
+        print("**... Decision Tree MIR-> | Crit | maxDepth | random |", crit,m_depth, random_num)
+        with open(Bkp_file, 'w') as file:
+          data=(f"criterior,splitter,max_depth,min_samples_split,min_samples_leaf,features,min_weight_fraction_leaf, max_leaf_nodes, random_num\n\
                   {crit}, {split}, {m_depth}, {min_samp_split}, {samp_splitLeaf}, {feat}, {weight}, {leafNode}, {random_num}\n\
- ******************************************\n\n")
-            file.write(data)
-          file.close()
+ *****  ***********************************\n\n")
+          file.write(data)
+        file.close()
+        min_samp_split=0
+        m_depth+=1
+      #m_depth
+      m_depth=0
+      #if control_print==2400:
       #"""
-      #control_print=0
-
-    #control_print+=1
+        #"""        
+      crit+=1
+    #Crit
+    crit=0
     random_num+=1
   
     if random_num==2147483647:
       random_num=0
-  
+    #Random
   print("Done")
   while True:
     a=1
