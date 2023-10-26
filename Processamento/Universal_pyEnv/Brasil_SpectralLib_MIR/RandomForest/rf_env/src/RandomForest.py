@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+import subprocess
 from sys import stdout
 import numpy as np
 import pandas as pd
@@ -25,7 +26,20 @@ from sklearn.metrics import mean_squared_error, r2_score
 """
 figure_counter = 0
 
-generalPahth=(f"Universal_pyEnv/Brasil_SpectralLib_MIR/")
+command = ["git", "branch", "-v"]
+result  = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True)
+gitOut = result.stdout[:7]
+
+if gitOut == "* Colab":
+  path_2Use="Colab":
+
+figure_counter = 0
+
+if path_2Use=="Colab":
+  generalPahth=(f"/home/gitFiles/Universal_pyEnv/Brasil_SpectralLib_MIR")
+else:
+  generalPahth=(f"./Universal_pyEnv/Brasil_SpectralLib_MIR")
+
 SVRPahth=(f"{generalPahth}/RandomForest")
 rbf=(f"{SVRPahth}/rf_env/src/")
 
