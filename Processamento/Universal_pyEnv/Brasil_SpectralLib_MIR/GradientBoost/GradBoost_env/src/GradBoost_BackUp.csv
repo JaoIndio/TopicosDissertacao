@@ -1,10 +1,4 @@
-<<<<<<< HEAD
 C,Gamma,epsilon,random_num
         0.001,0.001,0.0001,20850
         ******************************************
-=======
-losses,learning_rate,n_estimators,subsample,criterion,min_samples_split,min_samples_leaf,min_weight_fraction_leaf,max_depth,random_state,max_features,max_leaf_nodes,validation_fraction,n_iter_no_change,tol,random_num
- 0,0,0,0,0,0,1,6,0,0,0,0,0,0, 0
-                    ******************************************
->>>>>>> f24e806a95947068e0ad08e8f68d60fa6d469bd9
 

@@ -203,7 +203,6 @@ max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_R
         ==============================================================
 
 max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-<<<<<<< HEAD
         0.9973017693087156,0,        0,20,        0,0,0,        0.001,0.001,0.0001,        20
         ==============================================================
 
@@ -224,8 +223,6 @@ max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_R
         ==============================================================
 
 max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-=======
->>>>>>> f24e806a95947068e0ad08e8f68d60fa6d469bd9
         0.7707354077539639,0,        0,0,        0,0,0,        0.001,0.001,0.0001,        0
         ==============================================================
 
@@ -238,7 +235,6 @@ max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_R
         ==============================================================
 
 max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-<<<<<<< HEAD
         0.9973017693087156,0,        0,20,        0,0,0,        0.001,0.001,0.0001,        20
         ==============================================================
 
@@ -255,8 +251,6 @@ max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_R
         ==============================================================
 
 max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-=======
->>>>>>> f24e806a95947068e0ad08e8f68d60fa6d469bd9
         0.7707354077539639,0,        0,0,        0,0,0,        0.001,0.001,0.0001,        0
         ==============================================================
 
@@ -277,7 +271,6 @@ max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_R
         ==============================================================
 
 max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-<<<<<<< HEAD
         0.9916316680157313,0,        0,3,        0,0,0,        0.001,0.001,0.0001,        3
         ==============================================================
 
@@ -330,8 +323,6 @@ max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_R
         ==============================================================
 
 max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-=======
->>>>>>> f24e806a95947068e0ad08e8f68d60fa6d469bd9
         0.7707354077539639,0,        0,0,        0,0,0,        0.001,0.001,0.0001,        0
         ==============================================================
 
