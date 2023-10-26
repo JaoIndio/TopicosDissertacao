@@ -1,432 +1,104 @@
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-{max_rpd},{max_r2},{best_randomR2},{best_randomRpd},{C_BestR2},{Gamma_BestR2},{epsilon_BestR2},{C_BestRPD},{Gamma_BestRPD},{epsilon_BestRPD},{random_num}
-==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-0.0,0.0,{best_randomR2},{best_randomRpd},{C_BestR2},{Gamma_BestR2},{epsilon_BestR2},{C_BestRPD},{Gamma_BestRPD},{epsilon_BestRPD},{random_num}
-==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        0.7949687417783877,0,        0,0,        0,0,0,        0.001,0.001,0.0001,        0
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        0.8507838410582927,0,        0,2,        0,0,0,        0.001,0.001,0.0001,        2
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        0.9531846478955739,0,        0,4,        0,0,0,        0.001,0.001,0.0001,        4
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        1.0244566529121995,0.04717569728773929,        9,9,        0.001,0.001,0.0001,        0.001,0.001,0.0001,        9
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        1.6337440012781947,0.6253446073341327,        27,27,        0.001,0.001,0.0001,        0.001,0.001,0.0001,        27
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        0.6826823154714318,0,        0,0,        0,0,0,        0.001,0.001,0.0001,        0
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        0.7756714997117105,0,        0,1,        0,0,0,        0.001,0.001,0.0001,        1
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        0.9513706502956726,0,        0,2,        0,0,0,        0.001,0.001,0.0001,        2
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        1.0176672454111506,0.03441967714885841,        13,13,        0.001,0.001,0.0001,        0.001,0.001,0.0001,        13
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        1.2712568570517908,0.38122411066243844,        27,27,        0.001,0.001,0.0001,        0.001,0.001,0.0001,        27
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        1.3422062084424378,0.44491241596055264,        85,85,        0.001,0.001,0.0001,        0.001,0.001,0.0001,        85
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        1.4513206387506619,0.5252409441709347,        90,90,        0.001,0.001,0.0001,        0.001,0.001,0.0001,        90
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        1.5994491292909307,0.6091058811854962,        176,176,        0.001,0.001,0.0001,        0.001,0.001,0.0001,        176
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        1.6633261703643722,0.6385525553875008,        2441,2441,        0.001,0.001,0.0001,        0.001,0.001,0.0001,        2441
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        0.6852476757600225,0,        0,0,        0,0,0,        0.001,0.001,0.0001,        0
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        0.7548965719498986,0,        0,1,        0,0,0,        0.001,0.001,0.0001,        1
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        0.8270599617441189,0,        0,2,        0,0,0,        0.001,0.001,0.0001,        2
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        0.9189127651762692,0,        0,4,        0,0,0,        0.001,0.001,0.0001,        4
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        0.9972711313537489,0,        0,9,        0,0,0,        0.001,0.001,0.0001,        9
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        0.9979032094737804,0,        0,19,        0,0,0,        0.001,0.001,0.0001,        19
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        1.4759183700128866,0.5409337939483414,        27,27,        0.001,0.001,0.0001,        0.001,0.001,0.0001,        27
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        1.48465754339663,0.5463223115068401,        279,279,        0.001,0.001,0.0001,        0.001,0.001,0.0001,        279
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        1.7831635592224426,0.6855021800128,        1006,1006,        0.001,0.001,0.0001,        0.001,0.001,0.0001,        1006
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        1.9313705691126906,0.731917304467345,        1931,1931,        0.001,0.001,0.0001,        0.001,0.001,0.0001,        1931
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        0.7704696412259636,0,        0,0,        0,0,0,        0.001,0.001,0.0001,        0
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        0.8219951560000103,0,        0,1,        0,0,0,        0.001,0.001,0.0001,        1
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        0.8391437558355214,0,        0,2,        0,0,0,        0.001,0.001,0.0001,        2
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        0.8663142057969928,0,        0,4,        0,0,0,        0.001,0.001,0.0001,        4
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        0.8733965339923526,0,        0,8,        0,0,0,        0.001,0.001,0.0001,        8
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        1.011884293131604,0.023351492638007287,        9,9,        0.001,0.001,0.0001,        0.001,0.001,0.0001,        9
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        1.0308121694706804,0.05888883475757245,        19,19,        0.001,0.001,0.0001,        0.001,0.001,0.0001,        19
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        1.0424948497027662,0.07986370087641903,        24,24,        0.001,0.001,0.0001,        0.001,0.001,0.0001,        24
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        1.5997907491386492,0.6092728066807556,        27,27,        0.001,0.001,0.0001,        0.001,0.001,0.0001,        27
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        1.946040239962283,0.7359438010527508,        334,334,        0.001,0.001,0.0001,        0.001,0.001,0.0001,        334
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        0.7858495710620403,0,        0,0,        0,0,0,        0.001,0.001,0.0001,        0
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        0.8162611060077016,0,        0,1,        0,0,0,        0.001,0.001,0.0001,        1
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        0.9274685816466421,0,        0,2,        0,0,0,        0.001,0.001,0.0001,        2
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        1.0244566529121995,0.04717569728773929,        9,9,        0.001,0.001,0.0001,        0.001,0.001,0.0001,        9
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        1.0497216672030283,0.09248946160231808,        19,19,        0.001,0.001,0.0001,        0.001,0.001,0.0001,        19
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        1.6502597403972643,0.6328061570318053,        27,27,        0.001,0.001,0.0001,        0.001,0.001,0.0001,        27
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        0.6776333419562214,0,        0,0,        0,0,0,        0.001,0.001,0.0001,        0
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        0.7018266392641579,0,        0,1,        0,0,0,        0.001,0.001,0.0001,        1
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        0.864040822142311,0,        0,2,        0,0,0,        0.001,0.001,0.0001,        2
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        0.9256998616424106,0,        0,4,        0,0,0,        0.001,0.001,0.0001,        4
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        0.990296460710187,0,        0,9,        0,0,0,        0.001,0.001,0.0001,        9
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        1.1690097971330393,0.26824837043598915,        19,19,        0.001,0.001,0.0001,        0.001,0.001,0.0001,        19
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        1.608382300872416,0.6134359797240028,        27,27,        0.001,0.001,0.0001,        0.001,0.001,0.0001,        27
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        1.6097201546775486,0.6140782668110949,        1400,1400,        0.001,0.001,0.0001,        0.001,0.001,0.0001,        1400
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        0.7037712403596215,0,        0,0,        0,0,0,        0.001,0.001,0.0001,        0
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        0.8200662512152324,0,        0,1,        0,0,0,        0.001,0.001,0.0001,        1
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        0.9497991422665151,0,        0,4,        0,0,0,        0.001,0.001,0.0001,        4
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        0.9798960398439981,0,        0,9,        0,0,0,        0.001,0.001,0.0001,        9
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        1.0962927191582088,0.16795476011773847,        19,19,        0.001,0.001,0.0001,        0.001,0.001,0.0001,        19
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        1.2587763207962803,0.36889318395850634,        27,27,        0.001,0.001,0.0001,        0.001,0.001,0.0001,        27
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        1.406725559030608,0.4946628305544889,        35,35,        0.001,0.001,0.0001,        0.001,0.001,0.0001,        35
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        1.5057276936791104,0.5589304020371492,        279,279,        0.001,0.001,0.0001,        0.001,0.001,0.0001,        279
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        1.5086895897360544,0.5606605391462702,        1345,1345,        0.001,0.001,0.0001,        0.001,0.001,0.0001,        1345
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        1.6017331737845528,0.6102199031729935,        1400,1400,        0.001,0.001,0.0001,        0.001,0.001,0.0001,        1400
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        1.721695128641257,0.6626447301828524,        2804,2804,        0.001,0.001,0.0001,        0.001,0.001,0.0001,        2804
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        2.0275288523935147,0.7567426821881034,        3060,3060,        0.001,0.001,0.0001,        0.001,0.001,0.0001,        3060
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        0.7949687417783877,0,        0,0,        0,0,0,        0.001,0.001,0.0001,        0
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        0.8944115143378331,0,        0,2,        0,0,0,        0.001,0.001,0.0001,        2
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        0.9160953095067109,0,        0,4,        0,0,0,        0.001,0.001,0.0001,        4
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        0.9996187361800966,0,        0,9,        0,0,0,        0.001,0.001,0.0001,        9
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        1.227715857359491,0.3365560021201348,        19,19,        0.001,0.001,0.0001,        0.001,0.001,0.0001,        19
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        1.3919494507616494,0.4838771674695119,        90,90,        0.001,0.001,0.0001,        0.001,0.001,0.0001,        90
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        1.4404651055860866,0.5180582885550735,        1345,1345,        0.001,0.001,0.0001,        0.001,0.001,0.0001,        1345
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        1.6665612296115724,0.6399544468695557,        1400,1400,        0.001,0.001,0.0001,        0.001,0.001,0.0001,        1400
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        0.7949687417783877,0,        0,0,        0,0,0,        0.001,0.001,0.0001,        0
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        0.8644712649528902,0,        0,2,        0,0,0,        0.001,0.001,0.0001,        2
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        0.9057453608869623,0,        0,4,        0,0,0,        0.001,0.001,0.0001,        4
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        0.986637232066152,0,        0,9,        0,0,0,        0.001,0.001,0.0001,        9
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        0.9934232010111085,0,        0,13,        0,0,0,        0.001,0.001,0.0001,        13
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        1.0138812288422188,0.027194908554119435,        17,17,        0.001,0.001,0.0001,        0.001,0.001,0.0001,        17
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        1.09908840484017,0.17218222448850273,        23,23,        0.001,0.001,0.0001,        0.001,0.001,0.0001,        23
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        1.3257025509332931,0.43100583063719033,        27,27,        0.001,0.001,0.0001,        0.001,0.001,0.0001,        27
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        1.380455445155691,0.47524665974688607,        41,41,        0.001,0.001,0.0001,        0.001,0.001,0.0001,        41
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        1.4935137899710769,0.5516868001018559,        98,98,        0.001,0.001,0.0001,        0.001,0.001,0.0001,        98
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        1.5052632295579804,0.5586581671148922,        457,457,        0.001,0.001,0.0001,        0.001,0.001,0.0001,        457
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        1.5204770254995665,0.5674460568654611,        1345,1345,        0.001,0.001,0.0001,        0.001,0.001,0.0001,        1345
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        1.6621936953571594,0.6380598695595093,        1400,1400,        0.001,0.001,0.0001,        0.001,0.001,0.0001,        1400
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        0.6776333419562214,0,        0,0,        0,0,0,        0.001,0.001,0.0001,        0
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        0.7433056775902411,0,        0,1,        0,0,0,        0.001,0.001,0.0001,        1
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        0.7637449117327698,0,        0,2,        0,0,0,        0.001,0.001,0.0001,        2
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        0.8719712732338067,0,        0,4,        0,0,0,        0.001,0.001,0.0001,        4
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        0.9589595874231707,0,        0,9,        0,0,0,        0.001,0.001,0.0001,        9
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        1.0545475604129733,0.1007764808177758,        19,19,        0.001,0.001,0.0001,        0.001,0.001,0.0001,        19
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        1.3109256112455463,0.4181059673744718,        27,27,        0.001,0.001,0.0001,        0.001,0.001,0.0001,        27
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        1.583724758587476,0.6013051850423878,        85,85,        0.001,0.001,0.0001,        0.001,0.001,0.0001,        85
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        0,0,        1400,1400,        0.001,0.001,0.0001,        0.001,0.001,0.0001,        1400
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        0.6347207549829981,0,        0,0,        0,0,0,        0.001,0.001,0.0001,        0
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        0.9804729542190916,0,        0,1,        0,0,0,        0.001,0.001,0.0001,        1
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        0.9949020258516305,0,        0,3,        0,0,0,        0.001,0.001,0.0001,        3
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        1.001160083283935,0.0023161354240784915,        30,30,        0.001,0.001,0.0001,        0.001,0.001,0.0001,        30
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        1.0857449088384312,0.15170990344439772,        68,68,        0.001,0.001,0.0001,        0.001,0.001,0.0001,        68
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        1.093227821885533,0.16328289241897642,        2892,2892,        0.001,0.001,0.0001,        0.001,0.001,0.0001,        2892
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        0.5571945533866874,0,        0,0,        0,0,0,        0.001,0.001,0.0001,        0
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        0.7877443224622102,0,        0,1,        0,0,0,        0.001,0.001,0.0001,        1
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        0.9953000212069399,0,        0,3,        0,0,0,        0.001,0.001,0.0001,        3
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        1.007379919935122,0.014598043251269566,        4,4,        0.001,0.001,0.0001,        0.001,0.001,0.0001,        4
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        1.0878677681981541,0.15501737074421273,        68,68,        0.001,0.001,0.0001,        0.001,0.001,0.0001,        68
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        1.13103499370085,0.21828595315206822,        1402,1402,        0.001,0.001,0.0001,        0.001,0.001,0.0001,        1402
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        1.2465609099163677,0.35646378482035257,        4186,4186,        0.001,0.001,0.0001,        0.001,0.001,0.0001,        4186
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        1.304713259456399,0.4125514340728702,        9063,9063,        0.001,0.001,0.0001,        0.001,0.001,0.0001,        9063
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        1.3555548373921618,0.45579087727438616,        15919,15919,        0.001,0.001,0.0001,        0.001,0.001,0.0001,        15919
-        ==============================================================
-
-max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
-        1.3659273010706168,0.4640246345052115,        67537,67537,        0.001,0.001,0.0001,        0.001,0.001,0.0001,        67537
-        ==============================================================
+max_rpd,max_r2,criterio_R2,splitter_BestR2,max_depth_BestR2,min_samples_split_BestR2,min_samples_leaf_BestR2,features_BestR2,min_weight_fraction_leaf_BestR2, max_leaf_nodes_BestR2,criterio_BestRPD,splitter_BestRPD,max_depth_BestRPD,min_samples_split_BestRPD,min_samples_leaf_BestRPD,features_BestRPD,min_weight_fraction_leaf_BestRPD,max_leaf_nodes_BestRPD,random_num
+         1.011168646697472, 0.021968573266876845, squared_error, best, 25, 2, 16, log2, 0, None, squared_error, best, 25, 2, 16, log2, 0, None, 0
+         =============================================================
+
+max_rpd,max_r2,criterio_R2,splitter_BestR2,max_depth_BestR2,min_samples_split_BestR2,min_samples_leaf_BestR2,features_BestR2,min_weight_fraction_leaf_BestR2, max_leaf_nodes_BestR2,criterio_BestRPD,splitter_BestRPD,max_depth_BestRPD,min_samples_split_BestRPD,min_samples_leaf_BestRPD,features_BestRPD,min_weight_fraction_leaf_BestRPD,max_leaf_nodes_BestRPD,random_num
+         1.015032704283562, 0.02940079965407061, squared_error, best, 25, 4, 1, sqrt, 0, 32, squared_error, best, 25, 4, 1, sqrt, 0, 32, 0
+         =============================================================
+
+max_rpd,max_r2,criterio_R2,splitter_BestR2,max_depth_BestR2,min_samples_split_BestR2,min_samples_leaf_BestR2,features_BestR2,min_weight_fraction_leaf_BestR2, max_leaf_nodes_BestR2,criterio_BestRPD,splitter_BestRPD,max_depth_BestRPD,min_samples_split_BestRPD,min_samples_leaf_BestRPD,features_BestRPD,min_weight_fraction_leaf_BestRPD,max_leaf_nodes_BestRPD,random_num
+         1.0150670049474515, 0.02946639460353284, 2, 0, 1, 2, 1, 0, 0, 0, 2, 0, 1, 2, 1, 0, 0, 0, 0
+         =============================================================
+
+max_rpd,max_r2,criterio_R2,splitter_BestR2,max_depth_BestR2,min_samples_split_BestR2,min_samples_leaf_BestR2,features_BestR2,min_weight_fraction_leaf_BestR2, max_leaf_nodes_BestR2,criterio_BestRPD,splitter_BestRPD,max_depth_BestRPD,min_samples_split_BestRPD,min_samples_leaf_BestRPD,features_BestRPD,min_weight_fraction_leaf_BestRPD,max_leaf_nodes_BestRPD,random_num
+         1.015807537745694, 0.030880934201171883, 2, 0, 1, 2, 1, 0, 0, 5, 2, 0, 1, 2, 1, 0, 0, 5, 0
+         =============================================================
+
+max_rpd,max_r2,criterio_R2,splitter_BestR2,max_depth_BestR2,min_samples_split_BestR2,min_samples_leaf_BestR2,features_BestR2,min_weight_fraction_leaf_BestR2, max_leaf_nodes_BestR2,criterio_BestRPD,splitter_BestRPD,max_depth_BestRPD,min_samples_split_BestRPD,min_samples_leaf_BestRPD,features_BestRPD,min_weight_fraction_leaf_BestRPD,max_leaf_nodes_BestRPD,random_num
+         1.0167764345078152, 0.032727021331032335, 2, 0, 1, 2, 1, 0, 0, 6, 2, 0, 1, 2, 1, 0, 0, 6, 0
+         =============================================================
+
+max_rpd,max_r2,criterio_R2,splitter_BestR2,max_depth_BestR2,min_samples_split_BestR2,min_samples_leaf_BestR2,features_BestR2,min_weight_fraction_leaf_BestR2, max_leaf_nodes_BestR2,criterio_BestRPD,splitter_BestRPD,max_depth_BestRPD,min_samples_split_BestRPD,min_samples_leaf_BestRPD,features_BestRPD,min_weight_fraction_leaf_BestRPD,max_leaf_nodes_BestRPD,random_num
+         1.021008239798052, 0.04072857883297121, 2, 0, 1, 4, 0, 2, 0, 5, 2, 0, 1, 4, 0, 2, 0, 5, 0
+         =============================================================
+
+max_rpd,max_r2,criterio_R2,splitter_BestR2,max_depth_BestR2,min_samples_split_BestR2,min_samples_leaf_BestR2,features_BestR2,min_weight_fraction_leaf_BestR2, max_leaf_nodes_BestR2,criterio_BestRPD,splitter_BestRPD,max_depth_BestRPD,min_samples_split_BestRPD,min_samples_leaf_BestRPD,features_BestRPD,min_weight_fraction_leaf_BestRPD,max_leaf_nodes_BestRPD,random_num
+         1.0210090669031902, 0.040730133017014336, 2, 0, 1, 4, 0, 2, 0, 6, 2, 0, 1, 4, 0, 2, 0, 6, 0
+         =============================================================
+
+max_rpd,max_r2,criterio_R2,splitter_BestR2,max_depth_BestR2,min_samples_split_BestR2,min_samples_leaf_BestR2,features_BestR2,min_weight_fraction_leaf_BestR2, max_leaf_nodes_BestR2,criterio_BestRPD,splitter_BestRPD,max_depth_BestRPD,min_samples_split_BestRPD,min_samples_leaf_BestRPD,features_BestRPD,min_weight_fraction_leaf_BestRPD,max_leaf_nodes_BestRPD,random_num
+         1.0216596358574248, 0.04195142526607243, 3, 1, 1, 0, 0, 2, 0, 0, 3, 1, 1, 0, 0, 2, 0, 0, 0
+         =============================================================
+
+max_rpd,max_r2,criterio_R2,splitter_BestR2,max_depth_BestR2,min_samples_split_BestR2,min_samples_leaf_BestR2,features_BestR2,min_weight_fraction_leaf_BestR2, max_leaf_nodes_BestR2,criterio_BestRPD,splitter_BestRPD,max_depth_BestRPD,min_samples_split_BestRPD,min_samples_leaf_BestRPD,features_BestRPD,min_weight_fraction_leaf_BestRPD,max_leaf_nodes_BestRPD,random_num
+         1.027639778075239, 0.05306932220786209, 3, 0, 0, 0, 3, 1, 0, 3, 3, 0, 0, 0, 3, 1, 0, 3, 1
+         =============================================================
+
+max_rpd,max_r2,criterio_R2,splitter_BestR2,max_depth_BestR2,min_samples_split_BestR2,min_samples_leaf_BestR2,features_BestR2,min_weight_fraction_leaf_BestR2, max_leaf_nodes_BestR2,criterio_BestRPD,splitter_BestRPD,max_depth_BestRPD,min_samples_split_BestRPD,min_samples_leaf_BestRPD,features_BestRPD,min_weight_fraction_leaf_BestRPD,max_leaf_nodes_BestRPD,random_num
+         1.0677838333376155, 0.1229318956831883, 3, 0, 0, 3, 0, 1, 1, 3, 3, 0, 0, 3, 0, 1, 1, 3, 1
+         =============================================================
+
+max_rpd,max_r2,criterio_R2,splitter_BestR2,max_depth_BestR2,min_samples_split_BestR2,min_samples_leaf_BestR2,features_BestR2,min_weight_fraction_leaf_BestR2, max_leaf_nodes_BestR2,criterio_BestRPD,splitter_BestRPD,max_depth_BestRPD,min_samples_split_BestRPD,min_samples_leaf_BestRPD,features_BestRPD,min_weight_fraction_leaf_BestRPD,max_leaf_nodes_BestRPD,random_num
+         1.0709597117151126, 0.1281259875297892, 3, 0, 0, 3, 2, 1, 0, 3, 3, 0, 0, 3, 2, 1, 0, 3, 1
+         =============================================================
+
+max_rpd,max_r2,criterio_R2,splitter_BestR2,max_depth_BestR2,min_samples_split_BestR2,min_samples_leaf_BestR2,features_BestR2,min_weight_fraction_leaf_BestR2, max_leaf_nodes_BestR2,criterio_BestRPD,splitter_BestRPD,max_depth_BestRPD,min_samples_split_BestRPD,min_samples_leaf_BestRPD,features_BestRPD,min_weight_fraction_leaf_BestRPD,max_leaf_nodes_BestRPD,random_num
+         1.0958069931110213, 0.16721697395899393, 0, 1, 0, 0, 2, 1, 0, 3, 0, 1, 0, 0, 2, 1, 0, 3, 4
+         =============================================================
+
+max_rpd,max_r2,criterio_R2,splitter_BestR2,max_depth_BestR2,min_samples_split_BestR2,min_samples_leaf_BestR2,features_BestR2,min_weight_fraction_leaf_BestR2, max_leaf_nodes_BestR2,criterio_BestRPD,splitter_BestRPD,max_depth_BestRPD,min_samples_split_BestRPD,min_samples_leaf_BestRPD,features_BestRPD,min_weight_fraction_leaf_BestRPD,max_leaf_nodes_BestRPD,random_num
+         1.1082130761226405, 0.18575807633221564, 0, 1, 0, 0, 2, 1, 0, 4, 0, 1, 0, 0, 2, 1, 0, 4, 4
+         =============================================================
+
+max_rpd,max_r2,criterio_R2,splitter_BestR2,max_depth_BestR2,min_samples_split_BestR2,min_samples_leaf_BestR2,features_BestR2,min_weight_fraction_leaf_BestR2, max_leaf_nodes_BestR2,criterio_BestRPD,splitter_BestRPD,max_depth_BestRPD,min_samples_split_BestRPD,min_samples_leaf_BestRPD,features_BestRPD,min_weight_fraction_leaf_BestRPD,max_leaf_nodes_BestRPD,random_num
+         1.1105715953120714, 0.18921281266640633, 0, 1, 0, 0, 2, 1, 0, 5, 0, 1, 0, 0, 2, 1, 0, 5, 4
+         =============================================================
+
+max_rpd,max_r2,criterio_R2,splitter_BestR2,max_depth_BestR2,min_samples_split_BestR2,min_samples_leaf_BestR2,features_BestR2,min_weight_fraction_leaf_BestR2, max_leaf_nodes_BestR2,criterio_BestRPD,splitter_BestRPD,max_depth_BestRPD,min_samples_split_BestRPD,min_samples_leaf_BestRPD,features_BestRPD,min_weight_fraction_leaf_BestRPD,max_leaf_nodes_BestRPD,random_num
+         1.1239826797248094, 0.20844560945642976, 2, 0, 0, 0, 2, 2, 0, 3, 2, 0, 0, 0, 2, 2, 0, 3, 5
+         =============================================================
+
+max_rpd,max_r2,criterio_R2,splitter_BestR2,max_depth_BestR2,min_samples_split_BestR2,min_samples_leaf_BestR2,features_BestR2,min_weight_fraction_leaf_BestR2, max_leaf_nodes_BestR2,criterio_BestRPD,splitter_BestRPD,max_depth_BestRPD,min_samples_split_BestRPD,min_samples_leaf_BestRPD,features_BestRPD,min_weight_fraction_leaf_BestRPD,max_leaf_nodes_BestRPD,random_num
+         1.1376247796240717, 0.22731601045363004, 2, 1, 1, 5, 1, 2, 0, 0, 2, 1, 1, 5, 1, 2, 0, 0, 5
+         =============================================================
+
+max_rpd,max_r2,criterio_R2,splitter_BestR2,max_depth_BestR2,min_samples_split_BestR2,min_samples_leaf_BestR2,features_BestR2,min_weight_fraction_leaf_BestR2, max_leaf_nodes_BestR2,criterio_BestRPD,splitter_BestRPD,max_depth_BestRPD,min_samples_split_BestRPD,min_samples_leaf_BestRPD,features_BestRPD,min_weight_fraction_leaf_BestRPD,max_leaf_nodes_BestRPD,random_num
+         1.189032864791201, 0.29268595366851824, 2, 1, 0, 0, 0, 2, 0, 2, 2, 1, 0, 0, 0, 2, 0, 2, 13
+         =============================================================
+
+max_rpd,max_r2,criterio_R2,splitter_BestR2,max_depth_BestR2,min_samples_split_BestR2,min_samples_leaf_BestR2,features_BestR2,min_weight_fraction_leaf_BestR2, max_leaf_nodes_BestR2,criterio_BestRPD,splitter_BestRPD,max_depth_BestRPD,min_samples_split_BestRPD,min_samples_leaf_BestRPD,features_BestRPD,min_weight_fraction_leaf_BestRPD,max_leaf_nodes_BestRPD,random_num
+         1.2125225167823328, 0.3198254539608907, 2, 1, 0, 0, 0, 2, 0, 3, 2, 1, 0, 0, 0, 2, 0, 3, 13
+         =============================================================
+
+max_rpd,max_r2,criterio_R2,splitter_BestR2,max_depth_BestR2,min_samples_split_BestR2,min_samples_leaf_BestR2,features_BestR2,min_weight_fraction_leaf_BestR2, max_leaf_nodes_BestR2,criterio_BestRPD,splitter_BestRPD,max_depth_BestRPD,min_samples_split_BestRPD,min_samples_leaf_BestRPD,features_BestRPD,min_weight_fraction_leaf_BestRPD,max_leaf_nodes_BestRPD,random_num
+         1.214336912670947, 0.32185649480333045, 2, 1, 0, 2, 1, 2, 0, 4, 2, 1, 0, 2, 1, 2, 0, 4, 13
+         =============================================================
+
+max_rpd,max_r2,criterio_R2,splitter_BestR2,max_depth_BestR2,min_samples_split_BestR2,min_samples_leaf_BestR2,features_BestR2,min_weight_fraction_leaf_BestR2, max_leaf_nodes_BestR2,criterio_BestRPD,splitter_BestRPD,max_depth_BestRPD,min_samples_split_BestRPD,min_samples_leaf_BestRPD,features_BestRPD,min_weight_fraction_leaf_BestRPD,max_leaf_nodes_BestRPD,random_num
+         1.2901339509224081, 0.39919935310752286, 2, 1, 1, 2, 1, 2, 0, 4, 2, 1, 1, 2, 1, 2, 0, 4, 13
+         =============================================================
+
+max_rpd,max_r2,criterio_R2,splitter_BestR2,max_depth_BestR2,min_samples_split_BestR2,min_samples_leaf_BestR2,features_BestR2,min_weight_fraction_leaf_BestR2, max_leaf_nodes_BestR2,criterio_BestRPD,splitter_BestRPD,max_depth_BestRPD,min_samples_split_BestRPD,min_samples_leaf_BestRPD,features_BestRPD,min_weight_fraction_leaf_BestRPD,max_leaf_nodes_BestRPD,random_num
+         1.2942560413097, 0.4030202520475862, 2, 0, 1, 0, 0, 1, 0, 4, 2, 0, 1, 0, 0, 1, 0, 4, 18
+         =============================================================
+
+max_rpd,max_r2,criterio_R2,splitter_BestR2,max_depth_BestR2,min_samples_split_BestR2,min_samples_leaf_BestR2,features_BestR2,min_weight_fraction_leaf_BestR2, max_leaf_nodes_BestR2,criterio_BestRPD,splitter_BestRPD,max_depth_BestRPD,min_samples_split_BestRPD,min_samples_leaf_BestRPD,features_BestRPD,min_weight_fraction_leaf_BestRPD,max_leaf_nodes_BestRPD,random_num
+         1.328863426721167, 0.43370946571306135, 0, 0, 1, 2, 0, 2, 0, 0, 0, 0, 1, 2, 0, 2, 0, 0, 22
+         =============================================================
+
+max_rpd,max_r2,criterio_R2,splitter_BestR2,max_depth_BestR2,min_samples_split_BestR2,min_samples_leaf_BestR2,features_BestR2,min_weight_fraction_leaf_BestR2, max_leaf_nodes_BestR2,criterio_BestRPD,splitter_BestRPD,max_depth_BestRPD,min_samples_split_BestRPD,min_samples_leaf_BestRPD,features_BestRPD,min_weight_fraction_leaf_BestRPD,max_leaf_nodes_BestRPD,random_num
+         1.3457395888012316, 0.4478234705763051, 3, 0, 0, 2, 0, 1, 0, 0, 3, 0, 0, 2, 0, 1, 0, 0, 22
+         =============================================================
+
+max_rpd,max_r2,criterio_R2,splitter_BestR2,max_depth_BestR2,min_samples_split_BestR2,min_samples_leaf_BestR2,features_BestR2,min_weight_fraction_leaf_BestR2, max_leaf_nodes_BestR2,criterio_BestRPD,splitter_BestRPD,max_depth_BestRPD,min_samples_split_BestRPD,min_samples_leaf_BestRPD,features_BestRPD,min_weight_fraction_leaf_BestRPD,max_leaf_nodes_BestRPD,random_num
+         1.3506484101695508, 0.4518298579019102, 3, 1, 1, 3, 0, 0, 0, 0, 3, 1, 1, 3, 0, 0, 0, 0, 22
+         =============================================================
+
+max_rpd,max_r2,criterio_R2,splitter_BestR2,max_depth_BestR2,min_samples_split_BestR2,min_samples_leaf_BestR2,features_BestR2,min_weight_fraction_leaf_BestR2, max_leaf_nodes_BestR2,criterio_BestRPD,splitter_BestRPD,max_depth_BestRPD,min_samples_split_BestRPD,min_samples_leaf_BestRPD,features_BestRPD,min_weight_fraction_leaf_BestRPD,max_leaf_nodes_BestRPD,random_num
+         1.3667268551739578, 0.4646515570682037, 2, 1, 1, 1, 0, 0, 0, 4, 2, 1, 1, 1, 0, 0, 0, 4, 27
+         =============================================================
+
+max_rpd,max_r2,criterio_R2,splitter_BestR2,max_depth_BestR2,min_samples_split_BestR2,min_samples_leaf_BestR2,features_BestR2,min_weight_fraction_leaf_BestR2, max_leaf_nodes_BestR2,criterio_BestRPD,splitter_BestRPD,max_depth_BestRPD,min_samples_split_BestRPD,min_samples_leaf_BestRPD,features_BestRPD,min_weight_fraction_leaf_BestRPD,max_leaf_nodes_BestRPD,random_num
+         1.4128573452452189, 0.4990396284124323, 2, 1, 1, 5, 0, 0, 0, 0, 2, 1, 1, 5, 0, 0, 0, 0, 27
+         =============================================================
 

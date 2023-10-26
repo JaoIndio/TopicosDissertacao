@@ -191,6 +191,9 @@ def optimise_RandomForest_cv(X, y, n_comp):
     Epsilon        = float(AllData[2])
     random_num     = int(AllData[3])
   """
+  random_num = 2040
+  max_r2     = 0.07175144370424191
+  max_rpd    = 1.037929507524495
   while random_num < 2147483647:
     #print("Random Forest MIR ", random_num)
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.35, random_state=random_num)

@@ -41,7 +41,7 @@ scripts_to_run = [ # DataSet com 40 amostras """ \
                       linear_PCA_BrLib_MIR, \
                       rbf_PCA_BrLib_MIR,    \
                       rbf_BrLib_MIR,        \
-                      dt_BrLib_MIR,         \
+                      dt_BrLib_MIR,          \
                       rf_BrLib_MIR,         \
                       GradBoost_BrLib_MIR,  \
                       PLSR_BrLib_MIR        \

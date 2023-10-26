@@ -142,7 +142,7 @@ def optimise_DecisionTree_cv(X, y, n_comp):
   max_depth                 = [5, 25, 125, 625]                  
   min_samples_split         = [2, 4, 8, 16, 32, 64]          
   min_samples_leaf          = [1, 2, 4, 8, 16, 32, 64, 128]        
-  features                  = [None, "auto", "log2", "sqrt"]      
+  features                  = [None, "log2", "sqrt"]      
   min_weight_fraction_leaf  = [0, 0.01, 0.1, 0.2, 0.4, 0.5]    
   max_leaf_nodes            = [None, 2, 4, 8, 16, 32, 64, 128]  
   
@@ -208,6 +208,7 @@ def optimise_DecisionTree_cv(X, y, n_comp):
     lines=file.readlines()
 
   AllData = lines[-3].strip().split(',');
+  
   print("\
   BrLib-MIR Decision Tree BackUp Analyse\n\
     		crit", 		        AllData[0],"\n\
@@ -333,7 +334,9 @@ def optimise_DecisionTree_cv(X, y, n_comp):
                       with open(NearbestFit_R2_file, 'a') as file:
                         data=(f"criterior,splitter,max_depth,min_samples_split,min_samples_leaf,features,min_weight_fraction_leaf, max_leaf_nodes, random_num, max_r2, r2, rpd, max_rpd, \n\
                   {crit}, {split}, {m_depth}, {min_samp_split}, {samp_splitLeaf}, {feat}, {weight}, {leafNode}, {random_num}, {max_r2}, {r2}, {rpd}, {max_rpd}\n\
- *****  ***********************************\n\n")   
+ *****  ***********************************\n\n")
+                        file.write(data)
+                      file.close() 
 
                     if rpd>max_rpd:
                       max_rpd = rpd
@@ -361,7 +364,7 @@ def optimise_DecisionTree_cv(X, y, n_comp):
                   split=0
                   leafNode+=1
                 #leafNode
-                leafNode=0
+                leafNode=0  
                 weight+=1
               #weight
               weight=0

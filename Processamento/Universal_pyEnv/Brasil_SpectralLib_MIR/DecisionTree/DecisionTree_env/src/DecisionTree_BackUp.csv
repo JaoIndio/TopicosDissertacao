@@ -1,4 +1,4 @@
-C,Gamma,epsilon,random_num
-        0.001,0.001,0.0001,312000
-        ******************************************
+criterior,splitter,max_depth,min_samples_split,min_samples_leaf,features,min_weight_fraction_leaf, max_leaf_nodes, random_num
+                  3, 0, 0, 6, 0, 0, 0, 0, 67
+ *****  ***********************************
 

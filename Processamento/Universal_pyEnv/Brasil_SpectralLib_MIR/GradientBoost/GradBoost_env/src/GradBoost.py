@@ -191,6 +191,10 @@ def optimise_GradBoost_cv(X, y, n_comp):
     Epsilon        = float(AllData[2])
     random_num     = int(AllData[3])
   """
+  random_num = 15600
+  max_r2     = 0.23531458024404173
+  max_rpd    = 1.1435590500189872
+
   while random_num < 2147483647:
     #print("**... Grad Boost MIR random----------------> ", random_num)
     #print(i)
