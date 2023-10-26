@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+import subprocess
 from sys import stdout
 import numpy as np
 import pandas as pd
@@ -24,9 +25,22 @@ from sklearn.metrics import mean_squared_error, r2_score
 
 """
 figure_counter = 0
+command = ["git", "branch", "-v"]
+result  = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True)
+gitOut = result.stdout[:7]
 
-generalPahth=(f"./Universal_pyEnv/Brasil_SpectralLib_MIR")
-SVRPahth=(f"{generalPahth}/GradientBoost/")
+if gitOut == "* Colab":
+  path_2Use="Colab"
+else:
+  path_2Use=None
+
+figure_counter = 0
+
+if path_2Use=="Colab":
+  generalPahth=(f"/home/gitFiles/Universal_pyEnv/Brasil_SpectralLib_MIR")
+else:
+  generalPahth=(f"./Universal_pyEnv/Brasil_SpectralLib_MIR")
+SVRPahth=(f"{generalPahth}/GradientBoost")
 rbf=(f"{SVRPahth}/GradBoost_env/src/")
 
 def snv(dataSet):
@@ -129,45 +143,93 @@ def Centralization(dataSet):
 def optimise_GradBoost_cv(X, y, n_comp):
     
   random_num=0
+  random_check= [67, 68, 69, 1402, 4186, 9063, 15919, 67537]
   control_print=0
   max_r2=0
   max_rpd=0
   best_randomR2=0
   best_randomRpd=0
-  C=0.001
-  Gamma=0.001
-  epsilon=0.0001
+
+  nearBest_crit = 0.50
   
-  C_BestR2=0
-  C_BestRPD=0
-  Gamma_BestR2=0
-  Gamma_BestRPD=0
-  epsilon_BestR2=0
-  epsilon_BestRPD=0
+  
+  losses                   = ['squared_error', 'absolute_error', 'huber', 'quantile'] 
+  learning_rate            = [0.01,0.1,1,10,100]                        # Layer 2                    
+  n_estimators             = [1,5,25,125,250,500]                       # Layer 3                
+  subsample                = [0.3,0.5,0.75,0.8,1]                       # Layer 4                      
+  criterion                = ['friedman_mse', 'squared_error', 'mae']   # Layer 5                          
+  min_samples_split        = [2,4,8,16,32,20,40,80]                     # Layer 6                       
+  min_samples_leaf         = [1,2,4,8,16,32]                            # Layer 7  
+  min_weight_fraction_leaf = [0, 0.01, 0.1, 0.2, 0.4, 0.5]              # Layer 8    
+  max_depth                = [1,3,5,7,9,11]                             # Layer 9    
+  random_state             = 10                                         # Layer 10     
+  max_features             = [None, 'auto', 'sqrt', 'log2']             # Layer 11        
+  max_leaf_nodes           = [None, 10, 100, 1000]                      # Layer 12                  
+  validation_fraction      = [0, 0.1, 0.2]                              # Layer 13                               
+  n_iter_no_change         = [None] #, 10, 100, 1000, 10000]            # Layer 14           
+  tol                      = [10,1, 1e-2, 1e-3, 1e-4, 1e-5]             # Layer 15                               
+
+  losses_R2                   = 0 
+  learning_rate_R2            = 0
+  n_estimators_R2             = 0
+  subsample_R2                = 0
+  criterion_R2                = 0
+  min_samples_split_R2        = 0
+  min_samples_leaf_R2         = 0
+  min_weight_fraction_leaf_R2 = 0
+  max_depth_R2                = 0
+  max_features_R2             = 0
+  max_leaf_nodes_R2           = 0
+  validation_fraction_R2      = 0
+  n_iter_no_change_R2         = 0
+  tol_R2                      = 0
+  
+  losses_RPD                   = 0 
+  learning_rate_RPD            = 0
+  n_estimators_RPD             = 0
+  subsample_RPD                = 0
+  criterion_RPD                = 0
+  min_samples_split_RPD        = 0
+  min_samples_leaf_RPD         = 0
+  min_weight_fraction_leaf_RPD = 0
+  max_depth_RPD                = 0
+  max_features_RPD             = 0
+  max_leaf_nodes_RPD           = 0
+  validation_fraction_RPD      = 0
+  n_iter_no_change_RPD         = 0
+  tol_RPD                      = 0
+ 
   #random_num = 99296
+  NearbestFit_R2_file=(f"{rbf}NearBestR2.csv")
   bestFit_file=(f"{rbf}bestFit_GradBoost.csv")
   Bkp_file=(f"{rbf}GradBoost_BackUp.csv")
   
-  """
+  
   with open(bestFit_file, 'r') as file:
     lines=file.readlines()
 
   AllData = lines[-3].strip().split(',');
   
   print("\
-  RBF Backup  Best Fit Analyse\n\
-  \t\tMaxRPD:          ",AllData[0],"\n\
-  \t\tMaxR2:           ",AllData[1],"\n\
-  \t\tbest_randomR2:   ",AllData[2],"\n\
-  \t\tBest RPD random: ",AllData[3],"\n\
-  \t\tC R2:            ",AllData[4],"\n\
-  \t\tGamma R2:        ",AllData[5],"\n\
-  \t\tEpsilon R2:      ",AllData[6],"\n\
-  \t\tC RPD:           ",AllData[7],"\n\
-  \t\tGamma RPD:       ",AllData[8],"\n\
-  \t\tEpsilon RPD:     ",AllData[9],"\n\
-  \t\tRandom Numbers:  ",AllData[10],"\n")
-  #file.close()
+  Gradient Boost Backup  Best Fit Analyse\n\
+  \t\tMaxRPD:                           ",AllData[0],"\n\
+  \t\tMaxR2:                            ",AllData[1],"\n\
+  \t\tloss_i                            ",AllData[2],"\n\
+  \t\tlearning_rate_i                   ",AllData[3],"\n\
+  \t\tn_estimators_i                    ",AllData[4],"\n\
+  \t\tsubsample_i                       ",AllData[5],"\n\
+  \t\tcriterion_i                       ",AllData[6],"\n\
+  \t\tmin_samples_split_i               ",AllData[7],"\n\
+  \t\tmin_samples_leaf_i                ",AllData[8],"\n\
+  \t\tmin_weight_fraction_leaf_i        ",AllData[9],"\n\
+  \t\tmax_depth_i                       ",AllData[10],"\n\
+  \t\tmax_features_i                    ",AllData[11],"\n\
+  \t\tmax_leaf_nodes_i                  ",AllData[12],"\n\
+  \t\tvalidation_fraction_i             ",AllData[13],"\n\
+  \t\tn_iter_no_change_i                ",AllData[14],"\n\
+  \t\ttol_i                             ",AllData[15],"\n\
+  \t\tRandom Numbers:                   ",AllData[16],"\n")
+  file.close()
   
   if float(AllData[0]) > max_rpd:
     max_r2  = float(AllData[1])
@@ -177,14 +239,8 @@ def optimise_GradBoost_cv(X, y, n_comp):
     lines=file.readlines()
 
   AllData = lines[-3].strip().split(',');
-  print("\
-  RBF Backup Analyse\n\
-  \t\tC            ",AllData[0],"\n\
-  \t\tGamma        ",AllData[1],"\n\
-  \t\tEpsilon:     ",AllData[2],"\n\
-  \t\tRandomNumber ",AllData[3],"\n")
-  #file.close()
   
+<<<<<<< HEAD
   if int(AllData[3]) > random_num:
     C              = float(AllData[0]) 
     Gamma          = float(AllData[1])
@@ -195,59 +251,211 @@ def optimise_GradBoost_cv(X, y, n_comp):
   max_r2     = 0.23531458024404173
   max_rpd    = 1.1435590500189872
 
+=======
+  print("\
+  Gradient Boost Backup Analyse\n\
+  \t\tloss_i                            ",AllData[0],"\n\
+  \t\tlearning_rate_i                   ",AllData[1],"\n\
+  \t\tn_estimators_i                    ",AllData[2],"\n\
+  \t\tsubsample_i                       ",AllData[3],"\n\
+  \t\tcriterion_i                       ",AllData[4],"\n\
+  \t\tmin_samples_split_i               ",AllData[5],"\n\
+  \t\tmin_samples_leaf_i                ",AllData[6],"\n\
+  \t\tmin_weight_fraction_leaf_i        ",AllData[7],"\n\
+  \t\tmax_depth_i                       ",AllData[8],"\n\
+  \t\tmax_features_i                    ",AllData[9],"\n\
+  \t\tmax_leaf_nodes_i                  ",AllData[10],"\n\
+  \t\tvalidation_fraction_i             ",AllData[11],"\n\
+  \t\tn_iter_no_change_i                ",AllData[12],"\n\
+  \t\ttol_i                             ",AllData[13],"\n\
+  \t\tRandom Numbers:                   ",AllData[14],"\n")
+  
+  file.close()
+  loss_i                         = 0  
+  learning_rate_i                = 0
+  n_estimators_i                 = 0
+  subsample_i                    = 0
+  criterion_i                    = 0
+  min_samples_split_i            = 0
+  min_samples_leaf_i             = 0
+  min_weight_fraction_leaf_i     = 0
+  max_depth_i                    = 0
+  max_features_i                 = 0
+  max_leaf_nodes_i               = 0
+  validation_fraction_i          = 0
+  n_iter_no_change_i             = 0
+  tol_i                          = 0
+  random_num                     = 0
+  
+  if float(AllData[14]) >= random_num:
+    loss_i                         = int(float(AllData[0])) 
+    learning_rate_i                = int(float(AllData[1]))
+    n_estimators_i                 = int(float(AllData[2]))
+    subsample_i                    = int(float(AllData[3]))  
+    criterion_i                    = int(float(AllData[4]))
+    min_samples_split_i            = int(float(AllData[5]))
+    min_samples_leaf_i             = int(float(AllData[6]))     
+    min_weight_fraction_leaf_i     = int(float(AllData[7]))
+    max_depth_i                    = int(float(AllData[8]))
+    max_features_i                 = int(float(AllData[9]))
+    max_leaf_nodes_i               = int(float(AllData[10]))
+    validation_fraction_i          = int(float(AllData[11]))
+    n_iter_no_change_i             = int(float(AllData[12]))
+    tol_i                          = int(float(AllData[13]))
+    random_num                     = int(float(AllData[14]))
+  
+  
+>>>>>>> f24e806a95947068e0ad08e8f68d60fa6d469bd9
   while random_num < 2147483647:
-    #print("**... Grad Boost MIR random----------------> ", random_num)
-    #print(i)
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.35, random_state=random_num)
+    while loss_i                    < len(losses):
+      print("===================================================")
+      print("loss, total, ",loss_i, len(losses))
+      while learning_rate_i           < len(learning_rate):          
+        #print("learm rate, total, ",learning_rate_i, len(learning_rate))
+        while n_estimators_i            < len(n_estimators):           
+          #print("camada 3, total, ",n_estimators_i, len(n_estimators))
+          while subsample_i               < len(subsample):              
+            #print("camada 4, total, ",subsample_i, len(subsample))
+            while criterion_i               < len(criterion):              
+              #print("camada 6, total, ",criterion_i, len(criterion))
+              while min_samples_split_i       < len(min_samples_split):      
+                #print("camada 7, total, ",min_samples_split_i, len(min_samples_split))
+                while min_samples_leaf_i        < len(min_samples_leaf):       
+                  """
+                  print("camada 8, total, ",min_samples_leaf_i, min_weight_fraction_leaf_i,\
+                                            max_features_i, max_leaf_nodes_i,validation_fraction_i ,\
+                                            tol_i,\
+                                            len(min_samples_leaf))
+                  """
+                  while min_weight_fraction_leaf_i < len(min_weight_fraction_leaf):
+                    #print("camada 9, total, ",min_weight_fraction_leaf_i, len(min_weight_fraction_leaf))
+                    while max_depth_i               < len(max_depth):              
+                      #print("camada 10, total, ",max_depth_i, len(max_depth))
+                      while max_features_i            < len(max_features):           
+                        #print("camada 11, total, ",max_features_i, len(max_features))
+                        while max_leaf_nodes_i          < len(max_leaf_nodes):         
+                          #print("camada 12, total, ",max_leaf_nodes_i, len(max_leaf_nodes))
+                          while validation_fraction_i     < len(validation_fraction):    
+                            #print("camda 13, total, ",validation_fraction_i, len(validation_fraction))
+                            while n_iter_no_change_i        < len(n_iter_no_change):       
+                              #print("camda 14, total, ",n_iter_no_change_i, len(n_iter_no_change))
+                              while tol_i                     < len(tol):
+                                #print("camada 15, total, ",tol_i, len(tol))
+                                          
+                                X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.35, random_state=random_num)
 
-    # Initialize and fit the PLS regression model
-    GD_model = GradientBoostingRegressor(n_estimators=100, learning_rate=0.1, max_depth=1, random_state=0, loss='squared_error')
-    GD_model.fit(X_train, y_train)
-    #print(epsilon)
+                                # Initialize and fit the PLS regression model
+                                GD_model = GradientBoostingRegressor(loss=losses[loss_i], learning_rate=learning_rate[learning_rate_i], \
+                                       n_estimators=n_estimators[n_estimators_i], random_state=10,\
+                                       subsample=subsample[subsample_i], criterion=criterion[criterion_i], \
+                                       min_samples_split=min_samples_split[min_samples_split_i],\
+                                       min_samples_leaf=min_samples_leaf[min_samples_leaf_i],\
+                                       max_depth=max_depth[max_depth_i],\
+                                       max_features=max_features[max_features_i],\
+                                       max_leaf_nodes=max_leaf_nodes[max_leaf_nodes_i],\
+                                       validation_fraction=validation_fraction[validation_fraction_i],\
+                                       n_iter_no_change=n_iter_no_change[n_iter_no_change_i],\
+                                       tol=tol[tol_i],\
+                                       min_weight_fraction_leaf=min_weight_fraction_leaf[min_weight_fraction_leaf_i]\
+                                      )
 
-    # Predict the target variable on the test set
-    y_cv = GD_model.predict(X_test)
+                                GD_model.fit(X_train, y_train)
+                                #print(epsilon)
 
-    # Calculate scores
-    r2 = r2_score(y_test, y_cv)
-    mse = mean_squared_error(y_test, y_cv)
-    rpd = y_test.std()/np.sqrt(mse)
-    
-    
-    if r2>max_r2:
-      max_r2 = r2
-      best_randomR2 = random_num
-      C_BestR2=C
-      Gamma_BestR2=Gamma
-      epsilon_BestR2=epsilon
+                                # Predict the target variable on the test set
+                                y_cv = GD_model.predict(X_test)
 
-    if rpd>max_rpd:
-      max_rpd = rpd
-      best_randomRpd= random_num
-      C_BestRPD=C
-      epsilon_BestRPD=epsilon
-      Gamma_BestRPD=Gamma
-      with open(bestFit_file, 'a') as file:
-        data=(f"max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers\n\
-        {max_rpd},{max_r2},\
-        {best_randomR2},{best_randomRpd},\
-        {C_BestR2},{Gamma_BestR2},{epsilon_BestR2},\
-        {C_BestRPD},{Gamma_BestRPD},{epsilon_BestRPD},\
-        {random_num}\n\
-        ==============================================================\n\n")
-        file.write(data)
-        file.close()
-    if control_print==25:
-      print("**... Grad Boost MIR-> ", random_num)
-      with open(Bkp_file, 'w') as file:
-        data=(f"C,Gamma,epsilon,random_num\n\
-        {C},{Gamma},{epsilon},{random_num}\n\
-        ******************************************\n\n")
-        file.write(data)
-        file.close()
-      control_print=0
+                                # Calculate scores
+                                r2 = r2_score(y_test, y_cv)
+                                mse = mean_squared_error(y_test, y_cv)
+                                rpd = y_test.std()/np.sqrt(mse)
+                                
+                                if r2>max_r2:
+                                  max_r2 = r2
+                                  best_randomR2 = random_num
+                                  losses_R2                   = loss_i
+                                  learning_rate_R2            = learning_rate_i
+                                  n_estimators_R2             = n_estimators_i
+                                  subsample_R2                = subsample_i               
+                                  criterion_R2                = criterion_i               
+                                  min_samples_split_R2        = min_samples_split_i
+                                  min_samples_leaf_R2         = min_samples_leaf_i        
+                                  min_weight_fraction_leaf_R2 = min_weight_fraction_leaf_i
+                                  max_depth_R2                = max_depth_i         
+                                  max_features_R2             = max_features_i           
+                                  max_leaf_nodes_R2           = max_leaf_nodes_i          
+                                  validation_fraction_R2      = validation_fraction_i     
+                                  n_iter_no_change_R2         = n_iter_no_change_i        
+                                  tol_R2                      = tol_i                     
 
-    control_print+=1
+                                if rpd>max_rpd:
+                                  max_rpd = rpd
+                                  best_randomRpd= random_num
+                                  losses_RPD                  =  loss_i                     
+                                  learning_rate_RPD           =  learning_rate_i
+                                  n_estimators_RPD            =  n_estimators_i
+                                  subsample_RPD               =  subsample_i               
+                                  criterion_RPD               =  criterion_i               
+                                  min_samples_split_RPD       =  min_samples_split_i
+                                  min_samples_leaf_RPD        =  min_samples_leaf_i        
+                                  min_weight_fraction_leaf_RPD=  min_weight_fraction_leaf_i 
+                                  max_depth_RPD               =  max_depth_i         
+                                  max_features_RPD            =  max_features_i           
+                                  max_leaf_nodes_RPD          =  max_leaf_nodes_i          
+                                  validation_fraction_RPD     =  validation_fraction_i     
+                                  n_iter_no_change_RPD        =  n_iter_no_change_i        
+                                  tol_RPD                     =  tol_i                     
+                                  
+                                  with open(bestFit_file, 'a') as file:
+                                    data=(f"max_rpd,max_r2,Best Random R2, Best Random RPD, losses_R2,learning_rate_R2,n_estimators_R2,subsample_R2,criterion_R2,min_samples_split_R2,min_samples_leaf_R2,min_weight_fraction_leaf_R2,max_depth_R2,max_features_R2,max_leaf_nodes_R2,validation_fraction_R2,n_iter_no_change_R2,tol_R2,losses_RPD,learning_rate_RPD,n_estimators_RPD,subsample_RPD,criterion_RPD,min_samples_split_RPD,min_samples_leaf_RPD,min_weight_fraction_leaf_RPD,max_depth_RPD,max_features_RPD,max_leaf_nodes_RPD,validation_fraction_RPD,n_iter_no_change_RPD,tol_RPD,random_numbers\n {max_rpd},{max_r2},{best_randomR2},{best_randomRpd},{losses_R2},{learning_rate_R2},{n_estimators_R2},{subsample_R2},{criterion_R2},{min_samples_split_R2},{min_samples_leaf_R2},{min_weight_fraction_leaf_R2},{max_depth_R2},{max_features_R2},{max_leaf_nodes_R2},{validation_fraction_R2},{n_iter_no_change_R2},{tol_R2},{losses_RPD},{learning_rate_RPD},{n_estimators_RPD},{subsample_RPD},{criterion_RPD},{min_samples_split_RPD},{min_samples_leaf_RPD},{min_weight_fraction_leaf_RPD},{max_depth_RPD},{max_features_RPD},{max_leaf_nodes_RPD},{validation_fraction_RPD},{n_iter_no_change_RPD},{tol_RPD},{random_num}\n\
+                                    ==============================================================\n\n")
+                                    file.write(data)
+                                  file.close()
+                                elif r2>=max_r2*nearBest_crit and rpd>=max_rpd*nearBest_crit :
+                                  with open(NearbestFit_R2_file, 'a') as file:
+                                    data=(f"losses,learning_rate,n_estimators,subsample,criterion,min_samples_split,min_samples_leaf,min_weight_fraction_leaf,max_depth,random_state,max_features,max_leaf_nodes,validation_fraction,n_iter_no_change,tol,random_num, max_r2, r2, rpd, max_rpd, \n{loss_i},{learning_rate_i},{n_estimators_i},{subsample_i},{criterion_i},{min_samples_split_i},{min_samples_leaf_i},{min_weight_fraction_leaf_i},{max_depth_i},{max_features_i},{max_leaf_nodes_i},{validation_fraction_i},{n_iter_no_change_i},{tol_i},{random_num}, {max_r2}, {r2}, {rpd}, {max_rpd}\n\
+                                    *****  ***********************************\n\n")   
+                                    file.write(data)
+                                  file.close()
+
+                                tol_i+=1
+
+                              tol_i=0
+                              n_iter_no_change_i+=1
+                            n_iter_no_change_i=0
+                            validation_fraction_i+=1
+                          validation_fraction_i=0
+                          max_leaf_nodes_i+=1
+                        max_leaf_nodes_i=0
+                        max_features_i+=1
+                      max_features_i=0
+                      max_depth_i+=1
+                    max_depth_i=0
+                    min_weight_fraction_leaf_i+=1
+                  
+                  #Bkp
+                  print("**... Grad Boost MIR-> ", random_num)
+                  with open(Bkp_file, 'w') as file:
+                    data=(f"losses,learning_rate,n_estimators,subsample,criterion,min_samples_split,min_samples_leaf,min_weight_fraction_leaf,max_depth,random_state,max_features,max_leaf_nodes,validation_fraction,n_iter_no_change,tol,random_num\n {loss_i},{learning_rate_i},{n_estimators_i},{subsample_i},{criterion_i},{min_samples_split_i},{min_samples_leaf_i},{min_weight_fraction_leaf_i},{max_depth_i},{max_features_i},{max_leaf_nodes_i},{validation_fraction_i},{n_iter_no_change_i},{tol_i}, {random_num}\n\
+                    ******************************************\n\n")
+                    file.write(data)
+                  file.close()
+                  
+                  min_weight_fraction_leaf_i=0
+                  min_samples_leaf_i+=1
+                min_samples_leaf_i=0
+                min_samples_split_i+=1
+              min_samples_split_i=0
+              criterion_i+=1
+            criterion_i=0
+            subsample_i+=1
+          subsample_i=0  
+          n_estimators_i+=1
+        n_estimators_i=0
+        learning_rate_i+=1
+      learning_rate_i=0
+      loss_i+1
+    loss_i=0
     random_num+=1
   
     if random_num==2147483647:
@@ -284,8 +492,13 @@ def plot_metrics(vals, ylabel, objective):
   
   return xticks[idx]
   #plt.show()
-                                                                               
-soil_sheet     = pd.read_csv("../data_bases/BrLib_MIR.csv")
+
+if path_2Use=="Colab":
+  soil_sheet     = pd.read_csv("/home/DecisionTree_Colab/BrLib_MIR.csv")
+else:
+  soil_sheet     = pd.read_csv("../data_bases/BrLib_MIR.csv")
+
+
 
 soil_sheet.head()
 #spectral_sheet.replace(to_replace=',', value='.')

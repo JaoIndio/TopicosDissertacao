@@ -2132,7 +2132,11 @@ max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_R
               ==============================================================
 
 max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
+<<<<<<< HEAD
               0.9798468973938573,0,              0,0,              0,0,0,              10.0,0.01,0.01,              0
+=======
+              0.9798468973938571,0,              0,0,              0,0,0,              10.0,0.01,0.01,              0
+>>>>>>> f24e806a95947068e0ad08e8f68d60fa6d469bd9
               ==============================================================
 
 max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
@@ -2156,6 +2160,7 @@ max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_R
               ==============================================================
 
 max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
+<<<<<<< HEAD
               0.9828652251264862,0,              0,0,              0,0,0,              100.0,0.01,0.0001,              0
               ==============================================================
 
@@ -2169,6 +2174,21 @@ max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_R
 
 max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
               0.9832590384929207,0,              0,0,              0,0,0,              100.0,0.01,0.1,              0
+=======
+              0.9828652251264868,0,              0,0,              0,0,0,              100.0,0.01,0.0001,              0
+              ==============================================================
+
+max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
+              0.9828689996875182,0,              0,0,              0,0,0,              100.0,0.01,0.001,              0
+              ==============================================================
+
+max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
+              0.9829126029611384,0,              0,0,              0,0,0,              100.0,0.01,0.01,              0
+              ==============================================================
+
+max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
+              0.9832590384929218,0,              0,0,              0,0,0,              100.0,0.01,0.1,              0
+>>>>>>> f24e806a95947068e0ad08e8f68d60fa6d469bd9
               ==============================================================
 
 max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
@@ -2236,6 +2256,7 @@ max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_R
               ==============================================================
 
 max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
+<<<<<<< HEAD
               1.0166647379122788,0.032514469386130895,              2,2,              10.0,0.01,0.0001,              10.0,0.01,0.0001,              2
               ==============================================================
 
@@ -2373,5 +2394,12 @@ max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_R
 
 max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
               1.4347945768902801,0.5142413454212686,              36474,36474,              10000.0,0.001,0.1,              10000.0,0.001,0.1,              36474
+=======
+              1.016664737912279,0.03251446938613145,              2,2,              10.0,0.01,0.0001,              10.0,0.01,0.0001,              2
+              ==============================================================
+
+max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers
+              1.0922414220801202,0.16177093681043098,              2,2,              1000.0,0.001,0.0001,              1000.0,0.001,0.0001,              2
+>>>>>>> f24e806a95947068e0ad08e8f68d60fa6d469bd9
               ==============================================================
 
