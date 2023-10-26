@@ -208,7 +208,7 @@ def optimise_GradBoost_cv(X, y, n_comp):
   with open(bestFit_file, 'r') as file:
     lines=file.readlines()
 
-  AllData = lines[-3].strip().split(',');
+  AllData = lines[-3].strip().split(',')
   
   print("\
   Gradient Boost Backup  Best Fit Analyse\n\
@@ -238,7 +238,7 @@ def optimise_GradBoost_cv(X, y, n_comp):
   with open(Bkp_file, 'r') as file:
     lines=file.readlines()
 
-  AllData = lines[-3].strip().split(',');
+  AllData = lines[-3].strip().split(',')
   
   print("\
   Gradient Boost Backup Analyse\n\
