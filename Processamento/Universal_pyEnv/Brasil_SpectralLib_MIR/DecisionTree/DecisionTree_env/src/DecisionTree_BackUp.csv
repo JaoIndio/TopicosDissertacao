@@ -1,8 +1,0 @@
-criterior,splitter,max_depth,min_samples_split,min_samples_leaf,features,min_weight_fraction_leaf, max_leaf_nodes, random_num
-<<<<<<< HEAD
-                  3, 0, 0, 6, 0, 0, 0, 0, 67
-=======
-                  1, 0, 2, 6, 0, 0, 0, 0, 0
->>>>>>> f24e806a95947068e0ad08e8f68d60fa6d469bd9
- *****  ***********************************
-
