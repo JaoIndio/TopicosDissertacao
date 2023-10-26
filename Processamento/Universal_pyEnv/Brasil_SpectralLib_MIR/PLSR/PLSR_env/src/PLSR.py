@@ -37,7 +37,7 @@ else:
 
 figure_counter = 0
 
-if path_2Use=="Colab":
+if path_2Use=="Colab": #colab
   generalPahth=(f"/home/gitFiles/Universal_pyEnv/Brasil_SpectralLib_MIR")
 else:
   generalPahth=(f"./Universal_pyEnv/Brasil_SpectralLib_MIR")
