@@ -2,9 +2,6 @@
 # -*- coding: utf-8 -*-
 
 from sys import stdout
-
-import subprocess
-
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -25,23 +22,9 @@ from sklearn.metrics import mean_squared_error, r2_score
       Step 3. Normalização  |  Baseados em Médias ou em Picos MSC, ou SNV
 
 """
-
-command = ["git", "branch", "-v"]
-result  = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True)
-gitOut = result.stdout[:7]
-
-if gitOut == "* Colab":
-  path_2Use="Colab"
-else:
-  path_2Use=None
-
 figure_counter = 0
 
-if path_2Use=="Colab":
-  generalPahth=(f"/home/gitFiles/Universal_pyEnv/Brasil_SpectralLib_MIR")
-else:
-  generalPahth=(f"./Universal_pyEnv/Brasil_SpectralLib_MIR")
-
+generalPahth=(f"Universal_pyEnv/Brasil_SpectralLib_MIR")
 SVRPahth=(f"{generalPahth}/DecisionTree")
 rbf=(f"{SVRPahth}/DecisionTree_env/src/")
 
@@ -183,6 +166,7 @@ def optimise_DecisionTree_cv(X, y, n_comp):
  
   #random_num = 99296
   NearbestFit_R2_file=(f"{rbf}NearBestR2.csv")
+  NearbestFit_RPD_file=(f"{rbf}NearBestRPD.csv")
   bestFit_file=(f"{rbf}bestFit_DecisionTree.csv")
   bestFit_file=(f"{rbf}bestFit_DecisionTree.csv")
   Bkp_file=(f"{rbf}DecisionTree_BackUp.csv")
@@ -330,8 +314,7 @@ def optimise_DecisionTree_cv(X, y, n_comp):
                     #print("RPD: ",rpd)
                     #print("MSE: ",mse)
                     #print("\n=========================")
-                    #r2  = 0.02940079965407061*0.75 ;
-                    #rpd = 1.015032704283562*0.75;
+                    
                     
                     if r2>max_r2:
                       max_r2 = r2
@@ -345,24 +328,15 @@ def optimise_DecisionTree_cv(X, y, n_comp):
                       features_BestR2                 = feat               
                       min_weight_fraction_leaf_BestR2 = weight            
                       max_leaf_nodes_BestR2           = leafNode           
-                    #print("r2: ", r2);
-                    #print("rpd: ", rpd);
-                    #print("near MAX r2: ", max_r2*nearBest_crit);
-                    #print("near MAX rpd: ", max_rpd*nearBest_crit);
+                    
                     elif r2>=max_r2*nearBest_crit and rpd>=max_rpd*nearBest_crit :
                        
                       with open(NearbestFit_R2_file, 'a') as file:
                         data=(f"criterior,splitter,max_depth,min_samples_split,min_samples_leaf,features,min_weight_fraction_leaf, max_leaf_nodes, random_num, max_r2, r2, rpd, max_rpd, \n\
                   {crit}, {split}, {m_depth}, {min_samp_split}, {samp_splitLeaf}, {feat}, {weight}, {leafNode}, {random_num}, {max_r2}, {r2}, {rpd}, {max_rpd}\n\
-<<<<<<< HEAD
  *****  ***********************************\n\n")
                         file.write(data)
                       file.close() 
-=======
- *****  ***********************************\n\n")   
-                        file.write(data)
-                      file.close()
->>>>>>> f24e806a95947068e0ad08e8f68d60fa6d469bd9
 
                     if rpd>max_rpd:
                       max_rpd = rpd
@@ -458,12 +432,8 @@ def plot_metrics(vals, ylabel, objective):
   
   return xticks[idx]
   #plt.show()
-
-
-if path_2Use=="Colab":
-  soil_sheet     = pd.read_csv("/home/DecisionTree_Colab/BrLib_MIR.csv")
-else:
-  soil_sheet     = pd.read_csv("../data_bases/BrLib_MIR.csv")
+                                                                               
+soil_sheet     = pd.read_csv("../data_bases/BrLib_MIR.csv")
 
 soil_sheet.head()
 #spectral_sheet.replace(to_replace=',', value='.')

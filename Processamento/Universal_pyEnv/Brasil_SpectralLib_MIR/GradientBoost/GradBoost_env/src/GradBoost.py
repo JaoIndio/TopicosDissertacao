@@ -240,18 +240,6 @@ def optimise_GradBoost_cv(X, y, n_comp):
 
   AllData = lines[-3].strip().split(',');
   
-<<<<<<< HEAD
-  if int(AllData[3]) > random_num:
-    C              = float(AllData[0]) 
-    Gamma          = float(AllData[1])
-    Epsilon        = float(AllData[2])
-    random_num     = int(AllData[3])
-  """
-  random_num = 15600
-  max_r2     = 0.23531458024404173
-  max_rpd    = 1.1435590500189872
-
-=======
   print("\
   Gradient Boost Backup Analyse\n\
   \t\tloss_i                            ",AllData[0],"\n\
@@ -305,7 +293,6 @@ def optimise_GradBoost_cv(X, y, n_comp):
     random_num                     = int(float(AllData[14]))
   
   
->>>>>>> f24e806a95947068e0ad08e8f68d60fa6d469bd9
   while random_num < 2147483647:
     while loss_i                    < len(losses):
       print("===================================================")
