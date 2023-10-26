@@ -30,14 +30,17 @@ result  = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE
 gitOut = result.stdout[:7]
 
 if gitOut == "* Colab":
-  path_2Use="Colab":
+  path_2Use="Colab"
+else:
+  path_2Use=None
+
 
 figure_counter = 0
 
 if path_2Use=="Colab":
   generalPahth=(f"/home/gitFiles/Universal_pyEnv/Brasil_SpectralLib_MIR")
 else:
-  generalPahth=(f"./Universal_pyEnv")
+  generalPahth=(f"./Universal_pyEnv/Brasil_SpectralLib_MIR")
 SVRPahth=(f"{generalPahth}")
 rbf=(f"{SVRPahth}/PLSR/PLSR_env/src/")
 

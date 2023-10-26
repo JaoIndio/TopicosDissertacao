@@ -298,20 +298,22 @@ def optimise_GradBoost_cv(X, y, n_comp):
       print("===================================================")
       print("loss, total, ",loss_i, len(losses))
       while learning_rate_i           < len(learning_rate):          
-        print("learm rate, total, ",learning_rate_i, len(learning_rate))
+        #print("learm rate, total, ",learning_rate_i, len(learning_rate))
         while n_estimators_i            < len(n_estimators):           
-          print("camada 3, total, ",n_estimators_i, len(n_estimators))
+          #print("camada 3, total, ",n_estimators_i, len(n_estimators))
           while subsample_i               < len(subsample):              
-            print("camada 4, total, ",subsample_i, len(subsample))
+            #print("camada 4, total, ",subsample_i, len(subsample))
             while criterion_i               < len(criterion):              
-              print("camada 6, total, ",criterion_i, len(criterion))
+              #print("camada 6, total, ",criterion_i, len(criterion))
               while min_samples_split_i       < len(min_samples_split):      
-                print("camada 7, total, ",min_samples_split_i, len(min_samples_split))
+                #print("camada 7, total, ",min_samples_split_i, len(min_samples_split))
                 while min_samples_leaf_i        < len(min_samples_leaf):       
+                  """
                   print("camada 8, total, ",min_samples_leaf_i, min_weight_fraction_leaf_i,\
                                             max_features_i, max_leaf_nodes_i,validation_fraction_i ,\
                                             tol_i,\
                                             len(min_samples_leaf))
+                  """
                   while min_weight_fraction_leaf_i < len(min_weight_fraction_leaf):
                     #print("camada 9, total, ",min_weight_fraction_leaf_i, len(min_weight_fraction_leaf))
                     while max_depth_i               < len(max_depth):              

@@ -31,7 +31,9 @@ result  = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE
 gitOut = result.stdout[:7]
 
 if gitOut == "* Colab":
-  path_2Use="Colab":
+  path_2Use="Colab"
+else:
+  path_2Use=None
 
 figure_counter = 0
 
