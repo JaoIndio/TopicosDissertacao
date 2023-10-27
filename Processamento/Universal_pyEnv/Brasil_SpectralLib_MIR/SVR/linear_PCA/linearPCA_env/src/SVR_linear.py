@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+import os
+import csv
 from sys import stdout
 import numpy as np
 import pandas as pd
@@ -23,11 +25,27 @@ from sklearn.metrics import mean_squared_error, r2_score
       Step 3. Normalização  |  Baseados em Médias ou em Picos MSC, ou SNV
 
 """
+def check_csvFiles(filePath):
+  if not os.path.exists(filePath):
+    with open(filePath, mode='w', newline='') as file:
+      writer = csv.writer(file)
+      writer.writerow(['Header1', 'Header2'])  # Example headers
+    file.close()
+
+
 figure_counter = 0
 
 generalPahth=(f"Universal_pyEnv/Brasil_SpectralLib_MIR/SVR") 
 SVRPahth    =(f"{generalPahth}/linear_PCA/linearPCA_env")    
 linear_PCA  =(f"{SVRPahth}/src/")                             
+
+fileName=(f"{linear_PCA}/bestFit_SVR_linear.csv")
+check_csvFiles(fileName)
+fileName=(f"{linear_PCA}SVR_linear_BackUp.csv")
+check_csvFiles(fileName)
+fileName=(f"{linear_PCA}/NearBestR2.csv")
+check_csvFiles(fileName)
+
 
 
 def snv(dataSet):
@@ -148,7 +166,7 @@ def optimise_SVR_cv(X, y, n_comp):
   
   bestFit_file=(f"{linear_PCA}bestFit_SVR_linear.csv")
   Bkp_file=(f"{linear_PCA}SVR_linear_BackUp.csv")
-  
+  #"""
   with open(bestFit_file, 'r') as file:
     lines=file.readlines()
 
@@ -188,7 +206,8 @@ def optimise_SVR_cv(X, y, n_comp):
     epislon        = float(AllData[1])
     random_num     = int(AllData[3])+1
 
-
+  #"""
+  
   pca_variance = np.arange(0.75, 1, 0.05)
   pca_control = np.arange(0, 5, 1)
   spec_interation = np.arange(0, 40, 1)

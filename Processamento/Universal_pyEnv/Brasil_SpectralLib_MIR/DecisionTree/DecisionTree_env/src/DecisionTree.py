@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+import os
+import csv
 from sys import stdout
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
 from scipy.signal import savgol_filter
-
+import subprocess
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.model_selection import cross_val_predict
 from sklearn.model_selection import train_test_split
@@ -22,11 +24,34 @@ from sklearn.metrics import mean_squared_error, r2_score
       Step 3. Normalização  |  Baseados em Médias ou em Picos MSC, ou SNV
 
 """
+def check_csvFiles(filePath):
+  if not os.path.exists(filePath):
+    with open(filePath, mode='w', newline='') as file:
+      writer = csv.writer(file)
+      writer.writerow(['Header1', 'Header2'])  # Example headers
+    file.close()
+
+command = ["git", "branch", "-v"]
+result  = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True)
+gitOut = result.stdout[:7]
+
+if gitOut == "* Colab":
+  path_2Use="Colab"
+else:
+  path_2Use=None
+
 figure_counter = 0
 
 generalPahth=(f"Universal_pyEnv/Brasil_SpectralLib_MIR")
 SVRPahth=(f"{generalPahth}/DecisionTree")
 rbf=(f"{SVRPahth}/DecisionTree_env/src/")
+
+fileName=(f"{rbf}/bestFit_DecisionTree.csv")
+check_csvFiles(fileName)
+fileName=(f"{rbf}DecisionTree_BackUp.csv")
+check_csvFiles(fileName)
+fileName=(f"{rbf}/NearBestR2.csv")
+check_csvFiles(fileName)
 
 def snv(dataSet):
   
@@ -201,7 +226,8 @@ def optimise_DecisionTree_cv(X, y, n_comp):
   if float(AllData[0]) > max_rpd:
     max_r2  = float(AllData[1])
     max_rpd = float(AllData[0])
-  #"""
+  
+  
   with open(Bkp_file, 'r') as file:
     lines=file.readlines()
 
@@ -220,7 +246,7 @@ def optimise_DecisionTree_cv(X, y, n_comp):
         random_num",      AllData[8], "\n")
 
   file.close()
-  
+  #"""
   crit= 		      0 
   split=          0
   m_depth=  	    0
@@ -231,7 +257,7 @@ def optimise_DecisionTree_cv(X, y, n_comp):
   leafNode=       0
   random_num=     0
   
-  
+  #"""
   if float(AllData[8]) >= random_num:
     crit= 		        int(float(AllData[0]))
     split=            int(float(AllData[1]))
@@ -242,7 +268,7 @@ def optimise_DecisionTree_cv(X, y, n_comp):
     weight=           int(float(AllData[6]))
     leafNode=         int(float(AllData[7]))
     random_num=       int(float(AllData[8]))
-  
+  #"""
 
   progress_execution=0
   progress_percentage=0
@@ -318,15 +344,18 @@ def optimise_DecisionTree_cv(X, y, n_comp):
                       max_r2 = r2
                       best_randomR2 = random_num
 
-                      crit_BestR2                     = crit               
-                      splitter_BestR2                 = split             
-                      max_depth_BestR2                = m_depth          
-                      min_samples_split_BestR2        = min_samp_split  
-                      min_samples_leaf_BestR2         = samp_splitLeaf    
-                      features_BestR2                 = feat               
-                      min_weight_fraction_leaf_BestR2 = weight            
-                      max_leaf_nodes_BestR2           = leafNode           
-                    
+                      crit_BestR2                     = criterior               [crit          ]     
+                      splitter_BestR2                 = splitter                [split         ]    
+                      max_depth_BestR2                = max_depth               [m_depth       ]   
+                      min_samples_split_BestR2        = min_samples_split       [min_samp_split]  
+                      min_samples_leaf_BestR2         = min_samples_leaf        [samp_splitLeaf]    
+                      features_BestR2                 = features                [feat          ]     
+                      min_weight_fraction_leaf_BestR2 = min_weight_fraction_leaf[weight        ]    
+                      max_leaf_nodes_BestR2           = max_leaf_nodes          [leafNode      ]     
+                    #print("r2: ", r2);
+                    #print("rpd: ", rpd);
+                    #print("near MAX r2: ", max_r2*nearBest_crit);
+                    #print("near MAX rpd: ", max_rpd*nearBest_crit);
                     elif r2>=max_r2*nearBest_crit and rpd>=max_rpd*nearBest_crit :
                        
                       with open(NearbestFit_R2_file, 'a') as file:
@@ -340,14 +369,14 @@ def optimise_DecisionTree_cv(X, y, n_comp):
                       max_rpd = rpd
                       best_randomRpd= random_num
                       
-                      crit_BestRPD                     = crit            
-                      splitter_BestRPD                 = split           
-                      max_depth_BestRPD                = m_depth         
-                      min_samples_split_BestRPD        = min_samp_split
-                      min_samples_leaf_BestRPD         = samp_splitLeaf  
-                      features_BestRPD                 = feat            
-                      min_weight_fraction_leaf_BestRPD = weight          
-                      max_leaf_nodes_BestRPD           = leafNode        
+                      crit_BestRPD                     = criterior               [crit          ]  
+                      splitter_BestRPD                 = splitter                [split         ]  
+                      max_depth_BestRPD                = max_depth               [m_depth       ]  
+                      min_samples_split_BestRPD        = min_samples_split       [min_samp_split]
+                      min_samples_leaf_BestRPD         = min_samples_leaf        [samp_splitLeaf]  
+                      features_BestRPD                 = features                [feat          ]  
+                      min_weight_fraction_leaf_BestRPD = min_weight_fraction_leaf[weight        ]  
+                      max_leaf_nodes_BestRPD           = max_leaf_nodes          [leafNode      ]  
                       
                       with open(bestFit_file, 'a') as file:
                         data=(f"max_rpd,max_r2,criterio_R2,splitter_BestR2,max_depth_BestR2,min_samples_split_BestR2,min_samples_leaf_BestR2,features_BestR2,min_weight_fraction_leaf_BestR2, max_leaf_nodes_BestR2,criterio_BestRPD,splitter_BestRPD,max_depth_BestRPD,min_samples_split_BestRPD,min_samples_leaf_BestRPD,features_BestRPD,min_weight_fraction_leaf_BestRPD,max_leaf_nodes_BestRPD,random_num\n\

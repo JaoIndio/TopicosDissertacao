@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+import os
+import csv
 import subprocess
 from sys import stdout
 import numpy as np
@@ -23,6 +25,13 @@ from sklearn.metrics import mean_squared_error, r2_score
       Step 3. Normalização  |  Baseados em Médias ou em Picos MSC, ou SNV
 
 """
+def check_csvFiles(filePath):
+  if not os.path.exists(filePath):
+    with open(filePath, mode='w', newline='') as file:
+      writer = csv.writer(file)
+      writer.writerow(['Header1', 'Header2'])  # Example headers
+    file.close()
+
 figure_counter = 0
 command = ["git", "branch", "-v"]
 result  = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True)
@@ -43,6 +52,12 @@ else:
 SVRPahth=(f"{generalPahth}")
 rbf=(f"{SVRPahth}/PLSR/PLSR_env/src/")
 
+fileName=(f"{rbf}/bestFit_PLSR.csv")
+check_csvFiles(fileName)
+fileName=(f"{rbf}PLSR_BackUp.csv")
+check_csvFiles(fileName)
+fileName=(f"{rbf}/NearBestR2.csv")
+check_csvFiles(fileName)
 
 def snv(dataSet):
   
@@ -155,6 +170,7 @@ def optimise_pls_cv(X, y, n_comp):
   bestFit_file=(f"{rbf}bestFit_PLSR.csv")
   Bkp_file=(f"{rbf}PLSR_BackUp.csv")
   #random_num = 99296
+  
   #"""
   with open(bestFit_file, 'r') as file:
     lines=file.readlines()
@@ -190,7 +206,6 @@ def optimise_pls_cv(X, y, n_comp):
     n_comp         = int(AllData[0]) 
     random_num     = int(AllData[1])
   #"""
-  
   while random_num<2147483647:
     while n_comp<20:
       X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.35, random_state=random_num)

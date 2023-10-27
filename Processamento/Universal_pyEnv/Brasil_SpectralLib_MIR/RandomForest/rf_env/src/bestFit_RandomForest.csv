@@ -334,3 +334,47 @@ max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_R
         0.9916316680157313,0,        0,3,        0,0,0,        0.001,0.001,0.0001,        3
         ==============================================================
 
+max_rpd,max_r2,R2_rdn,RPD_rdn, n_estimators_R2, criterion_R2, max_depth_R2, min_samples_split_R2, min_samples_leaf_R2, min_weight_fraction_leaf_R2, max_features_R2, max_leaf_nodes_R2, n_estimators_RPD, criterion_RPD, max_depth_RPD, min_samples_split_RPD, min_samples_leaf_RPD, min_weight_fraction_leaf_RPD, max_features_RPD, max_leaf_nodes_RPD ,random_numbers
+ 0.727348197648756,0,0,0, 0, 0, 0, 0, 0, 0, 0, 0, 50, squared_error, 5, 2, 1, 0, None, None,0
+                        ==============================================================
+
+max_rpd,max_r2,R2_rdn,RPD_rdn, n_estimators_R2, criterion_R2, max_depth_R2, min_samples_split_R2, min_samples_leaf_R2, min_weight_fraction_leaf_R2, max_features_R2, max_leaf_nodes_R2, n_estimators_RPD, criterion_RPD, max_depth_RPD, min_samples_split_RPD, min_samples_leaf_RPD, min_weight_fraction_leaf_RPD, max_features_RPD, max_leaf_nodes_RPD ,random_numbers
+ 0.7770801981149987,0,0,0, 0, 0, 0, 0, 0, 0, 0, 0, 50, squared_error, 5, 2, 1, 0, None, 2,0
+                        ==============================================================
+
+max_rpd,max_r2,R2_rdn,RPD_rdn, n_estimators_R2, criterion_R2, max_depth_R2, min_samples_split_R2, min_samples_leaf_R2, min_weight_fraction_leaf_R2, max_features_R2, max_leaf_nodes_R2, n_estimators_RPD, criterion_RPD, max_depth_RPD, min_samples_split_RPD, min_samples_leaf_RPD, min_weight_fraction_leaf_RPD, max_features_RPD, max_leaf_nodes_RPD ,random_numbers
+ 0.727348197648756,0,0,0, 0, 0, 0, 0, 0, 0, 0, 0, 50, squared_error, 5, 2, 1, 0, None, None,0
+                        ==============================================================
+
+max_rpd,max_r2,R2_rdn,RPD_rdn, n_estimators_R2, criterion_R2, max_depth_R2, min_samples_split_R2, min_samples_leaf_R2, min_weight_fraction_leaf_R2, max_features_R2, max_leaf_nodes_R2, n_estimators_RPD, criterion_RPD, max_depth_RPD, min_samples_split_RPD, min_samples_leaf_RPD, min_weight_fraction_leaf_RPD, max_features_RPD, max_leaf_nodes_RPD ,random_numbers
+ 0.7770801981149987,0,0,0, 0, 0, 0, 0, 0, 0, 0, 0, 50, squared_error, 5, 2, 1, 0, None, 2,0
+                        ==============================================================
+
+max_rpd,max_r2,R2_rdn,RPD_rdn, n_estimators_R2, criterion_R2, max_depth_R2, min_samples_split_R2, min_samples_leaf_R2, min_weight_fraction_leaf_R2, max_features_R2, max_leaf_nodes_R2, n_estimators_RPD, criterion_RPD, max_depth_RPD, min_samples_split_RPD, min_samples_leaf_RPD, min_weight_fraction_leaf_RPD, max_features_RPD, max_leaf_nodes_RPD ,random_numbers
+ 0.9725002971378874,0,0,0, 0, 0, 0, 0, 0, 0, 0, 0, 50, squared_error, 5, 2, 1, 0, log2, None,0
+                        ==============================================================
+
+max_rpd,max_r2,R2_rdn,RPD_rdn, n_estimators_R2, criterion_R2, max_depth_R2, min_samples_split_R2, min_samples_leaf_R2, min_weight_fraction_leaf_R2, max_features_R2, max_leaf_nodes_R2, n_estimators_RPD, criterion_RPD, max_depth_RPD, min_samples_split_RPD, min_samples_leaf_RPD, min_weight_fraction_leaf_RPD, max_features_RPD, max_leaf_nodes_RPD ,random_numbers
+ 0.9835177643502875,0,0,0, 0, 0, 0, 0, 0, 0, 0, 0, 50, squared_error, 5, 2, 1, 0, log2, 2,0
+                        ==============================================================
+
+max_rpd,max_r2,R2_rdn,RPD_rdn, n_estimators_R2, criterion_R2, max_depth_R2, min_samples_split_R2, min_samples_leaf_R2, min_weight_fraction_leaf_R2, max_features_R2, max_leaf_nodes_R2, n_estimators_RPD, criterion_RPD, max_depth_RPD, min_samples_split_RPD, min_samples_leaf_RPD, min_weight_fraction_leaf_RPD, max_features_RPD, max_leaf_nodes_RPD ,random_numbers
+ 0.9839779802963171,0,0,0, 0, 0, 0, 0, 0, 0, 0, 0, 50, squared_error, 5, 2, 1, 0.01, log2, 2,0
+                        ==============================================================
+
+max_rpd,max_r2,R2_rdn,RPD_rdn, n_estimators_R2, criterion_R2, max_depth_R2, min_samples_split_R2, min_samples_leaf_R2, min_weight_fraction_leaf_R2, max_features_R2, max_leaf_nodes_R2, n_estimators_RPD, criterion_RPD, max_depth_RPD, min_samples_split_RPD, min_samples_leaf_RPD, min_weight_fraction_leaf_RPD, max_features_RPD, max_leaf_nodes_RPD ,random_numbers
+ 0.9894637190883085,0,0,0, 0, 0, 0, 0, 0, 0, 0, 0, 50, squared_error, 5, 2, 1, 0.1, None, None,0
+                        ==============================================================
+
+max_rpd,max_r2,R2_rdn,RPD_rdn, n_estimators_R2, criterion_R2, max_depth_R2, min_samples_split_R2, min_samples_leaf_R2, min_weight_fraction_leaf_R2, max_features_R2, max_leaf_nodes_R2, n_estimators_RPD, criterion_RPD, max_depth_RPD, min_samples_split_RPD, min_samples_leaf_RPD, min_weight_fraction_leaf_RPD, max_features_RPD, max_leaf_nodes_RPD ,random_numbers
+ 0.9936109125781503,0,0,0, 0, 0, 0, 0, 0, 0, 0, 0, 50, squared_error, 5, 2, 1, 0.2, None, None,0
+                        ==============================================================
+
+max_rpd,max_r2,R2_rdn,RPD_rdn, n_estimators_R2, criterion_R2, max_depth_R2, min_samples_split_R2, min_samples_leaf_R2, min_weight_fraction_leaf_R2, max_features_R2, max_leaf_nodes_R2, n_estimators_RPD, criterion_RPD, max_depth_RPD, min_samples_split_RPD, min_samples_leaf_RPD, min_weight_fraction_leaf_RPD, max_features_RPD, max_leaf_nodes_RPD ,random_numbers
+ 0.997728084929803,0,0,0, 0, 0, 0, 0, 0, 0, 0, 0, 50, squared_error, 5, 2, 1, 0.4, None, None,0
+                        ==============================================================
+
+max_rpd,max_r2,R2_rdn,RPD_rdn, n_estimators_R2, criterion_R2, max_depth_R2, min_samples_split_R2, min_samples_leaf_R2, min_weight_fraction_leaf_R2, max_features_R2, max_leaf_nodes_R2, n_estimators_RPD, criterion_RPD, max_depth_RPD, min_samples_split_RPD, min_samples_leaf_RPD, min_weight_fraction_leaf_RPD, max_features_RPD, max_leaf_nodes_RPD ,random_numbers
+ 1.001532873695249,0.0030587126648308205,0,0, 50, squared_error, 5, 2, 1, 0.5, None, None, 50, squared_error, 5, 2, 1, 0.5, None, None,0
+                        ==============================================================
+

@@ -1,4 +1,4 @@
 losses,learning_rate,n_estimators,subsample,criterion,min_samples_split,min_samples_leaf,min_weight_fraction_leaf,max_depth,random_state,max_features,max_leaf_nodes,validation_fraction,n_iter_no_change,tol,random_num
- 0,0,0,1,0,6,3,6,0,0,0,0,0,0, 0
+ 0,0,0,2,0,0,1,6,0,0,0,0,0,0, 0
                     ******************************************
 

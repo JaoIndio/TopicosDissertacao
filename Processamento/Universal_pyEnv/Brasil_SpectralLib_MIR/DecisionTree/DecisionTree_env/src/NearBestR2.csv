@@ -2346,3 +2346,227 @@ criterior,splitter,max_depth,min_samples_split,min_samples_leaf,features,min_wei
                   2, 1, 1, 5, 0, 0, 0, 7, 78, 0.4990396284124323, 0.2647755011757169, 1.1662455912746783, 1.4128573452452189
  *****  ***********************************
 
+criterior,splitter,max_depth,min_samples_split,min_samples_leaf,features,min_weight_fraction_leaf, max_leaf_nodes, random_num, max_r2, r2, rpd, max_rpd, 
+                  2, 1, 2, 0, 2, 0, 0, 3, 78, 0.4990396284124323, 0.26480098315060263, 1.1662658021173768, 1.4128573452452189
+ *****  ***********************************
+
+criterior,splitter,max_depth,min_samples_split,min_samples_leaf,features,min_weight_fraction_leaf, max_leaf_nodes, random_num, max_r2, r2, rpd, max_rpd, 
+                  2, 1, 2, 0, 2, 0, 1, 3, 78, 0.4990396284124323, 0.26480098315060263, 1.1662658021173768, 1.4128573452452189
+ *****  ***********************************
+
+criterior,splitter,max_depth,min_samples_split,min_samples_leaf,features,min_weight_fraction_leaf, max_leaf_nodes, random_num, max_r2, r2, rpd, max_rpd, 
+                  2, 1, 2, 0, 2, 0, 0, 3, 78, 0.4990396284124323, 0.26480098315060263, 1.1662658021173768, 1.4128573452452189
+ *****  ***********************************
+
+criterior,splitter,max_depth,min_samples_split,min_samples_leaf,features,min_weight_fraction_leaf, max_leaf_nodes, random_num, max_r2, r2, rpd, max_rpd, 
+                  2, 1, 2, 0, 2, 0, 1, 3, 78, 0.4990396284124323, 0.26480098315060263, 1.1662658021173768, 1.4128573452452189
+ *****  ***********************************
+
+criterior,splitter,max_depth,min_samples_split,min_samples_leaf,features,min_weight_fraction_leaf, max_leaf_nodes, random_num, max_r2, r2, rpd, max_rpd, 
+                  2, 1, 2, 1, 0, 0, 0, 3, 78, 0.4990396284124323, 0.2523386993600616, 1.1565050913913897, 1.4128573452452189
+ *****  ***********************************
+
+criterior,splitter,max_depth,min_samples_split,min_samples_leaf,features,min_weight_fraction_leaf, max_leaf_nodes, random_num, max_r2, r2, rpd, max_rpd, 
+                  2, 1, 2, 1, 2, 0, 0, 3, 78, 0.4990396284124323, 0.26480098315060263, 1.1662658021173768, 1.4128573452452189
+ *****  ***********************************
+
+criterior,splitter,max_depth,min_samples_split,min_samples_leaf,features,min_weight_fraction_leaf, max_leaf_nodes, random_num, max_r2, r2, rpd, max_rpd, 
+                  2, 1, 2, 1, 2, 0, 1, 3, 78, 0.4990396284124323, 0.26480098315060263, 1.1662658021173768, 1.4128573452452189
+ *****  ***********************************
+
+criterior,splitter,max_depth,min_samples_split,min_samples_leaf,features,min_weight_fraction_leaf, max_leaf_nodes, random_num, max_r2, r2, rpd, max_rpd, 
+                  2, 1, 2, 2, 0, 0, 0, 3, 78, 0.4990396284124323, 0.2523386993600616, 1.1565050913913897, 1.4128573452452189
+ *****  ***********************************
+
+criterior,splitter,max_depth,min_samples_split,min_samples_leaf,features,min_weight_fraction_leaf, max_leaf_nodes, random_num, max_r2, r2, rpd, max_rpd, 
+                  2, 1, 2, 0, 2, 0, 0, 3, 78, 0.4990396284124323, 0.26480098315060263, 1.1662658021173768, 1.4128573452452189
+ *****  ***********************************
+
+criterior,splitter,max_depth,min_samples_split,min_samples_leaf,features,min_weight_fraction_leaf, max_leaf_nodes, random_num, max_r2, r2, rpd, max_rpd, 
+                  2, 1, 2, 0, 2, 0, 1, 3, 78, 0.4990396284124323, 0.26480098315060263, 1.1662658021173768, 1.4128573452452189
+ *****  ***********************************
+
+criterior,splitter,max_depth,min_samples_split,min_samples_leaf,features,min_weight_fraction_leaf, max_leaf_nodes, random_num, max_r2, r2, rpd, max_rpd, 
+                  2, 1, 2, 1, 0, 0, 0, 3, 78, 0.4990396284124323, 0.2523386993600616, 1.1565050913913897, 1.4128573452452189
+ *****  ***********************************
+
+criterior,splitter,max_depth,min_samples_split,min_samples_leaf,features,min_weight_fraction_leaf, max_leaf_nodes, random_num, max_r2, r2, rpd, max_rpd, 
+                  2, 1, 2, 1, 2, 0, 0, 3, 78, 0.4990396284124323, 0.26480098315060263, 1.1662658021173768, 1.4128573452452189
+ *****  ***********************************
+
+criterior,splitter,max_depth,min_samples_split,min_samples_leaf,features,min_weight_fraction_leaf, max_leaf_nodes, random_num, max_r2, r2, rpd, max_rpd, 
+                  2, 1, 2, 1, 2, 0, 1, 3, 78, 0.4990396284124323, 0.26480098315060263, 1.1662658021173768, 1.4128573452452189
+ *****  ***********************************
+
+criterior,splitter,max_depth,min_samples_split,min_samples_leaf,features,min_weight_fraction_leaf, max_leaf_nodes, random_num, max_r2, r2, rpd, max_rpd, 
+                  2, 1, 2, 2, 0, 0, 0, 3, 78, 0.4990396284124323, 0.2523386993600616, 1.1565050913913897, 1.4128573452452189
+ *****  ***********************************
+
+criterior,splitter,max_depth,min_samples_split,min_samples_leaf,features,min_weight_fraction_leaf, max_leaf_nodes, random_num, max_r2, r2, rpd, max_rpd, 
+                  2, 1, 2, 2, 2, 0, 0, 3, 78, 0.4990396284124323, 0.26480098315060263, 1.1662658021173768, 1.4128573452452189
+ *****  ***********************************
+
+criterior,splitter,max_depth,min_samples_split,min_samples_leaf,features,min_weight_fraction_leaf, max_leaf_nodes, random_num, max_r2, r2, rpd, max_rpd, 
+                  2, 1, 2, 2, 2, 0, 1, 3, 78, 0.4990396284124323, 0.26480098315060263, 1.1662658021173768, 1.4128573452452189
+ *****  ***********************************
+
+criterior,splitter,max_depth,min_samples_split,min_samples_leaf,features,min_weight_fraction_leaf, max_leaf_nodes, random_num, max_r2, r2, rpd, max_rpd, 
+                  2, 1, 2, 3, 0, 0, 0, 3, 78, 0.4990396284124323, 0.2523386993600616, 1.1565050913913897, 1.4128573452452189
+ *****  ***********************************
+
+criterior,splitter,max_depth,min_samples_split,min_samples_leaf,features,min_weight_fraction_leaf, max_leaf_nodes, random_num, max_r2, r2, rpd, max_rpd, 
+                  2, 1, 2, 4, 0, 0, 0, 3, 78, 0.4990396284124323, 0.2523386993600616, 1.1565050913913897, 1.4128573452452189
+ *****  ***********************************
+
+criterior,splitter,max_depth,min_samples_split,min_samples_leaf,features,min_weight_fraction_leaf, max_leaf_nodes, random_num, max_r2, r2, rpd, max_rpd, 
+                  2, 1, 2, 4, 0, 0, 0, 5, 78, 0.4990396284124323, 0.2636030978842223, 1.1653168429212746, 1.4128573452452189
+ *****  ***********************************
+
+criterior,splitter,max_depth,min_samples_split,min_samples_leaf,features,min_weight_fraction_leaf, max_leaf_nodes, random_num, max_r2, r2, rpd, max_rpd, 
+                  2, 1, 2, 4, 0, 0, 0, 6, 78, 0.4990396284124323, 0.2635947515931324, 1.1653102391517043, 1.4128573452452189
+ *****  ***********************************
+
+criterior,splitter,max_depth,min_samples_split,min_samples_leaf,features,min_weight_fraction_leaf, max_leaf_nodes, random_num, max_r2, r2, rpd, max_rpd, 
+                  2, 1, 2, 4, 0, 0, 0, 7, 78, 0.4990396284124323, 0.2635947515931324, 1.1653102391517043, 1.4128573452452189
+ *****  ***********************************
+
+criterior,splitter,max_depth,min_samples_split,min_samples_leaf,features,min_weight_fraction_leaf, max_leaf_nodes, random_num, max_r2, r2, rpd, max_rpd, 
+                  2, 1, 2, 5, 0, 0, 0, 3, 78, 0.4990396284124323, 0.2523386993600616, 1.1565050913913897, 1.4128573452452189
+ *****  ***********************************
+
+criterior,splitter,max_depth,min_samples_split,min_samples_leaf,features,min_weight_fraction_leaf, max_leaf_nodes, random_num, max_r2, r2, rpd, max_rpd, 
+                  2, 1, 2, 5, 0, 0, 0, 5, 78, 0.4990396284124323, 0.2647755011757169, 1.1662455912746783, 1.4128573452452189
+ *****  ***********************************
+
+criterior,splitter,max_depth,min_samples_split,min_samples_leaf,features,min_weight_fraction_leaf, max_leaf_nodes, random_num, max_r2, r2, rpd, max_rpd, 
+                  2, 1, 2, 5, 0, 0, 0, 6, 78, 0.4990396284124323, 0.2647755011757169, 1.1662455912746783, 1.4128573452452189
+ *****  ***********************************
+
+criterior,splitter,max_depth,min_samples_split,min_samples_leaf,features,min_weight_fraction_leaf, max_leaf_nodes, random_num, max_r2, r2, rpd, max_rpd, 
+                  2, 1, 2, 5, 0, 0, 0, 7, 78, 0.4990396284124323, 0.2647755011757169, 1.1662455912746783, 1.4128573452452189
+ *****  ***********************************
+
+criterior,splitter,max_depth,min_samples_split,min_samples_leaf,features,min_weight_fraction_leaf, max_leaf_nodes, random_num, max_r2, r2, rpd, max_rpd, 
+                  2, 1, 3, 0, 2, 0, 0, 3, 78, 0.4990396284124323, 0.26480098315060263, 1.1662658021173768, 1.4128573452452189
+ *****  ***********************************
+
+criterior,splitter,max_depth,min_samples_split,min_samples_leaf,features,min_weight_fraction_leaf, max_leaf_nodes, random_num, max_r2, r2, rpd, max_rpd, 
+                  2, 1, 3, 0, 2, 0, 1, 3, 78, 0.4990396284124323, 0.26480098315060263, 1.1662658021173768, 1.4128573452452189
+ *****  ***********************************
+
+criterior,splitter,max_depth,min_samples_split,min_samples_leaf,features,min_weight_fraction_leaf, max_leaf_nodes, random_num, max_r2, r2, rpd, max_rpd, 
+                  2, 1, 3, 1, 0, 0, 0, 3, 78, 0.4990396284124323, 0.2523386993600616, 1.1565050913913897, 1.4128573452452189
+ *****  ***********************************
+
+criterior,splitter,max_depth,min_samples_split,min_samples_leaf,features,min_weight_fraction_leaf, max_leaf_nodes, random_num, max_r2, r2, rpd, max_rpd, 
+                  2, 1, 3, 1, 2, 0, 0, 3, 78, 0.4990396284124323, 0.26480098315060263, 1.1662658021173768, 1.4128573452452189
+ *****  ***********************************
+
+criterior,splitter,max_depth,min_samples_split,min_samples_leaf,features,min_weight_fraction_leaf, max_leaf_nodes, random_num, max_r2, r2, rpd, max_rpd, 
+                  2, 1, 3, 1, 2, 0, 1, 3, 78, 0.4990396284124323, 0.26480098315060263, 1.1662658021173768, 1.4128573452452189
+ *****  ***********************************
+
+criterior,splitter,max_depth,min_samples_split,min_samples_leaf,features,min_weight_fraction_leaf, max_leaf_nodes, random_num, max_r2, r2, rpd, max_rpd, 
+                  2, 1, 3, 2, 0, 0, 0, 3, 78, 0.4990396284124323, 0.2523386993600616, 1.1565050913913897, 1.4128573452452189
+ *****  ***********************************
+
+criterior,splitter,max_depth,min_samples_split,min_samples_leaf,features,min_weight_fraction_leaf, max_leaf_nodes, random_num, max_r2, r2, rpd, max_rpd, 
+                  2, 1, 3, 2, 2, 0, 0, 3, 78, 0.4990396284124323, 0.26480098315060263, 1.1662658021173768, 1.4128573452452189
+ *****  ***********************************
+
+criterior,splitter,max_depth,min_samples_split,min_samples_leaf,features,min_weight_fraction_leaf, max_leaf_nodes, random_num, max_r2, r2, rpd, max_rpd, 
+                  2, 1, 3, 2, 2, 0, 1, 3, 78, 0.4990396284124323, 0.26480098315060263, 1.1662658021173768, 1.4128573452452189
+ *****  ***********************************
+
+criterior,splitter,max_depth,min_samples_split,min_samples_leaf,features,min_weight_fraction_leaf, max_leaf_nodes, random_num, max_r2, r2, rpd, max_rpd, 
+                  2, 1, 3, 3, 0, 0, 0, 3, 78, 0.4990396284124323, 0.2523386993600616, 1.1565050913913897, 1.4128573452452189
+ *****  ***********************************
+
+criterior,splitter,max_depth,min_samples_split,min_samples_leaf,features,min_weight_fraction_leaf, max_leaf_nodes, random_num, max_r2, r2, rpd, max_rpd, 
+                  2, 1, 3, 4, 0, 0, 0, 3, 78, 0.4990396284124323, 0.2523386993600616, 1.1565050913913897, 1.4128573452452189
+ *****  ***********************************
+
+criterior,splitter,max_depth,min_samples_split,min_samples_leaf,features,min_weight_fraction_leaf, max_leaf_nodes, random_num, max_r2, r2, rpd, max_rpd, 
+                  2, 1, 3, 4, 0, 0, 0, 5, 78, 0.4990396284124323, 0.2636030978842223, 1.1653168429212746, 1.4128573452452189
+ *****  ***********************************
+
+criterior,splitter,max_depth,min_samples_split,min_samples_leaf,features,min_weight_fraction_leaf, max_leaf_nodes, random_num, max_r2, r2, rpd, max_rpd, 
+                  2, 1, 3, 4, 0, 0, 0, 6, 78, 0.4990396284124323, 0.2635947515931324, 1.1653102391517043, 1.4128573452452189
+ *****  ***********************************
+
+criterior,splitter,max_depth,min_samples_split,min_samples_leaf,features,min_weight_fraction_leaf, max_leaf_nodes, random_num, max_r2, r2, rpd, max_rpd, 
+                  2, 1, 3, 4, 0, 0, 0, 7, 78, 0.4990396284124323, 0.2635947515931324, 1.1653102391517043, 1.4128573452452189
+ *****  ***********************************
+
+criterior,splitter,max_depth,min_samples_split,min_samples_leaf,features,min_weight_fraction_leaf, max_leaf_nodes, random_num, max_r2, r2, rpd, max_rpd, 
+                  2, 1, 3, 5, 0, 0, 0, 3, 78, 0.4990396284124323, 0.2523386993600616, 1.1565050913913897, 1.4128573452452189
+ *****  ***********************************
+
+criterior,splitter,max_depth,min_samples_split,min_samples_leaf,features,min_weight_fraction_leaf, max_leaf_nodes, random_num, max_r2, r2, rpd, max_rpd, 
+                  2, 1, 3, 5, 0, 0, 0, 5, 78, 0.4990396284124323, 0.2647755011757169, 1.1662455912746783, 1.4128573452452189
+ *****  ***********************************
+
+criterior,splitter,max_depth,min_samples_split,min_samples_leaf,features,min_weight_fraction_leaf, max_leaf_nodes, random_num, max_r2, r2, rpd, max_rpd, 
+                  2, 1, 3, 5, 0, 0, 0, 6, 78, 0.4990396284124323, 0.2647755011757169, 1.1662455912746783, 1.4128573452452189
+ *****  ***********************************
+
+criterior,splitter,max_depth,min_samples_split,min_samples_leaf,features,min_weight_fraction_leaf, max_leaf_nodes, random_num, max_r2, r2, rpd, max_rpd, 
+                  2, 1, 3, 5, 0, 0, 0, 7, 78, 0.4990396284124323, 0.2647755011757169, 1.1662455912746783, 1.4128573452452189
+ *****  ***********************************
+
+criterior,splitter,max_depth,min_samples_split,min_samples_leaf,features,min_weight_fraction_leaf, max_leaf_nodes, random_num, max_r2, r2, rpd, max_rpd, 
+                  2, 0, 0, 0, 1, 0, 0, 0, 79, 0.4990396284124323, 0.2615193891414942, 1.1636716432185137, 1.4128573452452189
+ *****  ***********************************
+
+criterior,splitter,max_depth,min_samples_split,min_samples_leaf,features,min_weight_fraction_leaf, max_leaf_nodes, random_num, max_r2, r2, rpd, max_rpd, 
+                  2, 0, 0, 1, 1, 0, 0, 0, 79, 0.4990396284124323, 0.2615193891414942, 1.1636716432185137, 1.4128573452452189
+ *****  ***********************************
+
+criterior,splitter,max_depth,min_samples_split,min_samples_leaf,features,min_weight_fraction_leaf, max_leaf_nodes, random_num, max_r2, r2, rpd, max_rpd, 
+                  2, 0, 0, 2, 1, 0, 0, 0, 79, 0.4990396284124323, 0.27010909515757786, 1.1704989380827702, 1.4128573452452189
+ *****  ***********************************
+
+criterior,splitter,max_depth,min_samples_split,min_samples_leaf,features,min_weight_fraction_leaf, max_leaf_nodes, random_num, max_r2, r2, rpd, max_rpd, 
+                  2, 0, 0, 3, 1, 0, 0, 0, 79, 0.4990396284124323, 0.27010909515757786, 1.1704989380827702, 1.4128573452452189
+ *****  ***********************************
+
+criterior,splitter,max_depth,min_samples_split,min_samples_leaf,features,min_weight_fraction_leaf, max_leaf_nodes, random_num, max_r2, r2, rpd, max_rpd, 
+                  2, 0, 0, 4, 1, 0, 0, 0, 79, 0.4990396284124323, 0.27010909515757786, 1.1704989380827702, 1.4128573452452189
+ *****  ***********************************
+
+criterior,splitter,max_depth,min_samples_split,min_samples_leaf,features,min_weight_fraction_leaf, max_leaf_nodes, random_num, max_r2, r2, rpd, max_rpd, 
+                  2, 0, 1, 0, 1, 0, 0, 0, 79, 0.4990396284124323, 0.2638085863401435, 1.165479465336396, 1.4128573452452189
+ *****  ***********************************
+
+criterior,splitter,max_depth,min_samples_split,min_samples_leaf,features,min_weight_fraction_leaf, max_leaf_nodes, random_num, max_r2, r2, rpd, max_rpd, 
+                  2, 0, 1, 1, 1, 0, 0, 0, 79, 0.4990396284124323, 0.2638085863401435, 1.165479465336396, 1.4128573452452189
+ *****  ***********************************
+
+criterior,splitter,max_depth,min_samples_split,min_samples_leaf,features,min_weight_fraction_leaf, max_leaf_nodes, random_num, max_r2, r2, rpd, max_rpd, 
+                  2, 1, 1, 2, 0, 0, 0, 0, 79, 0.4990396284124323, 0.3379284859365159, 1.2289877349027518, 1.4128573452452189
+ *****  ***********************************
+
+criterior,splitter,max_depth,min_samples_split,min_samples_leaf,features,min_weight_fraction_leaf, max_leaf_nodes, random_num, max_r2, r2, rpd, max_rpd, 
+                  2, 0, 2, 0, 1, 0, 0, 0, 79, 0.4990396284124323, 0.2638085863401435, 1.165479465336396, 1.4128573452452189
+ *****  ***********************************
+
+criterior,splitter,max_depth,min_samples_split,min_samples_leaf,features,min_weight_fraction_leaf, max_leaf_nodes, random_num, max_r2, r2, rpd, max_rpd, 
+                  2, 0, 2, 1, 1, 0, 0, 0, 79, 0.4990396284124323, 0.2638085863401435, 1.165479465336396, 1.4128573452452189
+ *****  ***********************************
+
+criterior,splitter,max_depth,min_samples_split,min_samples_leaf,features,min_weight_fraction_leaf, max_leaf_nodes, random_num, max_r2, r2, rpd, max_rpd, 
+                  2, 1, 2, 2, 0, 0, 0, 0, 79, 0.4990396284124323, 0.3387332495120291, 1.2297353483496005, 1.4128573452452189
+ *****  ***********************************
+
+criterior,splitter,max_depth,min_samples_split,min_samples_leaf,features,min_weight_fraction_leaf, max_leaf_nodes, random_num, max_r2, r2, rpd, max_rpd, 
+                  2, 0, 3, 0, 1, 0, 0, 0, 79, 0.4990396284124323, 0.2638085863401435, 1.165479465336396, 1.4128573452452189
+ *****  ***********************************
+
+criterior,splitter,max_depth,min_samples_split,min_samples_leaf,features,min_weight_fraction_leaf, max_leaf_nodes, random_num, max_r2, r2, rpd, max_rpd, 
+                  2, 0, 3, 1, 1, 0, 0, 0, 79, 0.4990396284124323, 0.2638085863401435, 1.165479465336396, 1.4128573452452189
+ *****  ***********************************
+
+criterior,splitter,max_depth,min_samples_split,min_samples_leaf,features,min_weight_fraction_leaf, max_leaf_nodes, random_num, max_r2, r2, rpd, max_rpd, 
+                  2, 1, 3, 2, 0, 0, 0, 0, 79, 0.4990396284124323, 0.3387332495120291, 1.2297353483496005, 1.4128573452452189
+ *****  ***********************************
+

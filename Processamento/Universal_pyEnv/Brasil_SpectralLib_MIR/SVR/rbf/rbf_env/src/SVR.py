@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+import os
+import csv
+
 from sys import stdout
 import numpy as np
 import pandas as pd
@@ -23,11 +26,27 @@ from sklearn.metrics import mean_squared_error, r2_score
       Step 3. Normalização  |  Baseados em Médias ou em Picos MSC, ou SNV
 
 """
+def check_csvFiles(filePath):
+  if not os.path.exists(filePath):
+    with open(filePath, mode='w', newline='') as file:
+      writer = csv.writer(file)
+      writer.writerow(['Header1', 'Header2'])  # Example headers
+    file.close()
+
+
 figure_counter = 0
 
 generalPahth=(f"Universal_pyEnv/Brasil_SpectralLib_MIR/SVR") 
 SVRPahth=(f"{generalPahth}/rbf/rbf_env")
 rbf=(f"{SVRPahth}/src/")
+
+fileName=(f"{rbf}/bestFitSVR_rbf.csv")
+check_csvFiles(fileName)
+fileName=(f"{rbf}SVR_rbf_BackUp.csv")
+check_csvFiles(fileName)
+fileName=(f"{rbf}/NearBestR2.csv")
+check_csvFiles(fileName)
+
 
 def snv(dataSet):
   
@@ -151,6 +170,7 @@ def optimise_SVR_cv(X, y, n_comp):
   bestFit_file=(f"{rbf}bestFitSVR_rbf.csv")
   Bkp_file=(f"{rbf}SVR_rbf_BackUp.csv")
   
+  #"""
   with open(bestFit_file, 'r') as file:
     lines=file.readlines()
 
@@ -168,7 +188,7 @@ def optimise_SVR_cv(X, y, n_comp):
   \t\tGamma RPD:       ",AllData[8],"\n\
   \t\tEpsilon RPD:     ",AllData[9],"\n\
   \t\tRandom Numbers:  ",AllData[10],"\n")
-  #file.close()
+  file.close()
   
   if float(AllData[0]) > max_rpd:
     max_r2  = float(AllData[1])
@@ -184,14 +204,14 @@ def optimise_SVR_cv(X, y, n_comp):
   \t\tGamma        ",AllData[1],"\n\
   \t\tEpsilon:     ",AllData[2],"\n\
   \t\tRandomNumber ",AllData[3],"\n")
-  #file.close()
+  file.close()
   
   if int(AllData[3]) > random_num:
     C              = float(AllData[0]) 
     Gamma          = float(AllData[1])
     Epsilon        = float(AllData[2])
     random_num     = int(AllData[3])
-  
+  #"""
   while random_num < 2147483647:
     #print("RBF MIR ---------> random", random_num)
     while C<100000:
