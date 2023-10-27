@@ -166,8 +166,6 @@ def optimise_DecisionTree_cv(X, y, n_comp):
  
   #random_num = 99296
   NearbestFit_R2_file=(f"{rbf}NearBestR2.csv")
-  NearbestFit_RPD_file=(f"{rbf}NearBestRPD.csv")
-  bestFit_file=(f"{rbf}bestFit_DecisionTree.csv")
   bestFit_file=(f"{rbf}bestFit_DecisionTree.csv")
   Bkp_file=(f"{rbf}DecisionTree_BackUp.csv")
   

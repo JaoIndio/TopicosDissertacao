@@ -157,15 +157,15 @@ def optimise_GradBoost_cv(X, y, n_comp):
   learning_rate            = [0.01,0.1,1,10,100]                        # Layer 2                    
   n_estimators             = [1,5,25,125,250,500]                       # Layer 3                
   subsample                = [0.3,0.5,0.75,0.8,1]                       # Layer 4                      
-  criterion                = ['friedman_mse', 'squared_error', 'mae']   # Layer 5                          
+  criterion                = ['friedman_mse', 'squared_error']          # Layer 5                          
   min_samples_split        = [2,4,8,16,32,20,40,80]                     # Layer 6                       
   min_samples_leaf         = [1,2,4,8,16,32]                            # Layer 7  
   min_weight_fraction_leaf = [0, 0.01, 0.1, 0.2, 0.4, 0.5]              # Layer 8    
   max_depth                = [1,3,5,7,9,11]                             # Layer 9    
   random_state             = 10                                         # Layer 10     
-  max_features             = [None, 'auto', 'sqrt', 'log2']             # Layer 11        
+  max_features             = [None, 'sqrt', 'log2']                     # Layer 11        
   max_leaf_nodes           = [None, 10, 100, 1000]                      # Layer 12                  
-  validation_fraction      = [0, 0.1, 0.2]                              # Layer 13                               
+  validation_fraction      = [0.00001, 0.1, 0.2]                            # Layer 13                               
   n_iter_no_change         = [None] #, 10, 100, 1000, 10000]            # Layer 14           
   tol                      = [10,1, 1e-2, 1e-3, 1e-4, 1e-5]             # Layer 15                               
 
@@ -229,6 +229,7 @@ def optimise_GradBoost_cv(X, y, n_comp):
   \t\tn_iter_no_change_i                ",AllData[14],"\n\
   \t\ttol_i                             ",AllData[15],"\n\
   \t\tRandom Numbers:                   ",AllData[16],"\n")
+  
   file.close()
   
   if float(AllData[0]) > max_rpd:
