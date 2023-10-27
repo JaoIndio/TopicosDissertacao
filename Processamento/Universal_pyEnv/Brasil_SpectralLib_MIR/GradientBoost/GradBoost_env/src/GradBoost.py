@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+import os
+import csv
+
 import subprocess
 from sys import stdout
 import numpy as np
@@ -24,6 +27,13 @@ from sklearn.metrics import mean_squared_error, r2_score
       Step 3. Normalização  |  Baseados em Médias ou em Picos MSC, ou SNV
 
 """
+def check_csvFiles(filePath):
+  if not os.path.exists(filePath):
+    with open(filePath, mode='w', newline='') as file:
+      writer = csv.writer(file)
+      writer.writerow(['Header1', 'Header2'])  # Example headers
+    file.close()
+
 figure_counter = 0
 command = ["git", "branch", "-v"]
 result  = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True)
@@ -42,6 +52,13 @@ else:
   generalPahth=(f"./Universal_pyEnv/Brasil_SpectralLib_MIR")
 SVRPahth=(f"{generalPahth}/GradientBoost")
 rbf=(f"{SVRPahth}/GradBoost_env/src/")
+
+fileName=(f"{rbf}/bestFit_GradBoost.csv")
+check_csvFiles(fileName)
+fileName=(f"{rbf}GradBoost_BackUp.csv")
+check_csvFiles(fileName)
+fileName=(f"{rbf}/NearBestR2.csv")
+check_csvFiles(fileName)
 
 def snv(dataSet):
   
@@ -151,6 +168,7 @@ def optimise_GradBoost_cv(X, y, n_comp):
   best_randomRpd=0
 
   nearBest_crit = 0.50
+  random_state             = 10                                         # Layer 10     
   
   
   losses                   = ['squared_error', 'absolute_error', 'huber', 'quantile'] 
@@ -162,7 +180,6 @@ def optimise_GradBoost_cv(X, y, n_comp):
   min_samples_leaf         = [1,2,4,8,16,32]                            # Layer 7  
   min_weight_fraction_leaf = [0, 0.01, 0.1, 0.2, 0.4, 0.5]              # Layer 8    
   max_depth                = [1,3,5,7,9,11]                             # Layer 9    
-  random_state             = 10                                         # Layer 10     
   max_features             = [None, 'auto', 'sqrt', 'log2']             # Layer 11        
   max_leaf_nodes           = [None, 10, 100, 1000]                      # Layer 12                  
   validation_fraction      = [0, 0.1, 0.2]                              # Layer 13                               
@@ -204,7 +221,7 @@ def optimise_GradBoost_cv(X, y, n_comp):
   bestFit_file=(f"{rbf}bestFit_GradBoost.csv")
   Bkp_file=(f"{rbf}GradBoost_BackUp.csv")
   
-  
+  #"""
   with open(bestFit_file, 'r') as file:
     lines=file.readlines()
 
@@ -259,6 +276,7 @@ def optimise_GradBoost_cv(X, y, n_comp):
   \t\tRandom Numbers:                   ",AllData[14],"\n")
   
   file.close()
+  #"""
   loss_i                         = 0  
   learning_rate_i                = 0
   n_estimators_i                 = 0
@@ -275,6 +293,7 @@ def optimise_GradBoost_cv(X, y, n_comp):
   tol_i                          = 0
   random_num                     = 0
   
+  #"""
   if float(AllData[14]) >= random_num:
     loss_i                         = int(float(AllData[0])) 
     learning_rate_i                = int(float(AllData[1]))
@@ -291,7 +310,7 @@ def optimise_GradBoost_cv(X, y, n_comp):
     n_iter_no_change_i             = int(float(AllData[12]))
     tol_i                          = int(float(AllData[13]))
     random_num                     = int(float(AllData[14]))
-  
+  #"""
   
   while random_num < 2147483647:
     while loss_i                    < len(losses):
@@ -360,38 +379,38 @@ def optimise_GradBoost_cv(X, y, n_comp):
                                 if r2>max_r2:
                                   max_r2 = r2
                                   best_randomR2 = random_num
-                                  losses_R2                   = loss_i
-                                  learning_rate_R2            = learning_rate_i
-                                  n_estimators_R2             = n_estimators_i
-                                  subsample_R2                = subsample_i               
-                                  criterion_R2                = criterion_i               
-                                  min_samples_split_R2        = min_samples_split_i
-                                  min_samples_leaf_R2         = min_samples_leaf_i        
-                                  min_weight_fraction_leaf_R2 = min_weight_fraction_leaf_i
-                                  max_depth_R2                = max_depth_i         
-                                  max_features_R2             = max_features_i           
-                                  max_leaf_nodes_R2           = max_leaf_nodes_i          
-                                  validation_fraction_R2      = validation_fraction_i     
-                                  n_iter_no_change_R2         = n_iter_no_change_i        
-                                  tol_R2                      = tol_i                     
+                                  losses_R2                   = losses                  [loss_i]
+                                  learning_rate_R2            = learning_rate           [learning_rate_i]
+                                  n_estimators_R2             = n_estimators            [n_estimators_i]
+                                  subsample_R2                = subsample               [subsample_i]               
+                                  criterion_R2                = criterion               [criterion_i]               
+                                  min_samples_split_R2        = min_samples_split       [min_samples_split_i]
+                                  min_samples_leaf_R2         = min_samples_leaf        [min_samples_leaf_i]        
+                                  min_weight_fraction_leaf_R2 = min_weight_fraction_leaf[min_weight_fraction_leaf_i]
+                                  max_depth_R2                = max_depth               [max_depth_i]         
+                                  max_features_R2             = max_features            [max_features_i]           
+                                  max_leaf_nodes_R2           = max_leaf_nodes          [max_leaf_nodes_i]          
+                                  validation_fraction_R2      = validation_fraction     [validation_fraction_i]     
+                                  n_iter_no_change_R2         = n_iter_no_change        [n_iter_no_change_i]        
+                                  tol_R2                      = tol                     [tol_i]                     
 
                                 if rpd>max_rpd:
                                   max_rpd = rpd
                                   best_randomRpd= random_num
-                                  losses_RPD                  =  loss_i                     
-                                  learning_rate_RPD           =  learning_rate_i
-                                  n_estimators_RPD            =  n_estimators_i
-                                  subsample_RPD               =  subsample_i               
-                                  criterion_RPD               =  criterion_i               
-                                  min_samples_split_RPD       =  min_samples_split_i
-                                  min_samples_leaf_RPD        =  min_samples_leaf_i        
-                                  min_weight_fraction_leaf_RPD=  min_weight_fraction_leaf_i 
-                                  max_depth_RPD               =  max_depth_i         
-                                  max_features_RPD            =  max_features_i           
-                                  max_leaf_nodes_RPD          =  max_leaf_nodes_i          
-                                  validation_fraction_RPD     =  validation_fraction_i     
-                                  n_iter_no_change_RPD        =  n_iter_no_change_i        
-                                  tol_RPD                     =  tol_i                     
+                                  losses_RPD                  =  losses                  [loss_i]                     
+                                  learning_rate_RPD           =  learning_rate           [learning_rate_i]
+                                  n_estimators_RPD            =  n_estimators            [n_estimators_i]
+                                  subsample_RPD               =  subsample               [subsample_i]               
+                                  criterion_RPD               =  criterion               [criterion_i]               
+                                  min_samples_split_RPD       =  min_samples_split       [min_samples_split_i]
+                                  min_samples_leaf_RPD        =  min_samples_leaf        [min_samples_leaf_i]        
+                                  min_weight_fraction_leaf_RPD=  min_weight_fraction_leaf[min_weight_fraction_leaf_i] 
+                                  max_depth_RPD               =  max_depth               [max_depth_i]         
+                                  max_features_RPD            =  max_features            [max_features_i]           
+                                  max_leaf_nodes_RPD          =  max_leaf_nodes          [max_leaf_nodes_i]          
+                                  validation_fraction_RPD     =  validation_fraction     [validation_fraction_i]     
+                                  n_iter_no_change_RPD        =  n_iter_no_change        [n_iter_no_change_i]        
+                                  tol_RPD                     =  tol                     [tol_i]                     
                                   
                                   with open(bestFit_file, 'a') as file:
                                     data=(f"max_rpd,max_r2,Best Random R2, Best Random RPD, losses_R2,learning_rate_R2,n_estimators_R2,subsample_R2,criterion_R2,min_samples_split_R2,min_samples_leaf_R2,min_weight_fraction_leaf_R2,max_depth_R2,max_features_R2,max_leaf_nodes_R2,validation_fraction_R2,n_iter_no_change_R2,tol_R2,losses_RPD,learning_rate_RPD,n_estimators_RPD,subsample_RPD,criterion_RPD,min_samples_split_RPD,min_samples_leaf_RPD,min_weight_fraction_leaf_RPD,max_depth_RPD,max_features_RPD,max_leaf_nodes_RPD,validation_fraction_RPD,n_iter_no_change_RPD,tol_RPD,random_numbers\n {max_rpd},{max_r2},{best_randomR2},{best_randomRpd},{losses_R2},{learning_rate_R2},{n_estimators_R2},{subsample_R2},{criterion_R2},{min_samples_split_R2},{min_samples_leaf_R2},{min_weight_fraction_leaf_R2},{max_depth_R2},{max_features_R2},{max_leaf_nodes_R2},{validation_fraction_R2},{n_iter_no_change_R2},{tol_R2},{losses_RPD},{learning_rate_RPD},{n_estimators_RPD},{subsample_RPD},{criterion_RPD},{min_samples_split_RPD},{min_samples_leaf_RPD},{min_weight_fraction_leaf_RPD},{max_depth_RPD},{max_features_RPD},{max_leaf_nodes_RPD},{validation_fraction_RPD},{n_iter_no_change_RPD},{tol_RPD},{random_num}\n\

@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+import os
+import csv
+
 import subprocess
 from sys import stdout
 import numpy as np
@@ -24,6 +27,12 @@ from sklearn.metrics import mean_squared_error, r2_score
       Step 3. Normalização  |  Baseados em Médias ou em Picos MSC, ou SNV
 
 """
+def check_csvFiles(filePath):
+  if not os.path.exists(filePath):
+    with open(filePath, mode='w', newline='') as file:
+      writer = csv.writer(file)
+      writer.writerow(['Header1', 'Header2'])  # Example headers
+    file.close()
 figure_counter = 0
 
 command = ["git", "branch", "-v"]
@@ -45,6 +54,13 @@ else:
 
 SVRPahth=(f"{generalPahth}/RandomForest")
 rbf=(f"{SVRPahth}/rf_env/src/")
+
+fileName=(f"{rbf}/bestFit_RandomForest.csv")
+check_csvFiles(fileName)
+fileName=(f"{rbf}RandomForest_BackUp.csv")
+check_csvFiles(fileName)
+fileName=(f"{rbf}/NearBestR2.csv")
+check_csvFiles(fileName)
 
 def snv(dataSet):
   
@@ -151,40 +167,81 @@ def optimise_RandomForest_cv(X, y, n_comp):
   max_rpd=0
   best_randomR2=0
   best_randomRpd=0
-  C=0.001
-  Gamma=0.001
-  epsilon=0.0001
   
-  C_BestR2=0
-  C_BestRPD=0
-  Gamma_BestR2=0
-  Gamma_BestRPD=0
-  epsilon_BestR2=0
-  epsilon_BestRPD=0
-  #random_num = 99296
+  nearBest_crit = 0.50
+  
+  #n_estimators, criterion, max_depth, min_samples_split, min_samples_leaf, min_weight_fraction_leaf, max_features, max_leaf_nodes
+   
+  n_estimators             = [50, 100, 150, 200, 250, 500, 1000, 1500, 2000]     
+  criterion                = ["squared_error", "absolute_error", "poisson" ]  
+  max_depth                = [5, 25, 125, 625]
+  min_samples_split        = [2, 4, 8, 16, 32, 64] 
+  min_samples_leaf         = [1, 2, 4, 8, 16, 32, 64, 128]
+  min_weight_fraction_leaf = [0, 0.01, 0.1, 0.2, 0.4, 0.5] 
+  max_features             = [None, "auto", "log2", "sqrt"]
+  max_leaf_nodes           = [None, 2, 4, 8, 16, 32, 64, 128]
+
+  n_estimators_R2              = 0 
+  criterion_R2                 = 0 
+  max_depth_R2                 = 0 
+  min_samples_split_R2         = 0 
+  min_samples_leaf_R2          = 0 
+  min_weight_fraction_leaf_R2  = 0 
+  max_features_R2              = 0 
+  max_leaf_nodes_R2            = 0 
+
+  n_estimators_RPD             = 0 
+  criterion_RPD                = 0 
+  max_depth_RPD                = 0 
+  min_samples_split_RPD        = 0 
+  min_samples_leaf_RPD         = 0 
+  min_weight_fraction_leaf_RPD = 0 
+  max_features_RPD             = 0 
+  max_leaf_nodes_RPD           = 0 
+
+  n_estimators_i               = 0 
+  criterion_i                  = 0 
+  max_depth_i                  = 0 
+  min_samples_split_i          = 0 
+  min_samples_leaf_i           = 0 
+  min_weight_fraction_leaf_i   = 0 
+  max_features_i               = 0 
+  max_leaf_nodes_i             = 0 
+
   bestFit_file=(f"{rbf}bestFit_RandomForest.csv")
+  NearbestFit_R2_file=(f"{rbf}NearBestR2.csv")
   Bkp_file=(f"{rbf}RandomForest_BackUp.csv")
   
-  """
+  #"""
   with open(bestFit_file, 'r') as file:
     lines=file.readlines()
 
   AllData = lines[-3].strip().split(',');
   
   print("\
-  RBF Backup  Best Fit Analyse\n\
+  Random Forest MIR Backup  Best Fit Analyse\n\
   \t\tMaxRPD:          ",AllData[0],"\n\
   \t\tMaxR2:           ",AllData[1],"\n\
   \t\tbest_randomR2:   ",AllData[2],"\n\
   \t\tBest RPD random: ",AllData[3],"\n\
-  \t\tC R2:            ",AllData[4],"\n\
-  \t\tGamma R2:        ",AllData[5],"\n\
-  \t\tEpsilon R2:      ",AllData[6],"\n\
-  \t\tC RPD:           ",AllData[7],"\n\
-  \t\tGamma RPD:       ",AllData[8],"\n\
-  \t\tEpsilon RPD:     ",AllData[9],"\n\
-  \t\tRandom Numbers:  ",AllData[10],"\n")
-  #file.close()
+  \t\tn_estimators_R2                  ",AllData[4],"\n\
+  \t\tcriterion_R2                     ",AllData[5],"\n\
+  \t\tmax_depth_R2                     ",AllData[6],"\n\
+  \t\tmin_samples_split_R2             ",AllData[7],"\n\
+  \t\tmin_samples_leaf_R2              ",AllData[8],"\n\
+  \t\tmin_weight_fraction_leaf_R2      ",AllData[9],"\n\
+  \t\tmax_features_R2                  ",AllData[10],"\n\
+  \t\tmax_leaf_nodes_R2                ",AllData[11],"\n\
+  \t\tn_estimators_RPD                 ",AllData[12],"\n\
+  \t\tcriterion_RPD                    ",AllData[13],"\n\
+  \t\tmax_depth_RPD                    ",AllData[14],"\n\
+  \t\tmin_samples_split_RPD            ",AllData[15],"\n\
+  \t\tmin_samples_leaf_RPD             ",AllData[16],"\n\
+  \t\tmin_weight_fraction_leaf_RPD     ",AllData[17],"\n\
+  \t\tmax_features_RPD                 ",AllData[18],"\n\
+  \t\tmax_leaf_nodes_RPD               ",AllData[19],"\n\
+  \t\tRandom Numbers:                  ",AllData[20],"\n")
+  file.close()
   
   if float(AllData[0]) > max_rpd:
     max_r2  = float(AllData[1])
@@ -195,72 +252,131 @@ def optimise_RandomForest_cv(X, y, n_comp):
 
   AllData = lines[-3].strip().split(',');
   print("\
-  RBF Backup Analyse\n\
-  \t\tC            ",AllData[0],"\n\
-  \t\tGamma        ",AllData[1],"\n\
-  \t\tEpsilon:     ",AllData[2],"\n\
-  \t\tRandomNumber ",AllData[3],"\n")
-  #file.close()
+  Random Forest MIR Backup Analyse\n\
+  \t\tn_estimators_i                 ",AllData[0],"\n\
+  \t\tcriterion_i                    ",AllData[1],"\n\
+  \t\tmax_depth_i                    ",AllData[2],"\n\
+  \t\tmin_samples_split_i            ",AllData[3],"\n\
+  \t\tmin_samples_leaf_i             ",AllData[4],"\n\
+  \t\tmin_weight_fraction_leaf_i     ",AllData[5],"\n\
+  \t\tmax_features_i                 ",AllData[6],"\n\
+  \t\tmax_leaf_nodes_i               ",AllData[7],"\n\
+  \t\tRandomNumber ",AllData[8],"\n")
+  file.close()
   
-  if int(AllData[3]) > random_num:
-    C              = float(AllData[0]) 
-    Gamma          = float(AllData[1])
-    Epsilon        = float(AllData[2])
-    random_num     = int(AllData[3])
-  """
+  if int(float(AllData[8])) >= random_num:
+    n_estimators_i                 =int(float(AllData[0])) 
+    criterion_i                    =int(float(AllData[1]))
+    max_depth_i                    =int(float(AllData[2]))
+    min_samples_split_i            =int(float(AllData[3]))
+    min_samples_leaf_i             =int(float(AllData[4]))
+    min_weight_fraction_leaf_i     =int(float(AllData[5]))
+    max_features_i                 =int(float(AllData[6]))
+    max_leaf_nodes_i               =int(float(AllData[7]))
+    random_num     = int(float(AllData[8]))
+  #"""
+  print("Random Forest MIR Begin")
   while random_num < 2147483647:
-    #print("Random Forest MIR ", random_num)
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.35, random_state=random_num)
+    #print("Layer 1")
+    while  n_estimators_i      < len( n_estimators):              
+      #print("Layer 2")
+      while  criterion_i         < len( criterion):                    
+        #print("Layer 3")
+        while  max_depth_i         < len( max_depth):                    
+          #print("Layer 4")
+          while  min_samples_split_i < len( min_samples_split):   
+           #print("Layer 5")
+            while  min_samples_leaf_i  < len( min_samples_leaf):
+              #print("Layer 6")
+              while  min_weight_fraction_leaf_i < len(min_weight_fraction_leaf):
+                #print("Layer 7")
+                while  max_features_i   < len( max_features):            
+                  while  max_leaf_nodes_i < len( max_leaf_nodes):       
+                    #print("Random Forest MIR ", random_num)
+                    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.35, random_state=random_num)
 
-    # Initialize and fit the PLS regression model
-    RF_model = RandomForestRegressor(n_estimators=100, random_state=0)
-    RF_model.fit(X_train, y_train)
-    #print(epsilon)
+                    # Initialize and fit the PLS regression model
+                    RF_model = RandomForestRegressor(n_estimators=n_estimators[n_estimators_i], criterion=criterion[criterion_i],\
+                                                     random_state=0, max_depth=max_depth[max_depth_i], \
+                                                     min_samples_split=min_samples_split[min_samples_split_i],\
+                                                     min_samples_leaf=min_samples_leaf[min_samples_split_i],\
+                                                     min_weight_fraction_leaf=min_weight_fraction_leaf[min_weight_fraction_leaf_i],\
+                                                     max_features=max_features[max_features_i], max_leaf_nodes=max_leaf_nodes[max_leaf_nodes_i]\
+                                                     )
+                    RF_model.fit(X_train, y_train)
+                    #print(epsilon)
 
-    # Predict the target variable on the test set
-    y_cv = RF_model.predict(X_test)
+                    # Predict the target variable on the test set
+                    y_cv = RF_model.predict(X_test)
 
-    # Calculate scores
-    r2 = r2_score(y_test, y_cv)
-    mse = mean_squared_error(y_test, y_cv)
-    rpd = y_test.std()/np.sqrt(mse)
-    
-    
-    if r2>max_r2:
-      max_r2 = r2
-      best_randomR2 = random_num
-      C_BestR2=C
-      Gamma_BestR2=Gamma
-      epsilon_BestR2=epsilon
+                    # Calculate scores
+                    r2 = r2_score(y_test, y_cv)
+                    mse = mean_squared_error(y_test, y_cv)
+                    rpd = y_test.std()/np.sqrt(mse)
+                    
+                    
+                    if r2>max_r2:
+                      max_r2 = r2               
+                      best_randomR2 = random_num
+                      n_estimators_R2             =  n_estimators[n_estimators_i]            
+                      criterion_R2                =  criterion[criterion_i] 
+                      max_depth_R2                =  max_depth[max_depth_i]
+                      min_samples_split_R2        =  min_samples_split[min_samples_split_i]
+                      min_samples_leaf_R2         =  min_samples_leaf[min_samples_leaf_i]
+                      min_weight_fraction_leaf_R2 =  min_weight_fraction_leaf[min_weight_fraction_leaf_i]
+                      max_features_R2             =  max_features[max_features_i]
+                      max_leaf_nodes_R2           =  max_leaf_nodes[max_leaf_nodes_i]
 
-    if rpd>max_rpd:
-      max_rpd = rpd
-      best_randomRpd= random_num
-      C_BestRPD=C
-      epsilon_BestRPD=epsilon
-      Gamma_BestRPD=Gamma
-      with open(bestFit_file, 'a') as file:
-        data=(f"max_rpd,max_r2,R2_rdn,RPD_rdn,C_R2,Gamma_R2,epsilon_R2,C_RPD,Gamma_RPD,epsilon_RPD,random_numbers\n\
-        {max_rpd},{max_r2},\
-        {best_randomR2},{best_randomRpd},\
-        {C_BestR2},{Gamma_BestR2},{epsilon_BestR2},\
-        {C_BestRPD},{Gamma_BestRPD},{epsilon_BestRPD},\
-        {random_num}\n\
-        ==============================================================\n\n")
-        file.write(data)
-        file.close()
-    if control_print==5:
-      print("**... Random Forest MIR-> ", random_num)
-      with open(Bkp_file, 'w') as file:
-        data=(f"C,Gamma,epsilon,random_num\n\
-        {C},{Gamma},{epsilon},{random_num}\n\
-        ******************************************\n\n")
-        file.write(data)
-        file.close()
-      control_print=0
 
-    control_print+=1
-    random_num+=1
+                    if rpd>max_rpd:
+                      max_rpd = rpd
+                      best_randomRpd= random_num
+                      n_estimators_RPD             = n_estimators               [n_estimators_i]
+                      criterion_RPD                = criterion                  [criterion_i]
+                      max_depth_RPD                = max_depth                  [max_depth_i]
+                      min_samples_split_RPD        = min_samples_split          [min_samples_split_i]
+                      min_samples_leaf_RPD         = min_samples_leaf           [min_samples_leaf_i]
+                      min_weight_fraction_leaf_RPD = min_weight_fraction_leaf   [min_weight_fraction_leaf_i]
+                      max_features_RPD             = max_features               [max_features_i]
+                      max_leaf_nodes_RPD           = max_leaf_nodes             [max_leaf_nodes_i]
+
+                      with open(bestFit_file, 'a') as file:
+                        data=(f"max_rpd,max_r2,R2_rdn,RPD_rdn, n_estimators_R2, criterion_R2, max_depth_R2, min_samples_split_R2, min_samples_leaf_R2, min_weight_fraction_leaf_R2, max_features_R2, max_leaf_nodes_R2, n_estimators_RPD, criterion_RPD, max_depth_RPD, min_samples_split_RPD, min_samples_leaf_RPD, min_weight_fraction_leaf_RPD, max_features_RPD, max_leaf_nodes_RPD ,random_numbers\n {max_rpd},{max_r2},{best_randomR2},{best_randomRpd}, {n_estimators_R2}, {criterion_R2}, {max_depth_R2}, {min_samples_split_R2}, {min_samples_leaf_R2}, {min_weight_fraction_leaf_R2}, {max_features_R2}, {max_leaf_nodes_R2}, {n_estimators_RPD}, {criterion_RPD}, {max_depth_RPD}, {min_samples_split_RPD}, {min_samples_leaf_RPD}, {min_weight_fraction_leaf_RPD}, {max_features_RPD}, {max_leaf_nodes_RPD},{random_num}\n\
+                        ==============================================================\n\n")
+                        file.write(data)
+                      file.close()
+                    
+                    elif r2>=max_r2*nearBest_crit and rpd>=max_rpd*nearBest_crit :
+                      with open(NearbestFit_R2_file, 'a') as file:
+                        data=(f"n_estimators, criterion, max_depth, min_samples_split, min_samples_leaf, min_weight_fraction_leaf, max_features, max_leaf_nodes, random_num, max_r2, r2, rpd, max_rpd \n {n_estimators_i}, {criterion_i}, {max_depth_i}, {min_samples_split_i}, {min_samples_leaf_i}, {min_weight_fraction_leaf_i}, {max_features_i}, {max_leaf_nodes_i},{random_num},{max_r2}, {r2}, {rpd}, {max_rpd}  \n\
+                        ******************************************\n\n")
+                        file.write(data)
+                      file.close()
+
+                    max_leaf_nodes_i+=1          
+                  max_leaf_nodes_i=0          
+                  max_features_i+=1            #L7
+                max_features_i=0            
+                min_weight_fraction_leaf_i+=1 #L6
+              #Bkp
+              print("**... Random Forest MIR-> ", random_num)
+              with open(Bkp_file, 'w') as file:
+                data=(f"n_estimators, criterion, max_depth, min_samples_split, min_samples_leaf, min_weight_fraction_leaf, max_features, max_leaf_nodes, random_num\n {n_estimators_i}, {criterion_i}, {max_depth_i}, {min_samples_split_i}, {min_samples_leaf_i}, {min_weight_fraction_leaf_i}, {max_features_i}, {max_leaf_nodes_i},{random_num}\n\
+                ******************************************\n\n")
+                file.write(data)
+              file.close()
+              min_weight_fraction_leaf_i=0
+              min_samples_leaf_i+=1   #L5     
+            min_samples_leaf_i=0        
+            min_samples_split_i+=1 #L4       
+          min_samples_split_i=0       
+          max_depth_i+=1      #L3         
+        max_depth_i=0               
+        criterion_i+=1     #L2          
+      criterion_i=0               
+      n_estimators_i+=1 #L1
+    n_estimators_i=0
+    random_num+=1      #L0
   
     if random_num==2147483647:
       random_num=0
