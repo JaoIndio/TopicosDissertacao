@@ -35,23 +35,7 @@ def check_csvFiles(filePath):
     file.close()
 figure_counter = 0
 
-command = ["git", "branch", "-v"]
-result  = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True)
-gitOut = result.stdout[:7]
-
-if gitOut == "* Colab":
-  path_2Use="Colab"
-else:
-  path_2Use=None
-
-
-figure_counter = 0
-
-if path_2Use=="Colab":
-  generalPahth=(f"/home/gitFiles/Universal_pyEnv/Brasil_SpectralLib_MIR")
-else:
-  generalPahth=(f"./Universal_pyEnv/Brasil_SpectralLib_MIR")
-
+generalPahth=(f"Universal_pyEnv/Brasil_SpectralLib_MIR/")
 SVRPahth=(f"{generalPahth}/RandomForest")
 rbf=(f"{SVRPahth}/rf_env/src/")
 
@@ -178,7 +162,7 @@ def optimise_RandomForest_cv(X, y, n_comp):
   min_samples_split        = [2, 4, 8, 16, 32, 64] 
   min_samples_leaf         = [1, 2, 4, 8, 16, 32, 64, 128]
   min_weight_fraction_leaf = [0, 0.01, 0.1, 0.2, 0.4, 0.5] 
-  max_features             = [None, "auto", "log2", "sqrt"]
+  max_features             = [None, "log2", "sqrt"]
   max_leaf_nodes           = [None, 2, 4, 8, 16, 32, 64, 128]
 
   n_estimators_R2              = 0 
@@ -299,7 +283,7 @@ def optimise_RandomForest_cv(X, y, n_comp):
                     RF_model = RandomForestRegressor(n_estimators=n_estimators[n_estimators_i], criterion=criterion[criterion_i],\
                                                      random_state=0, max_depth=max_depth[max_depth_i], \
                                                      min_samples_split=min_samples_split[min_samples_split_i],\
-                                                     min_samples_leaf=min_samples_leaf[min_samples_split_i],\
+                                                     min_samples_leaf=min_samples_leaf[min_samples_leaf_i],\
                                                      min_weight_fraction_leaf=min_weight_fraction_leaf[min_weight_fraction_leaf_i],\
                                                      max_features=max_features[max_features_i], max_leaf_nodes=max_leaf_nodes[max_leaf_nodes_i]\
                                                      )

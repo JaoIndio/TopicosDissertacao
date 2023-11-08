@@ -4,7 +4,6 @@
 import os
 import csv
 import subprocess
-
 from sys import stdout
 import numpy as np
 import pandas as pd
@@ -287,12 +286,8 @@ def plot_metrics(vals, ylabel, objective):
   
   return xticks[idx]
   #plt.show()
-
-if path_2Use=="Colab":
-  soil_sheet     = pd.read_csv("/home/DecisionTree_Colab/BrLib_MIR.csv")
-else:
-  soil_sheet     = pd.read_csv("../data_bases/BrLib_MIR.csv")
-
+                                                                               
+soil_sheet     = pd.read_csv("../data_bases/BrLib_MIR.csv")
 
 soil_sheet.head()
 #spectral_sheet.replace(to_replace=',', value='.')
