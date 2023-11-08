@@ -378,3 +378,7 @@ max_rpd,max_r2,R2_rdn,RPD_rdn, n_estimators_R2, criterion_R2, max_depth_R2, min_
  1.001532873695249,0.0030587126648308205,0,0, 50, squared_error, 5, 2, 1, 0.5, None, None, 50, squared_error, 5, 2, 1, 0.5, None, None,0
                         ==============================================================
 
+max_rpd,max_r2,R2_rdn,RPD_rdn, n_estimators_R2, criterion_R2, max_depth_R2, min_samples_split_R2, min_samples_leaf_R2, min_weight_fraction_leaf_R2, max_features_R2, max_leaf_nodes_R2, n_estimators_RPD, criterion_RPD, max_depth_RPD, min_samples_split_RPD, min_samples_leaf_RPD, min_weight_fraction_leaf_RPD, max_features_RPD, max_leaf_nodes_RPD ,random_numbers
+ 1.0015637367680075,0.003120152983186908,0,0, 100, poisson, 5, 2, 64, 0, None, None, 100, poisson, 5, 2, 64, 0, None, None,0
+                        ==============================================================
+

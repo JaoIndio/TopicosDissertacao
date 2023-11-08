@@ -283,7 +283,7 @@ def optimise_RandomForest_cv(X, y, n_comp):
                     RF_model = RandomForestRegressor(n_estimators=n_estimators[n_estimators_i], criterion=criterion[criterion_i],\
                                                      random_state=0, max_depth=max_depth[max_depth_i], \
                                                      min_samples_split=min_samples_split[min_samples_split_i],\
-                                                     min_samples_leaf=min_samples_leaf[min_samples_split_i],\
+                                                     min_samples_leaf=min_samples_leaf[min_samples_leaf_i],\
                                                      min_weight_fraction_leaf=min_weight_fraction_leaf[min_weight_fraction_leaf_i],\
                                                      max_features=max_features[max_features_i], max_leaf_nodes=max_leaf_nodes[max_leaf_nodes_i]\
                                                      )

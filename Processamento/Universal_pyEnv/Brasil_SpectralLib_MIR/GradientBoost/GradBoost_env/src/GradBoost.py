@@ -461,7 +461,7 @@ def optimise_GradBoost_cv(X, y, n_comp):
         n_estimators_i=0
         learning_rate_i+=1
       learning_rate_i=0
-      loss_i+1
+      loss_i+=1
     loss_i=0
     random_num+=1
   
