@@ -1,4 +1,5 @@
-#!/usr/bin/env python3
+#!/home/work/anaconda3/envs/gpuenv/bin/python3
+"""    !/usr/bin/env python3 """
 # -*- coding: utf-8 -*-
 
 import os
@@ -12,7 +13,7 @@ import matplotlib.pyplot as plt
 
 from scipy.signal import savgol_filter
 
-from sklearn.ensemble import GradientBoostingRegressor
+import lightgbm as lgb
 
 from sklearn.model_selection import cross_val_predict
 from sklearn.model_selection import train_test_split
@@ -351,19 +352,28 @@ def optimise_GradBoost_cv(X, y, n_comp):
                                           
                                 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.35, random_state=random_num)
 
-                                # Initialize and fit the PLS regression model
-                                GD_model = GradientBoostingRegressor(loss=losses[loss_i], learning_rate=learning_rate[learning_rate_i], \
-                                       n_estimators=n_estimators[n_estimators_i], random_state=10,\
-                                       subsample=subsample[subsample_i], criterion=criterion[criterion_i], \
-                                       min_samples_split=min_samples_split[min_samples_split_i],\
-                                       min_samples_leaf=min_samples_leaf[min_samples_leaf_i],\
-                                       max_depth=max_depth[max_depth_i],\
-                                       max_features=max_features[max_features_i],\
-                                       max_leaf_nodes=max_leaf_nodes[max_leaf_nodes_i],\
-                                       validation_fraction=validation_fraction[validation_fraction_i],\
-                                       n_iter_no_change=n_iter_no_change[n_iter_no_change_i],\
-                                       tol=tol[tol_i],\
-                                       min_weight_fraction_leaf=min_weight_fraction_leaf[min_weight_fraction_leaf_i]\
+                                # Initialize and fit the PLS regression model 
+                                GD_model = lgb.LGBMRegressor(\
+    
+    boosting_type            = 'gbdt',\
+    num_leaves               = max_leaf_nodes[max_leaf_nodes_i],\
+    max_depth                = max_depth[max_depth_i],\
+    learning_rate            = learning_rate[learning_rate_i], \
+    n_estimators             = n_estimators[n_estimators_i],\
+    min_child_weight         = min_weight_fraction_leaf[min_weight_fraction_leaf_i], \
+    min_child_samples        = min_samples_leaf[min_samples_leaf_i],\
+    subsample                = subsample[subsample_i], \
+    #loss                     = losses[loss_i], \
+    random_state             = 10,\
+    objective                = 'regression', \
+    metric                   = 'rmse' , \
+    device                   = 'gpu',   \
+    #criterion                = criterion[criterion_i], \
+    #min_samples_split        = min_samples_split[min_samples_split_i],\
+    #max_features            = max_features[max_features_i],\
+    #validation_fraction     = validation_fraction[validation_fraction_i],\
+    #n_iter_no_change        = n_iter_no_change[n_iter_no_change_i],\
+    #tol                     = tol[tol_i],\
                                       )
 
                                 GD_model.fit(X_train, y_train)
