@@ -102,3 +102,19 @@ max_rpd,max_r2,criterio_R2,splitter_BestR2,max_depth_BestR2,min_samples_split_Be
          1.4128573452452189, 0.4990396284124323, 2, 1, 1, 5, 0, 0, 0, 0, 2, 1, 1, 5, 0, 0, 0, 0, 27
          =============================================================
 
+max_rpd,max_r2,criterio_R2,splitter_BestR2,max_depth_BestR2,min_samples_split_BestR2,min_samples_leaf_BestR2,features_BestR2,min_weight_fraction_leaf_BestR2, max_leaf_nodes_BestR2,criterio_BestRPD,splitter_BestRPD,max_depth_BestRPD,min_samples_split_BestRPD,min_samples_leaf_BestRPD,features_BestRPD,min_weight_fraction_leaf_BestRPD,max_leaf_nodes_BestRPD,random_num
+         1.423374062149058, 0.5064150546301948, squared_error, random, 5, 2, 1, None, 0.01, None, squared_error, random, 5, 2, 1, None, 0.01, None, 234
+         =============================================================
+
+max_rpd,max_r2,criterio_R2,splitter_BestR2,max_depth_BestR2,min_samples_split_BestR2,min_samples_leaf_BestR2,features_BestR2,min_weight_fraction_leaf_BestR2, max_leaf_nodes_BestR2,criterio_BestRPD,splitter_BestRPD,max_depth_BestRPD,min_samples_split_BestRPD,min_samples_leaf_BestRPD,features_BestRPD,min_weight_fraction_leaf_BestRPD,max_leaf_nodes_BestRPD,random_num
+         2.05407563820111, 0.7629897456105497, squared_error, random, 5, 2, 2, None, 0, None, squared_error, random, 5, 2, 2, None, 0, None, 234
+         =============================================================
+
+max_rpd,max_r2,criterio_R2,splitter_BestR2,max_depth_BestR2,min_samples_split_BestR2,min_samples_leaf_BestR2,features_BestR2,min_weight_fraction_leaf_BestR2, max_leaf_nodes_BestR2,criterio_BestRPD,splitter_BestRPD,max_depth_BestRPD,min_samples_split_BestRPD,min_samples_leaf_BestRPD,features_BestRPD,min_weight_fraction_leaf_BestRPD,max_leaf_nodes_BestRPD,random_num
+         2.263427201065997, 0.8048057867220582, squared_error, random, 25, 2, 2, None, 0, None, squared_error, random, 25, 2, 2, None, 0, None, 234
+         =============================================================
+
+max_rpd,max_r2,criterio_R2,splitter_BestR2,max_depth_BestR2,min_samples_split_BestR2,min_samples_leaf_BestR2,features_BestR2,min_weight_fraction_leaf_BestR2, max_leaf_nodes_BestR2,criterio_BestRPD,splitter_BestRPD,max_depth_BestRPD,min_samples_split_BestRPD,min_samples_leaf_BestRPD,features_BestRPD,min_weight_fraction_leaf_BestRPD,max_leaf_nodes_BestRPD,random_num
+         2.2637504837888227, 0.8048615335116314, friedman_mse, random, 25, 2, 2, None, 0, None, friedman_mse, random, 25, 2, 2, None, 0, None, 234
+         =============================================================
+
