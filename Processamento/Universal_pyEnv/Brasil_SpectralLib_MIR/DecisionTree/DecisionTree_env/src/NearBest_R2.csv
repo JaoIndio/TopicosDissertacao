@@ -1,7 +1,0 @@
-max_rpd,max_r2,criterio_R2,splitter_BestR2,max_depth_BestR2,min_samples_split_BestR2,min_samples_leaf_BestR2,features_BestR2,min_weight_fraction_leaf_BestR2, max_leaf_nodes_BestR2,criterio_BestRPD,splitter_BestRPD,max_depth_BestRPD,min_samples_split_BestRPD,min_samples_leaf_BestRPD,features_BestRPD,min_weight_fraction_leaf_BestRPD,max_leaf_nodes_BestRPD,random_num
-         1.011168646697472, 0.021968573266876845, squared_error, best, 25, 2, 16, log2, 0, None, squared_error, best, 25, 2, 16, log2, 0, None, 0
-         =============================================================
-
-max_rpd,max_r2,criterio_R2,splitter_BestR2,max_depth_BestR2,min_samples_split_BestR2,min_samples_leaf_BestR2,features_BestR2,min_weight_fraction_leaf_BestR2, max_leaf_nodes_BestR2,criterio_BestRPD,splitter_BestRPD,max_depth_BestRPD,min_samples_split_BestRPD,min_samples_leaf_BestRPD,features_BestRPD,min_weight_fraction_leaf_BestRPD,max_leaf_nodes_BestRPD,random_num
-         1.015032704283562, 0.02940079965407061, squared_error, best, 25, 4, 1, sqrt, 0, 32, squared_error, best, 25, 4, 1, sqrt, 0, 32, 0
-         =============================================================
