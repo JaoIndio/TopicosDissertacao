@@ -150,6 +150,41 @@ def Centralization(dataSet):
 
   return dataSet
 
+def ReplicateBestResult(X, y, n_comp):
+  criterio_R2                       = friedman_ms  
+  splitter_BestR2                   = random      
+  max_depth_BestR2                  = 25           
+  min_samples_split_BestR2          = 2            
+	min_samples_leaf_BestR2           = 2           
+	features_BestR2                   = None        
+	min_weight_fraction_leaf_BestR2   = 0           
+	max_leaf_nodes_BestR2             = None        
+	random_num                        = 234
+
+  X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.35, random_state=random_num)
+  
+  DT_model = DecisionTreeRegressor(criterion=criterio_R2, \
+                                   splitter=splitter_BestR2, \
+                                   max_depth=max_depth_BestR2, \
+                                   min_samples_split=min_samples_split_BestR2,\
+                                   min_samples_leaf=min_samples_leaf_BestR2, \
+                                   min_weight_fraction_leaf=min_weight_fraction_leaf_BestR2,\
+                                   max_features=features_BestR2,\
+                                   max_leaf_nodes=max_leaf_nodes_BestR2, \
+                                   random_state=10)
+  DT_model.fit(X_train, y_train)
+  y_cv = DT_model.predict(X_test)
+  r2 = r2_score(y_test, y_cv)
+  mse = mean_squared_error(y_test, y_cv)
+  
+  # Calculate RPD
+  absolute_diff = np.abs(y_test - y_cv)
+  average_actual = np.mean(y_test)
+  rpd = (absolute_diff / average_actual) * 100
+  
+  return (y_test, y_cv, r2, mse, rpd, random_values)
+  #rpd = y_test.std()/np.sqrt(mse)
+
 def optimise_DecisionTree_cv(X, y, n_comp):
     
   random_num=0
@@ -295,14 +330,16 @@ def optimise_DecisionTree_cv(X, y, n_comp):
   
    2.2637504837888227,
 	 0.8048615335116314,
-	 friedman_mse,
-	 random,
-	 25,
-	 2,
-	 2,
-	 None,
-	 0,
-	 None,
+	 
+   
+   friedman_mse ,
+	 random       ,
+	 25           ,
+	 2            ,
+	 2            ,
+	 None         ,
+	 0            ,
+	 None         ,
 
 	 friedman_mse,
    random,
@@ -603,7 +640,7 @@ rpds_sg1 = []
 
 pca_variance = np.arange(0.75, 1, 0.05)
 X_pcaAll=[]
-for varia in pca_variance:
+#for varia in pca_variance:
 
   #pca_comps=PCA(varia)
   #X_pca = pca_comps.fit_transform(X1)
@@ -614,10 +651,11 @@ for varia in pca_variance:
   #mses.append(mse)
   #rpds.append(rpd)
   
-  y_test, y_cv, r2, mse, rpd, random_1= optimise_DecisionTree_cv(X2, Y, 1)
-  r2s_sg1.append(r2)
-  mses_sg1.append(mse)
-  rpds_sg1.append(rpd)
+  #y_test, y_cv, r2, mse, rpd, random_1= optimise_DecisionTree_cv(X2, Y, 1)
+y_test, y_cv, r2, mse, rpd, random_1= ReplicateBestResult(X2, Y, 1)
+r2s_sg1.append(r2)
+mses_sg1.append(mse)
+rpds_sg1.append(rpd)
 
   #X2_pca = pca_comps.fit_transform(X2)
   #y_test, y_cv, r2, mse, rpd, random_3= optimise_DecisionTree_cv(X2, Y, 1)
@@ -659,4 +697,16 @@ plt.ylabel('Predicted')
 plt.legend()
 plt.plot()
 """
+
+print(rpd)
+plt.figure()
+plt.scatter(y_test, y_cv, color='red')
+plt.plot(y_test, y_test, '-g', label='Expected regression line')
+z = np.polyfit(y_test, y_cv, 1)
+plt.plot(np.polyval(z, y_test), y_test, color='blue', label='Predicted regression line')
+plt.xlabel('Actual')
+plt.ylabel('Predicted')
+plt.legend()
+plt.plot()
+
 plt.show()
