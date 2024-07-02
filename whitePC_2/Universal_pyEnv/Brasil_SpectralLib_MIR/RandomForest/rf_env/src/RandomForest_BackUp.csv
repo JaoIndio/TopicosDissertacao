@@ -1,0 +1,4 @@
+n_estimators, criterion, max_depth, min_samples_split, min_samples_leaf, max_leaf_nodes, max_features, min_weight_fraction, random_num
+ 0, 2, 0, 0, 6, 1, 0, 0,862
+                ******************************************
+

@@ -1,0 +1,448 @@
+max_rpd= 0.8651532371528077 
+ max_r2=   0  
+ bestRumbers | R2: 0 | RPD: 0 | C R2: 0 | Gama R2: 0 
+ | C Rpd: 0.001 | Gama RPD: 0.001 |
+  random_numbers | 0 
+ PCA Variancia=0.75
+==========================================================
+
+max_rpd= 0.8651572359135076 
+ max_r2=   0  
+ bestRumbers | R2: 0 | RPD: 0 | C R2: 0 | Gama R2: 0 
+ | C Rpd: 0.001 | Gama RPD: 0.01 |
+  random_numbers | 0 
+ PCA Variancia=0.75
+==========================================================
+
+max_rpd= 0.8652109537519383 
+ max_r2=   0  
+ bestRumbers | R2: 0 | RPD: 0 | C R2: 0 | Gama R2: 0 
+ | C Rpd: 0.01 | Gama RPD: 0.001 |
+  random_numbers | 0 
+ PCA Variancia=0.75
+==========================================================
+
+max_rpd= 0.8653277376596794 
+ max_r2=   0  
+ bestRumbers | R2: 0 | RPD: 0 | C R2: 0 | Gama R2: 0 
+ | C Rpd: 0.01 | Gama RPD: 0.01 |
+  random_numbers | 0 
+ PCA Variancia=0.75
+==========================================================
+
+max_rpd= 0.8658977793605441 
+ max_r2=   0  
+ bestRumbers | R2: 0 | RPD: 0 | C R2: 0 | Gama R2: 0 
+ | C Rpd: 0.1 | Gama RPD: 0.001 |
+  random_numbers | 0 
+ PCA Variancia=0.75
+==========================================================
+
+max_rpd= 0.8684841760945244 
+ max_r2=   0  
+ bestRumbers | R2: 0 | RPD: 0 | C R2: 0 | Gama R2: 0 
+ | C Rpd: 0.1 | Gama RPD: 0.01 |
+  random_numbers | 0 
+ PCA Variancia=0.75
+==========================================================
+
+max_rpd= 0.8742096447731709 
+ max_r2=   0  
+ bestRumbers | R2: 0 | RPD: 0 | C R2: 0 | Gama R2: 0 
+ | C Rpd: 1.0 | Gama RPD: 0.001 |
+  random_numbers | 0 
+ PCA Variancia=0.75
+==========================================================
+
+max_rpd= 0.8753750110371813 
+ max_r2=   0  
+ bestRumbers | R2: 0 | RPD: 0 | C R2: 0 | Gama R2: 0 
+ | C Rpd: 1.0 | Gama RPD: 100.0 |
+  random_numbers | 0 
+ PCA Variancia=0.75
+==========================================================
+
+max_rpd= 0.8765609411884488 
+ max_r2=   0  
+ bestRumbers | R2: 0 | RPD: 0 | C R2: 0 | Gama R2: 0 
+ | C Rpd: 10.0 | Gama RPD: 0.0001 |
+  random_numbers | 0 
+ PCA Variancia=0.75
+==========================================================
+
+max_rpd= 0.894112141299833 
+ max_r2=   0  
+ bestRumbers | R2: 0 | RPD: 0 | C R2: 0 | Gama R2: 0 
+ | C Rpd: 10.0 | Gama RPD: 0.001 |
+  random_numbers | 0 
+ PCA Variancia=0.75
+==========================================================
+
+max_rpd= 0.900543579514721 
+ max_r2=   0  
+ bestRumbers | R2: 0 | RPD: 0 | C R2: 0 | Gama R2: 0 
+ | C Rpd: 10.0 | Gama RPD: 1.0 |
+  random_numbers | 0 
+ PCA Variancia=0.75
+==========================================================
+
+max_rpd= 0.9061390866056609 
+ max_r2=   0  
+ bestRumbers | R2: 0 | RPD: 0 | C R2: 0 | Gama R2: 0 
+ | C Rpd: 10.0 | Gama RPD: 10.0 |
+  random_numbers | 0 
+ PCA Variancia=0.75
+==========================================================
+
+max_rpd= 0.9402281568387093 
+ max_r2=   0  
+ bestRumbers | R2: 0 | RPD: 0 | C R2: 0 | Gama R2: 0 
+ | C Rpd: 100.0 | Gama RPD: 0.1 |
+  random_numbers | 0 
+ PCA Variancia=0.75
+==========================================================
+
+max_rpd= 0.9426924991625668 
+ max_r2=   0  
+ bestRumbers | R2: 0 | RPD: 1 | C R2: 0 | Gama R2: 0 
+ | C Rpd: 100.0 | Gama RPD: 1000.0 |
+  random_numbers | 1 
+ PCA Variancia=0.75
+==========================================================
+
+max_rpd= 0.9509706766191052 
+ max_r2=   0  
+ bestRumbers | R2: 0 | RPD: 1 | C R2: 0 | Gama R2: 0 
+ | C Rpd: 100.0 | Gama RPD: 10000.0 |
+  random_numbers | 1 
+ PCA Variancia=0.75
+==========================================================
+
+max_rpd= 0.9579742279204891 
+ max_r2=   0  
+ bestRumbers | R2: 0 | RPD: 2 | C R2: 0 | Gama R2: 0 
+ | C Rpd: 100.0 | Gama RPD: 100.0 |
+  random_numbers | 2 
+ PCA Variancia=0.75
+==========================================================
+
+max_rpd= 0.9960419256459647 
+ max_r2=   0  
+ bestRumbers | R2: 0 | RPD: 2 | C R2: 0 | Gama R2: 0 
+ | C Rpd: 100.0 | Gama RPD: 1000.0 |
+  random_numbers | 2 
+ PCA Variancia=0.75
+==========================================================
+
+max_rpd= 0.9972586994600702 
+ max_r2=   0  
+ bestRumbers | R2: 0 | RPD: 2 | C R2: 0 | Gama R2: 0 
+ | C Rpd: 100.0 | Gama RPD: 10000.0 |
+  random_numbers | 2 
+ PCA Variancia=0.75
+==========================================================
+
+max_rpd= 1.0305957390659855 
+ max_r2=   0.05849351688444171  
+ bestRumbers | R2: 5 | RPD: 5 | C R2: 100.0 | Gama R2: 0.0001 
+ | C Rpd: 100.0 | Gama RPD: 0.0001 |
+  random_numbers | 5 
+ PCA Variancia=0.75
+==========================================================
+
+max_rpd= 1.1085880600180127 
+ max_r2=   0.18630882368417034  
+ bestRumbers | R2: 10 | RPD: 10 | C R2: 10000.0 | Gama R2: 0.001 
+ | C Rpd: 10000.0 | Gama RPD: 0.001 |
+  random_numbers | 10 
+ PCA Variancia=0.75
+==========================================================
+
+max_rpd= 1.2181390387640358 
+ max_r2=   0.32608320969953297  
+ bestRumbers | R2: 48 | RPD: 48 | C R2: 1000.0 | Gama R2: 0.01 
+ | C Rpd: 1000.0 | Gama RPD: 0.01 |
+  random_numbers | 48 
+ PCA Variancia=0.75
+==========================================================
+
+max_rpd= 1.2919610799390588 
+ max_r2=   0.4008974910530573  
+ bestRumbers | R2: 108 | RPD: 108 | C R2: 10000.0 | Gama R2: 0.001 
+ | C Rpd: 10000.0 | Gama RPD: 0.001 |
+  random_numbers | 108 
+ PCA Variancia=0.75
+==========================================================
+
+max_rpd= 1.3762358311275498 
+ max_r2=   0.47202388204949175  
+ bestRumbers | R2: 193 | RPD: 193 | C R2: 1000.0 | Gama R2: 0.01 
+ | C Rpd: 1000.0 | Gama RPD: 0.01 |
+  random_numbers | 193 
+ PCA Variancia=0.75
+==========================================================
+
+max_rpd= 1.3950526822341947 
+ max_r2=   0.48617079729524915  
+ bestRumbers | R2: 3480 | RPD: 3480 | C R2: 1000.0 | Gama R2: 0.01 
+ | C Rpd: 1000.0 | Gama RPD: 0.01 |
+  random_numbers | 3480 
+ PCA Variancia=0.75
+==========================================================
+
+max_rpd= 1.414750247787449 
+ max_r2=   0.5003792779816825  
+ bestRumbers | R2: 3480 | RPD: 3480 | C R2: 10000.0 | Gama R2: 0.01 
+ | C Rpd: 10000.0 | Gama RPD: 0.01 |
+  random_numbers | 3480 
+ PCA Variancia=0.75
+==========================================================
+
+max_rpd= 1.4684930322618925 
+ max_r2=   0.5362795810341554  
+ bestRumbers | R2: 11840 | RPD: 11840 | C R2: 1000.0 | Gama R2: 0.01 
+ | C Rpd: 1000.0 | Gama RPD: 0.01 |
+  random_numbers | 11840 
+ PCA Variancia=0.75
+==========================================================
+
+max_rpd= 1.4994985023789855 
+ max_r2=   0.5552582226767184  
+ bestRumbers | R2: 13417 | RPD: 13417 | C R2: 1000.0 | Gama R2: 0.01 
+ | C Rpd: 1000.0 | Gama RPD: 0.01 |
+  random_numbers | 13417 
+ PCA Variancia=0.75
+==========================================================
+
+max_rpd= 1.596119873907366 
+ max_r2=   0.6074734930240134  
+ bestRumbers | R2: 15263 | RPD: 15263 | C R2: 1000.0 | Gama R2: 0.01 
+ | C Rpd: 1000.0 | Gama RPD: 0.01 |
+  random_numbers | 15263 
+ PCA Variancia=0.75
+==========================================================
+
+max_rpd= 0.8651532371528077 
+ max_r2=   1.596119873907366  
+ bestRumbers | R2: 0 | RPD: 0 | C R2: 0 | Gama R2: 0 
+ | C Rpd: 0.001 | Gama RPD: 0.001 |
+  random_numbers | 0 
+ PCA Variancia=0.75
+==========================================================
+
+max_rpd= 0.8651594974363086 
+ max_r2=   1.596119873907366  
+ bestRumbers | R2: 0 | RPD: 0 | C R2: 0 | Gama R2: 0 
+ | C Rpd: 0.001 | Gama RPD: 0.001 |
+  random_numbers | 0 
+ PCA Variancia=0.8
+==========================================================
+
+max_rpd= 0.8651810420546191 
+ max_r2=   1.596119873907366  
+ bestRumbers | R2: 0 | RPD: 0 | C R2: 0 | Gama R2: 0 
+ | C Rpd: 0.001 | Gama RPD: 0.01 |
+  random_numbers | 0 
+ PCA Variancia=0.8
+==========================================================
+
+max_rpd= 0.865184418047336 
+ max_r2=   1.596119873907366  
+ bestRumbers | R2: 0 | RPD: 0 | C R2: 0 | Gama R2: 0 
+ | C Rpd: 0.001 | Gama RPD: 0.1 |
+  random_numbers | 0 
+ PCA Variancia=0.8
+==========================================================
+
+max_rpd= 0.8652109537519383 
+ max_r2=   1.596119873907366  
+ bestRumbers | R2: 0 | RPD: 0 | C R2: 0 | Gama R2: 0 
+ | C Rpd: 0.01 | Gama RPD: 0.001 |
+  random_numbers | 0 
+ PCA Variancia=0.75
+==========================================================
+
+max_rpd= 0.865273556654969 
+ max_r2=   1.596119873907366  
+ bestRumbers | R2: 0 | RPD: 0 | C R2: 0 | Gama R2: 0 
+ | C Rpd: 0.01 | Gama RPD: 0.001 |
+  random_numbers | 0 
+ PCA Variancia=0.8
+==========================================================
+
+max_rpd= 0.8653277376596794 
+ max_r2=   1.596119873907366  
+ bestRumbers | R2: 0 | RPD: 0 | C R2: 0 | Gama R2: 0 
+ | C Rpd: 0.01 | Gama RPD: 0.01 |
+  random_numbers | 0 
+ PCA Variancia=0.75
+==========================================================
+
+max_rpd= 0.8654886231832803 
+ max_r2=   1.596119873907366  
+ bestRumbers | R2: 0 | RPD: 0 | C R2: 0 | Gama R2: 0 
+ | C Rpd: 0.01 | Gama RPD: 0.01 |
+  random_numbers | 0 
+ PCA Variancia=0.8
+==========================================================
+
+max_rpd= 0.865522373713754 
+ max_r2=   1.596119873907366  
+ bestRumbers | R2: 0 | RPD: 0 | C R2: 0 | Gama R2: 0 
+ | C Rpd: 0.01 | Gama RPD: 0.1 |
+  random_numbers | 0 
+ PCA Variancia=0.8
+==========================================================
+
+max_rpd= 0.8658977793605441 
+ max_r2=   1.596119873907366  
+ bestRumbers | R2: 0 | RPD: 0 | C R2: 0 | Gama R2: 0 
+ | C Rpd: 0.1 | Gama RPD: 0.001 |
+  random_numbers | 0 
+ PCA Variancia=0.75
+==========================================================
+
+max_rpd= 0.8664141193560668 
+ max_r2=   1.596119873907366  
+ bestRumbers | R2: 0 | RPD: 0 | C R2: 0 | Gama R2: 0 
+ | C Rpd: 0.1 | Gama RPD: 0.001 |
+  random_numbers | 0 
+ PCA Variancia=0.8
+==========================================================
+
+max_rpd= 0.8684841760945244 
+ max_r2=   1.596119873907366  
+ bestRumbers | R2: 0 | RPD: 0 | C R2: 0 | Gama R2: 0 
+ | C Rpd: 0.1 | Gama RPD: 0.01 |
+  random_numbers | 0 
+ PCA Variancia=0.75
+==========================================================
+
+max_rpd= 0.8693696007252935 
+ max_r2=   1.596119873907366  
+ bestRumbers | R2: 0 | RPD: 0 | C R2: 0 | Gama R2: 0 
+ | C Rpd: 0.1 | Gama RPD: 0.01 |
+  random_numbers | 0 
+ PCA Variancia=0.8
+==========================================================
+
+max_rpd= 0.8693729999100583 
+ max_r2=   1.596119873907366  
+ bestRumbers | R2: 0 | RPD: 0 | C R2: 0 | Gama R2: 0 
+ | C Rpd: 0.1 | Gama RPD: 0.1 |
+  random_numbers | 0 
+ PCA Variancia=0.8
+==========================================================
+
+max_rpd= 0.8742096447731709 
+ max_r2=   1.596119873907366  
+ bestRumbers | R2: 0 | RPD: 0 | C R2: 0 | Gama R2: 0 
+ | C Rpd: 1.0 | Gama RPD: 0.001 |
+  random_numbers | 0 
+ PCA Variancia=0.75
+==========================================================
+
+max_rpd= 0.8774712051151073 
+ max_r2=   1.596119873907366  
+ bestRumbers | R2: 0 | RPD: 0 | C R2: 0 | Gama R2: 0 
+ | C Rpd: 1.0 | Gama RPD: 0.001 |
+  random_numbers | 0 
+ PCA Variancia=0.8
+==========================================================
+
+max_rpd= 0.8801331322288447 
+ max_r2=   1.596119873907366  
+ bestRumbers | R2: 0 | RPD: 0 | C R2: 0 | Gama R2: 0 
+ | C Rpd: 1.0 | Gama RPD: 0.1 |
+  random_numbers | 0 
+ PCA Variancia=0.8
+==========================================================
+
+max_rpd= 0.8817423772829311 
+ max_r2=   1.596119873907366  
+ bestRumbers | R2: 0 | RPD: 0 | C R2: 0 | Gama R2: 0 
+ | C Rpd: 10.0 | Gama RPD: 0.0001 |
+  random_numbers | 0 
+ PCA Variancia=0.8
+==========================================================
+
+max_rpd= 0.894112141299833 
+ max_r2=   1.596119873907366  
+ bestRumbers | R2: 0 | RPD: 0 | C R2: 0 | Gama R2: 0 
+ | C Rpd: 10.0 | Gama RPD: 0.001 |
+  random_numbers | 0 
+ PCA Variancia=0.75
+==========================================================
+
+max_rpd= 0.8943488102680667 
+ max_r2=   1.596119873907366  
+ bestRumbers | R2: 0 | RPD: 0 | C R2: 0 | Gama R2: 0 
+ | C Rpd: 10.0 | Gama RPD: 0.001 |
+  random_numbers | 0 
+ PCA Variancia=0.8
+==========================================================
+
+max_rpd= 0.9179486867663255 
+ max_r2=   1.596119873907366  
+ bestRumbers | R2: 0 | RPD: 0 | C R2: 0 | Gama R2: 0 
+ | C Rpd: 10.0 | Gama RPD: 0.01 |
+  random_numbers | 0 
+ PCA Variancia=0.8
+==========================================================
+
+max_rpd= 0.9234812309607517 
+ max_r2=   1.596119873907366  
+ bestRumbers | R2: 0 | RPD: 0 | C R2: 0 | Gama R2: 0 
+ | C Rpd: 10.0 | Gama RPD: 1.0 |
+  random_numbers | 0 
+ PCA Variancia=0.8
+==========================================================
+
+max_rpd= 0.9355413304585615 
+ max_r2=   1.596119873907366  
+ bestRumbers | R2: 0 | RPD: 0 | C R2: 0 | Gama R2: 0 
+ | C Rpd: 10.0 | Gama RPD: 10.0 |
+  random_numbers | 0 
+ PCA Variancia=0.8
+==========================================================
+
+max_rpd= 0.9402281568387093 
+ max_r2=   1.596119873907366  
+ bestRumbers | R2: 0 | RPD: 0 | C R2: 0 | Gama R2: 0 
+ | C Rpd: 100.0 | Gama RPD: 0.1 |
+  random_numbers | 0 
+ PCA Variancia=0.75
+==========================================================
+
+max_rpd= 0.9902940890304335 
+ max_r2=   1.596119873907366  
+ bestRumbers | R2: 0 | RPD: 0 | C R2: 0 | Gama R2: 0 
+ | C Rpd: 100.0 | Gama RPD: 10.0 |
+  random_numbers | 0 
+ PCA Variancia=0.8
+==========================================================
+
+max_rpd= 1.093584484599106 
+ max_r2=   1.596119873907366  
+ bestRumbers | R2: 0 | RPD: 2 | C R2: 0 | Gama R2: 0 
+ | C Rpd: 10.0 | Gama RPD: 0.01 |
+  random_numbers | 2 
+ PCA Variancia=0.8
+==========================================================
+
+max_rpd= 1.2385315232757617 
+ max_r2=   1.596119873907366  
+ bestRumbers | R2: 0 | RPD: 10 | C R2: 0 | Gama R2: 0 
+ | C Rpd: 10.0 | Gama RPD: 0.1 |
+  random_numbers | 10 
+ PCA Variancia=0.8
+==========================================================
+
+max_rpd= 1.3713735377126655 
+ max_r2=   1.596119873907366  
+ bestRumbers | R2: 0 | RPD: 10 | C R2: 0 | Gama R2: 0 
+ | C Rpd: 100.0 | Gama RPD: 0.01 |
+  random_numbers | 10 
+ PCA Variancia=0.8
+==========================================================
+

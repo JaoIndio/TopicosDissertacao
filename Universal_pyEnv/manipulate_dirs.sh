@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Set the source file to be copied
+# Set the source file to be copied 
 source_dir="../../data_bases/BrLib_MIR"
 dest_dir="../../data_bases/BrLib_MIR"
 
