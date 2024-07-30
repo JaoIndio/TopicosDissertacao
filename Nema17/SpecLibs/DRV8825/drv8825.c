@@ -29,7 +29,7 @@
 #define DIR_PIN GPIO_PIN_0  //PB0
 #define ENABLE_PIN GPIO_PIN_1
 #define ANALOG_SIMULATE GPIO_PIN_7
-#define PWM_FREQUENCY 1000 // 1 kHzI
+#define PWM_FREQUENCY 5000 // 1 kHzI
 #define KILO_HZ 1000 // 1 kHzI
 
 // Define constants for the sigmoid function
@@ -164,7 +164,7 @@ void xDebaunceKey(void *ptr) {
     // Wait for the notification from the ISR
     ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
     // Delay for a specified period (e.g., 1000 ms)
-    vTaskDelay(pdMS_TO_TICKS(150));
+    vTaskDelay(pdMS_TO_TICKS(250));
 
     // Re-enable the PORTE interrupt
     IntEnable(INT_GPIOE);
@@ -179,16 +179,18 @@ void GPIOPortE_Handler(){
   //lear the interrupt flag
   GPIOIntClear(GPIO_PORTE_BASE, status);
 
-  //Check which pin triggered the interrupt
+  //Check which pin triggered bcbcbcb2interrupt
   if (status & EC_1) {
     // Handle the falling edge on PE2
     // Your code here
+    GPIOPinWrite(GPIO_PORTB_BASE, DIR_PIN, DIR_PIN);
   	UARTprintf("\r\t\tEC_1\n");
   }
   if (status & EC_2) {
     // Handle the falling edge on PE3
     // Your code here
   	UARTprintf("\r\t\t\tEC_2\n");
+    GPIOPinWrite(GPIO_PORTB_BASE, DIR_PIN, 0);
   }
 
   BaseType_t xHigherPriorityTaskWoken = pdFALSE;
@@ -289,9 +291,9 @@ void StepLoop(void* ptr){
     
     
     if(actual_freq<=(min_freq+100)){
-      UARTprintf("\r\n\t\t\tRise\n\n");
+      //UARTprintf("\r\n\t\t\tRise\n\n");
       //TrigggerPWMSigmoidFrequency(&actual_freq, max_freq);
-      UARTprintf("\r\n\t\t\tCurve Done\n\n");
+      //UARTprintf("\r\n\t\t\tCurve Done\n\n");
       vTaskDelay(pdMS_TO_TICKS(1500));
     }else{
       //UARTprintf("\r\n\t\t\tFalling\n\n");
@@ -299,11 +301,12 @@ void StepLoop(void* ptr){
       //UARTprintf("\r\n\t\t\tCurve Done\n\n");
       vTaskDelay(pdMS_TO_TICKS(1500));
     }
-    
+
 
     //GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_5, GPIOPinRead(GPIO_PORTB_BASE, GPIO_PIN_5)^GPIO_PIN_5);
     //vTaskDelay(pdMS_TO_TICKS(50));
   }
 }
+
 
 #endif
