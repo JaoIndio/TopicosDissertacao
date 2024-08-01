@@ -20,6 +20,7 @@ ORDERED_OBJS += \
 "./FreeRTOS/Source/portable/CCS/ARM_CM4F/port.obj" \
 "./FreeRTOS/Source/portable/CCS/ARM_CM4F/portasm.obj" \
 "./FreeRTOS/Source/portable/MemMang/heap_2.obj" \
+"./SpecLibs/AS7341/AS7341.obj" \
 "./SpecLibs/DRV8825/drv8825.obj" \
 "./drivers/rtos_hw_drivers.obj" \
 "./utils/uartstdio.obj" \
@@ -40,6 +41,7 @@ RMDIR := rm -rf
 -include FreeRTOS/Source/subdir_vars.mk
 -include FreeRTOS/Source/portable/CCS/ARM_CM4F/subdir_vars.mk
 -include FreeRTOS/Source/portable/MemMang/subdir_vars.mk
+-include SpecLibs/AS7341/subdir_vars.mk
 -include SpecLibs/DRV8825/subdir_vars.mk
 -include drivers/subdir_vars.mk
 -include utils/subdir_vars.mk
@@ -47,6 +49,7 @@ RMDIR := rm -rf
 -include FreeRTOS/Source/subdir_rules.mk
 -include FreeRTOS/Source/portable/CCS/ARM_CM4F/subdir_rules.mk
 -include FreeRTOS/Source/portable/MemMang/subdir_rules.mk
+-include SpecLibs/AS7341/subdir_rules.mk
 -include SpecLibs/DRV8825/subdir_rules.mk
 -include drivers/subdir_rules.mk
 -include utils/subdir_rules.mk
@@ -180,8 +183,8 @@ Nema17.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(BIN_OUTPUTS__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "hello.obj" "tm4c123gh6pm_startup_ccs.obj" "FreeRTOS/Source/croutine.obj" "FreeRTOS/Source/event_groups.obj" "FreeRTOS/Source/list.obj" "FreeRTOS/Source/queue.obj" "FreeRTOS/Source/stream_buffer.obj" "FreeRTOS/Source/tasks.obj" "FreeRTOS/Source/timers.obj" "FreeRTOS/Source/portable/CCS/ARM_CM4F/port.obj" "FreeRTOS/Source/portable/CCS/ARM_CM4F/portasm.obj" "FreeRTOS/Source/portable/MemMang/heap_2.obj" "SpecLibs/DRV8825/drv8825.obj" "drivers/rtos_hw_drivers.obj" "utils/uartstdio.obj" "utils/ustdlib.obj" 
-	-$(RM) "hello.d" "tm4c123gh6pm_startup_ccs.d" "FreeRTOS/Source/croutine.d" "FreeRTOS/Source/event_groups.d" "FreeRTOS/Source/list.d" "FreeRTOS/Source/queue.d" "FreeRTOS/Source/stream_buffer.d" "FreeRTOS/Source/tasks.d" "FreeRTOS/Source/timers.d" "FreeRTOS/Source/portable/CCS/ARM_CM4F/port.d" "FreeRTOS/Source/portable/MemMang/heap_2.d" "SpecLibs/DRV8825/drv8825.d" "drivers/rtos_hw_drivers.d" "utils/uartstdio.d" "utils/ustdlib.d" 
+	-$(RM) "hello.obj" "tm4c123gh6pm_startup_ccs.obj" "FreeRTOS/Source/croutine.obj" "FreeRTOS/Source/event_groups.obj" "FreeRTOS/Source/list.obj" "FreeRTOS/Source/queue.obj" "FreeRTOS/Source/stream_buffer.obj" "FreeRTOS/Source/tasks.obj" "FreeRTOS/Source/timers.obj" "FreeRTOS/Source/portable/CCS/ARM_CM4F/port.obj" "FreeRTOS/Source/portable/CCS/ARM_CM4F/portasm.obj" "FreeRTOS/Source/portable/MemMang/heap_2.obj" "SpecLibs/AS7341/AS7341.obj" "SpecLibs/DRV8825/drv8825.obj" "drivers/rtos_hw_drivers.obj" "utils/uartstdio.obj" "utils/ustdlib.obj" 
+	-$(RM) "hello.d" "tm4c123gh6pm_startup_ccs.d" "FreeRTOS/Source/croutine.d" "FreeRTOS/Source/event_groups.d" "FreeRTOS/Source/list.d" "FreeRTOS/Source/queue.d" "FreeRTOS/Source/stream_buffer.d" "FreeRTOS/Source/tasks.d" "FreeRTOS/Source/timers.d" "FreeRTOS/Source/portable/CCS/ARM_CM4F/port.d" "FreeRTOS/Source/portable/MemMang/heap_2.d" "SpecLibs/AS7341/AS7341.d" "SpecLibs/DRV8825/drv8825.d" "drivers/rtos_hw_drivers.d" "utils/uartstdio.d" "utils/ustdlib.d" 
 	-$(RM) "FreeRTOS/Source/portable/CCS/ARM_CM4F/portasm.d" 
 	-@echo 'Finished clean'
 	-@echo ' '

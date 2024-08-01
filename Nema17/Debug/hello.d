@@ -39,6 +39,7 @@ hello.obj: /home/jao/curso/ufsm/Mestrado/Dissertacao/Pototip_DeVereda/ProjetoPro
 hello.obj: ../drivers/rtos_hw_drivers.h
 hello.obj: ../utils/uartstdio.h
 hello.obj: /home/jao/curso/ufsm/Mestrado/Dissertacao/Pototip_DeVereda/ProjetoPrototipo/Tiva/SpecLibs/DRV8825/drv8825.h
+hello.obj: /home/jao/curso/ufsm/Mestrado/Dissertacao/Pototip_DeVereda/ProjetoPrototipo/Tiva/SpecLibs/AS7341/AS7341.h
 
 ../hello.c: 
 /home/jao/ti/ccs1010/ccs/tools/compiler/ti-cgt-arm_20.2.1.LTS/include/stdio.h: 
@@ -79,3 +80,4 @@ hello.obj: /home/jao/curso/ufsm/Mestrado/Dissertacao/Pototip_DeVereda/ProjetoPro
 ../drivers/rtos_hw_drivers.h: 
 ../utils/uartstdio.h: 
 /home/jao/curso/ufsm/Mestrado/Dissertacao/Pototip_DeVereda/ProjetoPrototipo/Tiva/SpecLibs/DRV8825/drv8825.h: 
+/home/jao/curso/ufsm/Mestrado/Dissertacao/Pototip_DeVereda/ProjetoPrototipo/Tiva/SpecLibs/AS7341/AS7341.h: 

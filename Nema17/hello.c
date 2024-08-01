@@ -21,6 +21,7 @@
 #include "drivers/rtos_hw_drivers.h"
 #include "utils/uartstdio.h"
 #include "DRV8825/drv8825.h"
+#include "AS7341/AS7341.h"
 
 //#include "myLib.h"
 //#include "external_devices/AS7341_photo.h"
