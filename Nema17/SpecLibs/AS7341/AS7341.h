@@ -110,7 +110,39 @@
 #define AS7341_BANK_LOW_ACESS   1
 
 
+#define PHOTO_F1_1                2
+#define PHOTO_F3_1                1
+#define PHOTO_F5_1                19
+#define PHOTO_F7_1                20
+#define PHOTO_F6_1                8
+#define PHOTO_F8_1                7
+#define PHOTO_F2_1                25
+#define PHOTO_F4_1                26
+#define PHOTO_F4_2                11
+#define PHOTO_F2_2                10
+#define PHOTO_F8_2                28
+#define PHOTO_F6_2                29
+#define PHOTO_F7_2                14
+#define PHOTO_F5_2                13
+#define PHOTO_F3_2                31
+#define PHOTO_F1_2                32
 
+
+#define PHOTO_CLEAR_1             17
+#define PHOTO_CLEAR_2             35
+#define PHOTO_NIR                 38
+#define PHOTO_FLICKER             39
+#define GPIO_INPUT                33
+#define INT_INPUT                 34
+#define DARK                      37
+
+#define CONNECT_TO_GND            0
+#define CONNECT_TO_ADC0           1
+#define CONNECT_TO_ADC1           2
+#define CONNECT_TO_ADC2           3
+#define CONNECT_TO_ADC3           4
+#define CONNECT_TO_ADC4           5
+#define CONNECT_TO_ADC_FLICKER    6
 //-------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------
@@ -607,7 +639,47 @@ typedef union{
 
 
 
+//*************** SMUX I2C MAP *****************
+typedef union{
+  struct{
+    uint8_t : 4;          ///< Bits 0-3: Unused
+    uint8_t MUX_SEL : 3; ///< Bits 4-6:  Define Conexao aos ADC
+    uint8_t : 1;          ///< Bit 7: Unused
+  };
+  uint16_t value; ///< 
+} as7341_reg0;
 
+typedef union{
+  struct{
+    uint8_t MUX_SEL: 3;          ///< Bits 0-3: Unused
+    uint8_t : 5; 
+  };
+  uint16_t value; ///< 
+} as7341_reg1;
+typedef union{
+  struct{
+    uint8_t : 4;          ///< Bits 0-3: Unused
+    uint8_t MUX_SEL : 3; ///< Bits 4-6:  Define Conexao aos ADC
+    uint8_t : 1;          ///< Bit 7: Unused
+  };
+  uint16_t value; ///< 
+} as7341_reg3;
+typedef union{
+  struct{
+    uint8_t MUX_SEL: 3;          ///< Bits 0-3: Unused
+    uint8_t : 5; 
+  };
+  uint16_t value; ///< 
+} as7341_reg4;
+typedef union{
+  struct{
+    uint8_t MUX_SEL1: 3;          ///< Bits 0-3: Unused
+    uint8_t : 1; 
+    uint8_t MUX_SEL2: 3;          ///< Bits 0-3: Unused
+    uint8_t : 1; 
+  };
+  uint16_t value; ///< 
+}as7341_reg5;
 
 //-------------------------------------------
 //-------------------------------------------
@@ -619,10 +691,14 @@ bool AS7341_read(uint8_t regAdd, uint8_t *data);
 bool AS7341_writeMultiples(uint8_t startReg, uint8_t *data, uint32_t length );
 bool AS7341_readMultiples(uint8_t startReg, uint8_t *data, uint32_t length);
 
-bool AS7341_Init();
+bool AS7341_i2cInit();
 
 bool AS7341_Enable();
+bool AS7341_DisableSpecMen(){
+bool AS7341_PowerOff(){
 bool AS7341_DevivceConfig();
+bool AS7341_WriteI2cReg2SMUX_Sel();
+
 bool AS7341_ADC_TimingConfig();
 bool AS7341_ADC_Config();
 bool AS7341_InterruptionConfig();
@@ -634,7 +710,10 @@ bool AS7341_BufferData();
 bool AS7341_BufferConfig();
 
 bool AS7341_BankAcessSet(uint8_t RedAdd);
-bool AS7341_SetSMUX();
+bool AS7341_SetSMUX(uint8_t photoDiode, uint8_t ADC_ID);
+bool AS7341_SMUXEnable();
+bool AS7341_SetI2cRegSMUX(uint8_t photoDiode, uint8_t ADC_ID);
+
 bool AS7341_GetSMUX();
 
 #endif // AS7341_H

@@ -64,7 +64,6 @@ bool AS7341_write(uint8_t regAdd, uint8_t data){
   if(!WaitACK()) return false;
   return true;
 }
-}
 bool AS7341_writeMultiples(uint8_t startReg, uint8_t *data, uint32_t length ){
   I2CMasterSlaveAddrSet(I2C1_BASE, AS7341_ADDR, false);
   I2CMasterDataPut(I2C1_BASE, startReg);
@@ -125,7 +124,7 @@ bool AS7341_readMultiples( uint8_t startReg, uint8_t *data, uint32_t length){
   return true;
 }
 
-bool AS7341_Init(){
+bool AS7341_i2cInit(){
   I2C1_Semphr = xSemaphoreCreateMutex();
   SysCtlPeripheralEnable(SYSCTL_PERIPH_I2C1);
   
@@ -151,45 +150,45 @@ bool AS7341_Enable(){
   enable_reg.WEN    = 1;
   enable_reg.SP_EN  = 0;
   enable_reg.PON    = 1;
-  return AS7341_write(AS7341_REG_ENABLE, enable_reg.value);
-
+  if(!AS7341_SetAcessAndWrite(AS7341_REG_ENABLE, enable_reg.value)) return false;
+  return true;
 }
 bool AS7341_DevivceConfig(){
   as7341_config_t config_reg;
   config_reg.LED_SEL  = 1;
   config_reg.INT_SEL  = 1;
   config_reg.INT_MODE = 1;
-  if(!AS7341_write(AS7341_REG_CONFIG, config_reg.value)) return false;
+  if(!AS7341_SetAcessAndWrite(AS7341_REG_CONFIG, config_reg.value)) return false;
  
   as7341_gpio_t gpio_reg;
   gpio_reg.PD_INT   = 0;
   gpio_reg.PD_GPIO  = 0;
-  if(!AS7341_write(AS7341_REG_GPIO1, gpio_reg.value)) return false;
+  if(!AS7341_SetAcessAndWrite(AS7341_REG_GPIO1, gpio_reg.value)) return false;
 
   as7341_gpio2_t gpio2_reg;
   gpio2_reg.GPIO_INV   = 0;
   gpio2_reg.GPIO_IN_EN = 1;
   gpio2_reg.GPIO_OUT   = 0;
   gpio2_reg.GPIO_IN    = 0;
-  if(!AS7341_write(AS7341_REG_GPIO2, gpio2_reg.value)) return false;
+  if(!AS7341_SetAcessAndWrite(AS7341_REG_GPIO2, gpio2_reg.value)) return false;
 
   as7341_led_t led_reg;
   led_reg.LED_ACT   = 0;
   led_reg.LED_DRIVE = 0;
-  if(!AS7341_write(AS7341_REG_LED, led_reg.value)) return false;
+  if(!AS7341_SetAcessAndWrite(AS7341_REG_LED, led_reg.value)) return false;
 
   as7341_intenab_t intenab_reg;
   intenab_reg.ASIEN   = 0;
   intenab_reg.SP_IEN  = 0;
   intenab_reg.F_IEN   = 1;
   intenab_reg.SIEN    = 1;
-  if(!AS7341_write(AS7341_REG_INTENAB, intenab_reg.value)) return false;
+  if(!AS7341_SetAcessAndWrite(AS7341_REG_INTENAB, inenab_reg.value)) return false;
   
   as7341_control_t control_reg;
   control_reg.SP_MAN_AZ       = 0;
   control_reg.FIFO_CLR        = 0; //Talvez valha pena ter uma funcao so pra esse cmd
   control_reg.CLEAR_SAI_ACT   = 0;
-  if(!AS7341_write(AS7341_REG_CONTROL, control_reg.value)) return false;
+  if(!AS7341_SetAcessAndWrite(AS7341_REG_CONTROL, control_reg.value)) return false;
   
   return true;
 }
@@ -198,17 +197,17 @@ bool AS7341_ADC_TimingConfig(){
   // 𝐴𝐷𝐶𝑓𝑢𝑙𝑙𝑠𝑐𝑎𝑙𝑒 = (𝐴𝑇𝐼𝑀𝐸 + 1) × (𝐴𝑆𝑇𝐸𝑃 + 1)
   as7341_atime_t atime_reg;
   atime_reg.ATIME   = 1;
-  if(!AS7341_write(AS7341_REG_ATIME, atime_reg.value)) return false;
+  if(!AS7341_SetAcessAndWrite(AS7341_REG_ATIME, atime_reg.value)) return false;
   
   as7341_astep_t astep_reg;
   astep_reg.ASTEP_L   = 1;
-  astep_reg.ASTEP_H   = 0;
-  if(!AS7341_write(AS7341_REG_ASTEP_L, (uint8_t)astep_reg.value)) return false;
-  if(!AS7341_write(AS7341_REG_ASTEP_H, (uint8_t)(astep_reg.value>>8)) return false;
+  astep_reg.ASTEP_H   = 0;                     
+  if(!AS7341_SetAcessAndWrite(AS7341_REG_ASTEP_L, (uint8_t)astep_reg.value))      return false;
+  if(!AS7341_SetAcessAndWrite(AS7341_REG_ASTEP_H, (uint8_t)(astep_reg.value>>8))) return false;
   
   as7341_wtime_t wtime_reg;
   wtime_reg.WTIME   = 0; // 2,78ms
-  if(!AS7341_write(AS7341_REG_WTIME, wtime_reg.value)) return false;
+  if(!AS7341_SetAcessAndWrite(AS7341_REG_WTIME, wtime_reg.value)) return false;
 
   return true;
 
@@ -278,7 +277,7 @@ bool AS7341_OtherConfig(){
   if(!AS7341_SetAcessAndWrite(AS7341_REG_CFG3, cfg3_reg.value)) return false;
   
   as7341_cfg6_t cfg6_reg;
-  cfg6_reg.SMUX = 2; //
+  cfg6_reg.SMUX = 0; //
   if(!AS7341_SetAcessAndWrite(AS7341_REG_CFG6, cfg6_reg.value)) return false;
 
   as7341_cfg9_t cfg9_reg;
@@ -318,6 +317,22 @@ bool AS7341_BufferConfig(){
   return true;
 }
 
+bool AS7341_DisableSpecMen(){
+  as7341_enable_t enable_reg;
+  if(!AS7341_SetAcessAndRead(AS7341_REG_ENABLE, &enable_reg.value)) return false;
+  enable_reg.SP_EN = 0;
+  if(!AS7341_write(AS7341_REG_ENABLE, enable_reg.value)) return false;
+
+  return true
+}
+bool AS7341_PowerOff(){
+  as7341_enable_t enable_reg;
+  if(!AS7341_SetAcessAndRead(AS7341_REG_ENABLE, &enable_reg.value)) return false;
+  enable_reg.PON = 0;
+  if(!AS7341_write(AS7341_REG_ENABLE, enable_reg.value)) return false;
+
+  return true;
+}
 bool AS7341_BankAcessSet(uint8_t RegAdd){
   uint8_t RegLevelNeeded = 0;
   if(RegAdd>=0x80) RegLevelNeeded = AS7341_BANK_HIGH_ACESS;
@@ -343,6 +358,35 @@ bool AS7341_SetAcessAndRead(uint8_t regAdd, uint8_t *data){
   
   AS7341_BankAcessSet(regAdd);
   if(!AS7341_read(regAdd, *data)) return false;
+  return true;
+}
+
+bool AS7341_SetSMUX(uint8_t photoDiode, uint8_t ADC_ID){
+
+  if(!AS7341_DisableSpecMen()) return false;
+  if(!AS7341_SetI2cRegSMUX(photoDiode, ADC_ID)) return false;
+  
+  //Talvez tenha q ter uma barreira de semafaro aqui
+  if(!AS7341_WriteI2cReg2SMUX_Sel()) return false;
+  if(!AS7341_SMUXEnable())           return false;
+
+  return true;
+}
+
+bool AS7341_SMUXEnable(){
+  as7341_enable_t enable_reg;
+  if(!AS7341_SetAcessAndRead(AS7341_REG_ENABLE, &enable_reg.value)) return false;
+  enable_reg.SMUXEN = 1;
+  if(!AS7341_write(AS7341_REG_ENABLE, enable_reg.value)) return false;
+
+  return true;
+}
+
+bool AS7341_WriteI2cReg2SMUX_Sel(){
+  as7341_cfg6_t cfg6_reg;
+  cfg6_reg = 2;
+  if(!AS7341_write(AS7341_REG_ENABLE, enable_reg.value)) return false;
+
   return true;
 }
 #endif
