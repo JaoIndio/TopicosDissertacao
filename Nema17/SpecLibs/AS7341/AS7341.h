@@ -2,6 +2,12 @@
 // Based on:
 /*
   https://www.mouser.com/catalog/specsheets/AMS_03152019_AS7341_DS000504_1-00.pdf
+  https://dfimg.dfrobot.com/nobody/wiki/6a2a00069245ca5b43dd2a7e7c35f831.pdf
+  https://look.ams-osram.com/m/2a3e700eb3b0a0cf/original/AS7341_UG000400_6-00.pdf
+  https://www.dfrobot.com/product-2131.html
+  https://wiki.dfrobot.com/Gravity_AS7341_Visible_Light_Sensor_SKU_SEN0364
+
+  /home/jao/curso/ufsm/Mestrado/Dissertacao/Pototip_DeVereda/gitFiles/Documents/AS7341/AS7341_AN000666_1-00.pdf
 */
 #ifndef AS7341_H
 #define AS7341_H
@@ -100,7 +106,8 @@
 #define AS7341_REG_FDATA_H       0xFF
 
 
-
+#define AS7341_BANK_HIGH_ACESS  0
+#define AS7341_BANK_LOW_ACESS   1
 
 
 
@@ -272,7 +279,7 @@ typedef union{
     uint8_t : 3;       ///< Bits 5 a 7: Reservados
   };
   uint8_t value; ///< Valor bruto do registrador
-} as7341_cfg1_reg_t;
+} as7341_cfg1_t;
 
 //CFG10        Register (Address 0xB3)
 typedef union{
@@ -283,7 +290,7 @@ typedef union{
     uint8_t AGC_H : 2;   ///< Bits 6 a 7: Histerese Alta do AGC
   };
   uint8_t value; ///< Valor bruto do registrador
-} as7341_cfg10_reg_t; 
+} as7341_cfg10_t; 
 
 //AZ_CONFIG    Register (Address 0xD6)
 typedef union{
@@ -291,7 +298,7 @@ typedef union{
     uint8_t AZ_NTH_ITERATION : 8; ///< Bits 0 a 7: Frequência de Autozero (0 a 255)
   };
   uint8_t value; ///< Valor bruto do registrador
-} as7341_az_config_reg_t;  
+} as7341_az_config_t;  
 
 //AGC_GAIN_MAX Register (Address 0xCF)
 typedef union{
@@ -300,7 +307,7 @@ typedef union{
     uint8_t AGC_FD_GAIN_MAX : 4; ///< Bits 4 a 7: Ganho máximo do AGC para detecção de cintilação (0 a 15)
   };
   uint8_t value; ///< Valor bruto do registrador
-} as7341_agc_gain_max_reg_t;
+} as7341_agc_gain_max_t;
 
 //CFG8         Register (Address 0xB1)
 typedef union{
@@ -313,7 +320,7 @@ typedef union{
     uint8_t FIFO_TH : 2; ///< Bits 0 a 1: Limiar do FIFO (0 a 3)
   };
   uint8_t value; ///< Valor bruto do registrador
-} as7341_cfg8_reg_t;  
+} as7341_cfg8_t;  
 
 
 
@@ -511,7 +518,7 @@ typedef union{
     uint8_t : 2;           ///< Bits 6-7: Reservado
   };
   uint8_t value; ///< Valor bruto do registrador
-} as7341_cfg0_reg_t;
+} as7341_cfg0_t;
 
 //CFG3 Register (Address 0xAC)
 typedef union{
@@ -521,7 +528,7 @@ typedef union{
     uint8_t : 3;     ///< Bits 5-7: Reservado
   };
   uint8_t value; ///< Valor bruto do registrador
-} as7341_cfg3_reg_t;
+} as7341_cfg3_t;
 
 //CFG6 Register (Address 0xAF)
 typedef union{
@@ -531,7 +538,7 @@ typedef union{
     uint8_t : 3;          ///< Bits 5-7: Reservado
   };
   uint8_t value; ///< Valor bruto do registrador
-} as7341_cfg6_reg_t;
+} as7341_cfg6_t;
 
 //CFG9 Register (Address 0xB2)
 typedef union{
@@ -543,7 +550,7 @@ typedef union{
     uint8_t : 1;           ///< Bit 7: Reservado
   };
   uint8_t value; ///< Valor bruto do registrador
-} as7341_cfg9_reg_t;
+} as7341_cfg9_t;
 
 //PERS Register (Address 0xBD)
 typedef union{
@@ -552,7 +559,7 @@ typedef union{
     uint8_t : 4;       ///< Bits 4-7: Reservado
   };
   uint8_t value; ///< Valor bruto do registrador
-} as7341_pers_reg_t;
+} as7341_pers_t;
 
 
 
@@ -570,7 +577,7 @@ typedef union{
     uint8_t : 1;                     ///< Bit 7: Reservado
   };
   uint8_t value; ///< Valor bruto do registrador
-} as7341_fifo_map_reg_t;
+} as7341_fifo_map_t;
 
 //FIFO_CFG0 Register (Address 0xD7)
 typedef union{
@@ -579,7 +586,7 @@ typedef union{
     uint8_t FIFO_WRITE_FD : 1; ///< Bit 0: Escrita de Detecção de Cintilação no FIFO (0: Desabilitado, 1: Habilitado)
   };
   uint8_t value; ///< Valor bruto do registrador
-} as7341_fifo_cfg0_reg_t;
+} as7341_fifo_cfg0_t;
 
 //FIFO_LVL  Register (Address 0xFD)
 typedef union{
@@ -587,7 +594,7 @@ typedef union{
     uint8_t FIFO_LVL : 8; ///< Bits 0-7: Nível do Buffer FIFO (0-128)
   };
   uint8_t value; ///< Valor bruto do registrador
-} as7341_fifo_lvl_reg_t;
+} as7341_fifo_lvl_t;
 
 //FDATA     Register (Address 0xFE and 0xFF)
 typedef union{
@@ -596,7 +603,7 @@ typedef union{
     uint8_t FDATA_H : 8; ///< Bits 8-15: Dados do Buffer FIFO - Byte superior
   };
   uint16_t value; ///< Valor de 16 bits dos dados do buffer FIFO
-} as7341_fdata_reg_t;
+} as7341_fdata_t;
 
 
 
@@ -605,6 +612,8 @@ typedef union{
 //-------------------------------------------
 //-------------------------------------------
 //-------------------------------------------
+bool AS7341_SetAcessAndWrite(uint8_t regAdd, uint8_t data);
+bool AS7341_SetAcessAndRead(uint8_t regAdd, uint8_t *data);
 bool AS7341_write(uint8_t regAdd, uint8_t data);
 bool AS7341_read(uint8_t regAdd, uint8_t *data);
 bool AS7341_writeMultiples(uint8_t startReg, uint8_t *data, uint32_t length );
@@ -623,5 +632,10 @@ bool AS7341_SpecStatus();
 bool AS7341_OtherConfig();
 bool AS7341_BufferData();
 bool AS7341_BufferConfig();
+
+bool AS7341_BankAcessSet(uint8_t RedAdd);
+bool AS7341_SetSMUX();
+bool AS7341_GetSMUX();
+
 #endif // AS7341_H
 

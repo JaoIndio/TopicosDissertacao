@@ -30,6 +30,8 @@
 // ./Tiva/EK-T4MC/examples/peripherals/i2c/slave_receive_int.c &
 // ~/worksapece-v10/hello/external_devices/AS7341_photo.c &
 // ./Tiva/EK-TM4C/third_party/FreeRTOS/Demo/CORTEX_LM3S102_Rowley/Demo3/main.c
+uint8_t BankAcessControlValue = 0;
+
 SemaphoreHandle_t I2C1_Semphr;
 void I2C1_IntHandler(void){
   I2CMasterIntClear( I2C1_BASE ); 
@@ -85,7 +87,7 @@ bool AS7341_writeMultiples(uint8_t startReg, uint8_t *data, uint32_t length ){
 }
 
 bool AS7341_read(uint8_t regAdd, uint8_t *data){
-  
+
   I2CMasterSlaveAddrSet(I2C1_BASE, AS7341_ADDR, false);
   I2CMasterDataPut(I2C1_BASE, regAdd);
   I2CMasterControl(I2C1_BASE, I2C_MASTER_CMD_BURST_SEND_START);
@@ -143,18 +145,94 @@ bool AS7341_Init(){
 }
 
 bool AS7341_Enable(){
-  return true;
+  as7341_enable_t enable_reg;
+  enable_reg.FDEN   = 0;
+  enable_reg.SMUXEN = 1;
+  enable_reg.WEN    = 1;
+  enable_reg.SP_EN  = 0;
+  enable_reg.PON    = 1;
+  return AS7341_write(AS7341_REG_ENABLE, enable_reg.value);
 
 }
 bool AS7341_DevivceConfig(){
-  return true;
+  as7341_config_t config_reg;
+  config_reg.LED_SEL  = 1;
+  config_reg.INT_SEL  = 1;
+  config_reg.INT_MODE = 1;
+  if(!AS7341_write(AS7341_REG_CONFIG, config_reg.value)) return false;
+ 
+  as7341_gpio_t gpio_reg;
+  gpio_reg.PD_INT   = 0;
+  gpio_reg.PD_GPIO  = 0;
+  if(!AS7341_write(AS7341_REG_GPIO1, gpio_reg.value)) return false;
 
+  as7341_gpio2_t gpio2_reg;
+  gpio2_reg.GPIO_INV   = 0;
+  gpio2_reg.GPIO_IN_EN = 1;
+  gpio2_reg.GPIO_OUT   = 0;
+  gpio2_reg.GPIO_IN    = 0;
+  if(!AS7341_write(AS7341_REG_GPIO2, gpio2_reg.value)) return false;
+
+  as7341_led_t led_reg;
+  led_reg.LED_ACT   = 0;
+  led_reg.LED_DRIVE = 0;
+  if(!AS7341_write(AS7341_REG_LED, led_reg.value)) return false;
+
+  as7341_intenab_t intenab_reg;
+  intenab_reg.ASIEN   = 0;
+  intenab_reg.SP_IEN  = 0;
+  intenab_reg.F_IEN   = 1;
+  intenab_reg.SIEN    = 1;
+  if(!AS7341_write(AS7341_REG_INTENAB, intenab_reg.value)) return false;
+  
+  as7341_control_t control_reg;
+  control_reg.SP_MAN_AZ       = 0;
+  control_reg.FIFO_CLR        = 0; //Talvez valha pena ter uma funcao so pra esse cmd
+  control_reg.CLEAR_SAI_ACT   = 0;
+  if(!AS7341_write(AS7341_REG_CONTROL, control_reg.value)) return false;
+  
+  return true;
 }
 bool AS7341_ADC_TimingConfig(){
+  //𝑡𝑖𝑛𝑡 = (𝐴𝑇𝐼𝑀𝐸 + 1) × (𝐴𝑆𝑇𝐸𝑃 + 1) × 2.78μ𝑠
+  // 𝐴𝐷𝐶𝑓𝑢𝑙𝑙𝑠𝑐𝑎𝑙𝑒 = (𝐴𝑇𝐼𝑀𝐸 + 1) × (𝐴𝑆𝑇𝐸𝑃 + 1)
+  as7341_atime_t atime_reg;
+  atime_reg.ATIME   = 1;
+  if(!AS7341_write(AS7341_REG_ATIME, atime_reg.value)) return false;
+  
+  as7341_astep_t astep_reg;
+  astep_reg.ASTEP_L   = 1;
+  astep_reg.ASTEP_H   = 0;
+  if(!AS7341_write(AS7341_REG_ASTEP_L, (uint8_t)astep_reg.value)) return false;
+  if(!AS7341_write(AS7341_REG_ASTEP_H, (uint8_t)(astep_reg.value>>8)) return false;
+  
+  as7341_wtime_t wtime_reg;
+  wtime_reg.WTIME   = 0; // 2,78ms
+  if(!AS7341_write(AS7341_REG_WTIME, wtime_reg.value)) return false;
+
   return true;
 
 }
 bool AS7341_ADC_Config(){
+  as7341_cfg1_t cfg1_reg;
+  cfg1_reg.AGAIN   = 7; //
+  if(!AS7341_SetAcessAndWrite(AS7341_REG_CFG1, cfg1_reg.value)) return false;
+  
+  as7341_cfg10_t cfg10_reg;
+  cfg10_reg.AGC_H   = 3; //
+  cfg10_reg.AGC_L   = 0; //
+  if(!AS7341_SetAcessAndWrite(AS7341_REG_CFG10, cfg10_reg.value)) return false;
+
+  as7341_az_config_t az_config_reg;
+  az_config_reg.AZ_NTH_ITERATION   = 255; //
+  if(!AS7341_SetAcessAndWrite(AS7341_REG_AZ_CONFIG, az_config_reg.value)) return false;
+
+  as7341_cfg8_t cfg8_reg;
+  cfg8_reg.FIFO_TH   = 3; //
+  cfg8_reg.FD_AGC    = 0; //
+  cfg8_reg.SP_AGC    = 0; //
+  if(!AS7341_SetAcessAndWrite(AS7341_REG_CFG8, cfg8_reg.value)) return false;
+  
   return true;
 
 }
@@ -162,29 +240,109 @@ bool AS7341_InterruptionConfig(){
   return true;
 
 }
-bool AS7341_DeviceStatus(){
+bool AS7341_DeviceStatus(uint8_t regAdd, uint8_t* data){
+  if(regAdd==AS7341_REG_STAT    || regAdd==AS7341_REG_STATUS  ||\
+     regAdd==AS7341_REG_STATUS2 || regAdd==AS7341_REG_STATUS3 ||\
+     regAdd==AS7341_REG_STATUS5 || regAdd==AS7341_REG_STATUS6 ||\
+     regAdd==AS7341_REG_FD_STATUS)
+    if(!AS7341_SetAcessAndRead(regAdd, data)) return false;
+   
   return true;
 
 }
-bool AS7341_SpecData(){
+bool AS7341_SpecData(uint8_t regAdd, uint8_t* data){
+  if(regAdd==AS7341_REG_ASTATUS1   || regAdd==AS7341_REG_ASTATUS2   ||\
+     regAdd==AS7341_REG_CH0_DATA_L || regAdd==AS7341_REG_CH0_DATA_H ||\
+     regAdd==AS7341_REG_CH1_DATA_L || regAdd==AS7341_REG_CH1_DATA_H ||\
+     regAdd==AS7341_REG_CH2_DATA_L || regAdd==AS7341_REG_CH2_DATA_H ||\
+     regAdd==AS7341_REG_CH3_DATA_L || regAdd==AS7341_REG_CH3_DATA_H ||\
+     regAdd==AS7341_REG_CH4_DATA_L || regAdd==AS7341_REG_CH4_DATA_H ||\
+     regAdd==AS7341_REG_CH5_DATA_L || regAdd==AS7341_REG_CH5_DATA_H)
+    if(!AS7341_SetAcessAndRead(regAdd, data)) return false;
+  
   return true;
-
 }
 bool AS7341_SpecStatus(){
   return true;
 
 }
 bool AS7341_OtherConfig(){
-  return true;
+  as7341_cfg0_t cfg0_reg;
+  cfg0_reg.LOW_POWER = 0; //
+  cfg0_reg.REG_BANK  = 0; // fazer funcao especifica para esse reg
+  cfg0_reg.WLONG     = 0; //
+  if(!AS7341_SetAcessAndWrite(AS7341_REG_CFG0, cfg0_reg.value)) return false;
+  
+  as7341_cfg3_t cfg3_reg;
+  cfg3_reg.SAI = 0; //
+  if(!AS7341_SetAcessAndWrite(AS7341_REG_CFG3, cfg3_reg.value)) return false;
+  
+  as7341_cfg6_t cfg6_reg;
+  cfg6_reg.SMUX = 2; //
+  if(!AS7341_SetAcessAndWrite(AS7341_REG_CFG6, cfg6_reg.value)) return false;
 
+  as7341_cfg9_t cfg9_reg;
+  cfg9_reg.SIEN_FD   = 0; //
+  cfg9_reg.SIEN_SMUX = 1; //
+  if(!AS7341_SetAcessAndWrite(AS7341_REG_CFG9, cfg9_reg.value)) return false;
+
+  as7341_pers_t pers_reg;
+  pers_reg.APERS   = 4; //
+  if(!AS7341_SetAcessAndWrite(AS7341_REG_PERS, pers_reg.value)) return false;
+  
+  return true;
 }
-bool AS7341_BufferData(){
+bool AS7341_BufferData(uint8_t regAdd, uint8_t* data){
+  if(regAdd==AS7341_REG_FIFO_LVL || regAdd==AS7341_REG_FDATA_L  ||\
+     regAdd==AS7341_REG_FDATA_H )
+    if(!AS7341_SetAcessAndRead(regAdd, data)) return false;
+  
   return true;
 
 }
 bool AS7341_BufferConfig(){
-  return true;
+  as7341_fifo_map_t fifo_map_reg;
+  fifo_map_reg.FIFO_WRITE_CH0_DATA   = 0; //
+  fifo_map_reg.FIFO_WRITE_CH1_DATA   = 0; //
+  fifo_map_reg.FIFO_WRITE_CH2_DATA   = 0; //
+  fifo_map_reg.FIFO_WRITE_CH3_DATA   = 0; //
+  fifo_map_reg.FIFO_WRITE_CH4_DATA   = 1; //
+  fifo_map_reg.FIFO_WRITE_CH5_DATA   = 0; //
+  fifo_map_reg.FIFO_WRITE_ASTATUS    = 1; //
+  if(!AS7341_SetAcessAndWrite(AS7341_REG_FIFO_MAP, fifo_map_reg.value)) return false;
+  
+  as7341_fifo_cfg0_t fifo_cfg0_reg;
+  fifo_cfg0_reg.FIFO_WRITE_FD   = 0; //
+  if(!AS7341_SetAcessAndWrite(AS7341_REG_FIFO_CFG0, fifo_cfg0_reg.value)) return false;
 
+  return true;
 }
 
+bool AS7341_BankAcessSet(uint8_t RegAdd){
+  uint8_t RegLevelNeeded = 0;
+  if(RegAdd>=0x80) RegLevelNeeded = AS7341_BANK_HIGH_ACESS;
+  else             RegLevelNeeded = AS7341_BANK_LOW_ACESS;
+
+  if(BankAcessControlValue!=RegLevelNeeded){
+    BankAcessControlValue = RegLevelNeeded;
+    as7341_cfg0_t cfg0_reg;
+    if(!AS7341_read(AS7341_REG_CFG0, &cfg1_reg.value)) return false;
+
+    cfg1_reg.REG_BANK = BankAcessControlValue;
+    if(!AS7341_write(AS7341_REG_CFG0, cfg1_reg.value)) return false;
+  }
+  return true;
+}
+
+bool AS7341_SetAcessAndWrite(uint8_t regAdd, uint8_t data){
+  AS7341_BankAcessSet(regAdd);
+  if(!AS7341_write(regAdd, data)) return false;
+  return true;
+}
+bool AS7341_SetAcessAndRead(uint8_t regAdd, uint8_t *data){
+  
+  AS7341_BankAcessSet(regAdd);
+  if(!AS7341_read(regAdd, *data)) return false;
+  return true;
+}
 #endif
