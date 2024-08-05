@@ -361,13 +361,25 @@ bool AS7341_SetAcessAndRead(uint8_t regAdd, uint8_t *data){
   return true;
 }
 
-bool AS7341_SetSMUX(uint8_t photoDiode, uint8_t ADC_ID){
+bool AS7341_SetSMUX(uint8_t* photoDiode, uint8_t* ADC_ID){
 
   if(!AS7341_DisableSpecMen()) return false;
+  // Enable special interrupt and SMUX interrupt
+  as7341_cfg9_t cfg9_reg;
+  if(!AS7341_SetAcessAndRead(AS7341_REG_CFG9, &cfg9_reg.value)) return false;
+  cfg9_reg.SIEN_SMUX = 1;
+  if(!AS7341_SetAcessAndWrite(AS7341_REG_CFG9, cfg9_reg.value)) return false;
+  
+  as7341_intenab_t intenab_reg;
+  if(!AS7341_SetAcessAndRead( AS7341_REG_INTENAB, &intenab_reg.value)) return false;
+  intenab_reg.SIEN = 1;
+  if(!AS7341_SetAcessAndWrite(AS7341_REG_INTENAB, inenab_reg.value))   return false;
+  if(!AS7341_WriteI2cReg2SMUX_Sel()) return false;
+  
+  
   if(!AS7341_SetI2cRegSMUX(photoDiode, ADC_ID)) return false;
   
   //Talvez tenha q ter uma barreira de semafaro aqui
-  if(!AS7341_WriteI2cReg2SMUX_Sel()) return false;
   if(!AS7341_SMUXEnable())           return false;
 
   return true;
@@ -384,9 +396,178 @@ bool AS7341_SMUXEnable(){
 
 bool AS7341_WriteI2cReg2SMUX_Sel(){
   as7341_cfg6_t cfg6_reg;
-  cfg6_reg = 2;
-  if(!AS7341_write(AS7341_REG_ENABLE, enable_reg.value)) return false;
+  cfg6_reg.SMUX_CMD = 2;
+  if(!AS7341_SetAcessAndWrite(AS7341_REG_ENABLE, enable_reg.value)) return false;
 
   return true;
 }
+
+
+bool AS7341_SetI2cRegSMUX(uint8_t* photoDiode, uint8_t* ADC_ID){
+  
+  uint8_t data2Send;
+  uint8_t RegAdd;
+  // Definições especiais
+  /*                      i2c Reg   |  IDs    |   PHOTO  |
+                        ------------------------------------
+                             0x5     11 e 10     F4 e F2              
+                             0xE     29 e 28     F6 e F8             
+                            0x10     33 e 32   GPIO e F1               
+                            0x11     35 e 34     C2 e INT            
+                            0x13     39 e 38   FLKR e NIR            
+  */
+  for(uint8_t index=0; index<18; index++){
+    if(PHOTO_F1_1   ==photoDiode[index]){
+      as7341_reg1 PixelID_2;
+      PixelID_2.MUX_SEL = ADC_ID[index]<<4;
+      RegAdd = 0x1;
+      data2Send = PixelID_2.value;
+    } 
+    if(PHOTO_F3_1   ==photoDiode[index]){
+      as7341_reg0 PixelID_1;
+      PixelID_1.MUX_SEL = ADC_ID[index];
+      RegAdd = 0x0;
+      data2Send = PixelID_1.value;
+    }
+    if(PHOTO_F5_1   ==photoDiode[index]){
+      as7341_reg9 PixelID_19;
+      PixelID_19.MUX_SEL = ADC_ID[index]<<4;
+      RegAdd = 0x9;
+      data2Send = PixelID_19.value;
+    }
+    if(PHOTO_F7_1   ==photoDiode[index]){
+      as7341_regA PixelID_20;
+      PixelID_20.MUX_SEL = ADC_ID[index];
+      RegAdd = 0xA;
+      data2Send = PixelID_20.value;
+    }
+    if(PHOTO_F6_1   ==photoDiode[index]){
+      as7341_reg4 PixelID_8;
+      PixelID_8.MUX_SEL = ADC_ID[index];
+      RegAdd = 0x4;
+      data2Send = PixelID_8.value;
+    }
+    if(PHOTO_F8_1   ==photoDiode[index]){
+      as7341_reg3 PixelID_7;
+      PixelID_7.MUX_SEL = ADC_ID[index]<<4;
+      RegAdd = 0x3;
+      data2Send = PixelID_7.value;
+    }
+    if(PHOTO_F2_1   ==photoDiode[index]){
+      as7341_regC PixelID_25;
+      PixelID_25.MUX_SEL = ADC_ID[index]<<4;
+      RegAdd = 0xC;
+      data2Send = PixelID_25.value;
+    }
+    if(PHOTO_F4_1   ==photoDiode[index]){
+      as7341_regD PixelID_26;
+      PixelID_26.MUX_SEL = ADC_ID[index];
+      RegAdd = 0xD;
+      data2Send = PixelID_26.value;
+    }
+    if(PHOTO_F4_2   ==photoDiode[index]){
+      // Escrita Especial
+      as7341_reg5 PixelID_11;
+      PixelID_11.value = ADC_ID[index];
+      RegAdd = 0x5;
+      data2Send = PixelID_11.value;
+    }
+    //if(PHOTO_F2_2   ==photoDiode[index]){
+    //  // Escrita Especial
+    //  as7341_reg5 PixelID_10;
+    //  PixelID_10.MUX_SEL = ADC_ID[index];
+    //  RegAdd = 0x5;
+    //  data2Send = PixelID_10.value;
+    //}
+    if(PHOTO_F8_2   ==photoDiode[index]){
+      // Escrita Especial
+      as7341_regE PixelID_28;
+      PixelID_28.value = ADC_ID[index];
+      RegAdd = 0xE;
+      data2Send = PixelID_28.value;
+    }
+    //if(PHOTO_F6_2   ==photoDiode[index]){
+    //  // Escrita Especial
+    //  as7341_regE PixelID_29;
+    //  PixelID_29.MUX_SEL = ADC_ID[index];
+    //  RegAdd = 0xE;
+    //  data2Send = PixelID_29.value;
+    //}
+    if(PHOTO_F7_2   ==photoDiode[index]){
+      as7341_reg7 PixelID_14;
+      PixelID_14.MUX_SEL = ADC_ID[index];
+      RegAdd = 0x7;
+      data2Send = PixelID_14.value;
+    }
+    if(PHOTO_F5_2   ==photoDiode[index]){
+      as7341_reg6 PixelID_13;
+      PixelID_13.MUX_SEL = ADC_ID[index]<<4;
+      RegAdd = 0x6;
+      data2Send = PixelID_13.value;
+    }
+    if(PHOTO_F3_2   ==photoDiode[index]){
+      as7341_regF PixelID_31;
+      PixelID_31.MUX_SEL = ADC_ID[index]<<4;
+      RegAdd = 0xF;
+      data2Send = PixelID_31.value;
+    }
+    if(PHOTO_F1_2   ==photoDiode[index]){
+      // Escrita Especial
+      as7341_reg0x10 PixelID_32;
+      PixelID_32.value = ADC_ID[index];
+      RegAdd = 0x10;
+      data2Send = PixelID_32.value;
+    }
+    if(PHOTO_CLEAR_1==photoDiode[index]){
+      as7341_reg8 PixelID_17;
+      PixelID_17.MUX_SEL = ADC_ID[index]<<4;
+      RegAdd = 0x8;
+      data2Send = PixelID_17.value;
+    }  
+    if(PHOTO_CLEAR_2==photoDiode[index]){
+      // Escrita Especial
+      as7341_reg0x11 PixelID_35;
+      PixelID_35.value = ADC_ID[index];
+      RegAdd = 0x11;
+      data2Send = PixelID_35.value;
+    }  
+    if(PHOTO_NIR    ==photoDiode[index]){
+      // Escrita Especial
+      as7341_reg0x13 PixelID_38;
+      PixelID_38.value = ADC_ID[index];
+      RegAdd = 0x13;
+      data2Send = PixelID_38.value;
+    }
+    //if(PHOTO_FLICKER==photoDiode[index]){
+    //  // Escrita Especial
+    //  as7341_reg0x13 PixelID_39;
+    //  PixelID_39.MUX_SEL = ADC_ID[index];
+    //  RegAdd = 0x13;
+    //  data2Send = PixelID_39.value;
+    //}   
+    //if(GPIO_INPUT   ==photoDiode[index]){
+    //  // Escrita Especial
+    //  as7341_reg0x10 PixelID_33;
+    //  PixelID_33.MUX_SEL = ADC_ID[index];
+    //  RegAdd = 0x10;
+    //  data2Send = PixelID_33.value;
+    //}
+    //if(INT_INPUT    ==photoDiode[index]){
+    //  // Escrita Especial
+    //  as7341_reg0x11 PixelID_34;
+    //  PixelID_34.MUX_SEL = ADC_ID[index];
+    //  RegAdd = 0x11;
+    //  data2Send = PixelID_34.value;
+    //}
+    if(DARK         ==photoDiode[index]){
+      as7341_reg0x12 PixelID_37;
+      PixelID_37.MUX_SEL = ADC_ID[index]<<4;
+      RegAdd = 0x12;
+      data2Send = PixelID_37.value;
+    }
+
+    if(!AS7341_write(regAdd, data2Send)) return false;
+  }
+}
+
 #endif

@@ -673,13 +673,118 @@ typedef union{
 } as7341_reg4;
 typedef union{
   struct{
-    uint8_t MUX_SEL1: 3;          ///< Bits 0-3: Unused
+    uint8_t MUX_SEL1: 3;          ///< Bits 0-2: Pixel ID 10
     uint8_t : 1; 
-    uint8_t MUX_SEL2: 3;          ///< Bits 0-3: Unused
+    uint8_t MUX_SEL2: 3;          ///< Bits 4-6: Pixel ID 11
     uint8_t : 1; 
   };
   uint16_t value; ///< 
 }as7341_reg5;
+typedef union{
+  struct{
+    uint8_t : 4;          
+    uint8_t MUX_SEL: 3; ///< Bits 4-6: Pixel ID 13
+    uint8_t : 1; 
+  };
+  uint16_t value; ///< 
+}as7341_reg6;
+typedef union{
+  struct{
+    uint8_t MUX_SEL: 3;          ///< Bits 0-3: Unused
+    uint8_t : 5; 
+  };
+  uint16_t value; ///< 
+} as7341_reg7;
+typedef union{
+  struct{
+    uint8_t : 4; 
+    uint8_t MUX_SEL: 3;          ///< Bits 4-6: Pixel ID 11
+    uint8_t : 1; 
+  };
+  uint16_t value; ///< 
+}as7341_reg8;
+typedef union{
+  struct{
+    uint8_t : 4; 
+    uint8_t MUX_SEL: 3;          ///< Bits 4-6: Pixel ID 11
+    uint8_t : 1; 
+  };
+  uint16_t value; ///< 
+}as7341_reg9;
+typedef union{
+  struct{
+    uint8_t MUX_SEL: 3;          ///< Bits 0-2: Pixel ID 10
+    uint8_t : 5; 
+  };
+  uint16_t value; ///< 
+}as7341_regA;
+typedef union{
+  struct{
+    uint8_t : 4; 
+    uint8_t MUX_SEL: 3;          ///< Bits 4-6: Pixel ID 11
+    uint8_t : 1; 
+  };
+  uint16_t value; ///< 
+}as7341_regC;
+typedef union{
+  struct{
+    uint8_t MUX_SEL: 3;          ///< Bits 0-2: Pixel ID 10
+    uint8_t : 5; 
+  };
+  uint16_t value; ///< 
+}as7341_regD;
+typedef union{
+  struct{
+    uint8_t MUX_SEL1: 3;          ///< Bits 0-2: Pixel ID 10
+    uint8_t : 1; 
+    uint8_t MUX_SEL2: 3;          ///< Bits 0-2: Pixel ID 10
+    uint8_t : 1; 
+  };
+  uint16_t value; ///< 
+}as7341_regE;
+typedef union{
+  struct{
+    uint8_t : 4; 
+    uint8_t MUX_SEL: 3;          ///< Bits 0-3: Unused
+    uint8_t : 1; 
+  };
+  uint16_t value; ///< 
+} as7341_regF;
+typedef union{
+  struct{
+    uint8_t MUX_SEL1: 3;          ///< Bits 0-2: Pixel ID 10
+    uint8_t : 1; 
+    uint8_t MUX_SEL2: 3;          ///< Bits 4-6: Pixel ID 11
+    uint8_t : 1; 
+  };
+  uint16_t value; ///< 
+}as7341_reg0x10;
+typedef union{
+  struct{
+    uint8_t MUX_SEL1: 3;          ///< Bits 0-2: Pixel ID 10
+    uint8_t : 1; 
+    uint8_t MUX_SEL2: 3;          ///< Bits 4-6: Pixel ID 11
+    uint8_t : 1; 
+  };
+  uint16_t value; ///< 
+}as7341_reg0x11;
+typedef union{
+  struct{
+    uint8_t : 4; 
+    uint8_t MUX_SEL: 3;          ///< Bits 0-3: Unused
+    uint8_t : 1; 
+  };
+  uint16_t value; ///< 
+} as7341_reg0x12;
+typedef union{
+  struct{
+    uint8_t MUX_SEL1: 3;          ///< Bits 0-2: Pixel ID 10
+    uint8_t : 1; 
+    uint8_t MUX_SEL2: 3;          ///< Bits 4-6: Pixel ID 11
+    uint8_t : 1; 
+  };
+  uint16_t value; ///< 
+}as7341_reg0x13;
 
 //-------------------------------------------
 //-------------------------------------------
@@ -710,9 +815,9 @@ bool AS7341_BufferData();
 bool AS7341_BufferConfig();
 
 bool AS7341_BankAcessSet(uint8_t RedAdd);
-bool AS7341_SetSMUX(uint8_t photoDiode, uint8_t ADC_ID);
+bool AS7341_SetSMUX(uint8_t* photoDiode, uint8_t* ADC_ID);
 bool AS7341_SMUXEnable();
-bool AS7341_SetI2cRegSMUX(uint8_t photoDiode, uint8_t ADC_ID);
+bool AS7341_SetI2cRegSMUX(uint8_t* photoDiode, uint8_t* ADC_ID);
 
 bool AS7341_GetSMUX();
 
