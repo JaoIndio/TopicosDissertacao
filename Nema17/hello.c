@@ -36,6 +36,67 @@ static void prvSetupHardware( void );
  * as the example is running. */
 static void prvConfigureUART(void);
 
+void AS7341_Begin(void *ptr){
+
+  AS7341_Boot();
+  UARTprintf("AS7341 Boot Done\n");
+  uint8_t photoDiode[18];
+  uint8_t ADC_ID[18];
+  uint8_t ADC_count[12];
+  // Definições especiais
+  /*                      i2c Reg   |  IDs    |   PHOTO  |
+                        ------------------------------------
+                             0x5     11 e 10     F4_2 e F2_2              
+                             0xE     29 e 28     F6_2 e F8_2             
+                            0x10     33 e 32   GPIO e F1_2               
+                            0x11     35 e 34     C2 e INT            
+                            0x13     39 e 38   FLKR e NIR            
+  */
+  photoDiode[0] =  PHOTO_F1_1;
+  photoDiode[1] =  PHOTO_F3_1;
+  photoDiode[2] =  PHOTO_F5_1;
+  photoDiode[3] =  PHOTO_F7_1;
+  photoDiode[4] =  PHOTO_F6_1;
+  photoDiode[5] =  PHOTO_F8_1;
+  photoDiode[6] =  PHOTO_F2_1;
+  photoDiode[7] =  PHOTO_F4_1;
+  
+  photoDiode[8]  =  PHOTO_F4_2<<4 | PHOTO_F2_2;
+  photoDiode[9]  =  PHOTO_F6_2<<4 | PHOTO_F8_2;
+  photoDiode[10] =  PHOTO_F7_2;
+  photoDiode[11] =  PHOTO_F5_2;
+  photoDiode[12] =  PHOTO_F3_2;
+  photoDiode[13] =  GPIO_INPUT<<4 | PHOTO_F1_2;
+  photoDiode[14] =  PHOTO_CLEAR_1;
+  photoDiode[15] =  PHOTO_CLEAR_2<<4 | INT_INPUT;
+  photoDiode[16] =  PHOTO_FLICKER<<4 | PHOTO_NIR;
+  
+  photoDiode[17] =  DARK;
+  
+  ADC_count[0] =  CONNECT_TO_GND; 
+  ADC_count[1] =  CONNECT_TO_GND;    
+  ADC_count[2] =  CONNECT_TO_GND;    
+  ADC_count[3] =  CONNECT_TO_GND;    
+  ADC_count[4] =  CONNECT_TO_GND;    
+  ADC_count[5] =  CONNECT_TO_GND;    
+  ADC_count[6] =  CONNECT_TO_ADC0;    
+  ADC_count[7] =  CONNECT_TO_ADC1;   
+  
+  ADC_count[8]  = CONNECT_TO_ADC2<<4 | CONNECT_TO_ADC3;    
+  ADC_count[9]  = CONNECT_TO_GND;   
+  ADC_count[10] = CONNECT_TO_GND;   
+  ADC_count[11] = CONNECT_TO_GND;   
+  ADC_count[12] = CONNECT_TO_GND;   
+  ADC_count[13] = CONNECT_TO_GND;   
+  ADC_count[14] = CONNECT_TO_GND;   
+  ADC_count[15] = CONNECT_TO_GND;   
+  ADC_count[16] = CONNECT_TO_GND;   
+  
+  ADC_count[17] = CONNECT_TO_GND;   
+
+  readChannels(photoDiode, ADC_ID, ADC_count);
+  vTaskDelete(NULL);
+}
 
 int main(void){
   prvSetupHardware();
@@ -44,6 +105,11 @@ int main(void){
   NemaConfig();
   NemaInterruptionConfig();
   UARTprintf("Hello World!\n");
+  
+  xTaskCreate(AS7341_Begin, "AS7341", configMINIMAL_STACK_SIZE, \
+                NULL, 14, \
+                NULL);
+
   vTaskStartScheduler();
   while(1){ }
 
@@ -86,7 +152,7 @@ static void prvSetupHardware( void )
     /* Run from the PLL at 80 MHz.  Any updates to the PLL rate here would
      * need to be reflected in FreeRTOSConfig.h by updating the value of
      * configCPU_CLOCK_HZ with the new system clock frequency. */
-    MAP_SysCtlClockSet(SYSCTL_SYSDIV_2_5 | SYSCTL_USE_PLL | SYSCTL_OSC_MAIN |
+    MAP_SysCtlClockSet(SYSCTL_SYSDIV_4 | SYSCTL_USE_PLL | SYSCTL_OSC_MAIN |
                        SYSCTL_XTAL_16MHZ);
 
     /* Configure device pins. */
