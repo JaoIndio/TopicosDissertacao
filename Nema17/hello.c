@@ -101,15 +101,15 @@ void AS7341_Begin(void *ptr){
   ADC_ID[17] = CONNECT_TO_GND;   
 
   uint16_t StepADC = 65508;
-  AS7341_SetStepADC(StepADC);
+  //AS7341_SetStepADC(StepADC);
   uint8_t TimeADC  = 0;
-  AS7341_SetTimeADC(TimeADC);
+  //AS7341_SetTimeADC(TimeADC);
 
   uint8_t Wtime_value;
   Wtime_value = (StepADC+1)*(TimeADC+1)*2.87/1000; // time in ms
   uint8_t wtime_value = (Wtime_value/2.78)+50;
-  AS7341_SetWtimeADC(wtime_value);
-  AS7341_SetGainADC(9);
+  //AS7341_SetWtimeADC(wtime_value);
+  //AS7341_SetGainADC(9);
   
   //Boot -> ReadChennels -> SetSMUX -> SetI2cRegSMUX
   uint16_t i;

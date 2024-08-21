@@ -224,7 +224,12 @@ bool AS7341_DevivceConfig(){
   config_reg.INT_SEL  = 0;
   config_reg.INT_MODE = 0;
   if(!AS7341_SetAcessAndWrite(AS7341_REG_CONFIG, config_reg.value)) return false;
-
+  
+  as7341_led_t led_reg;
+  led_reg.LED_ACT   = 0;
+  led_reg.LED_DRIVE = 0;
+  if(!AS7341_SetAcessAndWrite(AS7341_REG_LED, led_reg.value)) return false;
+/*
   as7341_gpio_t gpio_reg;
   gpio_reg.PD_INT   = 0;
   gpio_reg.PD_GPIO  = 0;
@@ -237,10 +242,6 @@ bool AS7341_DevivceConfig(){
   gpio2_reg.GPIO_IN    = 0;
   if(!AS7341_SetAcessAndWrite(AS7341_REG_GPIO2, gpio2_reg.value)) return false;
   
-  as7341_led_t led_reg;
-  led_reg.LED_ACT   = 0;
-  led_reg.LED_DRIVE = 0;
-  if(!AS7341_SetAcessAndWrite(AS7341_REG_LED, led_reg.value)) return false;
   
   as7341_intenab_t intenab_reg;
   intenab_reg.ASIEN   = 0;
@@ -254,7 +255,7 @@ bool AS7341_DevivceConfig(){
   control_reg.FIFO_CLR        = 0; //Talvez valha pena ter uma funcao so pra esse cmd
   control_reg.CLEAR_SAI_ACT   = 0;
   if(!AS7341_SetAcessAndWrite(AS7341_REG_CONTROL, control_reg.value)) return false;
-  
+*/  
   return true;
 }
 bool AS7341_ADC_TimingConfig(){
@@ -466,7 +467,7 @@ bool AS7341_PowerOn(){
 
   enable_reg.FDEN   = 0;
   enable_reg.SMUXEN = 0;
-  enable_reg.WEN    = 1;
+  enable_reg.WEN    = 0;
   enable_reg.SP_EN  = 0;
   enable_reg.PON    = 1;
   if(!AS7341_SetAcessAndWrite(AS7341_REG_ENABLE, enable_reg.value)) return false;
@@ -485,7 +486,7 @@ bool AS7341_PowerOff(){
   as7341_enable_t enable_reg;
   enable_reg.FDEN   = 0;
   enable_reg.SMUXEN = 0;
-  enable_reg.WEN    = 1;
+  enable_reg.WEN    = 0;
   enable_reg.SP_EN  = 0;
   enable_reg.PON    = 1;
   if(!AS7341_SetAcessAndRead(AS7341_REG_ENABLE, &enable_reg.value)) return false;
@@ -497,11 +498,11 @@ bool AS7341_PowerOff(){
 bool AS7341_BankAcessSet(uint8_t RegAdd){
 
   uint8_t RegLevelNeeded = 0;
-  //if(RegAdd>=0x60 && RegAdd<=0x74) 
-  if(RegAdd>=0x80) 
-    RegLevelNeeded = AS7341_BANK_HIGH_ACESS;
-  else            
+  if(RegAdd>=0x60 && RegAdd<=0x74) 
+  //if(RegAdd>=0x80) 
     RegLevelNeeded = AS7341_BANK_LOW_ACESS;
+  else            
+    RegLevelNeeded = AS7341_BANK_HIGH_ACESS;
 
   if(BankAcessControlValue!=RegLevelNeeded){
     BankAcessControlValue = RegLevelNeeded;
@@ -531,13 +532,13 @@ bool AS7341_SetSMUX(uint8_t* photoDiode, uint8_t* ADC_ID){
   if(!AS7341_DisableSpecMen()) return false;
   // Enable special interrupt and SMUX interrupt
   as7341_cfg9_t cfg9_reg;
-  //cfg9_reg.value = 0;
+  cfg9_reg.value = 0;
   if(!AS7341_SetAcessAndRead(AS7341_REG_CFG9, &cfg9_reg.value)) return false;
   cfg9_reg.SIEN_SMUX = 1;
   if(!AS7341_SetAcessAndWrite(AS7341_REG_CFG9, cfg9_reg.value)) return false;
   
   as7341_intenab_t intenab_reg;
-  //intenab_reg.value =0;
+  intenab_reg.value =0;
   if(!AS7341_SetAcessAndRead( AS7341_REG_INTENAB, &intenab_reg.value)) return false;
   intenab_reg.SIEN = 1;
   if(!AS7341_SetAcessAndWrite(AS7341_REG_INTENAB, intenab_reg.value))   return false;
@@ -782,7 +783,7 @@ bool AS7341_SetI2cRegSMUX(uint8_t* photoDiode, uint8_t* ADC_ID){
     if(index==18) 
       break;
   }
-  /*
+/*
    if(!AS7341_write(0x00, 0x30)) return false; // F3 left set to ADC2
    if(!AS7341_write(0x01, 0x01)) return false; // F1 left set to ADC0
    if(!AS7341_write(0x02, 0x00)) return false; // Reserved or disabled
@@ -829,36 +830,46 @@ bool AS7341_ReadChannels(uint8_t* photoDiode, uint8_t* ADC_config, uint8_t* ADC_
   control_reg.CLEAR_SAI_ACT   = 0;
   
   float integrationTime = AS7341_GetIntegrationTimeADC()*1000; //tempo em ms
-  if(!AS7341_Enable()) return false;
+  //if(!AS7341_Enable()) return false;
   
   //UARTprintf("\nReadChannels\n");
   //CheckArray(photoDiode);
   //UARTprintf("\nADC Config\n");
   //CheckArray(ADC_config);
-
-  if(!AS7341_SetAcessAndWrite(AS7341_REG_CONTROL, control_reg.value)) return false;
+/*
   AS7341_SetAcessAndRead(AS7341_REG_FIFO_LVL, &fifo_lvl.value);
   if(fifo_lvl.value!=0){
-    int fifo_index = fifo_lvl.value;
-    while(1){
-      AS7341_SetAcessAndRead(AS7341_REG_FDATA_L, &fifo_buffer);
-      AS7341_SetAcessAndRead(AS7341_REG_FDATA_H, &fifo_buffer);
-      fifo_index--;
-      if(fifo_index<0) break; 
+    if(!AS7341_SetAcessAndWrite(AS7341_REG_CONTROL, control_reg.value)) return false;
+    AS7341_SetAcessAndRead(AS7341_REG_FIFO_LVL, &fifo_lvl.value);
+    if(fifo_lvl.value!=0){
+      int fifo_index = fifo_lvl.value;
+      while(1){
+        AS7341_SetAcessAndRead(AS7341_REG_FDATA_L, &fifo_buffer);
+        AS7341_SetAcessAndRead(AS7341_REG_FDATA_H, &fifo_buffer);
+        fifo_index--;
+        if(fifo_index<0) break; 
+      }
     }
   }
-  AS7341_DeviceStatus(AS7341_REG_STATUS,    &status_rslt.value);
-  AS7341_DeviceStatus(AS7341_REG_STATUS5, &status5_rslt.value);
-  if(!AS7341_SetAcessAndWrite(AS7341_REG_STATUS, status_rslt.value)) return false;
-  AS7341_DeviceStatus(AS7341_REG_STAT,    &stat_rslt.value);
-  AS7341_SetAcessAndRead(AS7341_REG_FIFO_LVL, &fifo_lvl.value);
-  if(!AS7341_SetSMUX(photoDiode, ADC_config)) return false;
 
   AS7341_DeviceStatus(AS7341_REG_STATUS,    &status_rslt.value);
   AS7341_DeviceStatus(AS7341_REG_STATUS5, &status5_rslt.value);
   if(!AS7341_SetAcessAndWrite(AS7341_REG_STATUS, status_rslt.value)) return false;
   AS7341_DeviceStatus(AS7341_REG_STAT,    &stat_rslt.value);
-  xSemaphoreTake(AS7341_Semphr, portMAX_DELAY); //SINT_MUX interruption
+  AS7341_SetAcessAndRead(AS7341_REG_FIFO_LVL, &fifo_lvl.value);
+*/
+  if(!AS7341_SetSMUX(photoDiode, ADC_config)) return false;
+
+  //AS7341_DeviceStatus(AS7341_REG_STATUS,    &status_rslt.value);
+  //AS7341_DeviceStatus(AS7341_REG_STATUS5, &status5_rslt.value);
+  //if(!AS7341_SetAcessAndWrite(AS7341_REG_STATUS, status_rslt.value)) return false;
+  vTaskDelay(pdMS_TO_TICKS(1));
+  do{
+    AS7341_DeviceStatus(AS7341_REG_STAT,    &stat_rslt.value);
+    vTaskDelay(pdMS_TO_TICKS(1));
+  }while(!stat_rslt.READY);
+  //AS7341_DeviceStatus(AS7341_REG_STATUS6, &status6_rslt.value);
+//  xSemaphoreTake(AS7341_Semphr, portMAX_DELAY); //SINT_MUX interruption
   
   //AS7341_DeviceStatus(AS7341_REG_STATUS2, &status2_rslt.value);
   //if(!AS7341_SetAcessAndWrite(AS7341_REG_STATUS, status_rslt.value)) return false;
@@ -867,7 +878,7 @@ bool AS7341_ReadChannels(uint8_t* photoDiode, uint8_t* ADC_config, uint8_t* ADC_
   //}while(!stat_rslt.READY);
   if(!AS7341_EnableSpecMen()) return false;
   
-  vTaskDelay(pdMS_TO_TICKS((uint32_t)integrationTime+15));
+  vTaskDelay(pdMS_TO_TICKS((uint32_t)integrationTime));
   do{
     AS7341_DeviceStatus(AS7341_REG_STATUS2, &status2_rslt.value);
   }while(!status2_rslt.AVALID);
@@ -893,10 +904,11 @@ bool AS7341_ReadChannels(uint8_t* photoDiode, uint8_t* ADC_config, uint8_t* ADC_
   if(!AS7341_read(AS7341_REG_CH5_DATA_L, ADC_count+10)) return false;
   if(!AS7341_read(AS7341_REG_CH5_DATA_H, ADC_count+11)) return false;
   vTaskDelay(pdMS_TO_TICKS(50));
-
+  
+  AS7341_SetAcessAndRead(AS7341_REG_FIFO_LVL, &fifo_lvl.value);
   if(!AS7341_DisableSpecMen()) return false; 
-  AS7341_DeviceStatus(AS7341_REG_STATUS5, &status5_rslt.value);
-  AS7341_SpecData(AS7341_REG_ASTATUS2,    &astat2_rslt.value);
+  //AS7341_DeviceStatus(AS7341_REG_STATUS5, &status5_rslt.value);
+  //AS7341_SpecData(AS7341_REG_ASTATUS2,    &astat2_rslt.value);
   
   //Semafaro que aguarda interrupcao
   //GPIOPinWrite(GPIO_PORTD_BASE, GPIO_PIN_2, GPIO_PIN_2);
@@ -908,15 +920,13 @@ bool AS7341_ReadChannels(uint8_t* photoDiode, uint8_t* ADC_config, uint8_t* ADC_
   //AS7341_DeviceStatus(AS7341_REG_STATUS6, &status6_rslt.value);
   //AS7341_SpecData(AS7341_REG_ASTATUS1,    &astat1_rslt.value);
 
-
   //control_reg.FIFO_CLR        = 1; //Talvez valha pena ter uma funcao so pra esse cmd
   //if(!AS7341_SetAcessAndWrite(AS7341_REG_CONTROL, control_reg.value)) return false;
 
-  
   if(!AS7341_SetAcessAndWrite(AS7341_REG_STATUS, status_rslt.value)) return false;
   if(!AS7341_SetAcessAndWrite(AS7341_REG_ASTATUS2, astat2_rslt.value)) return false;
 
-  if(!AS7341_PowerOff()) return false;
+  //if(!AS7341_PowerOff()) return false;
 
   return true;
 }
@@ -924,15 +934,15 @@ bool AS7341_ReadChannels(uint8_t* photoDiode, uint8_t* ADC_config, uint8_t* ADC_
 bool AS7341_Boot(){
   if(!AS7341_i2cInit()           ) return false;
   if(!AS7341_PowerOn()            ) return false;
-  if(!AS7341_DisableSpecMen()    ) return false;
+  //if(!AS7341_DisableSpecMen()    ) return false;
   if(!AS7341_DevivceConfig()     ) return false;
-  if(!AS7341_ADC_TimingConfig()  ) return false;
-  if(!AS7341_ADC_Config()        ) return false;     
-  if(!AS7341_InterruptionConfig()) return false;     
-  if(!AS7341_OtherConfig()       ) return false;
-  if(!AS7341_BufferConfig()      ) return false;
+  //if(!AS7341_ADC_TimingConfig()  ) return false;
+  //if(!AS7341_ADC_Config()        ) return false;     
+  //if(!AS7341_InterruptionConfig()) return false;     
+  //if(!AS7341_OtherConfig()       ) return false;
+  //if(!AS7341_BufferConfig()      ) return false;
 
-  if(!AS7341_PowerOff()) return false;
+  //if(!AS7341_PowerOff()) return false;
   return true;
 }
 
