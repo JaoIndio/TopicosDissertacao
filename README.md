@@ -1,4 +1,4 @@
-#Cuidados com os Ópticos
+Cuidados com os Ópticos
 ----------------------------
 
 Dados do fabricante < https://www.thorlabs.com/newgrouppage9.cfm?objectgroup_id=9025 >
@@ -10,5 +10,5 @@ Contaminantes que prejudicam a vida útil do ópticos:
 
 Esses contaminantes geram pontos quentes, os quais aumentam a dispersão óptica, pois eles absorvem a radiação incidente, gerando assim danos permanentes. **Ópticos com revestimento são particularmente mais sucetiveis a esse tipo de dano**
 
-#What is okay for one type of optical component will destroy another type of optical component. Because of this, we recommend that the guide be read in its entirety before cleaning an optic. If the type or category of optic is not specifically mentioned in the guide, please contact the optical component manufacturer for handling and cleaning instructions.
+What is okay for one type of optical component will destroy another type of optical component. Because of this, we recommend that the guide be read in its entirety before cleaning an optic. If the type or category of optic is not specifically mentioned in the guide, please contact the optical component manufacturer for handling and cleaning instructions.
 -----------------------------
