@@ -1,0 +1,104 @@
+
+
+/*!
+ * \brief Write SMUX config
+ * \param[in] bankmode: defines which channels are converted (0|1)
+ * \details
+ * bankmode 0 -> read channels f1 - f6 \
+ * bankmode 1 -> read channels f7, f8, clear, dark, prox, flicker
+ */
+int8_t as7341_write_smux_conf(uint8_t bankmode)
+{
+    uint8_t regvalbuf[20];
+    uint8_t regval;
+
+    /* switch register bank for configuration of SMUX */
+    as7341_switch_reg_bank(0);
+
+    if(bankmode == 0)
+    {
+        /* smux configuration for first channels */
+        regvalbuf[0] = 0x30;
+        regvalbuf[1] = 0x01;
+        regvalbuf[2] = 0x00;
+        regvalbuf[3] = 0x00;
+        regvalbuf[4] = 0x06;
+        regvalbuf[5] = 0x42;
+        regvalbuf[6] = 0x50;
+        regvalbuf[7] = 0x00;
+        regvalbuf[8] = 0x00;
+        regvalbuf[9] = 0x50;
+        regvalbuf[10] = 0x00;
+        regvalbuf[11] = 0x00;
+        regvalbuf[12] = 0x20;
+        regvalbuf[13] = 0x04;
+        regvalbuf[14] = 0x60;
+        regvalbuf[15] = 0x30;
+        regvalbuf[16] = 0x01;
+        regvalbuf[17] = 0x00;
+        regvalbuf[18] = 0x00;
+        regvalbuf[19] = 0x00;
+    }
+    else if (bankmode == 1)
+    {
+        /* smux configuration for rest of channels */
+        regvalbuf[0]  = 0x00;
+        regvalbuf[1]  = 0x00;
+        regvalbuf[2]  = 0x00;
+        regvalbuf[3]  = 0x20;
+        regvalbuf[4]  = 0x00;
+        regvalbuf[5]  = 0x00;
+        regvalbuf[6]  = 0x00;
+        regvalbuf[7]  = 0x01;
+        regvalbuf[8]  = 0x30;
+        regvalbuf[9]  = 0x00;
+        regvalbuf[10] = 0x01;
+        regvalbuf[11] = 0x00;
+        regvalbuf[12] = 0x00;
+        regvalbuf[13] = 0x00;
+        regvalbuf[14] = 0x02;
+        regvalbuf[15] = 0x00;
+        regvalbuf[16] = 0x00;
+        regvalbuf[17] = 0x30;
+        regvalbuf[18] = 0x40;
+        regvalbuf[19] = 0x65;
+    }
+    /* write smux config (20 values) to ram address 0x00 */
+    as7341_hal_i2c_mem_write(0x00, regvalbuf, 20);
+
+    as7341_switch_reg_bank(0);
+
+    /* write smux conf from ram to smux chain*/
+    regval = 0x10;
+    as7341_hal_i2c_mem_write(AS7341_REGADDR_CFG6, &regval, 1);     /* AS7341_REGADDR_CFG6 = 0xAF */
+
+    /* power on, start smux command */
+    regval = 0x11;
+    as7341_hal_i2c_mem_write(AS7341_REGADDR_ENABLE, &regval, 1);   /* AS7341_REGADDR_ENABLE = 0x80 */
+
+    /* SMUX configuration complete, start measurement normally via ENABLE register */
+    return (0);
+}
+
+
+/*!
+ * \brief switch register bank
+ * \param bank[in]  register bank (0|1)
+ * \retval 0    OK
+ * \retval -1   I2C-Error
+ * \retval -2   illegal bank number
+ */
+int8_t as7341_switch_reg_bank(uint8_t bank)
+{
+    uint8_t regval_cfg0 = 0x40;  /* default register value fo CFG0 register */
+
+    if (bank > 0x01)
+    {
+        return (-2);
+    }
+
+    /* shift bank-value to bit position 4 */
+    regval_cfg0 |= (bank << 4);
+    return (as7341_hal_i2c_mem_write(AS7341_REGADDR_CFG0, &regval_cfg0, 1));    /* AS7341_REGADDR_CFG0 = 0xA9 */
+
+}

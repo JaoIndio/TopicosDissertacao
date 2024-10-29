@@ -1,0 +1,93 @@
+# --- List of available commands ---
+
+# To comment out a line '#' is used
+
+# To abort the script press Ctrl+C
+
+# R <register addr> : read out register
+
+r 80
+
+# w <register addr> <value> : write into register
+
+w 81 10
+
+# gain <value> : < 0.5, 1, 2, 4, 8, 16, 32, 64, 128, 256, 512 > 
+
+gain 256
+
+# intTime <Atime> <Astep> : <0-255> <1-65534>
+
+intTime 0 60000
+
+# autoGain on / off : <on, off>
+
+autoGain on
+
+# mode <value> : < 0, 1, 2, 3, 4 >
+
+mode 2
+
+# ledOn <value> [flash] : < 0- 127 >
+
+ledOn 30 flash
+
+# ledLeft on / off : <on, off>
+
+ledLeft on
+
+# ledTop on / off : <on, off>
+
+ledTop on
+
+# ledBottom on / off : <on, off>
+
+ledBottom off
+
+# startLog : start logging
+
+startLog
+
+# readSamples <value> : samples measured value times
+
+readSamples 5
+
+# readTime <time in seconds> : read a continous measurement for a time period
+
+readTime 10
+
+# pause <value in ms> : set delay in ms 
+
+pause 100
+
+# saveLog : save the measured samples to *.csv file
+
+saveLog 
+
+# clearLog : clear the measured sample log
+
+clearLog
+
+# stopLog : stop logging
+
+stopLog
+
+# saveOffset : save last measured values as offset values
+
+saveOffset
+
+# saveWhiteBalance : save last measured values as white balance values
+
+saveWhiteBalance
+
+# saveInitData : save initialization data
+
+saveInitData
+
+# openDialogReflection : open reflection dialog
+
+openDialogReflection
+
+# showMessage "message" : show a message box with message
+
+showMessage "This is a message"

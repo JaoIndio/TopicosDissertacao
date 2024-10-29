@@ -1,0 +1,1 @@
+Directory includes the manual for hardware and software for the AS7341 eval system, the schematic of the eval board and application notes.

@@ -1,0 +1,15 @@
+Ctrl A   Start detection logging
+Ctrl S   Save detection logging
+Ctrl M   Read calibration matrix file
+Ctrl R   Read mask file
+Ctrl W   Write initialization, calibration matrix, and mask files from EEPROM or corresponding files
+Ctrl E   Initialize EEPROM from initialization, calibration matrix, and mask files
+Ctrl D   Disable EEPROM
+Ctrl F   Clear EEPROM
+Ctrl O   Save last measured values as offset values
+Ctrl B   Save last measured values as white balance values
+Ctrl I   Write initialization data from memory to EEPROM or initialization file
+Ctrl Z   Screenshot
+Ctrl L   Save logging files
+Ctrl C   Abort running tracer script
+Ctrl V   Remove version information from main window title bar

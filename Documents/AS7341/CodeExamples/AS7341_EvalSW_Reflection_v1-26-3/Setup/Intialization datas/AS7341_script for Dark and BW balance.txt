@@ -1,0 +1,30 @@
+autoGain on
+mode 2
+ledOn 38 flash
+startLog
+showMessage "Dark Measurement: place sensor into dark and press ok to measure" 
+readSamples 5
+saveOffset
+openDialogReflection
+showMessage "White Balance: place sensor on white of color checker and press ok to start measuring process" 
+readSamples 5
+saveWhiteBalance
+saveInitData
+showMessage "Color test: place sensor on blue of color checker and press ok to measure" 
+readSamples 1
+showMessage "Color test: place sensor on green of color checker and press ok to measure" 
+readSamples 1
+showMessage "Color test: place sensor on red of color checker and press ok to measure" 
+readSamples 1
+showMessage "Color test: place sensor on yellow of color checker and press ok to measure" 
+readSamples 1
+showMessage "Color test: place sensor on magenta of color checker and press ok to measure" 
+readSamples 1
+showMessage "Color test: place sensor on cyan of color checker and press ok to measure" 
+readSamples 1
+showMessage "Color test: place sensor on black of color checker and press ok to measure" 
+readSamples 1
+stoplog
+saveLog 
+clearLog
+showMessage "GUI must be re-opened for new sensor readings after changing EEPROM"

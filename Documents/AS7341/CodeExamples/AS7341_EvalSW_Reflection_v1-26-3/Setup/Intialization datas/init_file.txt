@@ -1,0 +1,66 @@
+// AS7341 initialization data file
+
+// Light detection calibration matrix file
+LightDetectionCalibrationMatrixFile= 
+
+// Light detection mask file
+LightDetectionMaskFile= 
+
+// Reflection calibration matrix file
+ReflectionCalibrationMatrixFile= CM_R_v1_0_0#spectral.csv
+
+// Reflection mask file
+ReflectionMaskFile= Mask_R_v1_0_0.csv
+
+// Correction factor for gain error
+// 0.5x;1x;2x;4x;8x;16x;32x;64x;128x;256x;512x
+CorrectionGain=1.057724938;1.04913698;1.047883152;1.049114772;1.020740724;1.015773647;1.010904254;1.0;1.000322557;0.987308373;0.959349244
+
+// Correction in VIS based on NIR filter to correct overcrossing from NIR
+NIR_Correction= Off
+
+// Correction factor of raw values
+CorrectionFactor= 1.00000000;1.00000000;1.00000000;1.00000000;1.00000000;1.00000000;1.00000000;1.00000000;1.00000000;1.00000000
+
+// Offset values decrease basic values - values must be replaced by sensor specific results to get accuracy
+Offset= 0.003347963;0.005573356;0.007078014;0.008031754;0.009154323;0.009568005;0.011294808;0.015861109;0.0;0.0
+
+// Max AGAIN for optimization: 0 (0.5x)...10 (512x)
+MaxAutoGain= 9
+
+// Max TINT [ms] for optimization: 1...46640
+MaxAutoTInt= 364
+
+// Correction factor to correct Y as Lux from CIE1931 Y
+// corr_lx= 683
+
+// Lower Limit of u'
+// LowerLimit_u= 0.18070000
+
+// Lower Limit of v'
+// LowerLimit_v= 0.36240000
+
+// Upper Limit of u'
+// UpperLimit_u= 0.39880000
+
+// UpperLimit of v'
+// UpperLimit_v= 0.54080000
+
+// Minimum CCT
+// minCCT= 2000
+
+// Maximum CCT
+// maxCCT= 7000
+
+// Distance du'v' White Curve and sensor
+// Delta_uv= 0.20000000
+
+// Wavelength limit values
+limit_mask= 380;780
+
+// Stop spectral compare in case of error(%) is greater than
+limit_Compare= 50
+
+// Limit of Delta xy
+Limit_Delta_xy= 1.00000000
+

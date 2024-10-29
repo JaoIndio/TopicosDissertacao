@@ -1,0 +1,45 @@
+// AS7341 reflection calibration matrix file
+
+// Offset values decrease basic values
+Offset= 0.003347963;0.005573356;0.007078014;0.008031754;0.009154323;0.009568005;0.011294808;0.015861109
+
+// Correction factor of raw values
+// CorrectionFactor= 
+
+// Correction factor for gain error
+// 0.5x;1x;2x;4x;8x;16x;32x;64x;128x;256x;512x
+CorrectionGain=1.057724938;1.04913698;1.047883152;1.049114772;1.020740724;1.015773647;1.010904254;1.0;1.000322557;0.987308373;0.959349244
+
+// Correction in VIS based on NIR filter to correct overcrossing from NIR
+// NIR_Correction= 
+
+// White balance reference
+ReferenceWhiteBalance= 88.08;93.18;96.71
+
+// White balance correction
+// CorrectionWhiteBalance= 
+
+// Wait time [ms]
+// WaitTime= 
+
+// LED current (0...127)
+LedCurrent= 38
+
+// LED left on / off
+// LedLeft= 
+
+// LED top on / off
+// LedTop= 
+
+// LED bottom on / off
+// LedBottom= 
+
+// XYZ to RGB conversion matrix
+// RX;RY;RZ;GX;GY;GZ;BX;BY;BZ
+ConversionXYZ2RGB= 10.03558000;-6.16536100;-0.54215400;1.36935900;1.00541900;0.57871000;1.15414200;-0.59024700;2.14952500
+
+// The calibration matrix
+Wavelength;F1;F2;F3;F4;F5;F6;F7;F8
+X;-107.1268916;96.9856273;-30.77361688;32.09032861;7.298149576;55.99436509;4.051135369;1.579725705
+Y;-127.5851925;69.03630389;-23.24316749;72.23316095;27.66354323;38.96522983;-4.830369728;3.11235929
+Z;-29.36277135;203.1338719;28.06962512;26.57084092;-21.92666013;5.022806986;-3.605088492;-3.976921961
