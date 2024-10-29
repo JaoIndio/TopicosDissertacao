@@ -22,14 +22,25 @@
 #include "driverlib/pin_map.h"
 #include "utils/uartstdio.h"
 #include "utils/ustdlib.h"
+#include "inc/hw_types.h"
+#include "driverlib/timer.h"
 #include "DRV8825/drv8825.h"
 
 // Pin definitions
-#define STEP_PIN GPIO_PIN_5 //PB5
-#define DIR_PIN GPIO_PIN_0  //PB0
-#define ENABLE_PIN GPIO_PIN_1
-#define ANALOG_SIMULATE GPIO_PIN_7
-#define PWM_FREQUENCY 5000 // 1 kHzI
+#define STEP_PIN              GPIO_PIN_5 //PB5
+#define DIR_PIN               GPIO_PIN_0  //PB0
+#define ENABLE_PIN            GPIO_PIN_1
+#define ANALOG_SIMULATE       GPIO_PIN_7
+#define LINEAR_MOV_DBG        GPIO_PIN_0
+#define LINEAR_MOV_DBG_BASE   GPIO_PORTE_BASE
+// #define PWM_FREQUENCY 25600// <- Unica freq q consegui até agr com microstep de 32
+// Frequencia minima atingida 7500Hz, com potenciomentro próximo da minima tensao de ref
+// Frequencia MAXIMA atingida 40000Hz, com potenciomentro próximo da maxima tensao de ref
+#define PWM_FREQUENCY 20000// <- Unica freq q consegui até agr com microstep de 32
+// DRV configurado no seu potenciometro de forma a limitar a corrente em 
+// 90mA-100mA com um PWM de 20KHz(osciloscópio 20.56KHz) foi uma das performances mais
+// estaveis observadas
+
 #define KILO_HZ 1000 // 1 kHzI
 
 // Define constants for the sigmoid function
@@ -40,7 +51,38 @@
 #define EC_2 GPIO_PIN_3
 //PE2 PE3 Handlers
 // Task handle
+/*
+        =========================================================
+    ---------------------------------------------------------------------
+
+                Nema17        200 steps/revolution
+               DRV8825        1/32 Microstep (DRVstep)
+      Fianl Steper Rev        6400 step/revolution
+              Gt2 Belt        20 teeth
+                              2mm/teeth
+                              40mm/rev
+             Final Mov        0.00625mm/step ->6.25µm/DRVstep
+
+      Ex:
+            VelFinal    5mm/s
+        * A polia desloca-se 40mm por revolução
+
+               6400*VelFinal
+            ------------------- = 800 steps/s = PWM de 800 Hz
+                    40
+
+    ---------------------------------------------------------------------
+        =========================================================
+*/
 TaskHandle_t xDebaunceKeyHandle = NULL;
+
+void Timer0IntHandler(){
+  TimerIntClear(TIMER0_BASE, TIMER_TIMA_TIMEOUT);
+
+  GPIOPinWrite(LINEAR_MOV_DBG_BASE, LINEAR_MOV_DBG,\
+               GPIOPinRead(LINEAR_MOV_DBG_BASE, LINEAR_MOV_DBG)^LINEAR_MOV_DBG);
+}
+
 // Function to calculate the sigmoid value
 void     TrigggerPWMSigmoidFrequency(float* actual_freq, float target_freq);
 uint32_t getPWMFrequency();
@@ -268,16 +310,22 @@ void NemaConfig(){
 
   GPIOPinTypeGPIOOutput(GPIO_PORTB_BASE, DIR_PIN);
   GPIOPinTypeGPIOOutput(GPIO_PORTB_BASE, ENABLE_PIN);
+
+  GPIOPadConfigSet(GPIO_PORTB_BASE, DIR_PIN, GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD);
+  GPIOPadConfigSet(GPIO_PORTB_BASE, ENABLE_PIN, GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD);
   
   GPIOPinWrite(GPIO_PORTB_BASE, DIR_PIN, DIR_PIN);
   GPIOPinWrite(GPIO_PORTB_BASE, ENABLE_PIN, 0);
+
   
+  /*
   xTaskCreate(StepLoop,
                "StepLoop",
                configMINIMAL_STACK_SIZE,
                NULL,
                tskIDLE_PRIORITY + 1,
                NULL );
+  */
 }
 
 void StepLoop(void* ptr){
@@ -307,6 +355,49 @@ void StepLoop(void* ptr){
     //vTaskDelay(pdMS_TO_TICKS(50));
   }
 }
+void NemaEnable(){
+  GPIOPinWrite(GPIO_PORTB_BASE, ENABLE_PIN, 0);
+}
 
+void NemaDisable(){
+  GPIOPinWrite(GPIO_PORTB_BASE, ENABLE_PIN, ENABLE_PIN);
+}
+
+void LinearMovValidation(){
+
+  // DEBUG GPIO CONFIG
+  GPIOUnlockPin(LINEAR_MOV_DBG_BASE, LINEAR_MOV_DBG);
+  GPIOPinTypeGPIOOutput(LINEAR_MOV_DBG_BASE, LINEAR_MOV_DBG);
+  GPIOPinWrite(LINEAR_MOV_DBG_BASE, LINEAR_MOV_DBG, 0);
+  
+  //Timer Configuration
+  SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER0);
+    
+  // Wait for the Timer 0 module to be ready
+  while(!SysCtlPeripheralReady(SYSCTL_PERIPH_TIMER0)) {}
+
+  // Configure Timer 0 as a 32-bit periodic timer
+  TimerConfigure(TIMER0_BASE, TIMER_CFG_PERIODIC);
+
+  // Get the system clock frequency
+  uint32_t ui32SysClock  = SysCtlClockGet()/2;
+
+  // Nao entendi pq colocando x2 funciona 
+  uint32_t micro_sec_res = SysCtlClockGet()/(1000000*2);
+  uint32_t mili_sec_res  = SysCtlClockGet()/(1000*2);
+
+  uint32_t freqHez = 800;
+  // Load Timer 0 for 5 seconds
+  TimerLoadSet(TIMER0_BASE, TIMER_A, ui32SysClock *5);
+  UARTprintf("\rSystem Freq %u\n", ui32SysClock);
+
+
+  //CallBack
+  TimerIntRegister(TIMER0_BASE, TIMER_A, Timer0IntHandler);
+  TimerIntEnable(TIMER0_BASE, TIMER_TIMA_TIMEOUT);
+  IntMasterEnable();
+  TimerEnable(TIMER0_BASE, TIMER_A);
+
+}
 
 #endif

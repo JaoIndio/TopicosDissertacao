@@ -2,7 +2,7 @@
 # Automatically-generated file. Do not edit!
 ################################################################################
 
-CG_TOOL_ROOT := /home/jao/ti/ccs1010/ccs/tools/compiler/ti-cgt-arm_20.2.1.LTS
+CG_TOOL_ROOT := /home/jao/ti/ccs1271/ccs/tools/compiler/ti-cgt-arm_20.2.1.LTS
 
 GEN_OPTS__FLAG := 
 GEN_CMDS__FLAG := 
@@ -38,6 +38,7 @@ RMDIR := rm -rf
 # All of the sources participating in the build are defined here
 -include sources.mk
 -include subdir_vars.mk
+-include Debug__opt_level__off/subdir_vars.mk
 -include FreeRTOS/Source/subdir_vars.mk
 -include FreeRTOS/Source/portable/CCS/ARM_CM4F/subdir_vars.mk
 -include FreeRTOS/Source/portable/MemMang/subdir_vars.mk
@@ -46,6 +47,7 @@ RMDIR := rm -rf
 -include drivers/subdir_vars.mk
 -include utils/subdir_vars.mk
 -include subdir_rules.mk
+-include Debug__opt_level__off/subdir_rules.mk
 -include FreeRTOS/Source/subdir_rules.mk
 -include FreeRTOS/Source/portable/CCS/ARM_CM4F/subdir_rules.mk
 -include FreeRTOS/Source/portable/MemMang/subdir_rules.mk
@@ -149,16 +151,10 @@ endif
 
 # Add inputs and outputs from these tool invocations to the build variables 
 EXE_OUTPUTS += \
-Nema17.out \
+Nema17.out 
 
 EXE_OUTPUTS__QUOTED += \
-"Nema17.out" \
-
-BIN_OUTPUTS += \
-Nema17.hex \
-
-BIN_OUTPUTS__QUOTED += \
-"Nema17.hex" \
+"Nema17.out" 
 
 
 # All Target
@@ -169,20 +165,13 @@ all: $(OBJS) $(CMD_SRCS) $(A_SRCS) $(GEN_CMDS)
 Nema17.out: $(OBJS) $(CMD_SRCS) $(A_SRCS) $(GEN_CMDS)
 	@echo 'Building target: "$@"'
 	@echo 'Invoking: ARM Linker'
-	"/home/jao/ti/ccs1010/ccs/tools/compiler/ti-cgt-arm_20.2.1.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me --define=ccs="ccs" --define=TARGET_IS_TM4C123_RB1 --define=PART_TM4C123GH6PM -g --gcc --diag_warning=225 --diag_wrap=off --display_error_number --abi=eabi -z -m"Nema17.map" --heap_size=0 --stack_size=512 -i"/home/jao/ti/ccs1010/ccs/tools/compiler/ti-cgt-arm_20.2.1.LTS/lib" -i"/home/jao/curso/ufsm/Mestrado/Dissertacao/Pototip_DeVereda/ProjetoPrototipo/Tiva/SpecLibs" -i"/home/jao/ti/ccs1010/ccs/tools/compiler/ti-cgt-arm_20.2.1.LTS/include" --reread_libs --diag_wrap=off --display_error_number --warn_sections --xml_link_info="Nema17_linkInfo.xml" --rom_model -o "Nema17.out" $(ORDERED_OBJS) $(A_SRCS)
+	"/home/jao/ti/ccs1271/ccs/tools/compiler/ti-cgt-arm_20.2.1.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me -O3 --opt_for_speed=1 --define=ccs="ccs" --define=TARGET_IS_TM4C123_RB1 --define=PART_TM4C123GH6PM -g --gcc --diag_warning=225 --diag_wrap=off --display_error_number --abi=eabi -z -m"Nema17.map" --heap_size=0 --stack_size=512 -i"/home/jao/ti/ccs1271/ccs/tools/compiler/ti-cgt-arm_20.2.1.LTS/lib" -i"/home/jao/curso/ufsm/Mestrado/Dissertacao/Pototip_DeVereda/ProjetoPrototipo/Tiva/SpecLibs" -i"/home/jao/ti/ccs1271/ccs/tools/compiler/ti-cgt-arm_20.2.1.LTS/include" --reread_libs --diag_wrap=off --display_error_number --warn_sections --xml_link_info="Nema17_linkInfo.xml" --rom_model -o "Nema17.out" $(ORDERED_OBJS) $(A_SRCS)
 	@echo 'Finished building target: "$@"'
-	@echo ' '
-
-Nema17.hex: $(EXE_OUTPUTS)
-	@echo 'Building files: $(strip $(EXE_OUTPUTS__QUOTED))'
-	@echo 'Invoking: ARM Hex Utility'
-	"/home/jao/ti/ccs1010/ccs/tools/compiler/ti-cgt-arm_20.2.1.LTS/bin/armhex"  -o "Nema17.hex" $(EXE_OUTPUTS__QUOTED)
-	@echo 'Finished building: $(strip $(EXE_OUTPUTS__QUOTED))'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) $(BIN_OUTPUTS__QUOTED)$(EXE_OUTPUTS__QUOTED)
+	-$(RM) $(EXE_OUTPUTS__QUOTED)
 	-$(RM) "hello.obj" "tm4c123gh6pm_startup_ccs.obj" "FreeRTOS/Source/croutine.obj" "FreeRTOS/Source/event_groups.obj" "FreeRTOS/Source/list.obj" "FreeRTOS/Source/queue.obj" "FreeRTOS/Source/stream_buffer.obj" "FreeRTOS/Source/tasks.obj" "FreeRTOS/Source/timers.obj" "FreeRTOS/Source/portable/CCS/ARM_CM4F/port.obj" "FreeRTOS/Source/portable/CCS/ARM_CM4F/portasm.obj" "FreeRTOS/Source/portable/MemMang/heap_2.obj" "SpecLibs/AS7341/AS7341.obj" "SpecLibs/DRV8825/drv8825.obj" "drivers/rtos_hw_drivers.obj" "utils/uartstdio.obj" "utils/ustdlib.obj" 
 	-$(RM) "hello.d" "tm4c123gh6pm_startup_ccs.d" "FreeRTOS/Source/croutine.d" "FreeRTOS/Source/event_groups.d" "FreeRTOS/Source/list.d" "FreeRTOS/Source/queue.d" "FreeRTOS/Source/stream_buffer.d" "FreeRTOS/Source/tasks.d" "FreeRTOS/Source/timers.d" "FreeRTOS/Source/portable/CCS/ARM_CM4F/port.d" "FreeRTOS/Source/portable/MemMang/heap_2.d" "SpecLibs/AS7341/AS7341.d" "SpecLibs/DRV8825/drv8825.d" "drivers/rtos_hw_drivers.d" "utils/uartstdio.d" "utils/ustdlib.d" 
 	-$(RM) "FreeRTOS/Source/portable/CCS/ARM_CM4F/portasm.d" 

@@ -888,22 +888,22 @@ bool AS7341_ReadChannels(uint8_t* photoDiode, uint8_t* ADC_config, uint8_t* ADC_
   AS7341_BankAcessSet(AS7341_REG_CH0_DATA_L);
   AS7341_read(AS7341_REG_CH0_DATA_L, ADC_count);
   AS7341_read(AS7341_REG_CH0_DATA_H, ADC_count+1);
-  vTaskDelay(pdMS_TO_TICKS(50));
+  //vTaskDelay(pdMS_TO_TICKS(50));
   if(!AS7341_read(AS7341_REG_CH1_DATA_L, ADC_count+2)) return false;
   if(!AS7341_read(AS7341_REG_CH1_DATA_H, ADC_count+3)) return false;
-  vTaskDelay(pdMS_TO_TICKS(50));
+  //vTaskDelay(pdMS_TO_TICKS(50));
   if(!AS7341_read(AS7341_REG_CH2_DATA_L, ADC_count+4)) return false;
   if(!AS7341_read(AS7341_REG_CH2_DATA_H, ADC_count+5)) return false;
-  vTaskDelay(pdMS_TO_TICKS(50));
+  //vTaskDelay(pdMS_TO_TICKS(50));
   if(!AS7341_read(AS7341_REG_CH3_DATA_L, ADC_count+6)) return false;
   if(!AS7341_read(AS7341_REG_CH3_DATA_H, ADC_count+7)) return false;
-  vTaskDelay(pdMS_TO_TICKS(50));
+  //vTaskDelay(pdMS_TO_TICKS(50));
   if(!AS7341_read(AS7341_REG_CH4_DATA_L, ADC_count+8)) return false;
   if(!AS7341_read(AS7341_REG_CH4_DATA_H, ADC_count+9)) return false;
-  vTaskDelay(pdMS_TO_TICKS(50));
+  //vTaskDelay(pdMS_TO_TICKS(50));
   if(!AS7341_read(AS7341_REG_CH5_DATA_L, ADC_count+10)) return false;
   if(!AS7341_read(AS7341_REG_CH5_DATA_H, ADC_count+11)) return false;
-  vTaskDelay(pdMS_TO_TICKS(50));
+  ////vTaskDelay(pdMS_TO_TICKS(50));
   
   AS7341_SetAcessAndRead(AS7341_REG_FIFO_LVL, &fifo_lvl.value);
   if(!AS7341_DisableSpecMen()) return false; 
