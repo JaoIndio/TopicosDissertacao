@@ -1,0 +1,11 @@
+doxygen/doxygen_new_line_after_brief=true
+doxygen/doxygen_use_brief_tag=false
+doxygen/doxygen_use_javadoc_tags=true
+doxygen/doxygen_use_pre_tag=false
+doxygen/doxygen_use_structural_commands=false
+eclipse.preferences.version=1
+environment/project/com.ti.ccstudio.buildDefinitions.TMS470.Debug.597565085/CCS_UTILS_DIR/delimiter=\:
+environment/project/com.ti.ccstudio.buildDefinitions.TMS470.Debug.597565085/CCS_UTILS_DIR/operation=replace
+environment/project/com.ti.ccstudio.buildDefinitions.TMS470.Debug.597565085/CCS_UTILS_DIR/value=/home/jao/ti/ccs1250/ccs/utils
+environment/project/com.ti.ccstudio.buildDefinitions.TMS470.Debug.597565085/append=true
+environment/project/com.ti.ccstudio.buildDefinitions.TMS470.Debug.597565085/appendContributed=true
