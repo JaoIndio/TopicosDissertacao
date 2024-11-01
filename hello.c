@@ -22,9 +22,12 @@
 #include "utils/uartstdio.h"
 #include "DRV8825/drv8825.h"
 #include "AS7341/AS7341.h"
+#include "arm_math.h"
 
 //#include "myLib.h"
 //#include "external_devices/AS7341_photo.h"
+volatile float IntTime;
+volatile float Spectral400_600[200];
 
 /**
  * hello.c
@@ -35,14 +38,93 @@ static void prvSetupHardware( void );
 /* This function sets up UART0 to be used for a console to display information
  * as the example is running. */
 static void prvConfigureUART(void);
+void joinADC();
 
+volatile float PhotoOffset[11]={ 0.003347963f,0.005573356f,\
+                                 0.007078014f,0.008031754f,\
+                                 0.009154323f,0.009568005f,\
+                                 0.011294808f,0.015861109f};
+
+volatile float GainCr[11]={1.057724938f,1.04913698f,\
+                           1.047883152f,1.049114772f,\
+                           1.020740724f,1.015773647f,\
+                           1.010904254f,1.0f,1.000322557f,\
+                           0.987308373f,0.959349244f};
+
+extern const float GeneralSpectralCorrectionMatrix[];
+extern const float as7341_array1[];
+
+void SpectralReconstruction(float* PhotoCorrection){
+/*
+https://www.ti.com/lit/an/spma041g/spma041g.pdf
+*/
+  float a = as7341_array1[1];
+  arm_matrix_instance_f32 matA; 
+  arm_matrix_instance_f32 matB; 
+  arm_matrix_instance_f32 matC;
+
+  arm_mat_init_f32(&matA, 200, 10, (float32_t*)GeneralSpectralCorrectionMatrix);
+  arm_mat_init_f32(&matB, 10,  1,  PhotoCorrection);
+  arm_mat_init_f32(&matC, 200,  1, Spectral400_600);
+
+  arm_mat_mult_f32(&matA, &matB, &matC);
+
+}
+void BasicCountConvertion(float*PhotoCr ){
+  uint8_t index =0;
+  while(index<7){
+    //Basic count = Raw/(GAIN*IntegrationTime)
+    PhotoCr[index] = PhotoCr[index]/64.0f*IntTime;
+    if(index<8)
+      PhotoCr[index] +=PhotoOffset[index];
+    index++;
+  }
+}
+
+void Correction1(uint16_t* ADC_Raw, bool round, float*PhotoCr ){
+  uint8_t index =0;
+  uint8_t raw_index =0;
+  if(round){
+    while(index<6){
+      PhotoCr[index] = ADC_Raw[index];
+      index++;
+    }
+  }else{
+    index = 6;
+    raw_index=0;
+    while(index<10){
+      if(raw_index!=3)
+        PhotoCr[index] = ADC_Raw[raw_index];
+      else{
+        PhotoCr[index] = ADC_Raw[5];
+        break;
+      }
+      raw_index++;
+      index++;
+    }
+  }
+}
+
+void joinADC(uint8_t* ADC_count, uint16_t* ADC_raw){
+  uint8_t i =0;
+  uint8_t j =0;
+  for(i=0;i<12;i+=2){
+    ADC_raw[j] = ADC_count[i] || ADC_count[i+1]<<8;
+    j++;
+  }
+}
 void AS7341_Begin(void *ptr){
 
   AS7341_Boot();
   UARTprintf("AS7341 Boot Done\n");
   uint8_t photoDiode[18];
   uint8_t ADC_ID[18];
+  uint8_t ADC_ID2[18];
+  bool round = false;
   uint8_t ADC_count[12];
+  uint16_t ADC_raw[6];
+  float PhotoCorrection[8];
+  float PhotoClearNir[10];
   
   uint8_t index;
   for(index=0; index<12; index++) ADC_count[index] = 0x05;
@@ -78,27 +160,47 @@ void AS7341_Begin(void *ptr){
   
   photoDiode[17] =  DARK;
   
-  ADC_ID[0] =  CONNECT_TO_GND; 
-  ADC_ID[1] =  CONNECT_TO_ADC4;    
-  ADC_ID[2] =  CONNECT_TO_ADC1;    
+  ADC_ID[0] =  CONNECT_TO_ADC0; 
+  ADC_ID[1] =  CONNECT_TO_ADC2;    
+  ADC_ID[2] =  CONNECT_TO_ADC4;    
   ADC_ID[3] =  CONNECT_TO_GND;    
-  ADC_ID[4] =  CONNECT_TO_GND;    
-  ADC_ID[5] =  CONNECT_TO_ADC5;    
-  ADC_ID[6] =  CONNECT_TO_ADC3;    
-  ADC_ID[7] =  CONNECT_TO_ADC0;   
+  ADC_ID[4] =  CONNECT_TO_ADC5;    
+  ADC_ID[5] =  CONNECT_TO_GND;    
+  ADC_ID[6] =  CONNECT_TO_ADC1;    
+  ADC_ID[7] =  CONNECT_TO_ADC3;   
   
-  //ADC_ID[8]  = CONNECT_TO_ADC2<<4 | CONNECT_TO_ADC3;    
-  ADC_ID[8]  = CONNECT_TO_ADC0<<4 | CONNECT_TO_ADC3;    
-  ADC_ID[9]  = CONNECT_TO_GND     | CONNECT_TO_ADC5;   
+  ADC_ID[8]  = CONNECT_TO_ADC3<<4 | CONNECT_TO_ADC1;    
+  ADC_ID[9]  = CONNECT_TO_ADC5<<4 | CONNECT_TO_GND;   
   ADC_ID[10] = CONNECT_TO_GND;   
-  ADC_ID[11] = CONNECT_TO_ADC1;   
-  ADC_ID[12] = CONNECT_TO_GND;   
-  ADC_ID[13] = CONNECT_TO_ADC4<<4 | CONNECT_TO_GND;   
-  ADC_ID[14] = CONNECT_TO_ADC2;   
-  ADC_ID[15] = CONNECT_TO_ADC2<<4 | CONNECT_TO_GND;   
-  ADC_ID[16] = CONNECT_TO_GND     | CONNECT_TO_GND;   
+  ADC_ID[11] = CONNECT_TO_ADC4;   
+  ADC_ID[12] = CONNECT_TO_ADC2;   
+  ADC_ID[13] = CONNECT_TO_GND<<4 | CONNECT_TO_ADC0;   
+  ADC_ID[14] = CONNECT_TO_GND;   
+  ADC_ID[15] = CONNECT_TO_GND<<4 | CONNECT_TO_GND;   
+  ADC_ID[16] = CONNECT_TO_GND    | CONNECT_TO_GND;   
   
   ADC_ID[17] = CONNECT_TO_GND;   
+
+  ADC_ID2[0] =  CONNECT_TO_GND; 
+  ADC_ID2[1] =  CONNECT_TO_GND;    
+  ADC_ID2[2] =  CONNECT_TO_ADC4;    
+  ADC_ID2[3] =  CONNECT_TO_ADC0;    
+  ADC_ID2[4] =  CONNECT_TO_GND;    
+  ADC_ID2[5] =  CONNECT_TO_ADC1;    
+  ADC_ID2[6] =  CONNECT_TO_GND;    
+  ADC_ID2[7] =  CONNECT_TO_ADC3;   
+  
+  ADC_ID2[8]  = CONNECT_TO_ADC3<<4 | CONNECT_TO_ADC1;    
+  ADC_ID2[9]  = CONNECT_TO_ADC5<<4 | CONNECT_TO_GND;   
+  ADC_ID2[10] = CONNECT_TO_GND;   
+  ADC_ID2[11] = CONNECT_TO_ADC4;   
+  ADC_ID2[12] = CONNECT_TO_ADC2;   
+  ADC_ID2[13] = CONNECT_TO_GND<<4 | CONNECT_TO_ADC0;   
+  ADC_ID2[14] = CONNECT_TO_ADC2;   
+  ADC_ID2[15] = CONNECT_TO_ADC2<<4 | CONNECT_TO_GND;   
+  ADC_ID2[16] = CONNECT_TO_GND    | CONNECT_TO_ADC5;   
+  
+  ADC_ID2[17] = CONNECT_TO_GND;
 
   uint16_t StepADC = 65508;
   //AS7341_SetStepADC(StepADC);
@@ -116,9 +218,36 @@ void AS7341_Begin(void *ptr){
   LinearMovValidation();
   
   uint32_t ui32SysClock  = SysCtlClockGet();
+  IntTime = AS7341_GetIntegrationTimeADC();
   while(1){
-    AS7341_ReadChannels(photoDiode, ADC_ID, ADC_count);
-    vTaskDelay(pdMS_TO_TICKS(150));
+    if(round){
+/*
+  BasicCount =       Raw_counts
+                --------------------
+                Gain*IntegrationTime
+  AGAIN = 7 = 2⁶ = 64
+  ATIME = 1 = ?  = ?
+        Ordem das leituras
+          F1, F2, F3, F4, F5, F6
+*/
+      AS7341_ReadChannels(photoDiode, ADC_ID, ADC_count);
+      joinADC(ADC_count, ADC_raw);
+      Correction1(ADC_raw, round, PhotoCorrection);
+      round=false;
+    }else{
+/*
+        Ordem das leituras
+          F7, F8,CLEAR, F4, F5, NIR
+*/
+      AS7341_ReadChannels(photoDiode, ADC_ID2, ADC_count);
+      joinADC(ADC_count, ADC_raw);
+      Correction1(ADC_raw, round, PhotoCorrection);
+      BasicCountConvertion(PhotoCorrection);
+      //SpectralReconstruction(PhotoCorrection);
+      //UARTsend();
+      round=true;
+    }
+    //vTaskDelay(pdMS_TO_TICKS(150));
     //UARTprintf("\r-------------------------------\n");
     //for(i=0;i<12;i++) 
       //UARTprintf("\rADC[%d]: %d\n",i, ADC_count[i]);
