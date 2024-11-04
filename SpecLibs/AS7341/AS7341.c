@@ -47,6 +47,7 @@ void CheckArray(uint8_t *photo){
 }
 
 void PortDIntHanlder(){
+//  UARTprintf("\r\t\t\t[PortDIntHandler]\n");
   GPIOIntClear(GPIO_PORTD_BASE, GPIO_PIN_0);
   BaseType_t xHigherPriorityTaskWoken = pdFALSE;
   xSemaphoreGiveFromISR(AS7341_Semphr, &xHigherPriorityTaskWoken);
@@ -193,8 +194,8 @@ bool AS7341_i2cInit(){
   IntEnable(INT_GPIOD);
   IntMasterEnable();
 
-  GPIOPinTypeGPIOOutput(GPIO_PORTD_BASE, GPIO_PIN_2);
-  GPIOPinWrite(GPIO_PORTD_BASE, GPIO_PIN_2, GPIO_PIN_2);
+  GPIOPinTypeGPIOOutput(GPIO_PORTD_BASE, GPIO_PIN_1);
+  GPIOPinWrite(GPIO_PORTD_BASE, GPIO_PIN_1, GPIO_PIN_1);
 
   return true;
 
@@ -352,6 +353,14 @@ bool AS7341_SetWtimeADC(uint8_t value){
   wtime_reg.WTIME = value;
   if(!AS7341_SetAcessAndWrite(AS7341_REG_WTIME, wtime_reg.value)) return false;
   return true;
+}
+
+uint16_t AS7341_GetGainADC(){
+  as7341_cfg1_t cfg1_reg;
+  // 1111 1
+  //cfg1_reg.AGAIN = value & 0x1F;
+  if(!AS7341_SetAcessAndRead(AS7341_REG_CFG1, &cfg1_reg.value)) return false;
+  return cfg1_reg.value & 0x1F;
 }
 
 bool AS7341_SetGainADC(uint8_t value){
@@ -953,8 +962,7 @@ bool AS7341_GetStatus(uint8_t* result){
   *result = stat_reg.value;
   return true;
 }
-
-float GeneralSpectralCorrectionMatrix[]={ 0.194140f,  -0.033867f, 0.009500f,  -0.001851f, 0.001581f,  -0.000362f, 0.000774f,  -0.000281f, -0.006954f, -0.000248f,\
+const float GeneralSpectralCorrectionMatrix[]={ 0.194140f,  -0.033867f, 0.009500f,  -0.001851f, 0.001581f,  -0.000362f, 0.000774f,  -0.000281f, -0.006954f, -0.000248f,\
   0.196110f,  -0.034209f, 0.009596f,  -0.001870f, 0.001597f,  -0.000366f, 0.000782f,  -0.000284f, -0.007024f, -0.000251f,\ 
   0.198090f,  -0.034555f, 0.009693f,  -0.001889f, 0.001613f,  -0.000370f, 0.000790f,  -0.000287f, -0.007095f, -0.000253f,\
   0.200090f,  -0.034904f, 0.009791f,  -0.001908f, 0.001629f,  -0.000373f, 0.000798f,  -0.000290f, -0.007167f, -0.000256f,\
@@ -1577,5 +1585,6 @@ float GeneralSpectralCorrectionMatrix[]={ 0.194140f,  -0.033867f, 0.009500f,  -0
   0.022066f,  -0.008209f, 0.008532f,  0.003926f,  0.000856f,  0.005130f,  0.001198f,  0.006007f,  -0.009503f, 0.009459f\
   };
 
+const float as7341_array1[]={1,2,3};
 
 #endif

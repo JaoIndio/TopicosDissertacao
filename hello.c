@@ -22,12 +22,15 @@
 #include "utils/uartstdio.h"
 #include "DRV8825/drv8825.h"
 #include "AS7341/AS7341.h"
+#include "SpecResult/SpecResult.h"
 #include "arm_math.h"
 
 //#include "myLib.h"
 //#include "external_devices/AS7341_photo.h"
+#define SPEC_TOTAL_WAVELENGHT 620
 volatile float IntTime;
-volatile float Spectral400_600[200];
+volatile float Gain;
+volatile float32_t Spectral400_600[SPEC_TOTAL_WAVELENGHT];
 
 /**
  * hello.c
@@ -51,30 +54,35 @@ volatile float GainCr[11]={1.057724938f,1.04913698f,\
                            1.010904254f,1.0f,1.000322557f,\
                            0.987308373f,0.959349244f};
 
-extern const float GeneralSpectralCorrectionMatrix[];
-extern const float as7341_array1[];
+extern const float as7341_array1[3];
 
+/// *
 void SpectralReconstruction(float* PhotoCorrection){
 /*
 https://www.ti.com/lit/an/spma041g/spma041g.pdf
 */
-  float a = as7341_array1[1];
+  //float a = as7341_array1[1];
   arm_matrix_instance_f32 matA; 
   arm_matrix_instance_f32 matB; 
   arm_matrix_instance_f32 matC;
 
-  arm_mat_init_f32(&matA, 200, 10, (float32_t*)GeneralSpectralCorrectionMatrix);
-  arm_mat_init_f32(&matB, 10,  1,  PhotoCorrection);
-  arm_mat_init_f32(&matC, 200,  1, Spectral400_600);
-
-  arm_mat_mult_f32(&matA, &matB, &matC);
-
+  arm_mat_init_f32(&matA, SPEC_TOTAL_WAVELENGHT, 10, (float32_t*)GeneralSpectralCorrectionMatrix);
+  arm_mat_init_f32(&matB, 10,  1,  (float32_t*)PhotoCorrection);
+  arm_mat_init_f32(&matC, SPEC_TOTAL_WAVELENGHT,  1, (float32_t*)Spectral400_600);
+  
+  arm_status multResult;
+  multResult = arm_mat_mult_f32(&matA, &matB, &matC);
+  
+  if(multResult!=ARM_MATH_SUCCESS)
+    UARTprintf("\r\t\t[Spec Rec] ERROR %d\n", multResult);
 }
+//*/
 void BasicCountConvertion(float*PhotoCr ){
   uint8_t index =0;
-  while(index<7){
+  while(index<10){
     //Basic count = Raw/(GAIN*IntegrationTime)
-    PhotoCr[index] = PhotoCr[index]/64.0f*IntTime;
+    //PhotoCr[index] = PhotoCr[index]/64.0f*IntTime;
+    PhotoCr[index] = PhotoCr[index]/Gain*IntTime;
     if(index<8)
       PhotoCr[index] +=PhotoOffset[index];
     index++;
@@ -109,7 +117,8 @@ void joinADC(uint8_t* ADC_count, uint16_t* ADC_raw){
   uint8_t i =0;
   uint8_t j =0;
   for(i=0;i<12;i+=2){
-    ADC_raw[j] = ADC_count[i] || ADC_count[i+1]<<8;
+    ADC_raw[j] = (uint16_t)ADC_count[i] || \
+                 (uint16_t)(ADC_count[i+1])<<8;
     j++;
   }
 }
@@ -123,13 +132,18 @@ void AS7341_Begin(void *ptr){
   bool round = false;
   uint8_t ADC_count[12];
   uint16_t ADC_raw[6];
-  float PhotoCorrection[8];
-  float PhotoClearNir[10];
+  float PhotoCorrection[10];
+  //float PhotoClearNir[10];
   
   uint8_t index;
-  for(index=0; index<12; index++) ADC_count[index] = 0x05;
+  // Check stack usage periodically
+  UBaseType_t unusedStackWords = uxTaskGetStackHighWaterMark(NULL);
+  size_t unusedStackBytes = unusedStackWords * sizeof(StackType_t);
+  UARTprintf("\rUnused stack memory: %u bytes\n", (unsigned int)unusedStackBytes);
+                          
+  //for(index=0; index<12; index++) ADC_count[index] = 0x05;
 
-  uint8_t readCheck;
+  //uint8_t readCheck;
   // Definições especiais
   /*                      i2c Reg   |  IDs    |   PHOTO  |
                         ------------------------------------
@@ -202,23 +216,29 @@ void AS7341_Begin(void *ptr){
   
   ADC_ID2[17] = CONNECT_TO_GND;
 
-  uint16_t StepADC = 65508;
+  //uint16_t StepADC = 65508;
   //AS7341_SetStepADC(StepADC);
-  uint8_t TimeADC  = 0;
+  //uint8_t TimeADC  = 0;
   //AS7341_SetTimeADC(TimeADC);
 
-  uint8_t Wtime_value;
-  Wtime_value = (StepADC+1)*(TimeADC+1)*2.87/1000; // time in ms
-  uint8_t wtime_value = (Wtime_value/2.78)+50;
+  //uint8_t Wtime_value;
+  //Wtime_value = (StepADC+1)*(TimeADC+1)*2.87/1000; // time in ms
+  //uint8_t wtime_value = (Wtime_value/2.78)+50;
   //AS7341_SetWtimeADC(wtime_value);
-  //AS7341_SetGainADC(9);
+  AS7341_SetGainADC(10);
   
   //Boot -> ReadChennels -> SetSMUX -> SetI2cRegSMUX
   uint16_t i;
+
   LinearMovValidation();
   
   uint32_t ui32SysClock  = SysCtlClockGet();
   IntTime = AS7341_GetIntegrationTimeADC();
+  Gain    = pow(2,(int)AS7341_GetGainADC()-1);
+
+  UARTprintf("\rUART Init Gain %d\n", (int)Gain);
+  UART5_Init(115200);
+  UARTprintf("\rUART Init Done\n");
   while(1){
     if(round){
 /*
@@ -230,42 +250,47 @@ void AS7341_Begin(void *ptr){
         Ordem das leituras
           F1, F2, F3, F4, F5, F6
 */
+      
       AS7341_ReadChannels(photoDiode, ADC_ID, ADC_count);
       joinADC(ADC_count, ADC_raw);
       Correction1(ADC_raw, round, PhotoCorrection);
       round=false;
+
     }else{
 /*
         Ordem das leituras
           F7, F8,CLEAR, F4, F5, NIR
-*/
+*/    
       AS7341_ReadChannels(photoDiode, ADC_ID2, ADC_count);
       joinADC(ADC_count, ADC_raw);
       Correction1(ADC_raw, round, PhotoCorrection);
       BasicCountConvertion(PhotoCorrection);
-      //SpectralReconstruction(PhotoCorrection);
-      //UARTsend();
+      SpectralReconstruction(PhotoCorrection);
+      UART5_SendDataPacket(Spectral400_600, SPEC_TOTAL_WAVELENGHT);
       round=true;
     }
-    //vTaskDelay(pdMS_TO_TICKS(150));
-    //UARTprintf("\r-------------------------------\n");
-    //for(i=0;i<12;i++) 
-      //UARTprintf("\rADC[%d]: %d\n",i, ADC_count[i]);
-    //UARTprintf("\r\n\n");
-  //UARTprintf("\r\t\tSystem Freq %u\n", ui32SysClock);
+      vTaskDelay(pdMS_TO_TICKS(1500));
+/*
+    UARTprintf("\r-------------------------------\n");
+    for(i=0;i<12;i++) 
+      UARTprintf("\rADC[%d]: %d\n",i, ADC_count[i]);
+    UARTprintf("\r\n\n");
+*/
   }
-  vTaskDelete(NULL);
+  //vTaskDelete(NULL);
 }
 
 int main(void){
   prvSetupHardware();
 
+  
   NemaConfig();
   //">CCS App Center</a> to oinstall othe compiler of  the required version, or migrate the project to one of the available compiler versions by adjusting project properties. EQU_Firmware_L0 properties Proble
   NemaInterruptionConfig();
   //UARTprintf("Hello World!\n");
   
-  xTaskCreate(AS7341_Begin, "AS7341", configMINIMAL_STACK_SIZE, \
+  //verificar se criou certo
+  xTaskCreate(AS7341_Begin, "AS7341", configMINIMAL_STACK_SIZE+50, \
                 NULL, 14, \
                 NULL);
   vTaskStartScheduler();
@@ -273,7 +298,7 @@ int main(void){
 
   }
 
-	return 0;
+	//return 0;
 }
 
 
@@ -347,7 +372,7 @@ static void prvSetupHardware( void )
     IntEnable(INT_GPIOA);
 
 */
-    uint32_t var = 0xAAAA;
+    //uint32_t var = 0xAAAA;
     //AS7341_init();
     //AS7341_send(&var);
     // GPIOIntClear()
