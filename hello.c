@@ -116,16 +116,22 @@ void Correction1(uint16_t* ADC_Raw, bool round, float*PhotoCr ){
 void joinADC(uint8_t* ADC_count, uint16_t* ADC_raw){
   uint8_t i =0;
   uint8_t j =0;
+  uint16_t data_aux1, data_aux2;
   for(i=0;i<12;i+=2){
-    ADC_raw[j] = (uint16_t)ADC_count[i] || \
-                 (uint16_t)(ADC_count[i+1])<<8;
+    //UARTprintf("\rADC_count[%d]: %u | %u\n",j,ADC_count[i+1], ADC_count[i]);
+    data_aux1 = (uint16_t)ADC_count[i];
+    data_aux2 = (uint16_t)ADC_count[i+1];
+    ADC_raw[j] = data_aux1 | data_aux2<<8;
+    //UARTprintf("\rADC_raw[%d]: %u\n",j,ADC_raw[j]);
     j++;
   }
 }
 void AS7341_Begin(void *ptr){
 
-  AS7341_Boot();
-  UARTprintf("AS7341 Boot Done\n");
+  if(!AS7341_Boot())
+    UARTprintf("AS7341 Boot ERROR\n");
+  else
+    UARTprintf("AS7341 Boot Done\n");
   uint8_t photoDiode[18];
   uint8_t ADC_ID[18];
   uint8_t ADC_ID2[18];
@@ -215,17 +221,24 @@ void AS7341_Begin(void *ptr){
   ADC_ID2[16] = CONNECT_TO_GND    | CONNECT_TO_ADC5;   
   
   ADC_ID2[17] = CONNECT_TO_GND;
+  
+  //𝑡𝑖𝑛𝑡 = (𝐴𝑇𝐼𝑀𝐸 + 1) × (𝐴𝑆𝑇𝐸𝑃 + 1) × 2.78μ𝑠
+  // 𝐴𝐷𝐶𝑓𝑢𝑙𝑙𝑠𝑐𝑎𝑙𝑒 = (𝐴𝑇𝐼𝑀𝐸 + 1) × (𝐴𝑆𝑇𝐸𝑃 + 1)
+  uint16_t StepADC = 99;
+  if(!AS7341_SetStepADC(StepADC))
+    UARTprintf("\rSet STEP Error\n");
+  uint8_t TimeADC  = 99;
+  if(!AS7341_SetTimeADC(TimeADC))
+    UARTprintf("\rSet Time Error\n");
 
-  //uint16_t StepADC = 65508;
-  //AS7341_SetStepADC(StepADC);
-  //uint8_t TimeADC  = 0;
-  //AS7341_SetTimeADC(TimeADC);
+  uint8_t Wtime_value;
+  Wtime_value = (StepADC+1)*(TimeADC+1)*2.78f/1000.0f; // time in ms
+  uint8_t wtime_value = (Wtime_value/2.78)+2;
+  AS7341_SetWtimeADC(wtime_value);
 
-  //uint8_t Wtime_value;
-  //Wtime_value = (StepADC+1)*(TimeADC+1)*2.87/1000; // time in ms
-  //uint8_t wtime_value = (Wtime_value/2.78)+50;
-  //AS7341_SetWtimeADC(wtime_value);
-  AS7341_SetGainADC(10);
+  // ****Aumentar Tempo de Intetracao***
+  if(!AS7341_SetGainADC(7))
+    UARTprintf("\rSet GAIN Error\n");
   
   //Boot -> ReadChennels -> SetSMUX -> SetI2cRegSMUX
   uint16_t i;
@@ -239,6 +252,8 @@ void AS7341_Begin(void *ptr){
   UARTprintf("\rUART Init Gain %d\n", (int)Gain);
   UART5_Init(115200);
   UARTprintf("\rUART Init Done\n");
+  as7341_status_t photo_status;
+  as7341_status2_t photo_saturation;
   while(1){
     if(round){
 /*
@@ -251,7 +266,9 @@ void AS7341_Begin(void *ptr){
           F1, F2, F3, F4, F5, F6
 */
       
-      AS7341_ReadChannels(photoDiode, ADC_ID, ADC_count);
+      if(!AS7341_ReadChannels(photoDiode, ADC_ID, ADC_count))
+        UARTprintf("\rErro de Leitura dos Canais\n");
+
       joinADC(ADC_count, ADC_raw);
       Correction1(ADC_raw, round, PhotoCorrection);
       round=false;
@@ -261,7 +278,8 @@ void AS7341_Begin(void *ptr){
         Ordem das leituras
           F7, F8,CLEAR, F4, F5, NIR
 */    
-      AS7341_ReadChannels(photoDiode, ADC_ID2, ADC_count);
+      if(!AS7341_ReadChannels(photoDiode, ADC_ID2, ADC_count))
+        UARTprintf("\rErro de Leitura dos Canais\n");
       joinADC(ADC_count, ADC_raw);
       Correction1(ADC_raw, round, PhotoCorrection);
       BasicCountConvertion(PhotoCorrection);
@@ -269,13 +287,23 @@ void AS7341_Begin(void *ptr){
       UART5_SendDataPacket(Spectral400_600, SPEC_TOTAL_WAVELENGHT);
       round=true;
     }
-      vTaskDelay(pdMS_TO_TICKS(1500));
-/*
-    UARTprintf("\r-------------------------------\n");
-    for(i=0;i<12;i++) 
-      UARTprintf("\rADC[%d]: %d\n",i, ADC_count[i]);
+    vTaskDelay(pdMS_TO_TICKS(150));
+    AS7341_DeviceStatus(AS7341_REG_STATUS, &photo_status.value);
+    if(photo_status.ASAT==1){
+      //Houve Saturacao
+      AS7341_DeviceStatus(AS7341_REG_STATUS2, &photo_saturation.value);
+      if(photo_saturation.ASAT_DIGITAL)
+        UARTprintf("\rTempo de Integracao muito longo\n");
+      else if(photo_saturation.ASAT_ANALOG)
+        UARTprintf("\rLuz Ambiente Muito Intensa, considere reduzir o GANHO\n");
+    }
+
+/// *
+    UARTprintf("\r-------------- %d -----------------\n", round);
+    for(i=0;i<6;i++) 
+      UARTprintf("\rADC_raw[%d]: %d\n",i, ADC_raw[i]);
     UARTprintf("\r\n\n");
-*/
+// * /  
   }
   //vTaskDelete(NULL);
 }
