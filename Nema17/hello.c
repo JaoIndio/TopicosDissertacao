@@ -22,9 +22,15 @@
 #include "utils/uartstdio.h"
 #include "DRV8825/drv8825.h"
 #include "AS7341/AS7341.h"
+#include "SpecResult/SpecResult.h"
+#include "arm_math.h"
 
 //#include "myLib.h"
 //#include "external_devices/AS7341_photo.h"
+#define SPEC_TOTAL_WAVELENGHT 620
+volatile float IntTime;
+volatile float Gain;
+volatile float32_t Spectral400_600[SPEC_TOTAL_WAVELENGHT];
 
 /**
  * hello.c
@@ -48,31 +54,102 @@ volatile float GainCr[11]={1.057724938f,1.04913698f,\
                            1.010904254f,1.0f,1.000322557f,\
                            0.987308373f,0.959349244f};
 
+extern const float as7341_array1[3];
+
+/// *
+void SpectralReconstruction(float* PhotoCorrection){
+/*
+https://www.ti.com/lit/an/spma041g/spma041g.pdf
+*/
+  //float a = as7341_array1[1];
+  arm_matrix_instance_f32 matA; 
+  arm_matrix_instance_f32 matB; 
+  arm_matrix_instance_f32 matC;
+
+  arm_mat_init_f32(&matA, SPEC_TOTAL_WAVELENGHT, 10, (float32_t*)GeneralSpectralCorrectionMatrix);
+  arm_mat_init_f32(&matB, 10,  1,  (float32_t*)PhotoCorrection);
+  arm_mat_init_f32(&matC, SPEC_TOTAL_WAVELENGHT,  1, (float32_t*)Spectral400_600);
+  
+  arm_status multResult;
+  multResult = arm_mat_mult_f32(&matA, &matB, &matC);
+  
+  if(multResult!=ARM_MATH_SUCCESS)
+    UARTprintf("\r\t\t[Spec Rec] ERROR %d\n", multResult);
+}
+//*/
+void BasicCountConvertion(float*PhotoCr ){
+  uint8_t index =0;
+  while(index<10){
+    //Basic count = Raw/(GAIN*IntegrationTime)
+    //PhotoCr[index] = PhotoCr[index]/64.0f*IntTime;
+    PhotoCr[index] = PhotoCr[index]/Gain*IntTime;
+    if(index<8)
+      PhotoCr[index] +=PhotoOffset[index];
+    index++;
+  }
+}
+
+void Correction1(uint16_t* ADC_Raw, bool round, float*PhotoCr ){
+  uint8_t index =0;
+  uint8_t raw_index =0;
+  if(round){
+    while(index<6){
+      PhotoCr[index] = ADC_Raw[index];
+      index++;
+    }
+  }else{
+    index = 6;
+    raw_index=0;
+    while(index<10){
+      if(raw_index!=3)
+        PhotoCr[index] = ADC_Raw[raw_index];
+      else{
+        PhotoCr[index] = ADC_Raw[5];
+        break;
+      }
+      raw_index++;
+      index++;
+    }
+  }
+}
+
 void joinADC(uint8_t* ADC_count, uint16_t* ADC_raw){
   uint8_t i =0;
   uint8_t j =0;
+  uint16_t data_aux1, data_aux2;
   for(i=0;i<12;i+=2){
-    ADC_raw[j] = ADC_count[i] || ADC_count[i+1]<<8;
+    //UARTprintf("\rADC_count[%d]: %u | %u\n",j,ADC_count[i+1], ADC_count[i]);
+    data_aux1 = (uint16_t)ADC_count[i];
+    data_aux2 = (uint16_t)ADC_count[i+1];
+    ADC_raw[j] = data_aux1 | data_aux2<<8;
+    //UARTprintf("\rADC_raw[%d]: %u\n",j,ADC_raw[j]);
     j++;
   }
 }
 void AS7341_Begin(void *ptr){
 
-  AS7341_Boot();
-  UARTprintf("AS7341 Boot Done\n");
+  if(!AS7341_Boot())
+    UARTprintf("AS7341 Boot ERROR\n");
+  else
+    UARTprintf("AS7341 Boot Done\n");
   uint8_t photoDiode[18];
   uint8_t ADC_ID[18];
   uint8_t ADC_ID2[18];
   bool round = false;
   uint8_t ADC_count[12];
   uint16_t ADC_raw[6];
-  float PhotoCorrection[8];
-  float PhotoClearNir[10];
+  float PhotoCorrection[10];
+  //float PhotoClearNir[10];
   
   uint8_t index;
-  for(index=0; index<12; index++) ADC_count[index] = 0x05;
+  // Check stack usage periodically
+  UBaseType_t unusedStackWords = uxTaskGetStackHighWaterMark(NULL);
+  size_t unusedStackBytes = unusedStackWords * sizeof(StackType_t);
+  UARTprintf("\rUnused stack memory: %u bytes\n", (unsigned int)unusedStackBytes);
+                          
+  //for(index=0; index<12; index++) ADC_count[index] = 0x05;
 
-  uint8_t readCheck;
+  //uint8_t readCheck;
   // Definições especiais
   /*                      i2c Reg   |  IDs    |   PHOTO  |
                         ------------------------------------
@@ -144,64 +221,104 @@ void AS7341_Begin(void *ptr){
   ADC_ID2[16] = CONNECT_TO_GND    | CONNECT_TO_ADC5;   
   
   ADC_ID2[17] = CONNECT_TO_GND;
-
-  uint16_t StepADC = 65508;
-  //AS7341_SetStepADC(StepADC);
-  uint8_t TimeADC  = 0;
-  //AS7341_SetTimeADC(TimeADC);
+  
+  //𝑡𝑖𝑛𝑡 = (𝐴𝑇𝐼𝑀𝐸 + 1) × (𝐴𝑆𝑇𝐸𝑃 + 1) × 2.78μ𝑠
+  // 𝐴𝐷𝐶𝑓𝑢𝑙𝑙𝑠𝑐𝑎𝑙𝑒 = (𝐴𝑇𝐼𝑀𝐸 + 1) × (𝐴𝑆𝑇𝐸𝑃 + 1)
+  uint16_t StepADC = 99;
+  if(!AS7341_SetStepADC(StepADC))
+    UARTprintf("\rSet STEP Error\n");
+  uint8_t TimeADC  = 99;
+  if(!AS7341_SetTimeADC(TimeADC))
+    UARTprintf("\rSet Time Error\n");
 
   uint8_t Wtime_value;
-  Wtime_value = (StepADC+1)*(TimeADC+1)*2.87/1000; // time in ms
-  uint8_t wtime_value = (Wtime_value/2.78)+50;
-  //AS7341_SetWtimeADC(wtime_value);
-  //AS7341_SetGainADC(9);
+  Wtime_value = (StepADC+1)*(TimeADC+1)*2.78f/1000.0f; // time in ms
+  uint8_t wtime_value = (Wtime_value/2.78)+2;
+  AS7341_SetWtimeADC(wtime_value);
+
+  // ****Aumentar Tempo de Intetracao***
+  if(!AS7341_SetGainADC(7))
+    UARTprintf("\rSet GAIN Error\n");
   
   //Boot -> ReadChennels -> SetSMUX -> SetI2cRegSMUX
   uint16_t i;
+
   LinearMovValidation();
   
   uint32_t ui32SysClock  = SysCtlClockGet();
+  IntTime = AS7341_GetIntegrationTimeADC();
+  Gain    = pow(2,(int)AS7341_GetGainADC()-1);
+
+  UARTprintf("\rUART Init Gain %d\n", (int)Gain);
+  UART5_Init(115200);
+  UARTprintf("\rUART Init Done\n");
+  as7341_status_t photo_status;
+  as7341_status2_t photo_saturation;
   while(1){
     if(round){
 /*
+  BasicCount =       Raw_counts
+                --------------------
+                Gain*IntegrationTime
+  AGAIN = 7 = 2⁶ = 64
+  ATIME = 1 = ?  = ?
         Ordem das leituras
           F1, F2, F3, F4, F5, F6
 */
-      as7341_ReadChannels(photoDiode, ADC_ID, ADC_count);
+      
+      if(!AS7341_ReadChannels(photoDiode, ADC_ID, ADC_count))
+        UARTprintf("\rErro de Leitura dos Canais\n");
+
       joinADC(ADC_count, ADC_raw);
       Correction1(ADC_raw, round, PhotoCorrection);
       round=false;
+
     }else{
 /*
         Ordem das leituras
           F7, F8,CLEAR, F4, F5, NIR
-*/
-      as7341_ReadChannels(photoDiode, ADC_ID2, ADC_count);
+*/    
+      if(!AS7341_ReadChannels(photoDiode, ADC_ID2, ADC_count))
+        UARTprintf("\rErro de Leitura dos Canais\n");
       joinADC(ADC_count, ADC_raw);
       Correction1(ADC_raw, round, PhotoCorrection);
-      //SpectralReconstruction();
-      //UARTsend();
-      rounnd=true;
+      BasicCountConvertion(PhotoCorrection);
+      SpectralReconstruction(PhotoCorrection);
+      UART5_SendDataPacket(Spectral400_600, SPEC_TOTAL_WAVELENGHT);
+      round=true;
     }
-    //vTaskDelay(pdMS_TO_TICKS(150));
-    //UARTprintf("\r-------------------------------\n");
-    //for(i=0;i<12;i++) 
-      //UARTprintf("\rADC[%d]: %d\n",i, ADC_count[i]);
-    //UARTprintf("\r\n\n");
-  //UARTprintf("\r\t\tSystem Freq %u\n", ui32SysClock);
+    vTaskDelay(pdMS_TO_TICKS(150));
+    AS7341_DeviceStatus(AS7341_REG_STATUS, &photo_status.value);
+    if(photo_status.ASAT==1){
+      //Houve Saturacao
+      AS7341_DeviceStatus(AS7341_REG_STATUS2, &photo_saturation.value);
+      if(photo_saturation.ASAT_DIGITAL)
+        UARTprintf("\rTempo de Integracao muito longo\n");
+      else if(photo_saturation.ASAT_ANALOG)
+        UARTprintf("\rLuz Ambiente Muito Intensa, considere reduzir o GANHO\n");
+    }
+
+/// *
+    UARTprintf("\r-------------- %d -----------------\n", round);
+    for(i=0;i<6;i++) 
+      UARTprintf("\rADC_raw[%d]: %d\n",i, ADC_raw[i]);
+    UARTprintf("\r\n\n");
+// * /  
   }
-  vTaskDelete(NULL);
+  //vTaskDelete(NULL);
 }
 
 int main(void){
   prvSetupHardware();
 
+  
   NemaConfig();
   //">CCS App Center</a> to oinstall othe compiler of  the required version, or migrate the project to one of the available compiler versions by adjusting project properties. EQU_Firmware_L0 properties Proble
   NemaInterruptionConfig();
   //UARTprintf("Hello World!\n");
   
-  xTaskCreate(AS7341_Begin, "AS7341", configMINIMAL_STACK_SIZE, \
+  //verificar se criou certo
+  xTaskCreate(AS7341_Begin, "AS7341", configMINIMAL_STACK_SIZE+50, \
                 NULL, 14, \
                 NULL);
   vTaskStartScheduler();
@@ -209,7 +326,7 @@ int main(void){
 
   }
 
-	return 0;
+	//return 0;
 }
 
 
@@ -283,7 +400,7 @@ static void prvSetupHardware( void )
     IntEnable(INT_GPIOA);
 
 */
-    uint32_t var = 0xAAAA;
+    //uint32_t var = 0xAAAA;
     //AS7341_init();
     //AS7341_send(&var);
     // GPIOIntClear()

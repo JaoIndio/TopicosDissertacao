@@ -803,19 +803,19 @@ bool AS7341_Boot();
 bool AS7341_Enable();
 bool AS7341_DisableSpecMen();
 bool AS7341_EnableSpecMen();
-bool AS7341_PowerOff(){
-bool AS7341_PowerOn(){
+bool AS7341_PowerOff();
+bool AS7341_PowerOn();
 bool AS7341_DevivceConfig();
 bool AS7341_WriteI2cReg2SMUX_Sel();
 
 bool AS7341_ADC_TimingConfig();     
 bool AS7341_ADC_Config();           
 bool AS7341_InterruptionConfig();     
-bool AS7341_DeviceStatus();       
-bool AS7341_SpecData();
+bool AS7341_DeviceStatus(uint8_t regAdd, uint8_t* data);
+bool AS7341_SpecData(uint8_t regAdd, uint8_t* data);
 bool AS7341_SpecStatus();
 bool AS7341_OtherConfig();
-bool AS7341_BufferData();
+bool AS7341_BufferData(uint8_t regAdd, uint8_t* data);
 bool AS7341_BufferConfig();
 
 bool AS7341_BankAcessSet(uint8_t RedAdd);
@@ -829,11 +829,30 @@ uint16_t AS7341_GetTimeADC();
 float AS7341_GetIntegrationTimeADC();
 bool AS7341_SetWtimeADC(uint8_t value);
 bool AS7341_SetGainADC(uint8_t value);
+uint16_t AS7341_GetGainADC();
 bool AS7341_GetStatus(uint8_t *value);
 
 bool AS7341_GetSMUX();
 bool AS7341_ReadChannels(uint8_t* photoDiode, uint8_t* ADC_ID, uint8_t* ADC_count);
 
 //void SetPhotoArray(uint8_t* photoDiode, uint8_t len, uint8_t*PhotoArray, uint8_t* ADC_config);
+
+
+/*
+    ----------------------------------------------
+              Convertion Matrix
+    ----------------------------------------------
+
+  fatores para reconstrução espectral 380-100nm
+  380  = index = 0
+  1000 = index = 619
+
+  F1         F2       F3         F4        F5         F6      F7         F8        CLEAR     NIR
+
+*/
+  // 850, 14
+
+extern const float GeneralSpectralCorrectionMatrix[];
+extern const float as7341_array1[];
 #endif // AS7341_H
 

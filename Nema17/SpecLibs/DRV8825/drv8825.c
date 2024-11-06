@@ -206,7 +206,7 @@ void xDebaunceKey(void *ptr) {
     // Wait for the notification from the ISR
     ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
     // Delay for a specified period (e.g., 1000 ms)
-    vTaskDelay(pdMS_TO_TICKS(250));
+    vTaskDelay(pdMS_TO_TICKS(150));
 
     // Re-enable the PORTE interrupt
     IntEnable(INT_GPIOE);

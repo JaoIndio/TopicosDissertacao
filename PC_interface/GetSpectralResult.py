@@ -24,6 +24,9 @@ ser = serial.Serial(PORT, BAUD_RATE, timeout=1, parity='N')
 # Data storage for plotting
 data_counts = []
 data_values = []
+max_values_over_time = []
+
+fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(8, 8))
 
 def read_packet():
   while True:
@@ -35,6 +38,7 @@ def read_packet():
       if start_bytes==start_sequence:
         print("\t[read Pkg] Start Byte detected")
         break
+      #print("\t[read Pkg] Nothing")
     
     packet = bytearray()
     # Read data until we reach the Stop Byte
@@ -52,22 +56,57 @@ def read_packet():
 def plot_data(count, value, index):
   """Replace data in lists for plotting with new values."""
   global data_counts, data_values
-  data_counts[index] = count+380  # Replace data_counts with the new count
-  data_values[index] = value  # Replace data_values with the new value
+  
+  if index<WAVELENGHT_SIZE:
+    data_counts[index] = count+380  # Replace data_counts with the new count
+    data_values[index] = value  # Replace data_values with the new value
     #    data_values.pop(0)
 
 def update_plot(frame):
-    """Update the plot with new data."""
-    plt.cla()  # Clear the plot
+  """Update the plot with new data."""
+  ax1.cla()  # Clear the plot
+  ax2.cla()  # Clear the plot
     
-    #print("values", data_counts)
-    plt.plot(data_counts, data_values, label='Sensor Data')
-    plt.xlabel('WaveLength')
-    plt.ylabel('Value')
-    plt.title('Real-time UART Data')
-    #plt.ylim(-0.05,0.05)  # Adjust these limits based on your actual data range
-    plt.legend()
-    plt.tight_layout()
+  # Find the maximum value and its index
+  max_index = data_values.index(max(data_values))
+  max_value = data_values[max_index]
+  max_count = data_counts[max_index]
+
+  # Plot a red point at the maximum value
+  ax1.plot(max_count, max_value, 'ro')  # 'ro' means red color, circle marker
+
+  # Annotate the maximum value
+    #arrowprops=dict(facecolor='red', shrink=0.005),\
+  ax1.annotate(f'{max_count:.1f}' ,\
+    xy=(max_count, max_value), \
+    xytext=(max_count, max_value + 0.001), \
+    fontsize=10, color='red')
+
+  #print("values", data_counts)
+  ax1.plot(data_counts, data_values, label='Sensor Data')
+  ax1.set_xlabel('WaveLength')
+  ax1.set_ylabel('Value')
+  ax1.set_title('Real-time UART Data')
+  ax1.set_ylim(-0.002,0.05)  # Adjust these limits based on your actual data range
+  ax1.legend()
+  
+  # Update max_values_over_time for tracking
+  max_values_over_time.append(max_value)
+         
+  # Limit the list to the most recent 120 ms window
+  # Assuming an update every 125 ms, keep only the last 10 values
+  if len(max_values_over_time) > 10:
+    max_values_over_time.pop(0)
+                                    
+  # Plot the maximum value trend over time
+  ax2.plot(max_values_over_time, 'r-', label='Max Value over Time')
+  ax2.set_xlabel('Time (approx. 120ms per point)')  
+  ax2.set_ylabel('Max Value')
+  ax2.set_title('Maximum Value Over Time')
+  ax2.legend()
+  ax2.set_ylim(min(max_values_over_time) - 0.01, max(max_values_over_time) + 0.01)
+
+  plt.tight_layout()
 
 
 def decode_packet(packet):
@@ -106,7 +145,7 @@ def data_thread():
       index =0
       for count, value in decoded_data:
         #print("count ", count)
-        value*=-1
+        #value*=-1
         plot_data(count, value, index)
         index+=1
 
@@ -118,8 +157,8 @@ thread = threading.Thread(target=data_thread, daemon=True)
 thread.start()
 
 # Set up the matplotlib figure and animation
-fig = plt.figure()
-ani = FuncAnimation(fig, update_plot, interval=125, cache_frame_data=False)  # Update plot every 500ms
+#fig = plt.figure()
+ani = FuncAnimation(fig, update_plot, interval=50, cache_frame_data=False)  # Update plot every 500ms
 
 # Show plot
 plt.show()
