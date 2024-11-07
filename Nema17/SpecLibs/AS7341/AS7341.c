@@ -34,6 +34,20 @@ uint8_t BankAcessControlValue = 0;
 SemaphoreHandle_t I2C1_Semphr;
 SemaphoreHandle_t AS7341_Semphr;
 
+
+bool AS7341_PerformanceDbgInit(){
+  GPIOUnlockPin(GPIO_PORTB_BASE, GPIO_PIN_3);
+  GPIOPinTypeGPIOOutput(GPIO_PORTB_BASE, GPIO_PIN_3);
+  GPIOPadConfigSet(GPIO_PORTB_BASE, GPIO_PIN_3, GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD);
+  GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_3, 0);
+}
+bool AS7341_PerformanceDbgSet(){
+  GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_3, GPIO_PIN_3);
+}
+bool AS7341_PerformanceDbgClr(){
+  GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_3, 0);
+}
+
 void CheckArray(uint8_t *photo){
   uint8_t index =0;
   UARTprintf("\n");
@@ -872,13 +886,19 @@ bool AS7341_ReadChannels(uint8_t* photoDiode, uint8_t* ADC_config, uint8_t* ADC_
   //AS7341_DeviceStatus(AS7341_REG_STATUS,    &status_rslt.value);
   //AS7341_DeviceStatus(AS7341_REG_STATUS5, &status5_rslt.value);
   //if(!AS7341_SetAcessAndWrite(AS7341_REG_STATUS, status_rslt.value)) return false;
+
+/// * 
+  uint32_t readcount=0;
   vTaskDelay(pdMS_TO_TICKS(1));
   do{
     AS7341_DeviceStatus(AS7341_REG_STAT,    &stat_rslt.value);
     vTaskDelay(pdMS_TO_TICKS(1));
+    readcount++;
   }while(!stat_rslt.READY);
+// * /
+
   //AS7341_DeviceStatus(AS7341_REG_STATUS6, &status6_rslt.value);
-//  xSemaphoreTake(AS7341_Semphr, portMAX_DELAY); //SINT_MUX interruption
+  //xSemaphoreTake(AS7341_Semphr, portMAX_DELAY); //SINT_MUX interruption
   
   //AS7341_DeviceStatus(AS7341_REG_STATUS2, &status2_rslt.value);
   //if(!AS7341_SetAcessAndWrite(AS7341_REG_STATUS, status_rslt.value)) return false;
@@ -888,9 +908,11 @@ bool AS7341_ReadChannels(uint8_t* photoDiode, uint8_t* ADC_config, uint8_t* ADC_
   if(!AS7341_EnableSpecMen()) return false;
   
   vTaskDelay(pdMS_TO_TICKS((uint32_t)integrationTime));
+  
   do{
     AS7341_DeviceStatus(AS7341_REG_STATUS2, &status2_rslt.value);
   }while(!status2_rslt.AVALID);
+  UARTprintf("\nAVALID %d, \n",readcount);
   //if(!AS7341_SetAcessAndWrite(AS7341_REG_STATUS, status2_rslt.value)) return false;
   //AS7341_DeviceStatus(AS7341_REG_STAT,    &stat_rslt.value);
   

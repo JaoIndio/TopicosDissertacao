@@ -835,6 +835,10 @@ bool AS7341_GetStatus(uint8_t *value);
 bool AS7341_GetSMUX();
 bool AS7341_ReadChannels(uint8_t* photoDiode, uint8_t* ADC_ID, uint8_t* ADC_count);
 
+bool AS7341_PerformanceDbgInit();
+bool AS7341_PerformanceDbgSet();
+bool AS7341_PerformanceDbgClr();
+
 //void SetPhotoArray(uint8_t* photoDiode, uint8_t len, uint8_t*PhotoArray, uint8_t* ADC_config);
 
 

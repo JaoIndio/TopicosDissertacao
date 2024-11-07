@@ -80,9 +80,9 @@ LinMovCycle_t LinearMov_Mngr;
 
 void Timer0IntHandler(){
   TimerIntClear(TIMER0_BASE, TIMER_TIMA_TIMEOUT);
+
   GPIOPinWrite(LINEAR_MOV_DBG_BASE, LINEAR_MOV_DBG,\
                GPIOPinRead(LINEAR_MOV_DBG_BASE, LINEAR_MOV_DBG)^LINEAR_MOV_DBG);
-  NemaDisable();
 }
 
 // Function to calculate the sigmoid value
@@ -228,32 +228,14 @@ void GPIOPortE_Handler(){
     // Handle the falling edge on PE2
     // Your code here
     GPIOPinWrite(GPIO_PORTB_BASE, DIR_PIN, DIR_PIN);
-    if(!LinearMov_Mngr.Began){
-      LinearMov_Mngr.Began=true;
-      LinearMov_Mngr.LimitSwitch_id = 0;
-      LinearMov_Mngr.Count++;
-    }else if(LinearMov_Mngr.LimitSwitch_id==0)
-      LinearMov_Mngr.Count++;
   	UARTprintf("\r\t\tEC_1\n");
   }
   if (status & EC_2) {
     // Handle the falling edge on PE3
     // Your code here
   	UARTprintf("\r\t\t\tEC_2\n");
-    if(!LinearMov_Mngr.Began){
-      LinearMov_Mngr.Began=true;
-      LinearMov_Mngr.LimitSwitch_id = 1;
-      LinearMov_Mngr.Count++;
-    }else if(LinearMov_Mngr.LimitSwitch_id==1)
-      LinearMov_Mngr.Count++;
     GPIOPinWrite(GPIO_PORTB_BASE, DIR_PIN, 0);
   }
-  if(LinearMov_Mngr.Count==2){
-    LinearMov_Mngr.Count = 0;
-    LinearMov_Mngr.CycleCount++;
-  }
-  if(LinearMov_Mngr.CycleCount>=LinearMov_Mngr.CycleThrshld)
-    NemaDisable();
 
   BaseType_t xHigherPriorityTaskWoken = pdFALSE;
   vTaskNotifyGiveFromISR(xDebaunceKeyHandle, &xHigherPriorityTaskWoken);
@@ -337,10 +319,8 @@ void NemaConfig(){
   GPIOPinWrite(GPIO_PORTB_BASE, DIR_PIN, DIR_PIN);
   GPIOPinWrite(GPIO_PORTB_BASE, ENABLE_PIN, 0);
   
-  LinearMov_Mngr.Began      = false;
-  LinearMov_Mngr.Count      = 0;
-  LinearMov_Mngr.CycleCount = 0;
-  LinearMov_Mngr.CycleThrshld = 1;
+  LinearMov_Mngr.began = false;
+  LinearMov_Mngr.count = 0;
   /*
   xTaskCreate(StepLoop,
                "StepLoop",
@@ -411,8 +391,7 @@ void LinearMovValidation(){
 
   uint32_t freqHez = 800;
   // Load Timer 0 for 5 seconds
-  //TimerLoadSet(TIMER0_BASE, TIMER_A, ui32SysClock *5);
-  TimerLoadSet(TIMER0_BASE, TIMER_A, 80*mili_sec_res);
+  TimerLoadSet(TIMER0_BASE, TIMER_A, ui32SysClock *5);
   UARTprintf("\rSystem Freq %u\n", ui32SysClock);
 
 
