@@ -31,6 +31,7 @@
 #define STEP_PIN              GPIO_PIN_5 //PB5
 #define DIR_PIN               GPIO_PIN_0  //PB0
 #define ENABLE_PIN            GPIO_PIN_1
+#define SLEEP_PIN             GPIO_PIN_2
 #define ANALOG_SIMULATE       GPIO_PIN_7
 #define LINEAR_MOV_DBG        GPIO_PIN_0
 #define LINEAR_MOV_DBG_BASE   GPIO_PORTE_BASE
@@ -75,21 +76,25 @@
     ---------------------------------------------------------------------
         =========================================================
 */
-TaskHandle_t xDebaunceKeyHandle = NULL;
+TaskHandle_t xDebaunceKeyHandle     = NULL;
+TaskHandle_t xChangeDirectionHandle = NULL;
 LinMovCycle_t LinearMov_Mngr;
+
+uint32_t ChangeDirStatus;
 
 void Timer0IntHandler(){
   TimerIntClear(TIMER0_BASE, TIMER_TIMA_TIMEOUT);
   GPIOPinWrite(LINEAR_MOV_DBG_BASE, LINEAR_MOV_DBG,\
                GPIOPinRead(LINEAR_MOV_DBG_BASE, LINEAR_MOV_DBG)^LINEAR_MOV_DBG);
-  NemaDisable();
+  //NemaDisable();
 }
 
 // Function to calculate the sigmoid value
-void     TrigggerPWMSigmoidFrequency(float* actual_freq, float target_freq);
+void     TriggerPWMSigmoidFrequency(float* actual_freq, float target_freq);
 uint32_t getPWMFrequency();
 float    sigmoid(float x);
 void     xDebaunceKey(void *ptr);
+void     xChangeDirection(void *ptr);
 void     AnalogInit();
 void PWM_SetDutyCycle(float dutyCycle);
 
@@ -140,7 +145,7 @@ uint32_t getPWMFrequency() {
 }// Function to calculate the sigmoid value
 
 
-void TrigggerPWMSigmoidFrequency(float* actual_freq, float target_freq){
+void TriggerPWMSigmoidFrequency(float* actual_freq, float target_freq){
   const uint32_t totalSteps = 10000;
   float sigmoidValue=0;
   float dutyEq =0;
@@ -148,59 +153,42 @@ void TrigggerPWMSigmoidFrequency(float* actual_freq, float target_freq){
   
   // Analog output y=0.0003667x−0.3667
   // Duty = 0.011111*frequency−11.111111
-
   //UARTprintf("\r\t\tActual Freq %d\n", (int)(*actual_freq));
   for (step = 0; step <= totalSteps; step++) {
     // Calculate the sigmoid value for this step
-
-    //UARTprintf("\r\t\tSigmoid \n");
     sigmoidValue = sigmoid((float)step / totalSteps * SIGMOID_X0 * 2);
-
-    // Calculate the new frequency
-    //frequency = *actual_freq + ((target_freq - *actual_freq) * sigmoidValue);
 
     // Determine direction of ramp (rising or falling)
     if (*actual_freq < target_freq){
-      //UARTprintf("\r\t\tFreq %d\n", (int)((target_freq - *actual_freq) * sigmoidValue) );
       // Rising ramp
       frequency = *actual_freq + ((target_freq - *actual_freq) * sigmoidValue);
     }else {
       // Falling ramp
       frequency = *actual_freq - ((*actual_freq - target_freq) * sigmoidValue);
-      //UARTprintf("\r\t\tFreq %d\n", (int)((target_freq - *actual_freq) * sigmoidValue) );
     }
     // Calculate the PWM period and set it
     pwmClock = SysCtlClockGet() /64;
     load = (pwmClock / frequency) - 1;
 
-    //UARTprintf("\r\t\tStep Freq \n");
     PWMGenPeriodSet(PWM0_BASE, PWM_GEN_1, load);
 
-    //UARTprintf("\r\t\tStep Duty \n");
     // Set the PWM duty cycle to 50%
     PWMPulseWidthSet(PWM0_BASE, PWM_OUT_3, load / 2);
 
     // Set PB7 pin configured as PWM also, but with a RC that is used to
     // simulate an analog signal
     dutyEq = 0.111111111*((0.1*(float)frequency) -100);
-    //UARTprintf("\r\t\tPB7 Duty %d\n", (int)(dutyEq));
     PWM_SetDutyCycle(dutyEq);
 
-    //UARTprintf("\r\t\tDelay %d\n", (int)(SysCtlClockGet() / (100 * totalSteps) ));
-    //UARTprintf("\r\t\tFreq %d\n", (int)(frequency*1000));
-    //UARTprintf("\r\t\tsig %d\n", (int)(sigmoidValue*1000));
-    //UARTprintf("\r\t\t--------------\n\n");
-
     // Delay to allow the change to take effect
-    //vTaskDelay(pdMS_TO_TICKS);
     SysCtlDelay(SysCtlClockGet() / (100 * totalSteps));
-    //*actual_freq = frequency;
+    GPIOPinWrite(GPIO_PORTB_BASE, SLEEP_PIN, SLEEP_PIN);
   }
 
   dutyEq = 0.111111111*((0.1*(float)frequency) -100);
   PWM_SetDutyCycle(dutyEq);
   *actual_freq = frequency;
-  UARTprintf("\r\t\tActual Freq %d\n", (int)(*actual_freq));
+  //UARTprintf("\r\t\tActual Freq %d\n", (int)(*actual_freq));
 }
 
 void xDebaunceKey(void *ptr) {
@@ -208,8 +196,7 @@ void xDebaunceKey(void *ptr) {
     // Wait for the notification from the ISR
     ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
     // Delay for a specified period (e.g., 1000 ms)
-    vTaskDelay(pdMS_TO_TICKS(150));
-
+    vTaskDelay(pdMS_TO_TICKS(170));
     // Re-enable the PORTE interrupt
     IntEnable(INT_GPIOE);
   }  
@@ -217,6 +204,7 @@ void xDebaunceKey(void *ptr) {
 
 void GPIOPortE_Handler(){
   // Get the interrupt status
+  BaseType_t xHigherPriorityTaskWoken = pdFALSE;
   uint32_t status = GPIOIntStatus(GPIO_PORTE_BASE, true);
 
   IntDisable(INT_GPIOE); 
@@ -225,37 +213,27 @@ void GPIOPortE_Handler(){
 
   //Check which pin triggered bcbcbcb2interrupt
   if (status & EC_1) {
+    GPIOPinWrite(GPIO_PORTB_BASE, SLEEP_PIN, 0);
     // Handle the falling edge on PE2
     // Your code here
-    GPIOPinWrite(GPIO_PORTB_BASE, DIR_PIN, DIR_PIN);
-    if(!LinearMov_Mngr.Began){
-      LinearMov_Mngr.Began=true;
-      LinearMov_Mngr.LimitSwitch_id = 0;
-      LinearMov_Mngr.Count++;
-    }else if(LinearMov_Mngr.LimitSwitch_id==0)
-      LinearMov_Mngr.Count++;
-  	UARTprintf("\r\t\tEC_1\n");
+    //Desacelera e acelera na direcao oposta
+    vTaskNotifyGiveFromISR(xChangeDirectionHandle, &xHigherPriorityTaskWoken );
+    //GPIOPinWrite(GPIO_PORTB_BASE, DIR_PIN, DIR_PIN);
+  	UARTprintf("\r\t\tHandler EC_1\n");
+    ChangeDirStatus = status;
   }
   if (status & EC_2) {
     // Handle the falling edge on PE3
     // Your code here
-  	UARTprintf("\r\t\t\tEC_2\n");
-    if(!LinearMov_Mngr.Began){
-      LinearMov_Mngr.Began=true;
-      LinearMov_Mngr.LimitSwitch_id = 1;
-      LinearMov_Mngr.Count++;
-    }else if(LinearMov_Mngr.LimitSwitch_id==1)
-      LinearMov_Mngr.Count++;
-    GPIOPinWrite(GPIO_PORTB_BASE, DIR_PIN, 0);
+  	//UARTprintf("\r\t\t\tEC_2\n");
+    GPIOPinWrite(GPIO_PORTB_BASE, SLEEP_PIN, 0);
+    vTaskNotifyGiveFromISR(xChangeDirectionHandle, &xHigherPriorityTaskWoken );
+  	UARTprintf("\r\t\tHandler EC_2\n");
+    //GPIOPinWrite(GPIO_PORTB_BASE, DIR_PIN, 0);
+    ChangeDirStatus = status;
   }
-  if(LinearMov_Mngr.Count==2){
-    LinearMov_Mngr.Count = 0;
-    LinearMov_Mngr.CycleCount++;
-  }
-  if(LinearMov_Mngr.CycleCount>=LinearMov_Mngr.CycleThrshld)
-    NemaDisable();
 
-  BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+  //BaseType_t xHigherPriorityTaskWoken = pdFALSE;
   vTaskNotifyGiveFromISR(xDebaunceKeyHandle, &xHigherPriorityTaskWoken);
   portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
 }
@@ -292,9 +270,21 @@ void NemaInterruptionConfig(){
   IntEnable(INT_GPIOE);
 
    // Create the task to re-enable the interrupt
-   xTaskCreate(xDebaunceKey, "ReEnableInterrupt", configMINIMAL_STACK_SIZE, \
+   xTaskCreate(xDebaunceKey, "ReEnableInterrupt", configMINIMAL_STACK_SIZE+50, \
                 NULL, 15, \
                 &xDebaunceKeyHandle);
+
+  xTaskCreate(xChangeDirection, "ChangeDirection", configMINIMAL_STACK_SIZE+50, \
+                NULL, 14, \
+                &xChangeDirectionHandle);
+  
+  float min_freq = 19*KILO_HZ;
+  float max_freq = 20*KILO_HZ;
+  float actual_freq = min_freq;
+
+  GPIOPinWrite(GPIO_PORTB_BASE, ENABLE_PIN, 0);
+  GPIOPinWrite(GPIO_PORTB_BASE, SLEEP_PIN, 0);
+  TriggerPWMSigmoidFrequency(&actual_freq, max_freq);
 
 }
 
@@ -327,20 +317,24 @@ void NemaConfig(){
   PWMOutputState(PWM0_BASE, PWM_OUT_3_BIT, true);
   PWMGenEnable(PWM0_BASE, PWM_GEN_1);
 
-
+  GPIOUnlockPin(GPIO_PORTB_BASE, SLEEP_PIN);
   GPIOPinTypeGPIOOutput(GPIO_PORTB_BASE, DIR_PIN);
   GPIOPinTypeGPIOOutput(GPIO_PORTB_BASE, ENABLE_PIN);
+  GPIOPinTypeGPIOOutput(GPIO_PORTB_BASE, SLEEP_PIN);
 
   GPIOPadConfigSet(GPIO_PORTB_BASE, DIR_PIN, GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD);
   GPIOPadConfigSet(GPIO_PORTB_BASE, ENABLE_PIN, GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD);
+  GPIOPadConfigSet(GPIO_PORTB_BASE, SLEEP_PIN, GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD);
   
   GPIOPinWrite(GPIO_PORTB_BASE, DIR_PIN, DIR_PIN);
-  GPIOPinWrite(GPIO_PORTB_BASE, ENABLE_PIN, 0);
+  GPIOPinWrite(GPIO_PORTB_BASE, ENABLE_PIN, 1);
+  GPIOPinWrite(GPIO_PORTB_BASE, SLEEP_PIN, 0);
   
   LinearMov_Mngr.Began      = false;
   LinearMov_Mngr.Count      = 0;
   LinearMov_Mngr.CycleCount = 0;
   LinearMov_Mngr.CycleThrshld = 1;
+  
   /*
   xTaskCreate(StepLoop,
                "StepLoop",
@@ -363,12 +357,12 @@ void StepLoop(void* ptr){
     
     if(actual_freq<=(min_freq+100)){
       //UARTprintf("\r\n\t\t\tRise\n\n");
-      //TrigggerPWMSigmoidFrequency(&actual_freq, max_freq);
+      //TriggerPWMSigmoidFrequency(&actual_freq, max_freq);
       //UARTprintf("\r\n\t\t\tCurve Done\n\n");
       vTaskDelay(pdMS_TO_TICKS(1500));
     }else{
       //UARTprintf("\r\n\t\t\tFalling\n\n");
-      //TrigggerPWMSigmoidFrequency(&actual_freq, min_freq);
+      //TriggerPWMSigmoidFrequency(&actual_freq, min_freq);
       //UARTprintf("\r\n\t\t\tCurve Done\n\n");
       vTaskDelay(pdMS_TO_TICKS(1500));
     }
@@ -412,7 +406,7 @@ void LinearMovValidation(){
   uint32_t freqHez = 800;
   // Load Timer 0 for 5 seconds
   //TimerLoadSet(TIMER0_BASE, TIMER_A, ui32SysClock *5);
-  TimerLoadSet(TIMER0_BASE, TIMER_A, 80*mili_sec_res);
+    TimerLoadSet(TIMER0_BASE, TIMER_A, 640*mili_sec_res*2);
   UARTprintf("\rSystem Freq %u\n", ui32SysClock);
 
 
@@ -421,7 +415,70 @@ void LinearMovValidation(){
   TimerIntEnable(TIMER0_BASE, TIMER_TIMA_TIMEOUT);
   IntMasterEnable();
   TimerEnable(TIMER0_BASE, TIMER_A);
+  
 
+}
+
+void xChangeDirection(void *ptr){
+
+  uint32_t status = GPIOIntStatus(GPIO_PORTE_BASE, true);
+  uint32_t Prvstatus = 10;
+  float min_freq = 20*KILO_HZ;
+  float max_freq = 20*KILO_HZ;
+  float actual_freq = min_freq;
+  
+  while(1){
+
+    ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+    status = GPIOIntStatus(GPIO_PORTE_BASE, true);
+  	//UARTprintf("\r\t\tGPIO Status %x\n", status);
+    if (ChangeDirStatus & EC_1 && Prvstatus!=ChangeDirStatus) {
+      Prvstatus=ChangeDirStatus;
+  	  UARTprintf("\r\t\t\t\tEC_1\n");
+      //TriggerPWMSigmoidFrequency(&actual_freq, min_freq);
+      actual_freq = min_freq;
+      GPIOPinWrite(GPIO_PORTB_BASE, DIR_PIN, 0);
+      GPIOPinWrite(GPIO_PORTB_BASE, SLEEP_PIN, 0);
+      //TriggerPWMSigmoidFrequency(&actual_freq, max_freq);
+      if(!LinearMov_Mngr.Began){
+  	    UARTprintf("\r\t\t\t\tLinear 0 Began\n");
+        LinearMov_Mngr.Began=true;
+        LinearMov_Mngr.LimitSwitch_id = 0;
+        LinearMov_Mngr.Count++;
+      }else if(LinearMov_Mngr.LimitSwitch_id==0)
+        LinearMov_Mngr.Count++;
+    }
+    if (ChangeDirStatus & EC_2 && Prvstatus!=ChangeDirStatus) {
+      Prvstatus=ChangeDirStatus;
+  	  UARTprintf("\r\t\tEC_2\n");
+      //TriggerPWMSigmoidFrequency(&actual_freq, min_freq);
+      GPIOPinWrite(GPIO_PORTB_BASE, DIR_PIN, DIR_PIN);
+      GPIOPinWrite(GPIO_PORTB_BASE, SLEEP_PIN, 0);
+      actual_freq = min_freq;
+      //TriggerPWMSigmoidFrequency(&actual_freq, max_freq);
+      if(!LinearMov_Mngr.Began){
+  	    UARTprintf("\r\t\t\t\tLinear 1 Began\n");
+        LinearMov_Mngr.Began=true;
+        LinearMov_Mngr.LimitSwitch_id = 1;
+        LinearMov_Mngr.Count++;
+      }else if(LinearMov_Mngr.LimitSwitch_id==1)
+        LinearMov_Mngr.Count++;
+    }
+    if(LinearMov_Mngr.Count==2){
+  	  UARTprintf("\r\t\t\t\tLinear CycleCount\n");
+      LinearMov_Mngr.Count = 0;
+      LinearMov_Mngr.CycleCount++;
+    }
+    if(LinearMov_Mngr.CycleCount>=LinearMov_Mngr.CycleThrshld){
+      UARTprintf("\r\t\t\t\t\tNEMA Disable\n");
+      GPIOPinWrite(GPIO_PORTB_BASE, SLEEP_PIN, SLEEP_PIN);
+      NemaDisable();
+    }
+    
+    vTaskDelay(pdMS_TO_TICKS(1)/4);
+    //SysCtlDelay(1*SysCtlClockGet()/1000000);
+    GPIOPinWrite(GPIO_PORTB_BASE, SLEEP_PIN, SLEEP_PIN);
+  }
 }
 
 #endif

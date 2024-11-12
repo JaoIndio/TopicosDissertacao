@@ -132,7 +132,8 @@ void joinADC(uint8_t* ADC_count, uint16_t* ADC_raw){
   }
 }
 void AS7341_Begin(void *ptr){
-
+  
+  NemaInterruptionConfig();
   if(!AS7341_Boot())
     UARTprintf("AS7341 Boot ERROR\n");
   else
@@ -275,7 +276,7 @@ void AS7341_Begin(void *ptr){
 */
       AS7341_PerformanceDbgSet();    
       if(!AS7341_ReadChannels(photoDiode, ADC_ID, ADC_count))
-        UARTprintf("\rErro de Leitura dos Canais\n");
+        //UARTprintf("\rErro de Leitura dos Canais\n");
 
       joinADC(ADC_count, ADC_raw);
       Correction1(ADC_raw, round, PhotoCorrection);
@@ -290,7 +291,7 @@ void AS7341_Begin(void *ptr){
       
       AS7341_PerformanceDbgSet();    
       if(!AS7341_ReadChannels(photoDiode, ADC_ID2, ADC_count))
-        UARTprintf("\rErro de Leitura dos Canais\n");
+        //UARTprintf("\rErro de Leitura dos Canais\n");
       joinADC(ADC_count, ADC_raw);
       Correction1(ADC_raw, round, PhotoCorrection);
       BasicCountConvertion(PhotoCorrection);
@@ -338,10 +339,10 @@ void AS7341_Begin(void *ptr){
     if(photo_status.ASAT==1){
       //Houve Saturacao
       AS7341_DeviceStatus(AS7341_REG_STATUS2, &photo_saturation.value);
-      if(photo_saturation.ASAT_DIGITAL)
-        UARTprintf("\rTempo de Integracao muito longo\n");
-      else if(photo_saturation.ASAT_ANALOG)
-        UARTprintf("\rLuz Ambiente Muito Intensa, considere reduzir o GANHO\n");
+      //if(photo_saturation.ASAT_DIGITAL)
+        //UARTprintf("\rTempo de Integracao muito longo\n");
+      //else if(photo_saturation.ASAT_ANALOG)
+        //UARTprintf("\rLuz Ambiente Muito Intensa, considere reduzir o GANHO\n");
     }
 
     //AS7341_PerformanceDbgClr();    
@@ -360,8 +361,7 @@ int main(void){
   prvSetupHardware();
   NemaConfig();
   //">CCS App Center</a> to oinstall othe compiler of  the required version, or migrate the project to one of the available compiler versions by adjusting project properties. EQU_Firmware_L0 properties Proble
-  NemaInterruptionConfig();
-  LinearMovValidation();
+  //LinearMovValidation();0
   //UARTprintf("Hello World!\n");
   
   //verificar se criou certo
