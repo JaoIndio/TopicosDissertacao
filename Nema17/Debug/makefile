@@ -90,8 +90,11 @@ ORDERED_OBJS += \
 "./MatrixFunctions/arm_mat_trans_f32.obj" \
 "./MatrixFunctions/arm_mat_trans_q15.obj" \
 "./MatrixFunctions/arm_mat_trans_q31.obj" \
+"./SpecLibs/ADC_DMA_BurstMode/ADC_DMA.obj" \
 "./SpecLibs/AS7341/AS7341.obj" \
 "./SpecLibs/DRV8825/drv8825.obj" \
+"./SpecLibs/LinearMov/LinMov.obj" \
+"./SpecLibs/MonoLight/mono_light.obj" \
 "./SpecLibs/SpecResult/SpecResult.obj" \
 "./drivers/rtos_hw_drivers.obj" \
 "./utils/uartstdio.obj" \
@@ -117,8 +120,11 @@ RMDIR := rm -rf
 -include FreeRTOS/Source/portable/CCS/ARM_CM4F/subdir_vars.mk
 -include FreeRTOS/Source/portable/MemMang/subdir_vars.mk
 -include MatrixFunctions/subdir_vars.mk
+-include SpecLibs/ADC_DMA_BurstMode/subdir_vars.mk
 -include SpecLibs/AS7341/subdir_vars.mk
 -include SpecLibs/DRV8825/subdir_vars.mk
+-include SpecLibs/LinearMov/subdir_vars.mk
+-include SpecLibs/MonoLight/subdir_vars.mk
 -include SpecLibs/SpecResult/subdir_vars.mk
 -include drivers/subdir_vars.mk
 -include utils/subdir_vars.mk
@@ -131,8 +137,11 @@ RMDIR := rm -rf
 -include FreeRTOS/Source/portable/CCS/ARM_CM4F/subdir_rules.mk
 -include FreeRTOS/Source/portable/MemMang/subdir_rules.mk
 -include MatrixFunctions/subdir_rules.mk
+-include SpecLibs/ADC_DMA_BurstMode/subdir_rules.mk
 -include SpecLibs/AS7341/subdir_rules.mk
 -include SpecLibs/DRV8825/subdir_rules.mk
+-include SpecLibs/LinearMov/subdir_rules.mk
+-include SpecLibs/MonoLight/subdir_rules.mk
 -include SpecLibs/SpecResult/subdir_rules.mk
 -include drivers/subdir_rules.mk
 -include utils/subdir_rules.mk
@@ -256,10 +265,11 @@ clean:
 	-$(RM) "hello.obj" "tm4c123gh6pm_startup_ccs.obj" "BasicMathFunctions/arm_abs_f32.obj" "BasicMathFunctions/arm_abs_q15.obj" "BasicMathFunctions/arm_abs_q31.obj" "BasicMathFunctions/arm_abs_q7.obj" "BasicMathFunctions/arm_add_f32.obj" "BasicMathFunctions/arm_add_q15.obj" "BasicMathFunctions/arm_add_q31.obj" "BasicMathFunctions/arm_add_q7.obj" "BasicMathFunctions/arm_dot_prod_f32.obj" "BasicMathFunctions/arm_dot_prod_q15.obj" "BasicMathFunctions/arm_dot_prod_q31.obj" "BasicMathFunctions/arm_dot_prod_q7.obj" "BasicMathFunctions/arm_mult_f32.obj" "BasicMathFunctions/arm_mult_q15.obj" "BasicMathFunctions/arm_mult_q31.obj" "BasicMathFunctions/arm_mult_q7.obj" "BasicMathFunctions/arm_negate_f32.obj" "BasicMathFunctions/arm_negate_q15.obj" "BasicMathFunctions/arm_negate_q31.obj" "BasicMathFunctions/arm_negate_q7.obj" "BasicMathFunctions/arm_offset_f32.obj" "BasicMathFunctions/arm_offset_q15.obj" "BasicMathFunctions/arm_offset_q31.obj" "BasicMathFunctions/arm_offset_q7.obj" "BasicMathFunctions/arm_scale_f32.obj" 
 	-$(RM) "BasicMathFunctions/arm_scale_q15.obj" "BasicMathFunctions/arm_scale_q31.obj" "BasicMathFunctions/arm_scale_q7.obj" "BasicMathFunctions/arm_shift_q15.obj" "BasicMathFunctions/arm_shift_q31.obj" "BasicMathFunctions/arm_shift_q7.obj" "BasicMathFunctions/arm_sub_f32.obj" "BasicMathFunctions/arm_sub_q15.obj" "BasicMathFunctions/arm_sub_q31.obj" "BasicMathFunctions/arm_sub_q7.obj" "CommonTables/arm_common_tables.obj" "CommonTables/arm_const_structs.obj" "FastMathFunctions/arm_cos_f32.obj" "FastMathFunctions/arm_cos_q15.obj" "FastMathFunctions/arm_cos_q31.obj" "FastMathFunctions/arm_sin_f32.obj" "FastMathFunctions/arm_sin_q15.obj" "FastMathFunctions/arm_sin_q31.obj" "FastMathFunctions/arm_sqrt_q15.obj" "FastMathFunctions/arm_sqrt_q31.obj" "FreeRTOS/Source/croutine.obj" "FreeRTOS/Source/event_groups.obj" "FreeRTOS/Source/list.obj" "FreeRTOS/Source/queue.obj" "FreeRTOS/Source/stream_buffer.obj" "FreeRTOS/Source/tasks.obj" "FreeRTOS/Source/timers.obj" "FreeRTOS/Source/portable/CCS/ARM_CM4F/port.obj" 
 	-$(RM) "FreeRTOS/Source/portable/CCS/ARM_CM4F/portasm.obj" "FreeRTOS/Source/portable/MemMang/heap_2.obj" "MatrixFunctions/arm_mat_add_f32.obj" "MatrixFunctions/arm_mat_add_q15.obj" "MatrixFunctions/arm_mat_add_q31.obj" "MatrixFunctions/arm_mat_cmplx_mult_f32.obj" "MatrixFunctions/arm_mat_cmplx_mult_q15.obj" "MatrixFunctions/arm_mat_cmplx_mult_q31.obj" "MatrixFunctions/arm_mat_init_f32.obj" "MatrixFunctions/arm_mat_init_q15.obj" "MatrixFunctions/arm_mat_init_q31.obj" "MatrixFunctions/arm_mat_inverse_f32.obj" "MatrixFunctions/arm_mat_inverse_f64.obj" "MatrixFunctions/arm_mat_mult_f32.obj" "MatrixFunctions/arm_mat_mult_fast_q15.obj" "MatrixFunctions/arm_mat_mult_fast_q31.obj" "MatrixFunctions/arm_mat_mult_q15.obj" "MatrixFunctions/arm_mat_mult_q31.obj" "MatrixFunctions/arm_mat_scale_f32.obj" "MatrixFunctions/arm_mat_scale_q15.obj" "MatrixFunctions/arm_mat_scale_q31.obj" "MatrixFunctions/arm_mat_sub_f32.obj" "MatrixFunctions/arm_mat_sub_q15.obj" "MatrixFunctions/arm_mat_sub_q31.obj" "MatrixFunctions/arm_mat_trans_f32.obj" 
-	-$(RM) "MatrixFunctions/arm_mat_trans_q15.obj" "MatrixFunctions/arm_mat_trans_q31.obj" "SpecLibs/AS7341/AS7341.obj" "SpecLibs/DRV8825/drv8825.obj" "SpecLibs/SpecResult/SpecResult.obj" "drivers/rtos_hw_drivers.obj" "utils/uartstdio.obj" "utils/ustdlib.obj" 
+	-$(RM) "MatrixFunctions/arm_mat_trans_q15.obj" "MatrixFunctions/arm_mat_trans_q31.obj" "SpecLibs/ADC_DMA_BurstMode/ADC_DMA.obj" "SpecLibs/AS7341/AS7341.obj" "SpecLibs/DRV8825/drv8825.obj" "SpecLibs/LinearMov/LinMov.obj" "SpecLibs/MonoLight/mono_light.obj" "SpecLibs/SpecResult/SpecResult.obj" "drivers/rtos_hw_drivers.obj" "utils/uartstdio.obj" "utils/ustdlib.obj" 
 	-$(RM) "hello.d" "tm4c123gh6pm_startup_ccs.d" "BasicMathFunctions/arm_abs_f32.d" "BasicMathFunctions/arm_abs_q15.d" "BasicMathFunctions/arm_abs_q31.d" "BasicMathFunctions/arm_abs_q7.d" "BasicMathFunctions/arm_add_f32.d" "BasicMathFunctions/arm_add_q15.d" "BasicMathFunctions/arm_add_q31.d" "BasicMathFunctions/arm_add_q7.d" "BasicMathFunctions/arm_dot_prod_f32.d" "BasicMathFunctions/arm_dot_prod_q15.d" "BasicMathFunctions/arm_dot_prod_q31.d" "BasicMathFunctions/arm_dot_prod_q7.d" "BasicMathFunctions/arm_mult_f32.d" "BasicMathFunctions/arm_mult_q15.d" "BasicMathFunctions/arm_mult_q31.d" "BasicMathFunctions/arm_mult_q7.d" "BasicMathFunctions/arm_negate_f32.d" "BasicMathFunctions/arm_negate_q15.d" "BasicMathFunctions/arm_negate_q31.d" "BasicMathFunctions/arm_negate_q7.d" "BasicMathFunctions/arm_offset_f32.d" "BasicMathFunctions/arm_offset_q15.d" "BasicMathFunctions/arm_offset_q31.d" "BasicMathFunctions/arm_offset_q7.d" "BasicMathFunctions/arm_scale_f32.d" "BasicMathFunctions/arm_scale_q15.d" "BasicMathFunctions/arm_scale_q31.d" 
 	-$(RM) "BasicMathFunctions/arm_scale_q7.d" "BasicMathFunctions/arm_shift_q15.d" "BasicMathFunctions/arm_shift_q31.d" "BasicMathFunctions/arm_shift_q7.d" "BasicMathFunctions/arm_sub_f32.d" "BasicMathFunctions/arm_sub_q15.d" "BasicMathFunctions/arm_sub_q31.d" "BasicMathFunctions/arm_sub_q7.d" "CommonTables/arm_common_tables.d" "CommonTables/arm_const_structs.d" "FastMathFunctions/arm_cos_f32.d" "FastMathFunctions/arm_cos_q15.d" "FastMathFunctions/arm_cos_q31.d" "FastMathFunctions/arm_sin_f32.d" "FastMathFunctions/arm_sin_q15.d" "FastMathFunctions/arm_sin_q31.d" "FastMathFunctions/arm_sqrt_q15.d" "FastMathFunctions/arm_sqrt_q31.d" "FreeRTOS/Source/croutine.d" "FreeRTOS/Source/event_groups.d" "FreeRTOS/Source/list.d" "FreeRTOS/Source/queue.d" "FreeRTOS/Source/stream_buffer.d" "FreeRTOS/Source/tasks.d" "FreeRTOS/Source/timers.d" "FreeRTOS/Source/portable/CCS/ARM_CM4F/port.d" "FreeRTOS/Source/portable/MemMang/heap_2.d" "MatrixFunctions/arm_mat_add_f32.d" "MatrixFunctions/arm_mat_add_q15.d" "MatrixFunctions/arm_mat_add_q31.d" 
-	-$(RM) "MatrixFunctions/arm_mat_cmplx_mult_f32.d" "MatrixFunctions/arm_mat_cmplx_mult_q15.d" "MatrixFunctions/arm_mat_cmplx_mult_q31.d" "MatrixFunctions/arm_mat_init_f32.d" "MatrixFunctions/arm_mat_init_q15.d" "MatrixFunctions/arm_mat_init_q31.d" "MatrixFunctions/arm_mat_inverse_f32.d" "MatrixFunctions/arm_mat_inverse_f64.d" "MatrixFunctions/arm_mat_mult_f32.d" "MatrixFunctions/arm_mat_mult_fast_q15.d" "MatrixFunctions/arm_mat_mult_fast_q31.d" "MatrixFunctions/arm_mat_mult_q15.d" "MatrixFunctions/arm_mat_mult_q31.d" "MatrixFunctions/arm_mat_scale_f32.d" "MatrixFunctions/arm_mat_scale_q15.d" "MatrixFunctions/arm_mat_scale_q31.d" "MatrixFunctions/arm_mat_sub_f32.d" "MatrixFunctions/arm_mat_sub_q15.d" "MatrixFunctions/arm_mat_sub_q31.d" "MatrixFunctions/arm_mat_trans_f32.d" "MatrixFunctions/arm_mat_trans_q15.d" "MatrixFunctions/arm_mat_trans_q31.d" "SpecLibs/AS7341/AS7341.d" "SpecLibs/DRV8825/drv8825.d" "SpecLibs/SpecResult/SpecResult.d" "drivers/rtos_hw_drivers.d" "utils/uartstdio.d" "utils/ustdlib.d" 
+	-$(RM) "MatrixFunctions/arm_mat_cmplx_mult_f32.d" "MatrixFunctions/arm_mat_cmplx_mult_q15.d" "MatrixFunctions/arm_mat_cmplx_mult_q31.d" "MatrixFunctions/arm_mat_init_f32.d" "MatrixFunctions/arm_mat_init_q15.d" "MatrixFunctions/arm_mat_init_q31.d" "MatrixFunctions/arm_mat_inverse_f32.d" "MatrixFunctions/arm_mat_inverse_f64.d" "MatrixFunctions/arm_mat_mult_f32.d" "MatrixFunctions/arm_mat_mult_fast_q15.d" "MatrixFunctions/arm_mat_mult_fast_q31.d" "MatrixFunctions/arm_mat_mult_q15.d" "MatrixFunctions/arm_mat_mult_q31.d" "MatrixFunctions/arm_mat_scale_f32.d" "MatrixFunctions/arm_mat_scale_q15.d" "MatrixFunctions/arm_mat_scale_q31.d" "MatrixFunctions/arm_mat_sub_f32.d" "MatrixFunctions/arm_mat_sub_q15.d" "MatrixFunctions/arm_mat_sub_q31.d" "MatrixFunctions/arm_mat_trans_f32.d" "MatrixFunctions/arm_mat_trans_q15.d" "MatrixFunctions/arm_mat_trans_q31.d" "SpecLibs/ADC_DMA_BurstMode/ADC_DMA.d" "SpecLibs/AS7341/AS7341.d" "SpecLibs/DRV8825/drv8825.d" "SpecLibs/LinearMov/LinMov.d" "SpecLibs/MonoLight/mono_light.d" 
+	-$(RM) "SpecLibs/SpecResult/SpecResult.d" "drivers/rtos_hw_drivers.d" "utils/uartstdio.d" "utils/ustdlib.d" 
 	-$(RM) "FreeRTOS/Source/portable/CCS/ARM_CM4F/portasm.d" 
 	-@echo 'Finished clean'
 	-@echo ' '

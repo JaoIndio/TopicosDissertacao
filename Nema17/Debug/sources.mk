@@ -120,8 +120,11 @@ FreeRTOS/Source \
 FreeRTOS/Source/portable/CCS/ARM_CM4F \
 FreeRTOS/Source/portable/MemMang \
 MatrixFunctions \
+SpecLibs/ADC_DMA_BurstMode \
 SpecLibs/AS7341 \
 SpecLibs/DRV8825 \
+SpecLibs/LinearMov \
+SpecLibs/MonoLight \
 SpecLibs/SpecResult \
 drivers \
 utils \

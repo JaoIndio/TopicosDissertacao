@@ -26,6 +26,7 @@
 #include "AS7341/AS7341.h"
 #include "SpecResult/SpecResult.h"
 #include "LinearMov/LinMov.h"
+#include "ADC_DMA_BurstMode/ADC_DMA.h"
 /*  -----  My Libs  ----  */
 
 #include "arm_math.h"
@@ -151,6 +152,10 @@ void AS7341_Begin(void *ptr){
   // Check stack usage periodically
   UBaseType_t unusedStackWords = uxTaskGetStackHighWaterMark(NULL);
   size_t unusedStackBytes = unusedStackWords * sizeof(StackType_t);
+  
+  bool BurstResult;
+    //BurstResult = BurstModeConfig();
+
   UARTprintf("\rUnused stack memory: %u bytes\n", (unsigned int)unusedStackBytes);
                           
   //for(index=0; index<12; index++) ADC_count[index] = 0x05;
@@ -231,10 +236,10 @@ void AS7341_Begin(void *ptr){
   //𝑡𝑖𝑛𝑡 = (𝐴𝑇𝐼𝑀𝐸 + 1) × (𝐴𝑆𝑇𝐸𝑃 + 1) × 2.78μ𝑠
   // 𝐴𝐷𝐶𝑓𝑢𝑙𝑙𝑠𝑐𝑎𝑙𝑒 = (𝐴𝑇𝐼𝑀𝐸 + 1) × (𝐴𝑆𝑇𝐸𝑃 + 1)
   // Step=1 e Time=1 resulta em uma leiutra e reconstrução completa em 70ms=+-14HZ
-  uint16_t StepADC = 99;
+  uint16_t StepADC = 80;
   if(!AS7341_SetStepADC(StepADC))
     UARTprintf("\rSet STEP Error\n");
-  uint8_t TimeADC  = 99;
+  uint8_t TimeADC  = 110;
   if(!AS7341_SetTimeADC(TimeADC))
     UARTprintf("\rSet Time Error\n");
 
@@ -295,6 +300,9 @@ void AS7341_Begin(void *ptr){
       joinADC(ADC_count, ADC_raw);
       Correction1(ADC_raw, round, PhotoCorrection);
       BasicCountConvertion(PhotoCorrection);
+
+      ADCProcessorTrigger(ADC0_BASE, 3);
+      
       SpectralReconstruction(PhotoCorrection);
 /*
   
@@ -361,7 +369,7 @@ int main(void){
   prvSetupHardware();
   NemaConfig();
   //">CCS App Center</a> to oinstall othe compiler of  the required version, or migrate the project to one of the available compiler versions by adjusting project properties. EQU_Firmware_L0 properties Proble
-  //LinearMovValidation();0
+  //LinearMovValidation();
   //UARTprintf("Hello World!\n");
   
   //verificar se criou certo
@@ -419,40 +427,7 @@ static void prvSetupHardware( void )
 
     /* Configure UART0 to send messages to terminal. */
     prvConfigureUART();
-/*
-    // Habilitar GPIOS q ligarao dois LEDs
-    GPIODirModeSet(GPIO_PORTE_BASE, (GPIO_PIN_4 | GPIO_PIN_5), GPIO_DIR_MODE_OUT);
-    // Habilitar GPIOS q serao botos Pull-Ups
-    GPIODirModeSet(GPIO_PORTB_BASE, GPIO_PIN_4, GPIO_DIR_MODE_IN);
-    GPIODirModeSet(GPIO_PORTA_BASE, GPIO_PIN_5, GPIO_DIR_MODE_IN);
 
-    //Configura as 4 portas
-    GPIOPadConfigSet(GPIO_PORTE_BASE, (GPIO_PIN_4 | GPIO_PIN_5), \
-                     GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD_WPU);
-
-    GPIOPadConfigSet(GPIO_PORTB_BASE, GPIO_PIN_4, \
-                     GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD);
-    GPIOPadConfigSet(GPIO_PORTA_BASE, GPIO_PIN_5, \
-                     GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD);
-
-    //Habilita e Configura Interrupção
-    GPIOIntEnable(GPIO_PORTB_BASE, GPIO_PIN_4);
-    GPIOIntTypeSet(GPIO_PORTB_BASE, GPIO_PIN_4,\
-                   GPIO_RISING_EDGE);
-    IntEnable(INT_GPIOB);
-
-    GPIOIntEnable(GPIO_PORTA_BASE, GPIO_PIN_5);
-    GPIOIntTypeSet(GPIO_PORTA_BASE, GPIO_PIN_5,\
-                   GPIO_RISING_EDGE);
-    IntEnable(INT_GPIOA);
-
-*/
-    //uint32_t var = 0xAAAA;
-    //AS7341_init();
-    //AS7341_send(&var);
-    // GPIOIntClear()
-    // GPIOIntDisable()
-    // GPIOIntTypeSet() ->RISING_EDGE
 }
 
 void vApplicationTickHook( void )

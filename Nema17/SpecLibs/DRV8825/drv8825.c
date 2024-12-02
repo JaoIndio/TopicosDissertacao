@@ -26,6 +26,7 @@
 #include "driverlib/timer.h"
 #include "DRV8825/drv8825.h"
 #include "LinearMov/LinMov.h"
+#include "MonoLight/mono_light.h"
 
 // Pin definitions
 #define STEP_PIN              GPIO_PIN_5 //PB5
@@ -96,7 +97,7 @@ float    sigmoid(float x);
 void     xDebaunceKey(void *ptr);
 void     xChangeDirection(void *ptr);
 void     AnalogInit();
-void PWM_SetDutyCycle(float dutyCycle);
+void     PWM_SetDutyCycle(float dutyCycle);
 
 void PWM_SetDutyCycle(float dutyCycle){
   uint32_t load = PWMGenPeriodGet(PWM0_BASE, PWM_GEN_0);
@@ -330,6 +331,9 @@ void NemaConfig(){
   GPIOPinWrite(GPIO_PORTB_BASE, ENABLE_PIN, 1);
   GPIOPinWrite(GPIO_PORTB_BASE, SLEEP_PIN, 0);
   
+  GreenLightConfig();
+  GreenLightTurnOn();
+
   LinearMov_Mngr.Began      = false;
   LinearMov_Mngr.Count      = 0;
   LinearMov_Mngr.CycleCount = 0;
@@ -470,6 +474,7 @@ void xChangeDirection(void *ptr){
       LinearMov_Mngr.CycleCount++;
     }
     if(LinearMov_Mngr.CycleCount>=LinearMov_Mngr.CycleThrshld){
+      GreenLightTurnOff();
       UARTprintf("\r\t\t\t\t\tNEMA Disable\n");
       GPIOPinWrite(GPIO_PORTB_BASE, SLEEP_PIN, SLEEP_PIN);
       NemaDisable();
