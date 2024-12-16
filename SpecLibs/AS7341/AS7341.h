@@ -393,8 +393,8 @@ typedef union{
 //SP_TH_L_LSB Register (Address 0x84 and 0x85)
 typedef union{
   struct{
-    uint8_t SP_TH_L_LSB_REG; ///< Registrador 0x84: Byte menos significativo do threshold
-    uint8_t SP_TH_L_MSB_REG; ///< Registrador 0x85: Byte mais significativo do threshold
+    uint8_t SP_TH_L_LSB; ///< Registrador 0x84: Byte menos significativo do threshold
+    uint8_t SP_TH_L_MSB; ///< Registrador 0x85: Byte mais significativo do threshold
   };
   uint16_t value; ///< Valor bruto dos registradores (16 bits)
 } as7341_sp_th_l_t;
@@ -834,6 +834,14 @@ bool AS7341_GetStatus(uint8_t *value);
 
 bool AS7341_GetSMUX();
 bool AS7341_ReadChannels(uint8_t* photoDiode, uint8_t* ADC_ID, uint8_t* ADC_count);
+
+bool AS7341_SetSMUXMini(uint8_t* photoDiode, uint8_t* ADC_ID);
+bool AS7341_ReadChannelsMini(uint8_t* photoDiode, uint8_t* ADC_ID, uint8_t* ADC_count);
+
+bool AS7341_PerformanceDbgInit();
+bool AS7341_PerformanceDbgSet();
+bool AS7341_PerformanceDbgClr();
+void AS7341_WaitIntSig();
 
 //void SetPhotoArray(uint8_t* photoDiode, uint8_t len, uint8_t*PhotoArray, uint8_t* ADC_config);
 

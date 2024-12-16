@@ -20,9 +20,15 @@
 #include "driverlib/uart.h"
 #include "drivers/rtos_hw_drivers.h"
 #include "utils/uartstdio.h"
+
+/*  -----  My Libs  ----  */
 #include "DRV8825/drv8825.h"
 #include "AS7341/AS7341.h"
 #include "SpecResult/SpecResult.h"
+#include "LinearMov/LinMov.h"
+#include "ADC_DMA_BurstMode/ADC_DMA.h"
+/*  -----  My Libs  ----  */
+
 #include "arm_math.h"
 
 //#include "myLib.h"
@@ -42,6 +48,8 @@ static void prvSetupHardware( void );
  * as the example is running. */
 static void prvConfigureUART(void);
 void joinADC();
+
+void ADC_DMA_Reader();
 
 volatile float PhotoOffset[11]={ 0.003347963f,0.005573356f,\
                                  0.007078014f,0.008031754f,\
@@ -127,7 +135,8 @@ void joinADC(uint8_t* ADC_count, uint16_t* ADC_raw){
   }
 }
 void AS7341_Begin(void *ptr){
-
+  
+  NemaInterruptionConfig();
   if(!AS7341_Boot())
     UARTprintf("AS7341 Boot ERROR\n");
   else
@@ -145,6 +154,10 @@ void AS7341_Begin(void *ptr){
   // Check stack usage periodically
   UBaseType_t unusedStackWords = uxTaskGetStackHighWaterMark(NULL);
   size_t unusedStackBytes = unusedStackWords * sizeof(StackType_t);
+  
+  bool BurstResult;
+    //BurstResult = BurstModeConfig();
+
   UARTprintf("\rUnused stack memory: %u bytes\n", (unsigned int)unusedStackBytes);
                           
   //for(index=0; index<12; index++) ADC_count[index] = 0x05;
@@ -224,10 +237,11 @@ void AS7341_Begin(void *ptr){
   
   //𝑡𝑖𝑛𝑡 = (𝐴𝑇𝐼𝑀𝐸 + 1) × (𝐴𝑆𝑇𝐸𝑃 + 1) × 2.78μ𝑠
   // 𝐴𝐷𝐶𝑓𝑢𝑙𝑙𝑠𝑐𝑎𝑙𝑒 = (𝐴𝑇𝐼𝑀𝐸 + 1) × (𝐴𝑆𝑇𝐸𝑃 + 1)
-  uint16_t StepADC = 99;
+  // Step=1 e Time=1 resulta em uma leiutra e reconstrução completa em 70ms=+-14HZ
+  uint16_t StepADC = 70;
   if(!AS7341_SetStepADC(StepADC))
     UARTprintf("\rSet STEP Error\n");
-  uint8_t TimeADC  = 99;
+  uint8_t TimeADC  = 100;
   if(!AS7341_SetTimeADC(TimeADC))
     UARTprintf("\rSet Time Error\n");
 
@@ -242,8 +256,6 @@ void AS7341_Begin(void *ptr){
   
   //Boot -> ReadChennels -> SetSMUX -> SetI2cRegSMUX
   uint16_t i;
-
-  LinearMovValidation();
   
   uint32_t ui32SysClock  = SysCtlClockGet();
   IntTime = AS7341_GetIntegrationTimeADC();
@@ -254,6 +266,23 @@ void AS7341_Begin(void *ptr){
   UARTprintf("\rUART Init Done\n");
   as7341_status_t photo_status;
   as7341_status2_t photo_saturation;
+  float ADC_fullscale = (float)((AS7341_GetStepADC()+1)*(AS7341_GetTimeADC()+1));
+  float F5_intensity;
+
+  AS7341_PerformanceDbgInit();
+  as7341_stat_t stat_rslt;
+  as7341_status2_t status2_rslt;
+  as7341_status_t status_rslt;
+  as7341_astatus_t astat2_rslt;
+  if(!AS7341_SetSMUXMini(photoDiode, ADC_ID2))
+    UARTprintf("\rSMUX Config Error\n");
+
+  while(1){
+    AS7341_WaitIntSig();
+    AS7341_DeviceStatus(AS7341_REG_STATUS,  &status_rslt.value);
+    AS7341_SetAcessAndWrite(AS7341_REG_STATUS, status_rslt.value);
+  }
+
   while(1){
     if(round){
 /*
@@ -265,62 +294,113 @@ void AS7341_Begin(void *ptr){
         Ordem das leituras
           F1, F2, F3, F4, F5, F6
 */
-      
+      AS7341_PerformanceDbgSet();    
+
+      //if(!AS7341_ReadChannelsMini(photoDiode, ADC_ID, ADC_count))
       if(!AS7341_ReadChannels(photoDiode, ADC_ID, ADC_count))
         UARTprintf("\rErro de Leitura dos Canais\n");
 
       joinADC(ADC_count, ADC_raw);
       Correction1(ADC_raw, round, PhotoCorrection);
       round=false;
+      AS7341_PerformanceDbgClr();
 
     }else{
 /*
         Ordem das leituras
           F7, F8,CLEAR, F4, F5, NIR
 */    
+      
+      AS7341_PerformanceDbgSet();    
+      //if(!AS7341_ReadChannelsMini(photoDiode, ADC_ID2, ADC_count))
       if(!AS7341_ReadChannels(photoDiode, ADC_ID2, ADC_count))
         UARTprintf("\rErro de Leitura dos Canais\n");
       joinADC(ADC_count, ADC_raw);
       Correction1(ADC_raw, round, PhotoCorrection);
       BasicCountConvertion(PhotoCorrection);
+
+      //ADCProcessorTrigger(ADC0_BASE, 3);
+      
       SpectralReconstruction(PhotoCorrection);
+/*
+  
+*/
+      //Eh preciso estimar a intensidade (em Volts) do fotodiodo em questão e comparar a reconstrucao espectral
+      // baseada na estimativa com a matrix de reconstrucao
+      // Reconstrucao [Tentativa 1] -> 1V8/ADCfullscale => 1V8*ADC_count[F5]/ADCfullscale
+      //    Dps de reconstruir a intensidade luminosa eu preciso associar ele ao deslocamento do espelho.
+      //    Armazena-se a variação da intensidade em função do deslocamento e ao fim
+      //    Faz-se a FFT desse sinal.
+      //    Compara-se a função espctral fruto da FFT com a adquirida pela reconstrução espectral
+      //
+      //      Expectativa: Gerar uma onda senoidal a partir do F5. Essa onda senoidal vai servir de referencia posteriormente 
+      //        como frequencia amostral da luz infravermelha
+      //  Referencias:
+      //    [1] Fourier-Transform Spectroscopy Instrumentation Engineering (Cap. 3 "Principios de Operacao")
+      //    [2] Dissertação MIT (Cap. 2) [/home/jao/curso/ufsm/Mestrado/Dissertacao/Pototip_DeVereda/DesignRefs/FTNIR/DissertacaoMIT.pdf]
+/*
+      É fundamental amostrar o sinal IR com precisão, repetibilidade e associação com a posição do espelho. 
+      Esse requisito impacta na implementação da interferometria da luz. Para [2], há duas possibilidades.
+      A primeira é o uso de amostragens regulares baseadas no controle de velocidade do movimento do motor
+      O segundo faz uso do sinal de refereêcia monocromático. A vanttagem do segundo é que a onda senoidal esta
+      diretamente relaciona à posição do espelho móvel ao mesmo tempo que pode ser usada como referência para a
+      frequência amostral do detector IR.
+*/
+      //FFT_Spec();
+      
+      AS7341_PerformanceDbgClr();   
+      //UART5_SendDataPacket(Photo4|Photo5, 32); //500-560
       UART5_SendDataPacket(Spectral400_600, SPEC_TOTAL_WAVELENGHT);
       round=true;
+      vTaskDelay(pdMS_TO_TICKS(25));
     }
-    vTaskDelay(pdMS_TO_TICKS(150));
+    F5_intensity = ADC_raw[4]*1.8f/ADC_fullscale;
+
+    // Talvez nao seja necessario dar um delay, mas
+    //  mas sim um YIELD()
+    taskYIELD();
+    //vTaskDelay(pdMS_TO_TICKS(25));
+
+    //AS7341_PerformanceDbgSet();    
     AS7341_DeviceStatus(AS7341_REG_STATUS, &photo_status.value);
     if(photo_status.ASAT==1){
       //Houve Saturacao
       AS7341_DeviceStatus(AS7341_REG_STATUS2, &photo_saturation.value);
-      if(photo_saturation.ASAT_DIGITAL)
-        UARTprintf("\rTempo de Integracao muito longo\n");
-      else if(photo_saturation.ASAT_ANALOG)
-        UARTprintf("\rLuz Ambiente Muito Intensa, considere reduzir o GANHO\n");
+      //if(photo_saturation.ASAT_DIGITAL)
+        //UARTprintf("\rTempo de Integracao muito longo\n");
+      //else if(photo_saturation.ASAT_ANALOG)
+        //UARTprintf("\rLuz Ambiente Muito Intensa, considere reduzir o GANHO\n");
     }
 
-/// *
+    //AS7341_PerformanceDbgClr();    
+
+/*
     UARTprintf("\r-------------- %d -----------------\n", round);
     for(i=0;i<6;i++) 
       UARTprintf("\rADC_raw[%d]: %d\n",i, ADC_raw[i]);
     UARTprintf("\r\n\n");
-// * /  
+*/  
   }
   //vTaskDelete(NULL);
 }
 
 int main(void){
   prvSetupHardware();
-
-  
   NemaConfig();
   //">CCS App Center</a> to oinstall othe compiler of  the required version, or migrate the project to one of the available compiler versions by adjusting project properties. EQU_Firmware_L0 properties Proble
-  NemaInterruptionConfig();
+  //LinearMovValidation();
   //UARTprintf("Hello World!\n");
   
   //verificar se criou certo
   xTaskCreate(AS7341_Begin, "AS7341", configMINIMAL_STACK_SIZE+50, \
                 NULL, 14, \
                 NULL);
+/*
+  xTaskCreate(ADC_DMA_Reader, "AdcDMA", configMINIMAL_STACK_SIZE+50, \
+                NULL, configMAX_PRIORITIES-2, \
+                NULL);
+*/
+
   vTaskStartScheduler();
   while(1){ 
 
@@ -372,40 +452,7 @@ static void prvSetupHardware( void )
 
     /* Configure UART0 to send messages to terminal. */
     prvConfigureUART();
-/*
-    // Habilitar GPIOS q ligarao dois LEDs
-    GPIODirModeSet(GPIO_PORTE_BASE, (GPIO_PIN_4 | GPIO_PIN_5), GPIO_DIR_MODE_OUT);
-    // Habilitar GPIOS q serao botos Pull-Ups
-    GPIODirModeSet(GPIO_PORTB_BASE, GPIO_PIN_4, GPIO_DIR_MODE_IN);
-    GPIODirModeSet(GPIO_PORTA_BASE, GPIO_PIN_5, GPIO_DIR_MODE_IN);
 
-    //Configura as 4 portas
-    GPIOPadConfigSet(GPIO_PORTE_BASE, (GPIO_PIN_4 | GPIO_PIN_5), \
-                     GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD_WPU);
-
-    GPIOPadConfigSet(GPIO_PORTB_BASE, GPIO_PIN_4, \
-                     GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD);
-    GPIOPadConfigSet(GPIO_PORTA_BASE, GPIO_PIN_5, \
-                     GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD);
-
-    //Habilita e Configura Interrupção
-    GPIOIntEnable(GPIO_PORTB_BASE, GPIO_PIN_4);
-    GPIOIntTypeSet(GPIO_PORTB_BASE, GPIO_PIN_4,\
-                   GPIO_RISING_EDGE);
-    IntEnable(INT_GPIOB);
-
-    GPIOIntEnable(GPIO_PORTA_BASE, GPIO_PIN_5);
-    GPIOIntTypeSet(GPIO_PORTA_BASE, GPIO_PIN_5,\
-                   GPIO_RISING_EDGE);
-    IntEnable(INT_GPIOA);
-
-*/
-    //uint32_t var = 0xAAAA;
-    //AS7341_init();
-    //AS7341_send(&var);
-    // GPIOIntClear()
-    // GPIOIntDisable()
-    // GPIOIntTypeSet() ->RISING_EDGE
 }
 
 void vApplicationTickHook( void )
@@ -442,4 +489,22 @@ void vApplicationStackOverflowHook( TaskHandle_t pxTask, char *pcTaskName )
     function is called if a stack overflow is detected. */
     IntMasterDisable();
     for( ;; );
+}
+
+void ADC_DMA_Reader(){
+  uint32_t adcValue;
+  EventBits_t events;
+  while(1){
+    events = xEventGroupWaitBits(BurstEventGroup,\
+                                 BURST_FIFO_FULL, \
+                                 pdTRUE, \
+                                 pdFALSE,\
+                                 portMAX_DELAY);
+
+    if (events & BURST_FIFO_FULL) {
+      UARTprintf("\r\t\t\t[ADC DMA Reader]\n");
+      // Process the ADC result
+     // printf("ADC Value: %lu\n", adcValue); // Example processing
+   }
+  } 
 }

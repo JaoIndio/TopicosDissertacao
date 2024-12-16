@@ -1,3 +1,6 @@
+#ifndef _SPEC_RES_H_
+#define _SPEC_RES_H_
+
 #include <stdint.h>
 #include <stdbool.h>
 #include "inc/hw_memmap.h"
@@ -13,3 +16,5 @@
 void UART5_Init(uint32_t baud_rate);
 void UART5_SendByte(uint8_t byte);
 void UART5_SendDataPacket(float *array, uint16_t count);
+
+#endif
