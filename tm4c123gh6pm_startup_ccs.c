@@ -37,6 +37,8 @@ static void FaultISR(void);
 static void IntDefaultHandler(void);
 extern void I2C1_IntHandler(void);   //Handler do I2C
 extern void PortDIntHanlder(void);
+extern void uDMAIntHandler(void);
+extern void uDMAErrIntHandler(void);
 //*****************************************************************************
 //
 // External declaration for the reset handler that is to be called when the
@@ -135,8 +137,8 @@ void (* const g_pfnVectors[])(void) =
     IntDefaultHandler,                      // Hibernate
     IntDefaultHandler,                      // USB0
     IntDefaultHandler,                      // PWM Generator 3
-    IntDefaultHandler,                      // uDMA Software Transfer
-    IntDefaultHandler,                      // uDMA Error
+    uDMAIntHandler,                         // uDMA Software Transfer
+    uDMAErrIntHandler,                      // uDMA Error
     IntDefaultHandler,                      // ADC1 Sequence 0
     IntDefaultHandler,                      // ADC1 Sequence 1
     IntDefaultHandler,                      // ADC1 Sequence 2

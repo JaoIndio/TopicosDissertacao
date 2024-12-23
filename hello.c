@@ -34,10 +34,12 @@
 //#include "myLib.h"
 //#include "external_devices/AS7341_photo.h"
 #define SPEC_TOTAL_WAVELENGHT 620
+#define AS7341_MONO           1
 volatile float IntTime;
 volatile float Gain;
 volatile float32_t Spectral400_600[SPEC_TOTAL_WAVELENGHT];
 
+//extern uint32_t adc_count;
 /**
  * hello.c
  */
@@ -201,7 +203,7 @@ void AS7341_Begin(void *ptr){
   ADC_ID[5] =  CONNECT_TO_GND;    
   ADC_ID[6] =  CONNECT_TO_ADC1;    
   ADC_ID[7] =  CONNECT_TO_ADC3;   
-  
+          
   ADC_ID[8]  = CONNECT_TO_ADC3<<4 | CONNECT_TO_ADC1;    
   ADC_ID[9]  = CONNECT_TO_ADC5<<4 | CONNECT_TO_GND;   
   ADC_ID[10] = CONNECT_TO_GND;   
@@ -211,9 +213,32 @@ void AS7341_Begin(void *ptr){
   ADC_ID[14] = CONNECT_TO_GND;   
   ADC_ID[15] = CONNECT_TO_GND<<4 | CONNECT_TO_GND;   
   ADC_ID[16] = CONNECT_TO_GND    | CONNECT_TO_GND;   
+    
+  ADC_ID[17] = CONNECT_TO_GND;  
   
-  ADC_ID[17] = CONNECT_TO_GND;   
 
+#if AS7341_MONO == 1
+  ADC_ID2[0] =  CONNECT_TO_GND; 
+  ADC_ID2[1] =  CONNECT_TO_GND;    
+  ADC_ID2[2] =  CONNECT_TO_ADC0;    
+  ADC_ID2[3] =  CONNECT_TO_GND;    
+  ADC_ID2[4] =  CONNECT_TO_GND;    
+  ADC_ID2[5] =  CONNECT_TO_GND;    
+  ADC_ID2[6] =  CONNECT_TO_GND;    
+  ADC_ID2[7] =  CONNECT_TO_ADC1;   
+  
+  ADC_ID2[8]  = CONNECT_TO_ADC1<<4 | CONNECT_TO_GND;    
+  ADC_ID2[9]  = CONNECT_TO_GND<<4 | CONNECT_TO_GND;   
+  ADC_ID2[10] = CONNECT_TO_GND;   
+  ADC_ID2[11] = CONNECT_TO_ADC0;   
+  ADC_ID2[12] = CONNECT_TO_GND;   
+  ADC_ID2[13] = CONNECT_TO_GND<<4 | CONNECT_TO_GND;   
+  ADC_ID2[14] = CONNECT_TO_GND;   
+  ADC_ID2[15] = CONNECT_TO_GND<<4 | CONNECT_TO_GND;   
+  ADC_ID2[16] = CONNECT_TO_GND    | CONNECT_TO_GND;   
+  
+  ADC_ID2[17] = CONNECT_TO_GND;
+#else
   ADC_ID2[0] =  CONNECT_TO_GND; 
   ADC_ID2[1] =  CONNECT_TO_GND;    
   ADC_ID2[2] =  CONNECT_TO_ADC4;    
@@ -222,7 +247,7 @@ void AS7341_Begin(void *ptr){
   ADC_ID2[5] =  CONNECT_TO_ADC1;    
   ADC_ID2[6] =  CONNECT_TO_GND;    
   ADC_ID2[7] =  CONNECT_TO_ADC3;   
-  
+    
   ADC_ID2[8]  = CONNECT_TO_ADC3<<4 | CONNECT_TO_ADC1;    
   ADC_ID2[9]  = CONNECT_TO_ADC5<<4 | CONNECT_TO_GND;   
   ADC_ID2[10] = CONNECT_TO_GND;   
@@ -232,9 +257,10 @@ void AS7341_Begin(void *ptr){
   ADC_ID2[14] = CONNECT_TO_ADC2;   
   ADC_ID2[15] = CONNECT_TO_ADC2<<4 | CONNECT_TO_GND;   
   ADC_ID2[16] = CONNECT_TO_GND    | CONNECT_TO_ADC5;   
-  
+
   ADC_ID2[17] = CONNECT_TO_GND;
-  
+#endif
+
   //𝑡𝑖𝑛𝑡 = (𝐴𝑇𝐼𝑀𝐸 + 1) × (𝐴𝑆𝑇𝐸𝑃 + 1) × 2.78μ𝑠
   // 𝐴𝐷𝐶𝑓𝑢𝑙𝑙𝑠𝑐𝑎𝑙𝑒 = (𝐴𝑇𝐼𝑀𝐸 + 1) × (𝐴𝑆𝑇𝐸𝑃 + 1)
   // Step=1 e Time=1 resulta em uma leiutra e reconstrução completa em 70ms=+-14HZ
@@ -251,7 +277,7 @@ void AS7341_Begin(void *ptr){
   AS7341_SetWtimeADC(wtime_value);
 
   // ****Aumentar Tempo de Intetracao***
-  if(!AS7341_SetGainADC(7))
+  if(!AS7341_SetGainADC(9))
     UARTprintf("\rSet GAIN Error\n");
   
   //Boot -> ReadChennels -> SetSMUX -> SetI2cRegSMUX
@@ -270,6 +296,8 @@ void AS7341_Begin(void *ptr){
   float F5_intensity;
 
   AS7341_PerformanceDbgInit();
+
+#if AS7341_MONO == 1
   as7341_stat_t stat_rslt;
   as7341_status2_t status2_rslt;
   as7341_status_t status_rslt;
@@ -278,10 +306,32 @@ void AS7341_Begin(void *ptr){
     UARTprintf("\rSMUX Config Error\n");
 
   while(1){
+    AS7341_PerformanceDbgSet();    
     AS7341_WaitIntSig();
+    AS7341_PerformanceDbgClr();   
+    
+    AS7341_BankAcessSet(AS7341_REG_CH0_DATA_L);
+    AS7341_read(AS7341_REG_CH0_DATA_L, ADC_count);
+    AS7341_read(AS7341_REG_CH0_DATA_H, ADC_count+1);
+    AS7341_read(AS7341_REG_CH1_DATA_L, ADC_count+2);
+    AS7341_read(AS7341_REG_CH1_DATA_H, ADC_count+3);
+    
     AS7341_DeviceStatus(AS7341_REG_STATUS,  &status_rslt.value);
     AS7341_SetAcessAndWrite(AS7341_REG_STATUS, status_rslt.value);
+    
+    joinADC(ADC_count, ADC_raw);
+    F5_intensity = (float)ADC_raw[0]*1.8f/ADC_fullscale;
+
+    //UART5_SendDataPacket(F5_intensity, 1);
+/*
+    UARTprintf("-------------------------------\n");
+    UARTprintf("\t\t\t\tADC Full Scale %d\n", (int)(ADC_fullscale*10000));
+    UARTprintf("\t\t\t\tADC Raw F5     %x\n", ADC_raw[0]);
+    UARTprintf("\t\t\t\t* F5 Voltage   %d\n", (int)(F5_intensity*10000));
+    UARTprintf("\n\n");
+*/
   }
+#endif
 
   while(1){
     if(round){
@@ -296,31 +346,24 @@ void AS7341_Begin(void *ptr){
 */
       AS7341_PerformanceDbgSet();    
 
-      //if(!AS7341_ReadChannelsMini(photoDiode, ADC_ID, ADC_count))
       if(!AS7341_ReadChannels(photoDiode, ADC_ID, ADC_count))
         UARTprintf("\rErro de Leitura dos Canais\n");
-
       joinADC(ADC_count, ADC_raw);
       Correction1(ADC_raw, round, PhotoCorrection);
       round=false;
       AS7341_PerformanceDbgClr();
-
     }else{
 /*
         Ordem das leituras
           F7, F8,CLEAR, F4, F5, NIR
 */    
-      
       AS7341_PerformanceDbgSet();    
-      //if(!AS7341_ReadChannelsMini(photoDiode, ADC_ID2, ADC_count))
       if(!AS7341_ReadChannels(photoDiode, ADC_ID2, ADC_count))
         UARTprintf("\rErro de Leitura dos Canais\n");
       joinADC(ADC_count, ADC_raw);
       Correction1(ADC_raw, round, PhotoCorrection);
       BasicCountConvertion(PhotoCorrection);
-
       //ADCProcessorTrigger(ADC0_BASE, 3);
-      
       SpectralReconstruction(PhotoCorrection);
 /*
   
@@ -387,19 +430,22 @@ void AS7341_Begin(void *ptr){
 int main(void){
   prvSetupHardware();
   NemaConfig();
+  NemaInterruptionConfig();
   //">CCS App Center</a> to oinstall othe compiler of  the required version, or migrate the project to one of the available compiler versions by adjusting project properties. EQU_Firmware_L0 properties Proble
   //LinearMovValidation();
   //UARTprintf("Hello World!\n");
   
   //verificar se criou certo
+/*
   xTaskCreate(AS7341_Begin, "AS7341", configMINIMAL_STACK_SIZE+50, \
                 NULL, 14, \
                 NULL);
-/*
-  xTaskCreate(ADC_DMA_Reader, "AdcDMA", configMINIMAL_STACK_SIZE+50, \
-                NULL, configMAX_PRIORITIES-2, \
-                NULL);
 */
+/// *
+  xTaskCreate(ADC_DMA_Reader, "AdcDMA", configMINIMAL_STACK_SIZE+70, \
+                NULL, configMAX_PRIORITIES-5, \
+                NULL);
+// * /
 
   vTaskStartScheduler();
   while(1){ 
@@ -492,19 +538,45 @@ void vApplicationStackOverflowHook( TaskHandle_t pxTask, char *pcTaskName )
 }
 
 void ADC_DMA_Reader(){
+  char actualTask[] = "\t\t\t[ADC_DMA]\t\t";
+  UARTprintf("%s Init\n", actualTask);
   uint32_t adcValue;
   EventBits_t events;
+  UBaseType_t unusedStackWords = uxTaskGetStackHighWaterMark(NULL);
+  size_t unusedStackBytes = unusedStackWords * sizeof(StackType_t);
+  UARTprintf("\r%s Unused stack memory: %u bytes\n", actualTask, (unsigned int)unusedStackBytes);
+  
+  bool BurstResult;
+  UARTprintf("%s Burst Config\n", actualTask);
+  BurstResult = BurstModeConfig();
+  //BurstDMA_Check();
+  UARTprintf("\r%s Unused stack memory: %u bytes\n", actualTask, (unsigned int)unusedStackBytes);
+  uint16_t adcValueTry;
+
+  ADCTriggerDbgRst();
   while(1){
+    //UARTprintf("%s Waiting Event Group\n", actualTask);
     events = xEventGroupWaitBits(BurstEventGroup,\
                                  BURST_FIFO_FULL, \
                                  pdTRUE, \
                                  pdFALSE,\
                                  portMAX_DELAY);
 
-    if (events & BURST_FIFO_FULL) {
-      UARTprintf("\r\t\t\t[ADC DMA Reader]\n");
-      // Process the ADC result
-     // printf("ADC Value: %lu\n", adcValue); // Example processing
+ if (events & BURST_FIFO_FULL) {
+  //ADCTriggerDbgRst();
+
+/*
+      while(!ADCIntStatus(ADC0_BASE, 3, false));
+      ADCIntClear(ADC0_BASE, 3);
+      ADCSequenceDataGet(ADC0_BASE, 3, &adcValueTry);
+*/
+      //UARTprintf("ADC Value: %x\n", adcValueTry); // Example processing
+      //UARTprintf("\r\t\t\t[ADC DMA Reader]\n");
+
+      // Process the ADC resultp
+      //ADCStartSignalRst
+      //ADCTriggerDbgRst();
+      UARTprintf("\rADC Value: %x\n", adcBuffer[0]); // Example processing
    }
   } 
 }

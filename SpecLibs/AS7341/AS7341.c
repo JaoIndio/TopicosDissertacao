@@ -61,7 +61,7 @@ void CheckArray(uint8_t *photo){
 }
 
 void PortDIntHanlder(){ 
-  UARTprintf("\r\t\t\t[PortDIntHandler]\n");
+  //UARTprintf("\r\t\t\t[PortDIntHandler]\n");
   GPIOIntClear(GPIO_PORTD_BASE, GPIO_PIN_0);
   BaseType_t xHigherPriorityTaskWoken = pdFALSE;
   xSemaphoreGiveFromISR(AS7341_Semphr, &xHigherPriorityTaskWoken);
