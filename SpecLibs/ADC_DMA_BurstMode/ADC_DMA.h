@@ -33,9 +33,9 @@ uint8_t pui8ControlTable[1024] __attribute__ ((aligned(1024)));
 
 EventGroupHandle_t BurstEventGroup;
 #define BURST_FIFO_FULL (1 << 0)
-#define ADC_BUFFER_SIZE 16
+#define ADC_BUFFER_SIZE 8
 
-volatile uint16_t adcBuffer[ADC_BUFFER_SIZE+4];
+volatile uint16_t adcBuffer[ADC_BUFFER_SIZE];
 
 bool BurstModeConfig();
 void BurstDMA_Check();

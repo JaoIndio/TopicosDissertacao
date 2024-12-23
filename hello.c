@@ -287,9 +287,6 @@ void AS7341_Begin(void *ptr){
   IntTime = AS7341_GetIntegrationTimeADC();
   Gain    = pow(2,(int)AS7341_GetGainADC()-1);
 
-  UARTprintf("\rUART Init Gain %d\n", (int)Gain);
-  UART5_Init(115200);
-  UARTprintf("\rUART Init Done\n");
   as7341_status_t photo_status;
   as7341_status2_t photo_saturation;
   float ADC_fullscale = (float)((AS7341_GetStepADC()+1)*(AS7341_GetTimeADC()+1));
@@ -430,6 +427,7 @@ void AS7341_Begin(void *ptr){
 int main(void){
   prvSetupHardware();
   NemaConfig();
+  UART5_Init(921600*5); //1Mbs = 921600 //2Mss*3 = +-6Mbs
   NemaInterruptionConfig();
   //">CCS App Center</a> to oinstall othe compiler of  the required version, or migrate the project to one of the available compiler versions by adjusting project properties. EQU_Firmware_L0 properties Proble
   //LinearMovValidation();

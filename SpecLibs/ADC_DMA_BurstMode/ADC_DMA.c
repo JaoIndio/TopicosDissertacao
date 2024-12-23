@@ -18,13 +18,17 @@
 #include "event_groups.h"
 #include "inc/hw_types.h"
 
-#define ADC_SEQ 0
-#define DMA_CHANNEL UDMA_CH14_ADC0_0
-#define ADC_INT_SEQ INT_ADC0SS0
+#include "SpecResult/SpecResult.h"
+
+#define ADC_SEQ 3
+#define DMA_CHANNEL UDMA_CH17_ADC0_3
+#define ADC_INT_SEQ INT_ADC0SS3
 
 uint32_t adc_count =0;
 uint32_t dma_count =0;
-uint32_t* ADC_result = ADC0_BASE + ADC_O_SSFIFO0;
+uint32_t* ADC_result = ADC0_BASE + ADC_O_SSFIFO3;
+uint32_t* UART_Tx = UART5_BASE + UART_O_DR;
+volatile uint8_t ADC_rslt[2];
 
 void GPIOFIntHandler(void) {
   char actualTask[] = "\t\t\t\t[GPIOF Handler]\t\t";
@@ -44,26 +48,41 @@ void GPIOFIntHandler(void) {
 //! the channel UDMA_CHANNEL_SW is used and for error interrupts.  The
 //! interrupts for each peripheral channel are handled through the individual
 //! peripheral interrupt handlers.
-/
+/RT0_BASE + UART_O_DR)
 ****************************/
+
+uint32_t errorStatus; // = uDMAErrorStatusGet();
 void ADCIntHanlder(void){
   char actualTask[] = "\t\t\t\t[ADC Handler]\t\t";
   adc_count++;
   ADCIntClear(ADC0_BASE, ADC_SEQ);
   //UARTprintf("%s ADC Done\n", actualTask);
 //*
-  uint32_t ui32Mode = uDMAChannelModeGet(DMA_CHANNEL);
-  if(ui32Mode == UDMA_MODE_STOP){
+  //uint32_t ui32Mode = uDMAChannelModeGet(UDMA_CH7_UART5TX);
+  //if(ui32Mode == UDMA_MODE_STOP){
 ////
+    UART5_DbgSet();
+    ADC_rslt[0] = (*((uint16_t*)(ADC0_BASE + ADC_O_SSFIFO3))>>8) & 0xFF;
+    ADC_rslt[1] = (*((uint16_t*)(ADC0_BASE + ADC_O_SSFIFO3))) & 0xFF;
+    //ADC_rslt = *((uint16_t*)(ADC0_BASE + ADC_O_SSFIFO3));
+    uDMAChannelTransferSet(UDMA_CH7_UART5TX | UDMA_PRI_SELECT, \
+                           UDMA_MODE_BASIC,\
+                           (void *) ADC_rslt, \
+                           (void *)(UART5_BASE + UART_O_DR),\
+                           2);
+
+    uDMAChannelEnable(UDMA_CH7_UART5TX);
+    errorStatus = uDMAErrorStatusGet();
+/*
     uDMAChannelTransferSet(DMA_CHANNEL | UDMA_PRI_SELECT, \
                            UDMA_MODE_BASIC,\
                            (void *)(ADC0_BASE + ADC_O_SSFIFO0), adcBuffer+2, ADC_BUFFER_SIZE);
     uint32_t errorStatus = uDMAErrorStatusGet();
-    
     uDMAChannelEnable(DMA_CHANNEL);
+*/
     xEventGroupSetBitsFromISR(BurstEventGroup, BURST_FIFO_FULL, NULL);
     ADCTriggerDbgRst();
-  }
+  //}
   taskYIELD();
 
 
@@ -122,7 +141,7 @@ void InitADC(){
   IntDisable(ADC_INT_SEQ);
   ADCIntDisable(ADC0_BASE, ADC_SEQ);
   ADCSequenceDisable(ADC0_BASE, ADC_SEQ);
-  //SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOE);
+  //SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOE); U
   //UDMA_CH24_ADC1_0
   // Configure PE3 as an ADC input
   GPIOPinTypeADC(GPIO_PORTD_BASE, GPIO_PIN_2);
@@ -137,7 +156,7 @@ void InitADC(){
   ADCSequenceEnable(ADC0_BASE, ADC_SEQ);
   ADCIntClear(ADC0_BASE, ADC_SEQ);
   ADCIntEnable(ADC0_BASE, ADC_SEQ);
-  IntPrioritySet(ADC_INT_SEQ, 0); // Set highest priority
+  IntPrioritySet(ADC_INT_SEQ, 0x1); // Set highest priority
   
   //UARTprintf("%s DMA Link\n", actualTask);
   // Configure ADC0 sequencer 3 to trigger on an external signal (GPIO trigger)
@@ -146,14 +165,14 @@ void InitADC(){
 }
 void InitDMA(){
   // Enable the uDMA module
-  SysCtlPeripheralEnable(SYSCTL_PERIPH_UDMA);
+  //SysCtlPeripheralEnable(SYSCTL_PERIPH_UDMA);
 
   // Enable the uDMA controller
-  uDMAEnable();
+  //uDMAEnable();
 
   // Set the control table base (must be 1024-byte aligned)
   //static uint8_t controlTable[1024] __attribute__((aligned(1024)));
-  uDMAControlBaseSet(pui8ControlTable);
+  //uDMAControlBaseSet(pui8ControlTable);
 
   // Enable DMA interrupts
   IntPrioritySet(INT_UDMA, 0x0); // Set highest priority
@@ -171,11 +190,11 @@ void InitDMA(){
                               UDMA_ATTR_REQMASK);
   
   uDMAChannelControlSet(DMA_CHANNEL | UDMA_PRI_SELECT, \
-                        UDMA_SIZE_16 | UDMA_SRC_INC_NONE | UDMA_DST_INC_16 | UDMA_ARB_16);
+                        UDMA_SIZE_16 | UDMA_SRC_INC_NONE | UDMA_DST_INC_16 | UDMA_ARB_8);
 /// *
   uDMAChannelTransferSet(DMA_CHANNEL | UDMA_PRI_SELECT, \
                          UDMA_MODE_BASIC,\
-                         (void *)(ADC0_BASE + ADC_O_SSFIFO0), adcBuffer+2, ADC_BUFFER_SIZE);
+                         (void *)(ADC0_BASE + ADC_O_SSFIFO3), adcBuffer, ADC_BUFFER_SIZE);
 //*/
   uDMAChannelAttributeEnable(DMA_CHANNEL, UDMA_ATTR_HIGH_PRIORITY);
   uDMAChannelAttributeEnable(DMA_CHANNEL, UDMA_ATTR_USEBURST);
@@ -185,18 +204,19 @@ void InitDMA(){
   //uDMAChannelRequest(DMA_CHANNEL); DMA_CHANNEL
 }
 void InitInterruptions(){
-  IntPrioritySet(ADC_INT_SEQ, 0); // Set highest priority
+  IntPrioritySet(ADC_INT_SEQ, 0x1); // Set highest priority
   IntEnable(ADC_INT_SEQ);
+  ADCIntEnableEx(ADC0_BASE, ADC_INT_SS0|ADC_INT_DMA_SS0);
   IntRegister(ADC_INT_SEQ, ADCIntHanlder);
 }
 bool BurstModeConfig(){
   char actualTask[] = "\t\t\t\t[Burst Cfg]\t\t";
   BurstEventGroup = xEventGroupCreate();
   
-  adcBuffer[0] = 0x5A;
-  adcBuffer[1] = 0x5A;
-  adcBuffer[ADC_BUFFER_SIZE+4-2] = 0x1B;
-  adcBuffer[ADC_BUFFER_SIZE+4-1] = 0x1B;
+  adcBuffer[0] = 0xAA;
+  adcBuffer[1] = 0xAA;
+  adcBuffer[ADC_BUFFER_SIZE+4-2] = 0x55;
+  adcBuffer[ADC_BUFFER_SIZE+4-1] = 0x55;
 
   UARTprintf("%s Init DMA\n", actualTask);
   InitDMA();

@@ -280,8 +280,8 @@ void NemaInterruptionConfig(){
                 NULL, 14, \
                 &xChangeDirectionHandle);
   
-  float min_freq = 20*KILO_HZ;
-  float max_freq = 58.35f*KILO_HZ; //
+  float min_freq = 60*KILO_HZ;
+  float max_freq = 65*KILO_HZ; // <- Freq Maxima da Senoide
   float actual_freq = min_freq;
 
   GPIOPinWrite(GPIO_PORTB_BASE, ENABLE_PIN, 0);
