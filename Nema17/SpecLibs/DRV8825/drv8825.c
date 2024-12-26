@@ -36,10 +36,11 @@
 #define ANALOG_SIMULATE       GPIO_PIN_7
 #define LINEAR_MOV_DBG        GPIO_PIN_0
 #define LINEAR_MOV_DBG_BASE   GPIO_PORTE_BASE
-// #define PWM_FREQUENCY 25600// <- Unica freq q consegui até agr com microstep de 32
-// Frequencia minima atingida 7500Hz, com potenciomentro próximo da minima tensao de ref
-// Frequencia MAXIMA atingida 40000Hz, com potenciomentro próximo da maxima tensao de ref
-#define PWM_FREQUENCY 20000// <- Unica freq q consegui até agr com microstep de 32
+
+// Dps de comprar um novo DRV consegui modular a freq do PWM de 100 até 30KHz sem problemas
+// no motor
+
+#define PWM_FREQUENCY 1000// <- Unica freq q consegui até agr com microstep de 32
 // DRV configurado no seu potenciometro de forma a limitar a corrente em 
 // 90mA-100mA com um PWM de 20KHz(osciloscópio 20.56KHz) foi uma das performances mais
 // estaveis observadas
@@ -147,7 +148,7 @@ uint32_t getPWMFrequency() {
 
 
 void TriggerPWMSigmoidFrequency(float* actual_freq, float target_freq){
-  const uint32_t totalSteps = 10000;
+  const uint32_t totalSteps = 400;
   float sigmoidValue=0;
   float dutyEq =0;
   uint32_t frequency, pwmClock, load, step;
@@ -279,8 +280,8 @@ void NemaInterruptionConfig(){
                 NULL, 14, \
                 &xChangeDirectionHandle);
   
-  float min_freq = 19*KILO_HZ;
-  float max_freq = 20*KILO_HZ;
+  float min_freq = 5*KILO_HZ;
+  float max_freq = 10*KILO_HZ; // <- Freq Maxima da Senoide
   float actual_freq = min_freq;
 
   GPIOPinWrite(GPIO_PORTB_BASE, ENABLE_PIN, 0);
@@ -337,7 +338,7 @@ void NemaConfig(){
   LinearMov_Mngr.Began      = false;
   LinearMov_Mngr.Count      = 0;
   LinearMov_Mngr.CycleCount = 0;
-  LinearMov_Mngr.CycleThrshld = 1;
+  LinearMov_Mngr.CycleThrshld = 5;
   
   /*
   xTaskCreate(StepLoop,
@@ -427,8 +428,8 @@ void xChangeDirection(void *ptr){
 
   uint32_t status = GPIOIntStatus(GPIO_PORTE_BASE, true);
   uint32_t Prvstatus = 10;
-  float min_freq = 20*KILO_HZ;
-  float max_freq = 20*KILO_HZ;
+  float min_freq = 0.3*KILO_HZ;
+  float max_freq = 0.8*KILO_HZ;
   float actual_freq = min_freq;
   
   while(1){
@@ -439,7 +440,7 @@ void xChangeDirection(void *ptr){
     if (ChangeDirStatus & EC_1 && Prvstatus!=ChangeDirStatus) {
       Prvstatus=ChangeDirStatus;
   	  UARTprintf("\r\t\t\t\tEC_1\n");
-      //TriggerPWMSigmoidFrequency(&actual_freq, min_freq);
+        //TriggerPWMSigmoidFrequency(&actual_freq, min_freq);
       actual_freq = min_freq;
       GPIOPinWrite(GPIO_PORTB_BASE, DIR_PIN, 0);
       GPIOPinWrite(GPIO_PORTB_BASE, SLEEP_PIN, 0);
@@ -469,9 +470,9 @@ void xChangeDirection(void *ptr){
         LinearMov_Mngr.Count++;
     }
     if(LinearMov_Mngr.Count==2){
-  	  UARTprintf("\r\t\t\t\tLinear CycleCount\n");
       LinearMov_Mngr.Count = 0;
       LinearMov_Mngr.CycleCount++;
+  	  UARTprintf("\r\t\t\t\tLinear CycleCount %d\n",LinearMov_Mngr.CycleCount);
     }
     if(LinearMov_Mngr.CycleCount>=LinearMov_Mngr.CycleThrshld){
       GreenLightTurnOff();

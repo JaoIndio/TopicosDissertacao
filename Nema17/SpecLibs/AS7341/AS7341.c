@@ -60,8 +60,8 @@ void CheckArray(uint8_t *photo){
   UARTprintf("\n");
 }
 
-void PortDIntHanlder(){
-//  UARTprintf("\r\t\t\t[PortDIntHandler]\n");
+void PortDIntHanlder(){ 
+  //UARTprintf("\r\t\t\t[PortDIntHandler]\n");
   GPIOIntClear(GPIO_PORTD_BASE, GPIO_PIN_0);
   BaseType_t xHigherPriorityTaskWoken = pdFALSE;
   xSemaphoreGiveFromISR(AS7341_Semphr, &xHigherPriorityTaskWoken);
@@ -563,7 +563,8 @@ bool AS7341_SetSMUX(uint8_t* photoDiode, uint8_t* ADC_ID){
   as7341_intenab_t intenab_reg;
   intenab_reg.value =0;
   if(!AS7341_SetAcessAndRead( AS7341_REG_INTENAB, &intenab_reg.value)) return false;
-  intenab_reg.SIEN = 1;
+  intenab_reg.SIEN   = 1;
+  intenab_reg.SP_IEN = 1;
   if(!AS7341_SetAcessAndWrite(AS7341_REG_INTENAB, intenab_reg.value))   return false;
   
   if(!AS7341_WriteI2cReg2SMUX_Sel()) return false;
@@ -833,7 +834,102 @@ bool AS7341_SetI2cRegSMUX(uint8_t* photoDiode, uint8_t* ADC_ID){
   return true;
 }
 
+bool AS7341_SetSMUXMini(uint8_t* photoDiode, uint8_t* ADC_ID){
+  
+  as7341_sp_th_l_t lowTh;
+  as7341_sp_th_h_t highTh;
+  
+  lowTh.SP_TH_L_LSB = 0x01;
+  lowTh.SP_TH_L_MSB = 0x00;
 
+  highTh.SP_TH_H_LSB = 0x02;
+  highTh.SP_TH_H_MSB = 0x00;
+
+  AS7341_SetAcessAndWrite(AS7341_REG_SP_TH_L_LSB, lowTh.SP_TH_L_LSB);
+  AS7341_SetAcessAndWrite(AS7341_REG_SP_TH_L_MSB, lowTh.SP_TH_L_MSB);
+  AS7341_SetAcessAndWrite(AS7341_REG_SP_TH_H_LSB, highTh.SP_TH_H_LSB);
+  AS7341_SetAcessAndWrite(AS7341_REG_SP_TH_H_MSB, highTh.SP_TH_H_MSB);
+
+  float integrationTime = AS7341_GetIntegrationTimeADC()*1000; //tempo em ms
+  as7341_stat_t stat_rslt;
+  as7341_status2_t status2_rslt;
+  as7341_status_t status_rslt;
+
+  UARTprintf("\r[MINI] SetSmux\n");
+  if(!AS7341_SetSMUX(photoDiode, ADC_ID)) return false;
+
+  uint32_t readcount1=0;
+  uint32_t readcount2=0;
+  //xSemaphoreTake(AS7341_Semphr, portMAX_DELAY); //SINT_MUX interruption
+  
+  AS7341_DeviceStatus(AS7341_REG_STATUS,  &status_rslt.value);
+  AS7341_DeviceStatus(AS7341_REG_STATUS2, &status2_rslt.value);
+  AS7341_DeviceStatus(AS7341_REG_STAT,    &stat_rslt.value);
+  if(!stat_rslt.READY){
+    do{
+      AS7341_DeviceStatus(AS7341_REG_STAT,    &stat_rslt.value);
+      AS7341_DeviceStatus(AS7341_REG_STATUS2, &status2_rslt.value);
+      //vTaskDelay(pdMS_TO_TICKS(1));
+      readcount1++;
+    }while(!stat_rslt.READY);
+  }
+
+  UARTprintf("\r[MINI] Enable\n");
+  if(!AS7341_EnableSpecMen()) return false;
+  vTaskDelay(pdMS_TO_TICKS((uint32_t)integrationTime));
+  
+  do{
+    AS7341_DeviceStatus(AS7341_REG_STAT,    &stat_rslt.value);
+    AS7341_DeviceStatus(AS7341_REG_STATUS2, &status2_rslt.value);
+    readcount2++;
+  }while(!status2_rslt.AVALID);
+  UARTprintf("\nS[MUX Mini] Int. Time %d Read Count1 %d Count 2 %d, \n", \
+                                      (uint32_t)integrationTime,\
+                                      readcount1,\
+                                      readcount2);
+  
+  return true;
+}
+
+bool AS7341_ReadChannelsMini(uint8_t* photoDiode, uint8_t* ADC_ID, uint8_t* ADC_count){
+  float integrationTime = AS7341_GetIntegrationTimeADC()*1000; //tempo em ms
+  uint32_t readcount1=0;
+  uint32_t readcount2=0;
+  
+  as7341_stat_t stat_rslt;
+  as7341_status_t status_rslt;
+  as7341_status2_t status2_rslt;
+  as7341_status3_t status3_rslt;
+  as7341_status5_t status5_rslt;
+  as7341_status6_t status6_rslt;
+  as7341_astatus_t astat1_rslt;
+  as7341_astatus_t astat2_rslt;
+  //as7341_intenab_t intenab_reg;
+  as7341_control_t control_reg;
+  as7341_fifo_lvl_t fifo_lvl;
+
+  //xSemaphoreTake(AS7341_Semphr, portMAX_DELAY); //SINT_MUX interruption
+  do{
+    AS7341_DeviceStatus(AS7341_REG_STAT,    &stat_rslt.value);
+    vTaskDelay(pdMS_TO_TICKS(1));
+    readcount1++;
+  }while(!stat_rslt.READY);
+
+  do{
+    AS7341_DeviceStatus(AS7341_REG_STATUS2, &status2_rslt.value);
+    readcount2++;
+  }while(!status2_rslt.AVALID);
+  UARTprintf("\n[Read Mini] Int. Time %d Read Count1 %d Count 2 %d, \n", \
+                                      (uint32_t)integrationTime,\
+                                      readcount1,\
+                                      readcount2);
+  AS7341_BankAcessSet(AS7341_REG_CH0_DATA_L);
+  AS7341_read(AS7341_REG_CH0_DATA_L, ADC_count);
+  AS7341_read(AS7341_REG_CH0_DATA_H, ADC_count+1);
+  if(!AS7341_read(AS7341_REG_CH1_DATA_L, ADC_count+2)) return false;
+  if(!AS7341_read(AS7341_REG_CH1_DATA_H, ADC_count+3)) return false;
+  return true;
+}
 bool AS7341_ReadChannels(uint8_t* photoDiode, uint8_t* ADC_config, uint8_t* ADC_count){
   as7341_stat_t stat_rslt;
   as7341_status_t status_rslt;
@@ -882,18 +978,20 @@ bool AS7341_ReadChannels(uint8_t* photoDiode, uint8_t* ADC_config, uint8_t* ADC_
   AS7341_SetAcessAndRead(AS7341_REG_FIFO_LVL, &fifo_lvl.value);
 */
   if(!AS7341_SetSMUX(photoDiode, ADC_config)) return false;
+  //vTaskDelay(pdMS_TO_TICKS(10));
 
   //AS7341_DeviceStatus(AS7341_REG_STATUS,    &status_rslt.value);
   //AS7341_DeviceStatus(AS7341_REG_STATUS5, &status5_rslt.value);
   //if(!AS7341_SetAcessAndWrite(AS7341_REG_STATUS, status_rslt.value)) return false;
 
 /// * 
-  uint32_t readcount=0;
+  uint32_t readcount1=0;
+  uint32_t readcount2=0;
   vTaskDelay(pdMS_TO_TICKS(1));
   do{
     AS7341_DeviceStatus(AS7341_REG_STAT,    &stat_rslt.value);
     vTaskDelay(pdMS_TO_TICKS(1));
-    readcount++;
+    readcount1++;
   }while(!stat_rslt.READY);
 // * /
 
@@ -911,8 +1009,12 @@ bool AS7341_ReadChannels(uint8_t* photoDiode, uint8_t* ADC_config, uint8_t* ADC_
   
   do{
     AS7341_DeviceStatus(AS7341_REG_STATUS2, &status2_rslt.value);
+    readcount2++;
   }while(!status2_rslt.AVALID);
-  UARTprintf("\nAVALID %d, \n",readcount);
+  UARTprintf("\nInt. Time %d Read Count1 %d Count 2 %d, \n", \
+                                      (uint32_t)integrationTime,\
+                                      readcount1,\
+                                      readcount2);
   //if(!AS7341_SetAcessAndWrite(AS7341_REG_STATUS, status2_rslt.value)) return false;
   //AS7341_DeviceStatus(AS7341_REG_STAT,    &stat_rslt.value);
   
@@ -923,17 +1025,17 @@ bool AS7341_ReadChannels(uint8_t* photoDiode, uint8_t* ADC_config, uint8_t* ADC_
   if(!AS7341_read(AS7341_REG_CH1_DATA_L, ADC_count+2)) return false;
   if(!AS7341_read(AS7341_REG_CH1_DATA_H, ADC_count+3)) return false;
   //vTaskDelay(pdMS_TO_TICKS(50));
-  if(!AS7341_read(AS7341_REG_CH2_DATA_L, ADC_count+4)) return false;
-  if(!AS7341_read(AS7341_REG_CH2_DATA_H, ADC_count+5)) return false;
-  //vTaskDelay(pdMS_TO_TICKS(50));
-  if(!AS7341_read(AS7341_REG_CH3_DATA_L, ADC_count+6)) return false;
-  if(!AS7341_read(AS7341_REG_CH3_DATA_H, ADC_count+7)) return false;
-  //vTaskDelay(pdMS_TO_TICKS(50));
-  if(!AS7341_read(AS7341_REG_CH4_DATA_L, ADC_count+8)) return false;
-  if(!AS7341_read(AS7341_REG_CH4_DATA_H, ADC_count+9)) return false;
-  //vTaskDelay(pdMS_TO_TICKS(50));
-  if(!AS7341_read(AS7341_REG_CH5_DATA_L, ADC_count+10)) return false;
-  if(!AS7341_read(AS7341_REG_CH5_DATA_H, ADC_count+11)) return false;
+  //if(!AS7341_read(AS7341_REG_CH2_DATA_L, ADC_count+4)) return false;
+  //if(!AS7341_read(AS7341_REG_CH2_DATA_H, ADC_count+5)) return false;
+  ////vTaskDelay(pdMS_TO_TICKS(50));
+  //if(!AS7341_read(AS7341_REG_CH3_DATA_L, ADC_count+6)) return false;
+  //if(!AS7341_read(AS7341_REG_CH3_DATA_H, ADC_count+7)) return false;
+  ////vTaskDelay(pdMS_TO_TICKS(50));
+  //if(!AS7341_read(AS7341_REG_CH4_DATA_L, ADC_count+8)) return false;
+  //if(!AS7341_read(AS7341_REG_CH4_DATA_H, ADC_count+9)) return false;
+  ////vTaskDelay(pdMS_TO_TICKS(50));
+  //if(!AS7341_read(AS7341_REG_CH5_DATA_L, ADC_count+10)) return false;
+  //if(!AS7341_read(AS7341_REG_CH5_DATA_H, ADC_count+11)) return false;
   ////vTaskDelay(pdMS_TO_TICKS(50));
   
   AS7341_SetAcessAndRead(AS7341_REG_FIFO_LVL, &fifo_lvl.value);
@@ -983,6 +1085,10 @@ bool AS7341_GetStatus(uint8_t* result){
   
   *result = stat_reg.value;
   return true;
+}
+
+void AS7341_WaitIntSig(){
+  xSemaphoreTake(AS7341_Semphr, portMAX_DELAY); //SINT_MUX interruption
 }
 const float GeneralSpectralCorrectionMatrix[]={ 0.194140f,  -0.033867f, 0.009500f,  -0.001851f, 0.001581f,  -0.000362f, 0.000774f,  -0.000281f, -0.006954f, -0.000248f,\
   0.196110f,  -0.034209f, 0.009596f,  -0.001870f, 0.001597f,  -0.000366f, 0.000782f,  -0.000284f, -0.007024f, -0.000251f,\ 

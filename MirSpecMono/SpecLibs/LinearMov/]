@@ -1,0 +1,46 @@
+#ifndef _LIN_MOV_H_
+#define _LIN_MOV_H_
+
+#include <stdint.h>
+#include <stdint.h>
+#include <stdbool.h>
+#include <math.h>
+#include "inc/hw_memmap.h"
+#include "inc/hw_types.h"
+#include "driverlib/sysctl.h"
+#include "driverlib/gpio.h"
+#include "driverlib/pin_map.h"
+#include "driverlib/uart.h"
+
+/* Kernel includes. */
+#include "FreeRTOS.h"
+#include "task.h"
+#include "semphr.h"
+
+/* Hardware includes. */
+#include "inc/hw_ints.h"
+#include "inc/hw_memmap.h"
+#include "driverlib/adc.h"
+#include "driverlib/gpio.h"
+#include "driverlib/interrupt.h"
+#include "driverlib/sysctl.h"
+#include "driverlib/pwm.h"
+#include "driverlib/pin_map.h"
+#include "utils/uartstdio.h"
+#include "utils/ustdlib.h"
+#include "inc/hw_types.h"
+#include "driverlib/timer.h"
+
+/**
+   * @brief Instance structure to Mechanical Linear Movment.
+    Um ciclo de movimento equivale a uma das chaves serem exitadas duas vezes
+*/
+typedef struct{
+  bool     began;     /** flag que indica que aconteceu pelo menos 1 rising, dando inicio ao ciclo*/
+  bool     LimitSwitch_id;  /** id=0-> EC_1, id=1->EC_2*/
+  uint32_t count;     /**< points to the data of the matrix. */
+}LinMovCycle_t;
+
+#endif
+
+
