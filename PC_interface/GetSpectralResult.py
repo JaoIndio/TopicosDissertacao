@@ -9,7 +9,8 @@ import matplotlib
 matplotlib.use("TkAgg")
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
-    
+import time
+
 # Configuration
 START_BYTE = 0xAA
 STOP_BYTE = 0x55
@@ -87,7 +88,7 @@ def update_plot(frame):
   ax1.set_xlabel('WaveLength')
   ax1.set_ylabel('Value')
   ax1.set_title('Real-time UART Data')
-  ax1.set_ylim(-0.002,0.05)  # Adjust these limits based on your actual data range
+  #ax1.set_ylim(-0.002,0.2)  # Adjust these limits based on your actual data range
   ax1.legend()
   
   # Update max_values_over_time for tracking
@@ -104,7 +105,7 @@ def update_plot(frame):
   ax2.set_ylabel('Max Value')
   ax2.set_title('Maximum Value Over Time')
   ax2.legend()
-  ax2.set_ylim(min(max_values_over_time) - 0.01, max(max_values_over_time) + 0.01)
+  ax2.set_ylim(-0.002, max(max_values_over_time) + 0.01)
 
   plt.tight_layout()
 
@@ -115,8 +116,13 @@ def decode_packet(packet):
   while i < len(packet):
     # Each packet has a count byte followed by a 4-byte float
     count_bytes = packet[i:i+2]
-    count = (count_bytes[0] << 8) | count_bytes[1]
-    i += 2
+
+    if len(count_bytes) > 1:
+      count = (count_bytes[0] << 8) | count_bytes[1]
+      i += 2
+    else:
+      print("[Decode] Incomplete float data received. Count: ", len(count_bytes))
+      break;
 
     # Extract 4 bytes for the float
     float_bytes = packet[i:i + FLOAT_SIZE]

@@ -841,6 +841,8 @@ bool AS7341_ReadChannelsMini(uint8_t* photoDiode, uint8_t* ADC_ID, uint8_t* ADC_
 bool AS7341_PerformanceDbgInit();
 bool AS7341_PerformanceDbgSet();
 bool AS7341_PerformanceDbgClr();
+bool AS7341_AnalogAproxConfig(uint32_t freq);
+bool AS7341_AnalogAproxDutySet(float PhotoValue);
 void AS7341_WaitIntSig();
 
 //void SetPhotoArray(uint8_t* photoDiode, uint8_t len, uint8_t*PhotoArray, uint8_t* ADC_config);
