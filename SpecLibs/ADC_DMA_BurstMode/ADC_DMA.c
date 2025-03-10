@@ -19,10 +19,13 @@
 #include "inc/hw_types.h"
 
 #include "SpecResult/SpecResult.h"
+#include "DRV8825/drv8825.h"
+#include "MonoLight/mono_light.h"
 
 #define ADC_SEQ 3
 #define DMA_CHANNEL UDMA_CH17_ADC0_3
 #define ADC_INT_SEQ INT_ADC0SS3
+
 
 uint32_t adc_count =0;
 uint32_t dma_count =0;
@@ -31,15 +34,38 @@ uint32_t* UART_Tx = UART5_BASE + UART_O_DR;
 volatile uint8_t ADC_rslt[2];
 
 void GPIOFIntHandler(void) {
-  char actualTask[] = "\t\t\t\t[GPIOF Handler]\t\t";
+  BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+  uint32_t status = GPIOIntStatus(GPIO_PORTF_BASE, true);
+
+  //char actualTask[] = "\t\t\t\t[GPIOF Handler]\t\t";
   // Clear the GPIO interrupt flag
-  GPIOIntClear(GPIO_PORTF_BASE, GPIO_INT_PIN_4);
+  if(status & GPIO_PIN_4 ){ 
+    GPIOIntClear(GPIO_PORTF_BASE, GPIO_INT_PIN_4);
+    ADCTriggerDbgSet();
+    // Trigger ADC Sequencer 3
+    ADCProcessorTrigger(ADC0_BASE, ADC_SEQ);
+    //xEventGroupSetBitsFromISR(BurstEventGroup, BURST_FIFO_FULL, NULL);
+    //UARTprintf("%s ADC Trigger\n", actualTask);
+  }else if(status & PWM_INT){
+    GPIOIntClear(GPIO_PORTF_BASE, PWM_INT);
+    if(!StepCount.Began) StepCount.Began=true;
   
-  ADCTriggerDbgSet();
-  // Trigger ADC Sequencer 3
-  ADCProcessorTrigger(ADC0_BASE, ADC_SEQ);
-  //xEventGroupSetBitsFromISR(BurstEventGroup, BURST_FIFO_FULL, NULL);
-  //UARTprintf("%s ADC Trigger\n", actualTask);
+    if(StepCount.CycleCount<StepCount.CycleThrshld)
+      StepCount.Count++;
+
+    if(StepCount.Count>=160*5.5){
+      StepCount.Count = 0;
+      StepCount.CycleCount++;
+      vTaskNotifyGiveFromISR(xTrackInterfMovHandle, &xHigherPriorityTaskWoken);
+    }
+    if(StepCount.CycleCount>=StepCount.CycleThrshld){
+      GreenLightTurnOff();
+      GPIOPinWrite(GPIO_PORTB_BASE, SLEEP_PIN, 0);
+      NemaDisable();
+      vTaskDelete(xTrackInterfMovHandle);
+    }
+  }
+  portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
 }
 
 /******************************
@@ -62,8 +88,8 @@ void ADCIntHanlder(void){
   //if(ui32Mode == UDMA_MODE_STOP){
 ////
     UART5_DbgSet();
-    ADC_rslt[0] = (*((uint16_t*)(ADC0_BASE + ADC_O_SSFIFO3))>>8) & 0xFF;
-    ADC_rslt[1] = (*((uint16_t*)(ADC0_BASE + ADC_O_SSFIFO3))) & 0xFF;
+    ADC_rslt[0] = (*((uint16_t*)(ADC0_BASE + ADC_O_SSFIFO3))>>8) & 0xFF; // MSB
+    ADC_rslt[1] = (*((uint16_t*)(ADC0_BASE + ADC_O_SSFIFO3))) & 0xFF;    // LSB
     //ADC_rslt = *((uint16_t*)(ADC0_BASE + ADC_O_SSFIFO3));
     uDMAChannelTransferSet(UDMA_CH7_UART5TX | UDMA_PRI_SELECT, \
                            UDMA_MODE_BASIC,\
@@ -80,7 +106,15 @@ void ADCIntHanlder(void){
     uint32_t errorStatus = uDMAErrorStatusGet();
     uDMAChannelEnable(DMA_CHANNEL);
 */
-    xEventGroupSetBitsFromISR(BurstEventGroup, BURST_FIFO_FULL, NULL);
+    if(adc_count%200==0){
+      //UARTprintf("\r\t\t\tADC count: %d\n", adc_count); // Example processing
+    }
+    if(adc_count==1024*4){
+      //UARTprintf("\r\n\t\t\t\tDONE\n", adc_count); // Example processing
+      xEventGroupSetBitsFromISR(BurstEventGroup, BURST_FIFO_FULL, NULL);
+      //UARTprintf("\r\n\n"); // Example processing
+      adc_count=0;
+    }
     ADCTriggerDbgRst();
   //}
   taskYIELD();
@@ -122,6 +156,7 @@ void InitGPIOTrigger(){
   GPIOIntEnable(GPIO_PORTF_BASE, GPIO_PIN_4); // Step 3: Configure the interrupt
   UARTprintf("%s INT CallBackSet\n", actualTask);
   IntRegister(INT_GPIOF, GPIOFIntHandler);
+  IntPrioritySet(INT_GPIOF, 0x3);
   IntEnable(INT_GPIOF);
   
   //Performance Pin Configuration

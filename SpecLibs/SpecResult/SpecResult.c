@@ -129,6 +129,7 @@ void UART5_SendDataPacket(float *array, uint16_t count){
     floatPtr = (uint8_t *)&array[i];
     for( j = 0; j < 4; j++){
       UART5_SendByte(floatPtr[j]);
+      //UARTprintf("\t\t\t\tfloatPtr  %d\n", floatPtr[j]);
     }
 
     //vTaskDelay(pdMS_TO_TICKS(1));

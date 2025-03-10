@@ -12,6 +12,7 @@
 #include "semphr.h"
 
 /* Hardware includes. */
+#include "driverlib/timer.h"
 #include "inc/hw_ints.h"
 #include "inc/hw_memmap.h"
 #include "driverlib/adc.h"
@@ -24,6 +25,7 @@
 #include "utils/ustdlib.h"
 #include "AS7341/AS7341.h"
 #include "driverlib/i2c.h"
+#include "DRV8825/drv8825.h"
 
 // Esse codigo se baseia nos exemplos presente em 
 
@@ -31,9 +33,12 @@
 // ~/worksapece-v10/hello/external_devices/AS7341_photo.c &
 // ./Tiva/EK-TM4C/third_party/FreeRTOS/Demo/CORTEX_LM3S102_Rowley/Demo3/main.c
 uint8_t BankAcessControlValue = 0;
+uint8_t BankAcessSet =0; // 0 = LowLevel = |0x60 and 0x74|
 SemaphoreHandle_t I2C1_Semphr;
 SemaphoreHandle_t AS7341_Semphr;
+TaskHandle_t xAS7341_DebaunceIntHandle    = NULL;
 
+void PortDIntHanlder();
 
 bool AS7341_PerformanceDbgInit(){
   GPIOUnlockPin(GPIO_PORTB_BASE, GPIO_PIN_3);
@@ -62,6 +67,8 @@ void CheckArray(uint8_t *photo){
 
 void PortDIntHanlder(){ 
   //UARTprintf("\r\t\t\t[PortDIntHandler]\n");
+  // Entre o primeiro falling edge até seu rst são necessários
+  // 300 us
   GPIOIntClear(GPIO_PORTD_BASE, GPIO_PIN_0);
   BaseType_t xHigherPriorityTaskWoken = pdFALSE;
   xSemaphoreGiveFromISR(AS7341_Semphr, &xHigherPriorityTaskWoken);
@@ -126,18 +133,28 @@ bool AS7341_writeMultiples(uint8_t startReg, uint8_t *data, uint32_t length ){
 
 bool AS7341_read(uint8_t regAdd, uint8_t *data){
 
+  //AS7341_PerformanceDbgSet();    
   I2CMasterSlaveAddrSet(I2C1_BASE, AS7341_ADDR, false);
   I2CMasterDataPut(I2C1_BASE, regAdd);
   I2CMasterControl(I2C1_BASE, I2C_MASTER_CMD_SINGLE_SEND);
+  //AS7341_PerformanceDbgClr();   
 
+  //AS7341_PerformanceDbgSet();    
   if(!WaitACK()) return false;
+  //AS7341_PerformanceDbgClr();   
   
+  //AS7341_PerformanceDbgSet();    
   I2CMasterSlaveAddrSet(I2C1_BASE, AS7341_ADDR, true);
   I2CMasterControl(I2C1_BASE, I2C_MASTER_CMD_SINGLE_RECEIVE);
+  //AS7341_PerformanceDbgClr();   
 
+  //AS7341_PerformanceDbgSet();    
   if(!WaitACK()) return false;
+  //AS7341_PerformanceDbgClr();   
 
+  //AS7341_PerformanceDbgSet();    
   *data = I2CMasterDataGet(I2C1_BASE);
+  //AS7341_PerformanceDbgClr();   
   return true;
 }
 bool AS7341_readMultiples( uint8_t startReg, uint8_t *data, uint32_t length){
@@ -171,8 +188,9 @@ bool AS7341_readMultiples( uint8_t startReg, uint8_t *data, uint32_t length){
     data[index] = I2CMasterDataGet(I2C1_BASE);
   }
   
-  for(index=0; index<length; index++)
-    data_copy[index] = data[index];
+
+//  for(index=0; index<length; index++)
+//    data_copy[index] = data[index];
   return true;
 }
 
@@ -193,7 +211,7 @@ bool AS7341_i2cInit(){
   //GPIOPinTypeI2C(GPIO_PORTA_BASE, GPIO_PIN_7|GPIO_PIN_6);
   GPIOPinTypeI2C(GPIO_PORTA_BASE, GPIO_PIN_7);
 
-  I2CMasterInitExpClk(I2C1_BASE, SysCtlClockGet(), false);
+  I2CMasterInitExpClk(I2C1_BASE, SysCtlClockGet(), true);
   I2CMasterIntEnableEx( I2C1_BASE, I2C_MASTER_INT_DATA );
   IntEnable(INT_I2C1);
 
@@ -202,9 +220,14 @@ bool AS7341_i2cInit(){
   SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOD);
   GPIOUnlockPin(GPIO_PORTD_BASE, GPIO_PIN_0 | GPIO_PIN_1);
   GPIOPinTypeGPIOInput(GPIO_PORTD_BASE, GPIO_PIN_0);
-  GPIOIntTypeSet(GPIO_PORTD_BASE, GPIO_PIN_0, GPIO_FALLING_EDGE);
+  GPIOIntTypeSet(GPIO_PORTD_BASE, GPIO_PIN_0, \
+                 GPIO_FALLING_EDGE); //|GPIO_LOW_LEVEL);
+
   GPIOIntClear(GPIO_PORTD_BASE, GPIO_PIN_0);
   GPIOIntEnable(GPIO_PORTD_BASE, GPIO_INT_PIN_0);
+  
+  IntPrioritySet(INT_GPIOD, 0x2);
+  IntRegister(INT_GPIOD,PortDIntHanlder);
   IntEnable(INT_GPIOD);
   IntMasterEnable();
 
@@ -270,7 +293,14 @@ bool AS7341_DevivceConfig(){
   control_reg.FIFO_CLR        = 0; //Talvez valha pena ter uma funcao so pra esse cmd
   control_reg.CLEAR_SAI_ACT   = 0;
   if(!AS7341_SetAcessAndWrite(AS7341_REG_CONTROL, control_reg.value)) return false;
-*/  
+*/ 
+  as7341_intenab_t intenab_reg;
+  intenab_reg.ASIEN   = 0;
+  intenab_reg.SP_IEN  = 0;
+  intenab_reg.F_IEN   = 0;
+  intenab_reg.SIEN    = 1;
+  if(!AS7341_SetAcessAndWrite(AS7341_REG_INTENAB, intenab_reg.value)) return false;
+  
   return true;
 }
 bool AS7341_ADC_TimingConfig(){
@@ -294,12 +324,13 @@ bool AS7341_ADC_TimingConfig(){
 
 }
 bool AS7341_ADC_Config(){
+/*
   as7341_cfg1_t cfg1_reg;
   cfg1_reg.AGAIN   = 7; //
   if(!AS7341_SetAcessAndWrite(AS7341_REG_CFG1, cfg1_reg.value)) return false;
   
   as7341_cfg10_t cfg10_reg;
-  cfg10_reg.AGC_H   = 3; //
+  cfg10_reg.AGC_H   = 1; //
   cfg10_reg.AGC_L   = 0; //
   if(!AS7341_SetAcessAndWrite(AS7341_REG_CFG10, cfg10_reg.value)) return false;
 
@@ -311,7 +342,7 @@ bool AS7341_ADC_Config(){
   agc_gain_max_reg.AGC_AGAIN_MAX = 10;
   agc_gain_max_reg.AGC_FD_GAIN_MAX = 9;
   if(!AS7341_SetAcessAndWrite(AS7341_REG_AGC_GAIN_MAX, agc_gain_max_reg.value)) return false;
-
+*/
   as7341_cfg8_t cfg8_reg;
   cfg8_reg.FIFO_TH   = 3; //
   cfg8_reg.FD_AGC    = 0; //
@@ -959,7 +990,7 @@ bool AS7341_ReadChannels(uint8_t* photoDiode, uint8_t* ADC_config, uint8_t* ADC_
   AS7341_SetAcessAndRead(AS7341_REG_FIFO_LVL, &fifo_lvl.value);
   if(fifo_lvl.value!=0){
     if(!AS7341_SetAcessAndWrite(AS7341_REG_CONTROL, control_reg.value)) return false;
-    AS7341_SetAcessAndRead(AS7341_REG_FIFO_LVL, &fifo_lvl.value);
+    AS7341_SetAcessAndRead(AS7341_REG_
     if(fifo_lvl.value!=0){
       int fifo_index = fifo_lvl.value;
       while(1){
@@ -1025,17 +1056,17 @@ bool AS7341_ReadChannels(uint8_t* photoDiode, uint8_t* ADC_config, uint8_t* ADC_
   if(!AS7341_read(AS7341_REG_CH1_DATA_L, ADC_count+2)) return false;
   if(!AS7341_read(AS7341_REG_CH1_DATA_H, ADC_count+3)) return false;
   //vTaskDelay(pdMS_TO_TICKS(50));
-  //if(!AS7341_read(AS7341_REG_CH2_DATA_L, ADC_count+4)) return false;
-  //if(!AS7341_read(AS7341_REG_CH2_DATA_H, ADC_count+5)) return false;
+  if(!AS7341_read(AS7341_REG_CH2_DATA_L, ADC_count+4)) return false;
+  if(!AS7341_read(AS7341_REG_CH2_DATA_H, ADC_count+5)) return false;
   ////vTaskDelay(pdMS_TO_TICKS(50));
-  //if(!AS7341_read(AS7341_REG_CH3_DATA_L, ADC_count+6)) return false;
-  //if(!AS7341_read(AS7341_REG_CH3_DATA_H, ADC_count+7)) return false;
+  if(!AS7341_read(AS7341_REG_CH3_DATA_L, ADC_count+6)) return false;
+  if(!AS7341_read(AS7341_REG_CH3_DATA_H, ADC_count+7)) return false;
   ////vTaskDelay(pdMS_TO_TICKS(50));
-  //if(!AS7341_read(AS7341_REG_CH4_DATA_L, ADC_count+8)) return false;
-  //if(!AS7341_read(AS7341_REG_CH4_DATA_H, ADC_count+9)) return false;
+  if(!AS7341_read(AS7341_REG_CH4_DATA_L, ADC_count+8)) return false;
+  if(!AS7341_read(AS7341_REG_CH4_DATA_H, ADC_count+9)) return false;
   ////vTaskDelay(pdMS_TO_TICKS(50));
-  //if(!AS7341_read(AS7341_REG_CH5_DATA_L, ADC_count+10)) return false;
-  //if(!AS7341_read(AS7341_REG_CH5_DATA_H, ADC_count+11)) return false;
+  if(!AS7341_read(AS7341_REG_CH5_DATA_L, ADC_count+10)) return false;
+  if(!AS7341_read(AS7341_REG_CH5_DATA_H, ADC_count+11)) return false;
   ////vTaskDelay(pdMS_TO_TICKS(50));
   
   AS7341_SetAcessAndRead(AS7341_REG_FIFO_LVL, &fifo_lvl.value);
@@ -1073,9 +1104,16 @@ bool AS7341_Boot(){
   //if(!AS7341_ADC_Config()        ) return false;     
   //if(!AS7341_InterruptionConfig()) return false;     
   //if(!AS7341_OtherConfig()       ) return false;
-  //if(!AS7341_BufferConfig()      ) return false;
-
+  if(!AS7341_BufferConfig()      ) return false;
+    
   //if(!AS7341_PowerOff()) return false;
+/*
+  xTaskCreate(AS7341_IntWatchDog, "AS7341ReEnInt", configMINIMAL_STACK_SIZE+50, \
+                NULL, configMAX_PRIORITIES-8, \
+                &xAS7341_DebaunceIntHandle);
+*/
+
+
   return true;
 }
 
@@ -1087,9 +1125,51 @@ bool AS7341_GetStatus(uint8_t* result){
   return true;
 }
 
-void AS7341_WaitIntSig(){
-  xSemaphoreTake(AS7341_Semphr, portMAX_DELAY); //SINT_MUX interruption
+void AS7341_Debaunce(void *ptr) {
+  BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+  TimerIntClear(TIMER0_BASE, TIMER_TIMA_TIMEOUT);
+  vTaskNotifyGiveFromISR(xAS7341_DebaunceIntHandle, &xHigherPriorityTaskWoken);
+  portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
 }
+
+bool AS7341_WaitIntSig(){
+  if(xSemaphoreTake(AS7341_Semphr, pdMS_TO_TICKS(25))==pdFALSE) //portMAX_DELAY); //SINT_MUX interruption
+    return false;
+  else
+    return true;
+  //AS7341_PerformanceDbgClr();   
+}
+
+// USAR M1 PWM4 em PORTF0
+bool AS7341_AnalogAproxConfig(uint32_t freq){
+  SysCtlPeripheralEnable(SYSCTL_PERIPH_PWM1);
+  GPIOPinConfigure(GPIO_PF0_M1PWM4);
+  GPIOPinTypePWM(GPIO_PORTF_BASE, GPIO_PIN_0);
+
+  // Configure PWM1 Generator 3
+  uint32_t pwmClock = SysCtlClockGet() / 64; // PWM clock is system clock / 64
+  uint32_t load = (pwmClock / freq) - 1; // Set the load value based on the frequency
+  PWMGenConfigure(PWM1_BASE, PWM_GEN_2, PWM_GEN_MODE_DOWN | PWM_GEN_MODE_NO_SYNC);
+  PWMGenPeriodSet(PWM1_BASE, PWM_GEN_2, load);
+  
+  // Set the PWM duty cycle to 50% initially
+  PWMPulseWidthSet(PWM1_BASE, PWM_OUT_4, load / 2);
+  // Start PWM generator
+  PWMOutputState(PWM1_BASE, PWM_OUT_4_BIT, true);
+  PWMGenEnable(PWM1_BASE, PWM_GEN_2);
+
+}
+bool AS7341_AnalogAproxDutySet(float PhotoValue){
+  float dutyCycle = (PhotoValue/1.8);
+  uint32_t load = PWMGenPeriodGet(PWM1_BASE, PWM_GEN_2);
+  uint32_t compare = (uint32_t)((1.0f - dutyCycle) * load);
+
+  uint32_t pulseWidth = (uint32_t)((load * dutyCycle));
+  PWMPulseWidthSet(PWM1_BASE, PWM_OUT_4, pulseWidth);
+  //PWMPulseWidthSet(PWM1_BASE, PWM_OUT_4, compare);
+
+}
+
 const float GeneralSpectralCorrectionMatrix[]={ 0.194140f,  -0.033867f, 0.009500f,  -0.001851f, 0.001581f,  -0.000362f, 0.000774f,  -0.000281f, -0.006954f, -0.000248f,\
   0.196110f,  -0.034209f, 0.009596f,  -0.001870f, 0.001597f,  -0.000366f, 0.000782f,  -0.000284f, -0.007024f, -0.000251f,\ 
   0.198090f,  -0.034555f, 0.009693f,  -0.001889f, 0.001613f,  -0.000370f, 0.000790f,  -0.000287f, -0.007095f, -0.000253f,\
@@ -1715,4 +1795,74 @@ const float GeneralSpectralCorrectionMatrix[]={ 0.194140f,  -0.033867f, 0.009500
 
 const float as7341_array1[]={1,2,3};
 
+void DelayUs(uint32_t us, TaskHandle_t *RefTask){
+  xAS7341_DebaunceIntHandle = *RefTask;
+
+  SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER0);
+  while (!SysCtlPeripheralReady(SYSCTL_PERIPH_TIMER0)); // Ensure it's ready
+
+  TimerConfigure(TIMER0_BASE, TIMER_CFG_ONE_SHOT);
+
+  // Set Load Value (Convert us to clock cycles)
+  TimerLoadSet(TIMER0_BASE, TIMER_A, (SysCtlClockGet() / 1e6) * us - 1);
+
+/*
+TimerIntRegister(uint32_t ui32Base, uint32_t ui32Timer,
+                 void (*pfnHandler)(void))
+*/
+  TimerIntEnable(TIMER0_BASE, TIMER_TIMA_TIMEOUT);
+  TimerIntRegister(TIMER0_BASE, TIMER_A, AS7341_Debaunce);
+  IntMasterEnable();
+  
+  // Start Timer
+  TimerEnable(TIMER0_BASE, TIMER_A);
+  
+  UARTprintf("\rDelay Init\n");
+  xSemaphoreTake(xAS7341_DebaunceIntHandle, portMAX_DELAY); //SINT_MUX interruption
+  UARTprintf("\rDelay Done\n");
+  // Wait until timer expires
+  //while (TimerValueGet(TIMER0_BASE, TIMER_A) != 0);
+
+  //  Disable Timer After Completion
+  TimerDisable(TIMER0_BASE, TIMER_A);
+
+}
+
+void AS7341_IntWatchDog(void* ptr){
+  SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER0);
+  while (!SysCtlPeripheralReady(SYSCTL_PERIPH_TIMER0)); // Ensure it's ready
+
+  TimerConfigure(TIMER0_BASE,TIMER_CFG_PERIODIC);
+  
+  uint32_t us = 2000;
+  // Set Load Value (Convert us to clock cycles)
+  TimerLoadSet(TIMER0_BASE, TIMER_A, (SysCtlClockGet() / 1e6) * us - 1);
+
+/*
+TimerIntRegister(uint32_t ui32Base, uint32_t ui32Timer,
+                 void (*pfnHandler)(void))
+*/
+  TimerIntEnable(TIMER0_BASE, TIMER_TIMA_TIMEOUT);
+  TimerIntRegister(TIMER0_BASE, TIMER_A, AS7341_Debaunce);
+  IntPrioritySet(INT_GPIOF, 0x04);
+  IntMasterEnable();
+  
+  // Start Timer
+  TimerEnable(TIMER0_BASE, TIMER_A);
+  
+  while(1){
+    //UARTprintf("\t\t\tDelay Init\n");
+    //GPIOPinWrite(GPIO_PORTB_BASE, SLEEP_PIN, SLEEP_PIN);
+    ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+    xSemaphoreGive(AS7341_Semphr);
+    //GPIOPinWrite(GPIO_PORTB_BASE, SLEEP_PIN, 0);
+    UARTprintf("\t\t\t\t\t\t - AS7341 [WATCH DOG]\n");
+    //xSemaphoreTake(xAS7341_DebaunceIntHandle, portMAX_DELAY); //SINT_MUX interruption
+    // Wait until timer expires
+    //while (TimerValueGet(TIMER0_BASE, TIMER_A) != 0);
+
+    //  Disable Timer After Completion
+    //TimerDisable(TIMER0_BASE, TIMER_A);
+  }
+}
 #endif

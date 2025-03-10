@@ -28,31 +28,6 @@
 #include "LinearMov/LinMov.h"
 #include "MonoLight/mono_light.h"
 
-// Pin definitions
-#define STEP_PIN              GPIO_PIN_5 //PB5
-#define DIR_PIN               GPIO_PIN_0  //PB0
-#define ENABLE_PIN            GPIO_PIN_1
-#define SLEEP_PIN             GPIO_PIN_2
-#define ANALOG_SIMULATE       GPIO_PIN_7
-#define LINEAR_MOV_DBG        GPIO_PIN_0
-#define LINEAR_MOV_DBG_BASE   GPIO_PORTE_BASE
-
-// Dps de comprar um novo DRV consegui modular a freq do PWM de 100 até 30KHz sem problemas
-// no motor
-
-#define PWM_FREQUENCY 1000// <- Unica freq q consegui até agr com microstep de 32
-// DRV configurado no seu potenciometro de forma a limitar a corrente em 
-// 90mA-100mA com um PWM de 20KHz(osciloscópio 20.56KHz) foi uma das performances mais
-// estaveis observadas
-
-#define KILO_HZ 1000 // 1 kHzI
-
-// Define constants for the sigmoid function
-#define SIGMOID_K 0.001
-#define SIGMOID_X0 5000.0
-
-#define EC_1 GPIO_PIN_2  //PB0
-#define EC_2 GPIO_PIN_3
 //PE2 PE3 Handlers
 // Task handle
 /*
@@ -80,7 +55,9 @@
 */
 TaskHandle_t xDebaunceKeyHandle     = NULL;
 TaskHandle_t xChangeDirectionHandle = NULL;
+TaskHandle_t xTrackInterfMovHandle  = NULL;
 LinMovCycle_t LinearMov_Mngr;
+LinMovCycle_t StepCount;
 
 uint32_t ChangeDirStatus;
 
@@ -97,6 +74,7 @@ uint32_t getPWMFrequency();
 float    sigmoid(float x);
 void     xDebaunceKey(void *ptr);
 void     xChangeDirection(void *ptr);
+void     xTrackInterfMov(void *ptr);
 void     AnalogInit();
 void     PWM_SetDutyCycle(float dutyCycle);
 
@@ -269,24 +247,66 @@ void NemaInterruptionConfig(){
   
   // Step 4: Enable the GPIO Port B interrupt in the NVICasd
   IntRegister(INT_GPIOE, GPIOPortE_Handler);
+
   IntEnable(INT_GPIOE);
+
+  // Step 2: Configure PB5 as an input pin
+  GPIOPinTypeGPIOInput(GPIO_PORTF_BASE, PWM_INT);
+
+  // Step 3: Configure the interrupt
+  // 3.1: Disable the interrupt for PB5 while configuring
+  GPIOIntDisable(GPIO_PORTF_BASE, PWM_INT);
+
+  // 3.2: Clear any prior interrupt
+  GPIOIntClear(GPIO_PORTF_BASE, PWM_INT);
+
+  // 3.3: Configure PB5 to detect falling edges
+  GPIOIntTypeSet(GPIO_PORTF_BASE, PWM_INT, GPIO_RISING_EDGE);
+
+  GPIOPadConfigSet(GPIO_PORTF_BASE, PWM_INT, \
+                  GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD_WPU);
+
+  // 3.4: Enable the interrupt for PB5
+  GPIOIntEnable(GPIO_PORTF_BASE, PWM_INT); // Step 3: Configure the interrupt
+  
+  // Step 4: Enable the GPIO Port B interrupt in the NVICasd
+  // Isso é feito das funçẽos do arquivo ADC_DMA
+  //IntRegister(INT_GPIOB, GPIOPortF_Handler);
+  //IntEnable(INT_GPIOB);
 
    // Create the task to re-enable the interrupt
    xTaskCreate(xDebaunceKey, "ReEnableInterrupt", configMINIMAL_STACK_SIZE+50, \
-                NULL, 15, \
+                NULL, configMAX_PRIORITIES-1, \
                 &xDebaunceKeyHandle);
 
   xTaskCreate(xChangeDirection, "ChangeDirection", configMINIMAL_STACK_SIZE+50, \
-                NULL, 14, \
+                NULL, configMAX_PRIORITIES-1, \
                 &xChangeDirectionHandle);
+
+  xTaskCreate(xTrackInterfMov, "TrackInterMov", configMINIMAL_STACK_SIZE+50, \
+                NULL, configMINIMAL_STACK_SIZE-1, \
+                &xTrackInterfMovHandle);
   
-  float min_freq = 60*KILO_HZ;
-  float max_freq = 65*KILO_HZ; // <- Freq Maxima da Senoide
+  //float min_freq = 5*KILO_HZ;
+  //float max_freq = 10*KILO_HZ; // <- Freq Maxima da Senoide
+  float min_freq = 5;
+  float max_freq = 48;
   float actual_freq = min_freq;
 
   GPIOPinWrite(GPIO_PORTB_BASE, ENABLE_PIN, 0);
-  GPIOPinWrite(GPIO_PORTB_BASE, SLEEP_PIN, 0);
-  TriggerPWMSigmoidFrequency(&actual_freq, max_freq);
+  GPIOPinWrite(GPIO_PORTB_BASE, SLEEP_PIN, SLEEP_PIN);
+  //TriggerPWMSigmoidFrequency(&actual_freq, max_freq);
+
+
+  float dutyEq =0;
+  uint32_t frequency, pwmClock, load, step;
+  pwmClock = SysCtlClockGet() /64;
+  load = (pwmClock / max_freq) - 1;
+  PWMGenPeriodSet(PWM0_BASE, PWM_GEN_1, load);
+  PWMPulseWidthSet(PWM0_BASE, PWM_OUT_3, load / 2);
+
+
+  UARTprintf("\r\t\t\t\t\tNEMA Config Done\n");
 
 }
 
@@ -328,7 +348,7 @@ void NemaConfig(){
   GPIOPadConfigSet(GPIO_PORTB_BASE, ENABLE_PIN, GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD);
   GPIOPadConfigSet(GPIO_PORTB_BASE, SLEEP_PIN, GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD);
   
-  GPIOPinWrite(GPIO_PORTB_BASE, DIR_PIN, DIR_PIN);
+  GPIOPinWrite(GPIO_PORTB_BASE, DIR_PIN, 0);
   GPIOPinWrite(GPIO_PORTB_BASE, ENABLE_PIN, 1);
   GPIOPinWrite(GPIO_PORTB_BASE, SLEEP_PIN, 0);
   
@@ -338,7 +358,12 @@ void NemaConfig(){
   LinearMov_Mngr.Began      = false;
   LinearMov_Mngr.Count      = 0;
   LinearMov_Mngr.CycleCount = 0;
-  LinearMov_Mngr.CycleThrshld = 5;
+  LinearMov_Mngr.CycleThrshld = 6;
+
+  StepCount.Began      = false;
+  StepCount.Count      = 0;
+  StepCount.CycleCount = 0;
+  StepCount.CycleThrshld = 100*((2*12)+1);
   
   /*
   xTaskCreate(StepLoop,
@@ -477,13 +502,54 @@ void xChangeDirection(void *ptr){
     if(LinearMov_Mngr.CycleCount>=LinearMov_Mngr.CycleThrshld){
       GreenLightTurnOff();
       UARTprintf("\r\t\t\t\t\tNEMA Disable\n");
-      GPIOPinWrite(GPIO_PORTB_BASE, SLEEP_PIN, SLEEP_PIN);
+      GPIOPinWrite(GPIO_PORTB_BASE, SLEEP_PIN, 0);
       NemaDisable();
     }
     
     vTaskDelay(pdMS_TO_TICKS(1)/4);
     //SysCtlDelay(1*SysCtlClockGet()/1000000);
     GPIOPinWrite(GPIO_PORTB_BASE, SLEEP_PIN, SLEEP_PIN);
+  }
+}
+
+void xTrackInterfMov(void *ptr){
+  // conta a quantidade de pulsos PWM dado e muda a direção
+  //  Com os componentes atuais a coerência da luz é mantida
+  //  por um intervalo de 65um
+  //  O espelho móvel irá de deslocar +-0.5mm
+  //  Para um deslocamento total de 1mm, em 13%(0,065*2) das vezes a interferência será osbervada, desde que dentro deste 1mm, a interferência ocorra completamente
+  //  A cada step do DRV, aproximadamente ocorre um deslocamento de 6,5um
+  //  1mm = 154 steps
+  //  +-65um = 130um = 20 steps
+
+  // Considera-se que o espelho móvel já encontra-se, dentro deste plano referêncial,
+  // na posição 0mm
+
+  // MM   -->   -->   -->   -->   -->
+  // 0mm-------------------------------------1mm
+  // Esta Task deve ser chamada a cada borda do PWM
+
+  UARTprintf("\r\t\t\t\t\tTrack Task Init\n");
+  char actualTask[] = "\t\t\t[SMUX]\t\t";
+  UBaseType_t unusedStackWords = uxTaskGetStackHighWaterMark(NULL);
+  size_t unusedStackBytes = unusedStackWords * sizeof(StackType_t);
+  while(1){
+    //UARTprintf("\r\t\t\t\t\tTrack Task Take Try\n");
+    ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+    GPIOPinWrite(GPIO_PORTB_BASE, SLEEP_PIN, SLEEP_PIN);
+    //Toogle
+
+    //UARTprintf("\r\t\t\t\t\tTrack Task Loop\n");
+    if(StepCount.CycleCount>=StepCount.CycleThrshld){
+      UARTprintf("\r\t\t\t\t\tNEMA Disabled\n");
+    }
+    if(StepCount.Count==0){
+      GPIOPinWrite(GPIO_PORTB_BASE, DIR_PIN, \
+                 GPIOPinRead(GPIO_PORTB_BASE, DIR_PIN)^DIR_PIN);
+      UARTprintf("\r\t\t\t\t* Cycle Count %d\n", StepCount.CycleCount);
+      //UBaseType_t unusedStackWords = uxTaskGetStackHighWaterMark(NULL);
+      //UARTprintf("\r%s Unused stack memory: %u bytes\n", actualTask, (unsigned int)unusedStackBytes);
+    }
   }
 }
 

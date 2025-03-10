@@ -841,7 +841,12 @@ bool AS7341_ReadChannelsMini(uint8_t* photoDiode, uint8_t* ADC_ID, uint8_t* ADC_
 bool AS7341_PerformanceDbgInit();
 bool AS7341_PerformanceDbgSet();
 bool AS7341_PerformanceDbgClr();
-void AS7341_WaitIntSig();
+bool AS7341_AnalogAproxConfig(uint32_t freq);
+bool AS7341_AnalogAproxDutySet(float PhotoValue);
+bool AS7341_WaitIntSig();
+void AS7341_Debaunce(void *ptr);
+void AS7341_IntWatchDog(void *ptr);
+void DelayUs(uint32_t us, TaskHandle_t *RefTask);
 
 //void SetPhotoArray(uint8_t* photoDiode, uint8_t len, uint8_t*PhotoArray, uint8_t* ADC_config);
 

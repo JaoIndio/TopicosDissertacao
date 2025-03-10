@@ -284,6 +284,7 @@ FaultISR(void)
     //
     // Enter an infinite loop.
     //
+
     while(1)
     {
     }
