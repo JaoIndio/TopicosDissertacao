@@ -33,7 +33,8 @@ data_counts = []
 data_values = []
 max_values_over_time = []
 
-fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(8, 8))
+#fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(8, 8))
+fig, (ax1) = plt.subplots(1, 1, figsize=(8, 8))
 
 DIR = "./GreenRawResults"
 filename = "."
@@ -55,7 +56,7 @@ def read_csv_values(filename):
 
 
 ax1.cla()  # Clear the plot
-data_values = read_csv_values("./acquisition_71.csv")
+data_values = read_csv_values("./acquisition_201.csv")
 ax1.plot(data_values, label='Sensor Data')
 ax1.set_xlabel('Time')
 ax1.set_ylabel('Voltage')
