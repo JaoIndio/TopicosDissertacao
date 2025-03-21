@@ -16,6 +16,7 @@ STOP_BYTE = 0x55
 PORT = '/dev/ttyUSB0'  # Serial port for your USB-to-UART adapter
 BAUD_RATE = 921600*1    # 4.5Mbps
 ADC_SIZE = 2         # Size of each float in bytes
+ADC_FULLSCALE = 60         # Size of each float in bytes
     
 WAVELENGHT_SIZE  = 1024*40
 # Initialize serial port
@@ -129,26 +130,29 @@ def decode_packet(packet):
     # Extract 4 bytes for the float
     float_bytes = packet[i:i + ADC_SIZE]
     if len(float_bytes)>1:
+      print("[Decode] UART[0] ", float_bytes[0], "UART[1] ", float_bytes[1])
       adc_value =(float_bytes[0] << 8) | float_bytes[1] 
     else:
-      adc_value = 4095/2
+      adc_value = ADC_FULLSCALE/2
     if len(float_bytes) < ADC_SIZE:
-      adc_value = 4095/2
+      adc_value = ADC_FULLSCALE/2
       print("[Decode] Incomplete float data received. Len: ", len(float_bytes))
       print("[Decode] Incomplete float data received. Pkg Len: ", len(packet))
       break
 
     # Convert bytes to float
     #float_value = struct.unpack('<f', bytes(float_bytes))[0]  # '<f' for little-endian float
-    if adc_value>4095:
+    if adc_value>ADC_FULLSCALE:
       adc_value = (float_bytes[1] << 8) | float_bytes[0]
       #print("[Decode] adc Value ", adc_value)
       #print("[Decode] UART[0] ", float_bytes[0], "UART[1] ", float_bytes[1])
 
-    float_value = adc_value*3.3/4095
+    #float_value = adc_value*3.3/4095
+    float_value = adc_value
     floats.append((count, float_value))
     i += ADC_SIZE
-
+  
+  print("[Decode] adc Value ", adc_value)
   return floats
 
 def data_thread():

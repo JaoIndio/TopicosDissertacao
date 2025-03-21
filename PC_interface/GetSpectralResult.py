@@ -3,6 +3,7 @@
 import serial
 import struct
 import threading
+import numpy as np
 
 import tkinter as tk
 import matplotlib
@@ -72,15 +73,29 @@ def update_plot(frame):
   max_index = data_values.index(max(data_values))
   max_value = data_values[max_index]
   max_count = data_counts[max_index]
+  half_max_value = max_value/2
+
+  data_valuesArr = np.array(data_values)
+  FWHM_indices = np.where(data_valuesArr>=half_max_value)[0]
+  if len(FWHM_indices)<2:
+    FWHM = 1
+  else:
+    FWHM = FWHM_indices[-1] - FWHM_indices[0]
 
   # Plot a red point at the maximum value
   ax1.plot(max_count, max_value, 'ro')  # 'ro' means red color, circle marker
+  ax1.plot(FWHM, max_value-max_value*0.30, 'bo')  # 'ro' means red color, circle marker
 
   # Annotate the maximum value
     #arrowprops=dict(facecolor='red', shrink=0.005),\
+  ax1.annotate(f'{FWHM:.1f}' ,\
+    xy=(300, max_value-max_value*0.3), \
+    xytext=(300, max_value*0.7), \
+    fontsize=10, color='blue')
+  
   ax1.annotate(f'{max_count:.1f}' ,\
     xy=(max_count, max_value), \
-    xytext=(max_count, max_value + 0.001), \
+    xytext=(max_count, max_value*1.05), \
     fontsize=10, color='red')
 
   #print("values", data_counts)
@@ -114,7 +129,7 @@ def decode_packet(packet):
   floats = []
   i = 0
   while i < len(packet):
-    # Each packet has a count byte followed by a 4-byte float
+    # Each packet has a count byte followed by a 4-byte 3float
     count_bytes = packet[i:i+2]
 
     if len(count_bytes) > 1:
