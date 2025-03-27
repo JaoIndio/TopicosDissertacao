@@ -1,0 +1,2 @@
+[console_scripts]
+diffractio = diffractio.cli:main

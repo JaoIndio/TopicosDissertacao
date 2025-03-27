@@ -1,0 +1,2 @@
+[console_scripts]
+py_pol = py_pol.cli:main
