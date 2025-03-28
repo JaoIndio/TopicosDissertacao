@@ -63,7 +63,7 @@ z_detector = 30*um
 
 theta_m1 = 0   # Mirror 1 tilt angle
 theta_m2 = 0   # Mirror 2 tilt angle
-R_mirror = 12 * um  # Mirror radius (finite size)
+R_mirror = 5*12 * um  # Mirror radius (finite size)
 x_m1, y_m1 = 0 * um, 0 * um  # Mirror 1 center
 x_m2, y_m2 = 0 * um, 0 * um  # Mirror 2 center
 
@@ -74,19 +74,9 @@ num_steps = int(delta_z / step_z)  # Number of steps
 
 print("Scalar Source")
 u0 = Scalar_source_XY(x, y, wavelength)
-u0.gauss_beam(A=100, w0=6*um, r0=(0*um, 0*um), z0=0, theta=0) # nao sei qual o valor real
-outPutLight = u0.RS(z=10*mm)
-outPutLight.draw(kind='intensity', normalize=True)
-
-u1 = Scalar_source_XY(x, y, wavelength)
-u1.gauss_beam(A=100, w0=10*um, r0=(0*um, 0*um), z0=0, theta=0) # nao sei qual o valor real
-outPutLight1 = u1.RS(z=10*mm)
-outPutLight1.draw(kind='intensity', normalize=True )
-
-u2 = Scalar_source_XY(x, y, wavelength)
-u2.gauss_beam(A=100, w0=1*mm, r0=(0*um, 0*um), z0=0, theta=0) # nao sei qual o valor real
-outPutLight2 = u1.RS(z=10*mm)
-outPutLight2.draw(kind='intensity', normalize=True)
+u0.gauss_beam(A=1, w0=6*um, r0=(0*um, 0*um), z0=0, theta=0) # nao sei qual o valor real
+#outPutLight = u0.RS(z=10*mm)
+#outPutLight.draw(kind='intensity', normalize=True)
 
 # Introduz Incoerencia Espacial
 #print("Incoherent Source")
@@ -99,48 +89,45 @@ outPutLight2.draw(kind='intensity', normalize=True)
 #phi_smooth = gaussian_filter(phi_white, sigma=correlation_length)  # Smooth the phase
 #print("Incoherent Source 4")
 #phase_mask = np.exp(1j * phi_smooth)  # Convert to complex phase factor
-#
-## Step 4: Apply the phase mask to the source
-#print("Incoherent Source 5")
+
+# Step 4: Apply the phase mask to the source
+print("Incoherent Source 5")
 #u0.u *=phase_mask  # Modify the field to introduce incoherence
+#u0.u *=np.exp(1j * np.random.uniform(0, np.pi/4, size=u0.u.shape)) #  # Modify the field to introduce incoherence
+#u0.u *=np.exp(1j * np.random.uniform(0, np.pi/2, size=u0.u.shape)) #  # Modify the field to introduce incoherence
+u0.u *=np.exp(1j * np.random.uniform(0, 1*np.pi, size=u0.u.shape)) #  # Modify the field to introduce incoherence
 #u0.draw(kind='intensity')
-#
+
 #test_coherence(u0, u_incoherent)
-#print("concave Mirror Param")
-#focal_length = 50 * um  # Desired focal length
-#R = 2 * focal_length   # Radius of curvature (R = 2f for mirrors)
-#aperture_radius = 12 * um  # Physical size of the mirror
-#concave = Scalar_mask_XY(x, y, wavelength)
-#
-#
-#print("concave Mirror Init")
-## Method 2: Built-in function (equivalent)
-#concave.lens(r0=(0, 0), radius=(aperture_radius, aperture_radius), \
-#                        focal=(focal_length, focal_length), angle=0)
-#
-## Add a circular aperture to limit the concave size
-##concave.circle(r0=(0, 0), radius=aperture_radius, angle=0)
-#
-## Step 2: Propagate Light Source to Concave
-#print("concave Mirror Optical Input")
-## Method 2: Built-in function (equivalent)
-##u_concav = Scalar_field_XY(x, y, wavelength)
-#concav_refl = u0.RS(z=focal_length)
-#u_concav = concav_refl*concave
-#u_concav_dbg = u_concav.RS(z=focal_length+1*um)
+print("concave Mirror Param")
+focal_length = 10 * um  # Desired focal length
+R = 2 * focal_length   # Radius of curvature (R = 2f for mirrors)
+aperture_radius = 4*12 * um  # Physical size of the mirror
+concave = Scalar_mask_XY(x, y, wavelength)
+
+
+print("concave Mirror Init")
+# Method 2: Built-in function (equivalent)
+concave.lens(r0=(0, 0), radius=(aperture_radius, aperture_radius), \
+                        focal=(focal_length, focal_length), angle=0)
+
+# Add a circular aperture to limit the concave size
+#concave.circle(r0=(0, 0), radius=aperture_radius, angle=0)
+
+# Step 2: Propagate Light Source to Concave
+print("concave Mirror Optical Input")
+# Method 2: Built-in function (equivalent)
+#u_concav = Scalar_field_XY(x, y, wavelength)
+concav_refl = u0.RS(z=focal_length)
+u_concav = concav_refl*concave
+u_concav_dbg = u_concav.RS(z=focal_length+1*um)
 #u_concav_dbg.draw(kind='intensity')
-#print("concave Mirror Optical Propagation/Output")
-#print("From Concav to BM")
-#
-## Step 2: Propagate to beamsplitter
-#u_bs = u_concav.RS(z=z_bs)
+print("concave Mirror Optical Propagation/Output")
+print("From Concav to BM")
+
+# Step 2: Propagate to beamsplitter
+u_bs = u_concav.RS(z=z_bs)
 #u_bs.draw(kind='intensity')
-#u_bs = u0.RS(z=z_bs)
-
-plt.show()
-while True:
-  a=1
-
 
 #print("Scalar Field")
 #Step 3: Split at beamsplitter (50/50)
