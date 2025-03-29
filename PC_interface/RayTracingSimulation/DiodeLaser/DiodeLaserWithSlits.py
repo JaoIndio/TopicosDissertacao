@@ -53,7 +53,7 @@ z_bs = 30 * um  # Beamsplitter Z position
 #z_m1 = 150 * um  # Mirror 1 Z position
 z_m1 = 40 * um  # Mirror 1 Z position
 #z_m2_initial = 150 * um  # Mirror 2 Z position
-z_m2_initial = 40 * um  # Mirror 2 Z position
+z_m2_initial = 36 * um  # Mirror 2 Z position
 #z_detector = 140*um
 z_detector = 30*um
 
@@ -74,10 +74,10 @@ u0.gauss_beam(A=1, w0=6*um, r0=(0*um, 0*um), z0=0, theta=0) # nao sei qual o val
 
 # Step 4: Apply the phase mask to the source
 print("Incoherent Source 5")
-u0.u *=np.exp(1j * np.random.uniform(0, 1*np.pi, size=u0.u.shape)) #  # Modify the field to introduce incoherence
+u0.u *=np.exp(1j * np.random.uniform(0, np.pi/4, size=u0.u.shape)) #  # Modify the field to introduce incoherence
 
 print("concave Mirror 1 Param")
-focal_length = 10 * um  # Desired focal length
+focal_length = 50 * um  # Desired focal length
 R = 2 * focal_length   # Radius of curvature (R = 2f for mirrors)
 aperture_radius = 4*12*um  # Physical size of the mirror
 concave = Scalar_mask_XY(x, y, wavelength)
@@ -104,7 +104,7 @@ u_at_slit = u_concav.RS(z=2*focal_length)
 
 # Create a mask for the slit
 slit_mask   = Scalar_mask_XY(x, y, wavelength)
-slit_width  = 5*um  # 10 µm
+slit_width  = 400*um  # 10 µm
 slit_mask.u = np.where(np.abs(slit_mask.X) < slit_width / 2, 1, 0)
 
 # Apply the mask to the source
@@ -112,7 +112,7 @@ slit_masked = u_at_slit * slit_mask
 # Propagate the light using FFT
 
 print("concave Mirror 2 Param")
-focal_length2 = 10 * um  # Desired focal length
+focal_length2 = 50 * um  # Desired focal length
 R = 2 * focal_length2   # Radius of curvature (R = 2f for mirrors)
 aperture2_radius = 4*12 * um  # Physical size of the mirror
 concave2 = Scalar_mask_XY(x, y, wavelength)
@@ -202,7 +202,7 @@ for i in range(num_steps):
   
   # Plot interference pattern
   plt.imshow(np.abs(u_detector.u)**2, extent=[x.min()/um, x.max()/um, y.min()/um, y.max()/um], 
-             cmap='inferno', origin='lower')
+             cmap='inferno', origin='lower',vmax=0.75, vmin=0.0005)
   plt.colorbar(label="Intensity (a.u.)")
   plt.xlabel("X (um)")
   plt.ylabel("Y (um)")

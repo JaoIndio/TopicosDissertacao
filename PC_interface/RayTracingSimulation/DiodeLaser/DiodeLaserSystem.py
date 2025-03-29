@@ -37,7 +37,7 @@ print("Numpy and Matplot importation Done")
 print("Def 1")
 wavelength = 633*nm  # Wavelength of light (micrometers)
 simulation_width = 60*um # Width of simulation area (micrometers)
-num_points = 1024*1  # Number of points in simulation
+num_points = 512*1  # Number of points in simulation
 propagation_distance = 60*um  # Distance to screen (micrometers)
 
 degress = np.pi/180
@@ -57,7 +57,7 @@ z_bs = 30 * um  # Beamsplitter Z position
 #z_m1 = 150 * um  # Mirror 1 Z position
 z_m1 = 40 * um  # Mirror 1 Z position
 #z_m2_initial = 150 * um  # Mirror 2 Z position
-z_m2_initial = 40 * um  # Mirror 2 Z position
+z_m2_initial = 35 * um  # Mirror 2 Z position
 #z_detector = 140*um
 z_detector = 30*um
 
@@ -95,7 +95,7 @@ print("Incoherent Source 5")
 #u0.u *=phase_mask  # Modify the field to introduce incoherence
 #u0.u *=np.exp(1j * np.random.uniform(0, np.pi/4, size=u0.u.shape)) #  # Modify the field to introduce incoherence
 #u0.u *=np.exp(1j * np.random.uniform(0, np.pi/2, size=u0.u.shape)) #  # Modify the field to introduce incoherence
-u0.u *=np.exp(1j * np.random.uniform(0, 1*np.pi, size=u0.u.shape)) #  # Modify the field to introduce incoherence
+u0.u *=np.exp(1j * np.random.uniform(0, np.pi/4, size=u0.u.shape)) #  # Modify the field to introduce incoherence
 #u0.draw(kind='intensity')
 
 #test_coherence(u0, u_incoherent)
@@ -209,8 +209,9 @@ for i in range(num_steps):
   plt.clf()
   
   # Plot interference pattern
+  #plt.imshow(np.abs(u_detector.u)**2, extent=[x.min()/um, x.max()/um, y.min()/um, y.max()/um], 
   plt.imshow(np.abs(u_detector.u)**2, extent=[x.min()/um, x.max()/um, y.min()/um, y.max()/um], 
-             cmap='inferno', origin='lower')
+             cmap='inferno', origin='lower', vmax=0.08, vmin=0.0001)
   plt.colorbar(label="Intensity (a.u.)")
   plt.xlabel("X (um)")
   plt.ylabel("Y (um)")
