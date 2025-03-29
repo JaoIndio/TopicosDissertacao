@@ -57,7 +57,7 @@ def save_csv_func():
     #save points
     save_data_to_csv("AS7341 a 2.7kHz Luz vermelha F7. values overtime", 
                   "NEMA deslocando-se 15mm Luzes Off, PWM de 20Hz _ \
-                   _ Pos. Ini. FM: Nas Bordas do BS _ \
+                   _ Pos. Ini. FM: No fim do Furo 1 _ \
                    _ Pos. Ini. MM: Precao Maxima no Fim de Curso no Fim de Curso no Fim de Curso _ ",
                   points)
     print("\t\t\t\t\t[Save csv Func] csv saved")

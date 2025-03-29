@@ -1,4 +1,17 @@
 print("Script started Source")
+# At the start of your script:
+try:
+  import cupy as cp
+  from diffractio import set_backend
+  set_backend('cupy')  # Switch to GPU backend
+except ImportError:
+  print("CuPy not available, using NumPy")
+  import numpy as np
+
+# Modify your main loop:
+from concurrent.futures import ThreadPoolExecutor
+from threading import Lock
+
 from diffractio.scalar_sources_XY import Scalar_source_XY
 
 print("Mask")
@@ -13,7 +26,6 @@ from scipy.ndimage import gaussian_filter
 from matplotlib.widgets import Button
 from matplotlib.animation import FuncAnimation
 
-import numpy as np
 
 import matplotlib
 matplotlib.use('TkAgg')  # Non-interactive backend
@@ -55,6 +67,8 @@ delta_z = 40 * um  # Total distance to move Mirror 2
 step_z = 0.1 * um  # Step size
 num_steps = int(delta_z / step_z)  # Number of steps
 
+ItotalLED_lock = Lock()
+I_total_LED = np.zeros((len(y), len(x)))
 
 diameter = 50 * um      # LED emitting area diameter
 radius = diameter / 2
@@ -68,11 +82,30 @@ Y_sources = (R * np.sin(Theta)).flatten()
 intensity_per_source = 1 / len(X_sources)  # Uniform intensity
 
 # Function to propagate through your optical system
-def propagate_through_system(u0, i):
+def propagate_through_system(source_params):
+  
   """
   Propagate a point source field through mirrors, concave mirrors, and beamsplitters.
   Customize this based on your system configuration.
   """
+  x_s, y_s, i = source_params
+  global I_total_LED;
+
+  r=np.sqrt(x_s**2 + y_s**2)
+  n_led = 3.4  # Typical LED semiconductor refractive index
+  if r==0:
+    intensity= 1
+  else:
+    theta=np.arctan(r/z_detector)
+    intensity=np.cos(theta) #*(n_led / (2 * np.pi))  # Normalized
+    
+  # Define point source as a narrow Gaussian beam
+  u0 = Scalar_source_XY(x, y, wavelength)
+  #u0.gauss_beam(A=intensity, w0=1 * um, r0=(x_s, y_s), z0=0, theta=0)
+  u0.gauss_beam(A=1, w0=1 * um, r0=(x_s, y_s), z0=0, theta=0)
+  u0.u *= np.exp(1j * np.random.uniform(0, 2*np.pi, size=u0.u.shape))  # Critical: random phase
+
+
   #print("concave Mirror Param")
   focal_length = 10 * um  # Desired focal length
   R = 2 * focal_length   # Radius of curvature (R = 2f for mirrors)
@@ -131,7 +164,6 @@ def propagate_through_system(u0, i):
   #print("From Concav 2 to BM")
   u_bs = u_concav2.RS(z=z_bs)
   
-  
   #print("Scalar Field")
   #Step 3: Split at beamsplitter (50/50)
   t = 1 / np.sqrt(2)  # Transmission coefficient
@@ -165,46 +197,28 @@ def propagate_through_system(u0, i):
   u_detector_trans = r * u_trans_return  # Reflected part of transmitted beam
   u_detector_refl = t * u_refl_return    # Transmitted part of reflected beam
   u_detector.u = u_detector_trans.u + u_detector_refl.u
-
-  return u_detector, z_m2
-
-
-# Total intensity at observation plane
-I_total = np.zeros((len(y), len(x)))
+  
+  # Propagate through the system
+  #if u_detector.quality > 0.9:  # Diffractio's built-in check
+  #  u_detector.filter_highpass(threshold=0.1)
+    
+  with ItotalLED_lock:
+    I_total_LED+=np.abs(u_detector.RS(z=1*um).u)**2
+  return np.abs(u_detector.RS(z=10*nm).u)**2
 
 # Loop over point sources
-count = 0
-print(f"Espelho 2 Pos >  ", count/len(X_sources)*100,"%", end='\r')
-
-print(f"Simulando Propagacao da Luz do Led...  ", count/len(X_sources)*100,"%", end='\r')
-
 plt.figure(figsize=(8, 6))
 plt.ion()  # Enable interactive mode for dynamic updates
-I_total_LED = np.zeros((len(y), len(x)))
 for i in range(num_steps):
-  for x_s, y_s in zip(X_sources, Y_sources):
-    r=np.sqrt(x_s**2,y_s**2)
-    n_led = 3.4  # Typical LED semiconductor refractive index
-    if r==0:
-      intensity= 1
-    else:
-      theta=np.arctan(r/z_detector)
-      intensity=np.cos(theta)*(n_led / (2 * np.pi))  # Normalized
-      
-    # Define point source as a narrow Gaussian beam
-    print(f"\n\t\t\t\tConcluido >  ", count/len(X_sources)*100,"%", end='\n')
-    count +=1
-    u0 = Scalar_source_XY(x, y, wavelength)
-    u0.gauss_beam(A=intensity, w0=1 * um, r0=(x_s, y_s), z0=0, theta=0)
-    u0.u *= np.exp(1j * np.random.uniform(0, 2*np.pi, size=u0.u.shape))  # Critical: random phase
-      
-    # Propagate through the system
-    u_final, z_m2 = propagate_through_system(u0, i)
-    if u_final.quality > 0.9:  # Diffractio's built-in check
-      u_final.filter_highpass(threshold=0.1)
-      
-    I_total_LED += np.abs(u_final.RS(z=1*um).u)**2  # Propagate to detector plane
+  
+  source_params = [(x_s,y_s, i) for x_s, y_s in zip(X_sources, Y_sources)]
 
+  print(f"\nPropagacao do LED multhread\n")
+  with ThreadPoolExecutor(max_workers=6) as executor:
+    list(executor.map(propagate_through_system, source_params))
+   
+  z_m2 = z_m2_initial + i*step_z
+  
   count=0
   print(f"\nPropagacao do LED feita com sucesso\n")
   print(f"\nPlot >  \n")
@@ -221,6 +235,6 @@ for i in range(num_steps):
   # Update display
   plt.draw()
   plt.pause(0.1)  # Pause briefly to animate
-  #plt.show()
+    
 
 print(f"\nPropagacao do LED feita com sucesso\n")

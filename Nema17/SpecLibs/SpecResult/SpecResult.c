@@ -98,7 +98,7 @@ void UART5_Init(uint32_t baud_rate) {
   IntEnable(INT_UART5);
 
   // Set the UART interrupt priority (optional)
-  IntPrioritySet(INT_UART5, 0x00);
+  IntPrioritySet(INT_UART5, 0x05);
   IntRegister(INT_UART5, UART5IntHandler);
   
   UART5_DbgInit();
@@ -106,7 +106,8 @@ void UART5_Init(uint32_t baud_rate) {
 
 // Function to send a single byte over UART5
 void UART5_SendByte(uint8_t byte) {
-  UARTCharPut(UART5_BASE, byte);  // Waits until there is space in the FIFO and sends byte
+  //UARTCharPut(UART5_BASE, byte);  // Waits until there is space in the FIFO and sends byte
+  UARTCharPutNonBlocking(UART5_BASE, byte);  // Envia o byte sem executar espera ocupada
 }
 
 // Function to send an array of floats with the start, count, and stop bytes
@@ -129,6 +130,7 @@ void UART5_SendDataPacket(float *array, uint16_t count){
     floatPtr = (uint8_t *)&array[i];
     for( j = 0; j < 4; j++){
       UART5_SendByte(floatPtr[j]);
+      //UARTprintf("\t\t\t\tfloatPtr  %d\n", floatPtr[j]);
     }
 
     //vTaskDelay(pdMS_TO_TICKS(1));

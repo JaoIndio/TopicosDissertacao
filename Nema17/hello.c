@@ -34,7 +34,10 @@
 //#include "myLib.h"
 //#include "external_devices/AS7341_photo.h"
 #define SPEC_TOTAL_WAVELENGHT 620
-#define AS7341_MONO           0
+#define AS7341_MONO           1
+
+TaskHandle_t AS7341_Handle = NULL;
+
 volatile float IntTime;
 volatile float Gain;
 volatile float32_t Spectral400_600[SPEC_TOTAL_WAVELENGHT];
@@ -51,8 +54,8 @@ static void prvSetupHardware( void );
  * as the example is running. */
 static void prvConfigureUART(void);
 void joinADC();
-
 void ADC_DMA_Reader();
+void delay_us(uint32_t microseconds);
 
 volatile float PhotoOffset[11]={ 0.003347963f,0.005573356f,\
                                  0.007078014f,0.008031754f,\
@@ -123,6 +126,11 @@ void Correction1(uint16_t* ADC_Raw, bool round, float*PhotoCr ){
     }
   }
 }
+void NemaTaskCreation(void *ptr){
+  NemaConfig();
+  NemaInterruptionConfig();
+  vTaskDelete(NULL);
+}
 
 void joinADC(uint8_t* ADC_count, uint16_t* ADC_raw){
   uint8_t i =0;
@@ -138,8 +146,6 @@ void joinADC(uint8_t* ADC_count, uint16_t* ADC_raw){
   }
 }
 void AS7341_Begin(void *ptr){
-  
-  NemaInterruptionConfig();
   if(!AS7341_Boot())
     UARTprintf("AS7341 Boot ERROR\n");
   else
@@ -223,15 +229,15 @@ void AS7341_Begin(void *ptr){
   ADC_ID2[1] =  CONNECT_TO_GND;    
   //ADC_ID2[2] =  CONNECT_TO_ADC0;    
   ADC_ID2[2] =  CONNECT_TO_GND;    
-  ADC_ID2[3] =  CONNECT_TO_GND;    
+  ADC_ID2[3] =  CONNECT_TO_ADC0;    
   ADC_ID2[4] =  CONNECT_TO_GND;    
   ADC_ID2[5] =  CONNECT_TO_GND;    
   ADC_ID2[6] =  CONNECT_TO_GND;    
   //ADC_ID2[7] =  CONNECT_TO_ADC1;   
-  ADC_ID2[7] =  CONNECT_TO_ADC0;   
+  ADC_ID2[7] =  CONNECT_TO_GND;   
   
   //ADC_ID2[8]  = CONNECT_TO_ADC1<<4 | CONNECT_TO_GND;    
-  ADC_ID2[8]  = CONNECT_TO_ADC0<<4 | CONNECT_TO_GND;    
+  ADC_ID2[8]  = CONNECT_TO_GND<<4 | CONNECT_TO_GND;    
   ADC_ID2[9]  = CONNECT_TO_GND<<4 | CONNECT_TO_GND;   
   ADC_ID2[10] = CONNECT_TO_GND;   
   //ADC_ID2[11] = CONNECT_TO_ADC0;   
@@ -272,19 +278,48 @@ void AS7341_Begin(void *ptr){
 #if AS7341_MONO == 0
   uint16_t StepADC = 99;
 #else
-  uint16_t StepADC = 11;
+  // Step = 10; Time = 20; FreqFinal=+-1 KHz # Rodou por até 6min  R=4,7MOhms
+  // Step = 5;  Time = 20; FreqFinal=+-1 KHz # Rodou por menos de 1min ; R=1MOhm
+  // Step = 7;  Time = 20; FreqFinal=+-1.3 KHz # Rodou por 2min R=2.5 MOhms
+  // Step = 15;  Time = 25; FreqFinal=+-680 Hz # Rodou por 2min R=4.7 MOhms
+  // Step = 15;  Time = 25; FreqFinal=+-680 Hz # Rodou por 2min R=100 KOhms
+  // Step = 15;  Time = 30; FreqFinal=+-590 Hz # Rodou por 6min R=4.7 MOhms
+  // Step = 15;  Time = 33; FreqFinal=+-550Hz # Rodou por  5min R=4.7 MOhms
+  // Step = 15;  Time = 33; FreqFinal=+-550Hz # Rodou por mais de 10min R=10 MOhms(Ponteira do Osciloscopio)
+  // Step = 15;  Time = 33; FreqFinal=+-550Hz # Rodou por 8min R=10 MOhms
+  // Step = 15;  Time = 33; FreqFinal=+-550Hz # Rodou por menos de 5min R=10 MOhms (Resistor ceramico)
+  // sTEp = 10;  Time = 20; FreqFinal=+-1 KHz # Rodou por 5min R=10 MOhms (Ponteira Osc.)*Sem UART de prints
+  // sTEp = 15;  Time = 33; FreqFinal=+-550Hz # Rodou por +8min R=10 MOhms (Ponteira Osc.)*Sem UART de prints
+  // sTEp = 15;  Time = 25; FreqFinal=+-678Hz # Rodou por 1min R=10 MOhms (Ponteira Osc.)*Sem UART de prints
+  // sTEp = 15;  Time = 30; FreqFinal=+-590Hz # Rodou por 2min R=10 MOhms (Ponteira Osc.)*Sem UART de prints
+  
+  // sTEp = 10;  Time = 15; FreqFinal=+-1.23Hz # Rodou por  R=10 MOhms (Ponteira Osc.)*Sem UART de prints
+  // sTEp = 10;  Time = 5; FreqFinal=+-1.23Hz # Rodou por  R=10 MOhms (Ponteira Osc.)*Sem UART de prints
+  
+  // sTEp = 10;  Time = 5; FreqFinal=+2kHz # Rodou por 4min sem RC paralelo * Sem UART de prints
+  // sTEp = 10;  Time = 5; FreqFinal=+2kHz # Rodou por 4min R=10 MOhms (Ponteira Osc.)*Sem UART de prints
+
+  // sTEp = 5;  Time = 10; FreqFinal=+-2kHz # Rodou por 1min15s sem RC paralelo * Sem UART de prints
+  // sTEp = 5;  Time = 10; FreqFinal=+-2kHz # Rodou por 1min R=10 MOhms (Ponteira Osc.)*Sem UART de prints
+
+
+  // Maxima frequencia de operação prolongada do AS7341: 550Hz com RC paralelo, R da ponteira e C 1nF(cap.ceramico)
+  // Com isso a freqeuncia máxima do NEMA precisa ser 13Hz
+  //uint16_t StepADC = 66;
+  uint16_t StepADC = 12;
 #endif
   if(!AS7341_SetStepADC(StepADC))
     UARTprintf("\rSet STEP Error\n");
 #if AS7341_MONO == 0
   uint8_t TimeADC  = 99;
 #else
-  uint8_t TimeADC  = 4;
+  //uint8_t TimeADC  = 33;
+  uint8_t TimeADC  = 7;
 #endif
   if(!AS7341_SetTimeADC(TimeADC))
-    UARTprintf("\rSet Time Error\n");
+    UARTprintf("\rSet Time Error a\n");
 
-  uint8_t Wtime_value;
+  uint8_t Wtime_value; //assad
   Wtime_value = (StepADC+1)*(TimeADC+1)*2.78f/1000.0f; // time in ms
   uint8_t wtime_value = (Wtime_value/2.78)+2;
   AS7341_SetWtimeADC(wtime_value);
@@ -332,16 +367,44 @@ void AS7341_Begin(void *ptr){
 */
   AS7341_DeviceStatus(AS7341_REG_STATUS,  &status_rslt.value);
   AS7341_SetAcessAndWrite(AS7341_REG_STATUS, status_rslt.value);
-  AS7341_AnalogAproxConfig(6000);
+  //AS7341_AnalogAproxConfig(6000);
+  uint32_t us = 2000;
+  char actualTask[] = "\t\t\t[SMUX]\t\t";
+  //UBaseType_t unusedStackWords = uxTaskGetStackHighWaterMark(NULL);
+  //size_t unusedStackBytes = unusedStackWords * sizeof(StackType_t);
+  status_rslt.value = 0x88;
+
+  AS7341_pooling = false;
   while(1){
+    
+    //Ou leva 562us pra ler e reconfigurar AS7341, e enviar UART
+    // Ou leva 278us
     AS7341_PerformanceDbgSet();    
-    AS7341_WaitIntSig();
+    
+    //while(1){
+    //  if(AS7341_pooling) break;
+    //}
+    //AS7341_pooling = false;
+
+    ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+    //if(!AS7341_WaitIntSig()){
+    //  while(1){
+    //    UARTprintf("\t\t\t - AS7341 Waiting Int. Signal ERROR\n");
+    //    vTaskDelay(pdMS_TO_TICKS(2500));
+    //  }
+    //}
     AS7341_PerformanceDbgClr();   
     
-    AS7341_BankAcessSet(AS7341_REG_CH0_DATA_L);
-    //AS7341_read(AS7341_REG_CH0_DATA_L, ADC_count);
+
+    if(!AS7341_BankAcessSet(AS7341_REG_CH0_DATA_L))
+      UARTprintf("\t\t\t - AS7341 Bank ERROR\n");
     //AS7341_read(AS7341_REG_CH0_DATA_H, ADC_count+1);
-    AS7341_read(AS7341_REG_CH0_DATA_L, ADC_count);
+    if(!AS7341_read(AS7341_REG_CH0_DATA_L, ADC_count)){
+      UARTprintf("\t\t\t - AS7341 DATA Low ERROR\n");
+      ADC_count[0]=60;
+    }
+    if(!AS7341_SetAcessAndWrite(AS7341_REG_STATUS, status_rslt.value))
+      UARTprintf("\t\t\t - AS7341 Status Read ERROR\n");
     //AS7341_read(AS7341_REG_CH0_DATA_H, ADC_count+1);
     //AS7341_readMultiples(AS7341_REG_CH1_DATA_L, ADC_count+2,2);
 
@@ -358,21 +421,31 @@ void AS7341_Begin(void *ptr){
     //AS7341_read(AS7341_REG_FDATA_H, ADC_count+3);    
     
     //AS7341_DeviceStatus(AS7341_REG_STATUS,  &status_rslt.value);
-    status_rslt.value = 0x88;
-    AS7341_SetAcessAndWrite(AS7341_REG_STATUS, status_rslt.value);
+
     
     //joinADC(ADC_count, ADC_raw);
     //F5_intensity = (float)ADC_raw[0]*1.8f/ADC_fullscale;
-    F4_intensity = (float)ADC_count[0]*1.8f/ADC_fullscale;
-    AS7341_AnalogAproxDutySet(F4_intensity*0.5);
+
+    //AS7341_PerformanceDbgSet();    
+    F4_intensity = (float)ADC_count[0]*1.0f/ADC_fullscale;
+    //AS7341_AnalogAproxDutySet(F4_intensity*0.5);
     //AS7341_AnalogAproxDutySet(1.8*0.65*0.5);
 
-    //UART5_SendDataPacket(F4_intensity, 1);
+    UART5_SendDataPacket(&F4_intensity, 1);
+    //AS7341_PerformanceDbgClr();   
+    
+    //DelayUs(125, &AS7341_Handle);
+    //IntEnable(INT_GPIOD);
+    // Fazer um WatchDog pra qndo o AS7341 para de responder
+    // atualmente ele opera por 1min30seg e dps para.
+    // Investigar Fila, pode ser que ela seja o problema
+    //vTaskDelay(pdMS_TO_TICKS());
+    //delay_us(10);
 /*
     UARTprintf("-------------------------------\n");
     UARTprintf("\t\t\t\tADC Full Scale %d\n", (int)(ADC_fullscale*10000));
-    UARTprintf("\t\t\t\tADC Raw F5     %x\n", ADC_raw[0]);
-    UARTprintf("\t\t\t\tADC Raw F4     %x\n", ADC_raw[1]);
+    UARTprintf("\t\t\t\tADC Raw F7     %x\n", ADC_count[0]);
+    UARTprintf("\t\t\t\tADC Raw F5     %x\n", ADC_count[1]);
     UARTprintf("\t\t\t\t* F5 Voltage   %d\n", (int)(F5_intensity*10000));
     UARTprintf("\t\t\t\t* F4 Voltage   %d\n", (int)(F4_intensity*10000));
     UARTprintf("\n\n");
@@ -478,7 +551,7 @@ void AS7341_Begin(void *ptr){
 
 int main(void){
   prvSetupHardware();
-  NemaConfig();
+  //NemaConfig();
   //UART5_Init(921600*5); //1Mbs = 921600 //2Mss*3 = +-6Mbs
 
 #if AS7341_MONO == 1
@@ -486,24 +559,31 @@ int main(void){
 #else
   UART5_Init(115200); //1Mbs = 921600 //2Mss*3 = +-6Mbs
 #endif
-  NemaInterruptionConfig();
+  //NemaInterruptionConfig();
   //">CCS App Center</a> to oinstall othe compiler of  the required version, or migrate the project to one of the available compiler versions by adjusting project properties. EQU_Firmware_L0 properties Proble
   //LinearMovValidation();
   //UARTprintf("Hello World!\n");
   
   //verificar se criou certo
-///*
-  xTaskCreate(AS7341_Begin, "AS7341", configMINIMAL_STACK_SIZE+50, \
-                NULL, configMAX_PRIORITIES-5, \
+// /*  
+  xTaskCreate(NemaTaskCreation, "NemaTask", configMINIMAL_STACK_SIZE+50, \
+                NULL, configMAX_PRIORITIES-1, \
                 NULL);
-//*/
-/// *
-  xTaskCreate(ADC_DMA_Reader, "AdcDMA", configMINIMAL_STACK_SIZE+70, \
-                NULL, configMAX_PRIORITIES-6, \
-                NULL);
-// * /
+// /*
+  
+  xTaskCreate(AS7341_Begin, "AS7341", configMINIMAL_STACK_SIZE+50, 
+                NULL, configMAX_PRIORITIES-1, 
+                &AS7341_Handle);
 
+// */
+  xTaskCreate(ADC_DMA_Reader, "AdcDMA", configMINIMAL_STACK_SIZE+50, \
+                NULL, configMAX_PRIORITIES-1, \
+                NULL);
+// */
+
+  UARTprintf("\t* Main Done\n");
   vTaskStartScheduler();
+  //vTaskDelete(NULL);
   while(1){ 
 
   }
@@ -667,3 +747,17 @@ void ADC_DMA_Reader(){
     - Avaliação preliminar da necessidade de código para o detector e o emissor IR
 
 ***************************************************/
+
+void delay_us(uint32_t microseconds){
+  
+  // Calculate number of clock cycles (assuming 80MHz system clock)
+  uint32_t ticks = (SysCtlClockGet() / 1000000) * microseconds;
+  SysTickPeriodSet(ticks);
+  SysTickEnable();
+
+  while(SysTickValueGet() > 0); // Wait until timer counts down
+    SysTickDisable();
+}
+
+
+
