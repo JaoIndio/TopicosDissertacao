@@ -55,8 +55,8 @@ def save_csv_func():
     with data_lock:
       points = [data_points for data_points in data_deque]
     #save points
-    save_data_to_csv("AS7341 a 2.7kHz Luz vermelha F7. values overtime", 
-                  "NEMA deslocando-se 15mm Luzes Off, PWM de 20Hz _ \
+    save_data_to_csv("AS7341 a 2.7kHz Luz vermelha F7. values overtimae", 
+                  "NEMA deslocando-se 5mm Luzes Off, PWM de 20Hz _ \
                    _ Pos. Ini. FM: No fim do Furo 1 _ \
                    _ Pos. Ini. MM: Precao Maxima no Fim de Curso no Fim de Curso no Fim de Curso _ ",
                   points)

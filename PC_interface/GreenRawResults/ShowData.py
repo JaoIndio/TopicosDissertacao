@@ -56,7 +56,7 @@ def read_csv_values(filename):
 
 
 ax1.cla()  # Clear the plot
-data_values = read_csv_values("./acquisition_201.csv")
+data_values = read_csv_values("./acquisition_227.csv")
 ax1.plot(data_values, label='Sensor Data')
 ax1.set_xlabel('Time')
 ax1.set_ylabel('Voltage')
