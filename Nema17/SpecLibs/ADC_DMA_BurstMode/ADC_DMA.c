@@ -53,7 +53,7 @@ void GPIOFIntHandler(void) {
     if(StepCount.CycleCount<StepCount.CycleThrshld)
       StepCount.Count++;
 
-    if(StepCount.Count>=160*10){
+    if(StepCount.Count>=160*5){
     //if(StepCount.Count>=80){
       StepCount.Count = 0;
       StepCount.CycleCount++;
