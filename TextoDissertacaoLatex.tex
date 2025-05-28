@@ -1,0 +1,1256 @@
+% % % % % % % %  MDT UFSM 2021  % % % % % % % % 
+%% Arquivo base para o documento - ver. 1.0 %%
+% % % % % % % % % % % % % % % % % % % % % % % % 
+
+
+% % % OPCOES DE COMPILACAO
+% % % PAGINACAO
+% % % PAGINACAO SIMPLES (FRENTE): PARA TRABALHOS COM MENOS DE 100 PAGINAS
+\documentclass[oneside,openright,12pt]{ufsm_2021} %%%%% OPCAO PADRAO -> PAGINACAO SIMPLES. PARA TRABALHOS COM MAIS DE 100 PAGINAS COMENTE ESTA LINHA E DESCOMENTE A LINHA 
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% PAGINACAO DUPLA (FRENTE E VERSO): PARA TRABALHOS COM MAIS DE 100 PAGINAS
+% \documentclass[twoside,openright,12pt]{ufsm_2021}  %%%% PARA TRABALHOS COM MAIS DE 100 PAGINAS DESCOMENTE AQUI
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+% % % %  CODIFICACAO DO TEXTO 
+% % % %  POR PADRAO USA-SE UTF8. PARA APLICAR A CODIFICACAO OESTE EUROPEU (ISO 8859-1) DESCOMENTE A LINHA ABAIXO. ELA ATIVA A OPCAO "latin1" DO PACOTE "inputenc"
+% \oesteeuropeu
+% % % % % % % % % % % 
+
+
+
+% % % % % % % % PACOTES PESSOAIS % % % % % % % %  
+\usepackage{lipsum}
+\usepackage{quoting}
+
+
+% % % % % % % % DEFINICOES PESSOAIS % % % % % % % %
+
+
+
+
+
+
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
+
+
+
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
+% % % % % % % % % % % % DADOS DO TRABALHO % % % % % % % % % % % % 
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
+
+% % % % % % % % % % INFORMACOES INSTITUCIONAIS % % % % % % % % % % 
+
+
+% % CENTRO DE ENSINO DA UFSM
+\centroensino{Centro de Tecnologia}  %%% NOME POR EXTENSO
+\centroensinosigla{CT}  %%% SIGLA
+
+% % CURSO DA UFSM
+\nivelensino{Pós-Graduação}  %%%%%%% NIVEL DE ENSINO 
+\curso{Engenharia Elétrica}   %%%%% NOME POR EXTENSO
+\ppg{PPGEE}   %%%%%% SIGLA
+\statuscurso{Programa}  %%%% STATUS= {Programa} ou {Curso}
+% \EAD  %%%% para cursos EAD
+% % % %  LOCAL DO CAMPUS OU POLO
+\cidade{Santa Maria}
+\estado{RS}
+
+
+% % % % % % % % % % INFORMACOES DO AUTOR % % % % % % % % % % 
+\author{João Felipe Amaral Santiago}   %%%%% AUTOR DO TRABALHO
+\sexo{M} %%%% SEXO DO AUTOR -> M=masculino   F=feminino (IMPORTANTE PARA AJUSTAR PAGINAS PRE-TEXTUAIS)
+\grauensino{Mestrado}    %%%%%%%% GRAU DE ENSINO A SER CONCLUIDO
+\grauobtido{Mestradi}    %%%%% TITULO OBTIDO
+\email{joaofelipe.santiago@ecomp.ufsm.br}   %%%% E-MAIL PARA CATALOGRAFICA (COPYRIGHT) - OBRIGATORIO
+\endereco{Rua Venâncio Aires, 1434, Bloco B, Apt. 509} %%%% TELEFONE PARA CATALOGRAFICA (COPYRIGHT) (CAMPO OPICIONAL -- CASO NAO POSSUA OU NAO QUEIRA DIVULGAR COMENTE A LINHA)
+\fone{55 98403 1446}   %%%% TELEFONE PARA CATALOGRAFICA (COPYRIGHT) FORMATO {11 2222 3333} (CAMPO OPICIONAL -- CASO NAO POSSUA OU NAO QUEIRA DIVULGAR COMENTE A LINHA)
+%\fax{11 2222 3333}   %%%% FAX PARA CATALOGRAFICA (COPYRIGHT) FORMATO {11 2222 3333} (CAMPO OPICIONAL -- CASO NAO POSSUA OU NAO QUEIRA DIVULGAR COMENTE A LINHA)
+
+
+% % % % % % % % % % INFORMACOES DA BANCA % % % % % % % % % % 
+% OBSERVACOES: O CAMPO ORIENTADOR EH OBRIGATORIO E NAO DEVE SER COMENTADO
+% % % % % %    OS DEMAIS MEMBROS DA BANCA (COOREIENTADOR E DEMAIS PROFESSORES) QUANDO COMENTADOS NAO APARECEM NA FOLHA DE APROVACAO (O LAYOUT DA FOLHA DE APROVACAO ESTA PREPARADO PARA O ORIENTADOR E ATE MAIS 4 MEMBROS NA BANCA
+\orientador{Carlos Henrique Barriquello}{Dr}{UFSM}{M}{P}  %%%INFORMACOES SOBRE ORIENTADOR: OS CAMPOS SAO:{NOME}{SIGLA DA TITULACAO}{SIGLA DA INSTITUICAO DE ORIGEM}{SEXO} M=masculino   F=feminino {PARTE DA BANCA?} P=presidente  M=Membro  N=Nao faz parte
+\coorientador{Maria da Costa}{Dra}{AAAA}{F}{M} %%%INFORMACOES SOBRE CO-ORIENTADOR: OS CAMPOS SAO:{NOME}{SIGLA DA TITULACAO}{SIGLA DA INSTITUICAO DE ORIGEM}{SEXO} M=masculino   F=feminino {PARTE DA BANCA?} P=presidente  M=Membro  N=Nao faz parte
+\bancaum{Banca Um}{Dr}{AAAA}{F}{M}  %%%INFORMACOES SOBRE PRIMEIRO NOME DA BANCA: OS CAMPOS SAO:{NOME}{SIGLA DA TITULACAO}{SIGLA DA INSTITUICAO DE ORIGEM}{SEXO} M=masculino   F=feminino {PARTE DA BANCA?} P=presidente  M=Membro  N=Nao faz parte
+%\bancadois{Banca Dois}{Dr}{BBBB}  %%%INFORMACOES SOBRE SEGUNDO NOME DA BANCA: OS CAMPOS SAO:{NOME}{SIGLA DA TITULACAO}{SIGLA DA INSTITUICAO DE ORIGEM}
+% \bancatres{Banca Três}{Dra}{CCCC} %%%INFORMACOES SOBRE TERCEIRO NOME DA BANCA: OS CAMPOS SAO:{NOME}{SIGLA DA TITULACAO}{SIGLA DA INSTITUICAO DE ORIGEM}
+% \bancaquatro{Banca Quatro}{Dr}{DDDD} %%%INFORMACOES SOBRE QUARTO NOME DA BANCA: OS CAMPOS SAO:{NOME}{SIGLA DA TITULACAO}{SIGLA DA INSTITUICAO DE ORIGEM}
+% \bancacinco{Banca Cinco}{Dra}{EEEE} %%%INFORMACOES SOBRE QUARTO NOME DA BANCA: OS CAMPOS SAO:{NOME}{SIGLA DA TITULACAO}{SIGLA DA INSTITUICAO DE ORIGEM}
+% \supervisor{Al Paccino}{Dr}{MAFIA}{M}{N} %%%INFORMACOES SOBRE SUPERVISOR (indicado para estagios): OS CAMPOS SAO:{NOME}{SIGLA DA TITULACAO}{SIGLA DA INSTITUICAO DE ORIGEM}{SEXO} M=masculino   F=feminino {PARTE DA BANCA?} P=Presidente  M=Membro  N=Nao faz parte
+
+
+
+% % % % % % % % % % REALIZACAO POR VIDEO CONFERENCIA (MEMORANDO 04/2016 BIBLIOTECA CENTRAL UFSM)
+\videoconferencia % % % % QUANDO O ACADEMICO DEFENDE POR VIDEO CONFERENCIA (PERMITIDO PELO ARTIGO 82 DO REGIMENTO GERAL DA PRPGP/UFSM). PARA DEFESAS NAS QUAIS O ACADEMICO ESTA PRESENTE COMENTE ESTA LINHA
+% % % % QUANDO UM DOS MEMBROS DA BANCA PARTICIPA POR VIDEO CONFERENCIA INDICAR O MEMBRO DE ACORDO COM A LISTA ABAIXO. CASO CONTRARIO MANTER A PALAVRA "NAO". SAO PERMITIDOS, PELO REGIMENTO PRGPGP (ARTIGO 83) ATE 2 MEMBROS 
+\videoconferenciabancap{NAO}  %%%% PRIMEIRO MEMBRO
+\videoconferenciabancas{NAO}  %%%%% SEGUNDO MEMBRO
+% % O > ORIENTADOR
+% % CO > COORIENTADOR% % % % QUANDO UM DOS MEMBROS DA BANCA PARTICIPA POR VIDEO CONFERENCIA INDICAR O MEMBRO DE ACORDO COM A LISTA ABAIXO. CASO CONTRARIO MANTER A PALAVRA "NAO". SAO PERMITIDOS, PELO REGIMENTO PRGPGP ATE 2 MEMBROS.
+% % 1 > BANCA UM
+% % 2 > BANCA DOIS
+% % 3 > BANCA TRÊS
+% % 4 > BANCA QUATRO
+% % 5 > BANCA CINCO
+% % S > SUPERVISOR
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
+
+
+
+% % % % % % % % % % INFORMACOES SOBRE O TRABALHO % % % % % % % % % %
+% % % %  TITULO E SUBTITULO DO TRABALHO: ELES NÃO DEVEM ULTRAPASSAR, JUNTOS, 3 LINHAS NA COMPILAÇÃO DA CAPA. 
+% SE O TRABALHO POSSUI SUBTITULO, ADICIONE ':' DENTRO DAS CHAVES ABAIXO 
+\titulo{Título do trabalho em português:} %% NAO EH NECESSARIO CAPITALIZAR
+% % % %  TITULO DO TRABALHO EM INGLES
+% SE O TRABALHO POSSUI SUBTÍTULO, ADICIONE ':' DENTRO DAS CHAVES ABAIXO 
+\englishtitle{Título do trabalho em inglês:}  %% NAO EH NECESSARIO CAPITALIZAR
+
+
+% % % % O SUBTÍTULO É OPCIONAL, SE NÃO FOR USADO AS LINHAS ABAIXO DEVEM SER COMENTADAS
+
+% SE O TRABALHO POSSUI SUBTÍTULO, ADICIONE ':' DENTRO DAS CHAVES ABAIXO 
+\subtitulo{Subtítulo do trabalho em português} %% NAO EH NECESSARIO CAPITALIZAR
+% % % %  SUB TITULO DO TRABALHO EM INGLES
+\subenglishtitle{Subtítulo do trabalho em inglês}  %% NAO EH NECESSARIO CAPITALIZAR
+
+% % % AREA DE CONCENTRACAO DO TRABALHO (CNPQ)
+\areaconcentracao{Área de concentração do CNPq}
+% % % TIPO DE TRABALHO - MANTER APENAS UMA LINHA DESCOMENTADA
+\tese  %% Tese de <nivel de ensino>
+% \qualificacao %% Exame de Qualificação de <nivel de ensino>
+% \dissertacao %% Dissertacao de <nivel de ensino>
+% \monografia %% Monografia
+% \monografiag  %% Monografia (nao exibe area de concentracao)
+% \tf  %% Trabalho Final de <nivel de ensino>
+% \tfg  %% Trabalho Final de Graduacao (nao exibe area de concentracao)
+% \tcc  %% Trabalho de Conclusao de Curso
+% \tccg  %% Trabalho de Conclusao de Curso (nao exibe area de concentracao)
+% \relatorio  %% Relatório de Estágio (nao exibe area de concentracao)
+% \generico   %%% Alternativa para aqueles cursos que nao recebem o titulo de bacharel ou licenciado. Ex: engenharia, arquitetura, etc... Os campos abaixo tambem devem ser preenchidos
+%     \tipogenerico{Tipo de trabalho em português}
+%     \tipogenericoen{Tipo de trabalho em inglês}
+%     \concordagenerico{o}
+%     \graugenerico{Engenheiro Eletricista}
+% % % DATA DA DEFESA 
+
+
+\data{15}{08}{2025} %% FORMATO {DD}{MM}{AAAA}
+
+
+\renewcommand{\sin}{\operatorname{sen}}
+\renewcommand{\tan}{\operatorname{tg}}
+
+% % % % %  ALGUMAS ENTRADAS PRE-TEXTUAIS
+% % % % CASO NAO QUEIRA UTILIZA-LAS COMENTE A LINHA DE COMANDO
+% % % EPIGRAFE
+\epigrafe{Winter is coming!}{Família Stark} %ESTRUTURA DE CAMPOS -> {Texto}{Autor}
+% % % DEDICATORIA
+\dedicatoria{Aos que virão depois de nós}
+% % % %  AGRADECIMENTOS
+\agradecimentos{A mim!}
+
+% % % % %  RESUMO E PALAVRAS CHAVE DO RESUMO - OBRIGATORIO PARA MDT-UFSM
+\resumo{
+Escreva seu resumo aqui! Você pode digitá-lo diretamente neste arquivo ou usar o comando input. O resumo deve ter apenas uma página, desde o cabeçalho até as palavras chave. Caso seu resumo seja maior, use comandos para diminuir espaçamento e fonte (até um mínimo de 10pt) no texto.  Segundo a MDT, é preciso que os resumos tenham, no máximo, 250 palavras para trabalhos de conclusão de curso de graduação, pós-graduação e iniciação científica e até 500 palavras para dissertações e teses.
+}
+\palavrachave{Palavra Chave 1. Palavra 2. Palavra 3. (...)}
+% "... deverão constar, no mínimo, três palavras-chave, iniciadas em
+% letras maiúsculas, cada termo separado dos demais por ponto, e
+% finalizadas também por ponto." MDT 2012
+
+% % % % %  ABSTRACT E PALAVRAS CHAVE DO RESUMO - OBRIGATORIO PARA MDT-UFSM
+\abstract{
+Write your abstract here! As recomendações do resumo também se aplicam ao abstract. \lipsum[0-1]
+}
+\keywords{Keyword 1. Keyword 2. Keyword 3. (...)}
+
+
+% % %  ATIVACAO DE LISTAS E PAGINAS ESPECIAIS
+% % %  PARA QUE APARECAO NAO NO TEXTO DESCOMENTE A LINHA ABAIXO -> POR PADRAO TODAS ESTAO ATIVIDADAS
+
+% % LISTA DE FIGURAS 
+% \semfiguras   %%(QUANDO ATIVIDA NAO EXIBE A LISTA)
+% % LISTA DE GRAFICOS 
+% \semgraficos   %%(QUANDO ATIVIDA NAO EXIBE A LISTA)
+% % LISTA DE ILUSTRACOES 
+% \semilustracoes  %%(QUANDO ATIVIDA NAO EXIBE A LISTA)
+% % LISTA DE TABELAS 
+% \semtabelas   %%(QUANDO ATIVIDA NAO EXIBE A LISTA)
+% % LISTA DE QUADROS 
+% \semquadros   %%(QUANDO ATIVIDA NAO EXIBE A LISTA)
+% % LISTA DE APENDICES 
+% \semapendices  %%(QUANDO ATIVIDA NAO EXIBE A LISTA)
+% LISTA DE ANEXOS 
+% \semanexos   %%(QUANDO ATIVIDA NAO EXIBE A LISTA)
+
+
+% % % %  LISTA DE ABREVIATURAS - AMBIENTE TABULAR
+%%%%%%%% para não utilizar comente as linhas abaixo.
+\abreviaturamax{SIGLAMAX} %%%% coloque aqui a maior sigla (indentacao)
+\listadeabreviaturas{
+	SIGLA1 & Nome Completo da Sigla 1 \\
+	SIGLA2 & Nome Completo da Sigla 2 \\
+	SIGLAMAX &	Nome Completo da Sigla MAX \\
+}
+
+
+% % % %  LISTA DE SIGLAS - AMBIENTE TABULAR
+%%%%%%%% para não utilizar comente as linhas abaixo.
+\siglamax{SIGLAMAX} %%%% coloque aqui a maior sigla (indentacao)
+\listadesiglas{
+SIGLA1 & Nome Completo da Sigla 1 \\
+SIGLA2 & Nome Completo da Sigla 2 \\
+SIGLAMAX &	Nome Completo da Sigla MAX \\
+}
+
+
+% % % %  LISTA DE SIMBOLOS
+%%%%%%%% OBS: O espaco entre colchetes \item[] e um ambiente matematico
+%%%%%%%% para não utilizar comente as linhas abaixo.
+\simbolomax{(Re)2} %%%% coloque aqui o maior simbolo (indentacao)
+\listadesimbolos{
+\item[u_*]	Escala de velocidade de fricção	
+\item[w_*]	Escala de velocidade convectiva
+\item[(Re)^2]	Maior simbolo da lista
+}
+
+
+% % % FICHA CATALOGRAFICA
+% \semcatalografica  %%%%  (QUANDO ATIVIDA NAO EXIBE A FICHA CATALOGRAFICA NECESSITA DO ARQUIVO DA FICHA: ficha_catalografica.pdf
+% % % A FICHA CATALOGRAFICA FORNECIDA PELA UFSM EH UM PDF DO TAMANHO A4
+% % % EH POSSIVEL GERA-LA NO SITE http://cascavel.ufsm.br/ficha_catalografica/
+% % % OS COMANDOS ABAIXO DEFINEM AS MARGENS PARA CORTAR A FICHA FORNECIDA E COLOCA-LA COMO UMA FIGURA NO DOCUMENTO LATEX
+\margemesquerda{1.9}   %%%% CORTE DE MARGEM ESQUERDA EM CM
+\margemdireita{1.5}   %%%% CORTE DE MARGEM DIREITA EM CM
+\margemsuperior{2.75}  %%%% CORTE DE MARGEM SUPERIOR EM CM
+\margeminferior{2.9} %%%% CORTE DE MARGEM INFERIOR EM CM
+% % %  DICA: IMPRIMA UMA COPIA DA FICHA CATALOGRAFICA E FACA A MEDIDA DAS MARGENS!
+
+
+
+
+
+% % FOLHA DE ERRATA (versao rudimentar...pode ser aprimorado)
+% % para não utilizar comente as linhas abaixo.
+% % deve ser preenchida como um ambiente tabular de quatro colunas:
+% % pagina & linha & onde se le & leia-a se \\
+\errata{
+10   &    10    & errado   & certo \\
+\hline
+12    &    5     & errado com um texto mais longo & certo agora com um texto mais longo\\
+\hline
+13   &    3    & $x^2$   & $2x$\\
+}
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
+
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
+% % % % % % % % % % % %  OPCOES DE FORMATACAO % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
+% % % CAPITULO: por padrao alinhado a esquerda. Para ativar alinhamento centralizado descomente o comando abaixo
+
+% \centralizado  %%%% <<< centraliza todos os capitulos
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % FONTES: descomente uma das opcoes. caso nenhuma seja ativada a clase usara a fonte padrao do latex
+
+%% helvetica
+\usepackage[scaled]{helvet}
+\renewcommand*\familydefault{\sfdefault}
+
+%% arial
+% \renewcommand{\rmdefault}{phv} % Arial
+% \renewcommand{\sfdefault}{phv} % Arial
+
+%%times
+% \usepackage{mathptmx}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
+
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
+% % % % % % % % % % % %  INICIO DO DOCUMENTO  % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+\begin{document}
+
+
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
+\pretextual  %%%% GERA AS PAGINAS PRE-TEXTUAIS   
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
+% % % % % CORPO DO TRABALHO - INCLUA OS SEUS TEXTOS AQUI
+% % % % % SUGESTAO -> UTILIZE ARQUIVOS EXTERNOS A PARTIR DO COMANDO \input
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
+% % % % % % % % % % INICIO DAS PAGINAS TEXTUAIS % % % % % % % % % % % % % % 
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
+
+\chapter{Introdução}
+\par Insira aqui a introdução!!!
+
+\lipsum[1-5]
+
+
+
+\chapter{Revisão Bibliográfica}
+    \par O arquivo \textit{referencias.bib} 
+    \section{Radiação e Matéria}
+        \par Espectrômetros tratam-se de dispositivos capazes de medir o comportamento espectral por meio de manipulações ópticas. Seu sistema pode ser sintetizado em três elementos. Entrada, manipulação e detecção espectral. Suas principais aplicações abrangem a exploração espacial e a química analítica; em ambos os casos, os equipamentos desse tipo são empregados na identificação da presença e quantificação de compostos químicos. 
+
+        \subsection{Interação Molecular} % revisar livros de espectrometria
+        \par No instante em que sinais eletromagnéticos interagem com a matéria, há três possíveis reações. A radiação pode ser absorvida, transmitida ou refletida pelos átomos ou moléculas \cite{debuc}. Visto que ondas eletromagnéticas podem ser consideradas como um fluxo de partículas, a relação entre energia emitida por um átomo ou amostra e a frequência é dada pela equação de Bohr \cite{livroSpecFund}. 
+            \begin{equation}
+            \label{eq:quantica}
+             E=h.v 
+            \end{equation}
+        \par Onde $h$ ($6,626.10^{34}$ J.s)é a constante de Planck e $v$ é equivalente à frequência vibracional. 
+        \par Moléculas podem ser representadas por níveis discretos de energia (E0, E1, E2, etc.), \cite{livroSpecFund} explica que todos os átomos que compõem este sistema estarão distribuídos entre esses níveis. No instante em que esta matéria interagir com radiação; uma quantidade discreta de energia (quanta de energia ou também chamado de fóton), ou será transmitida ou absorvida. Independentemente, o quantum da radiação precisa ser equivalente à diferença quântica entre os níveis de energia subjacentes que representam a molécula (E0-E1, E2-E1, etc).
+            \begin{equation}
+            \label{eq:quantica2}
+             \Delta E = h.v
+            \end{equation}
+            
+        \subsection{Harmônicas e Sobreposição}
+        \par Invariavelmente, ao excitar uma molécula por meio de radiação não apenas observa-se a energia em uma única frequência, mas também em suas harmônicas. A grande maioria das vibrações fundamentais dos
+        compostos ocorrem na faixa do infravermelho médio (mid infrared, MIR), portanto na região do NIR (near infrared) observa-se as harmônicas desses sinais. [Não entendi muito bem combinação, acho que tenho anotado no meu caderno um exemplo ilustrativo]
+
+        \par Tais fenomenos representam interferências que podem dificultar ou até mesmo imposibilitar a identificação correta da presença e quantidade de certos elementos químicos. Além dos citados \cite[livroSpecFund],\cite[minhaFraseArtigo] destacam que a geometria molecular e a quantidade de ligações também são fatores que comproemtem a determinação espectrométrica exclusivamente pela equação 1. Ou seja, não há um equacionamento determinístico quando pretende-se realizar o metodo espectrométrico
+        é fundamental também explorar a manipulação laboratorial de modo a reduzir os graus de liberdade e complexidade dos compostos além também de aplicar métodos de regressão de dados, seja por meio da estatística descritiva, ou pela multivariada.
+
+    \section{Espectrômetros Dispersivos}
+        \par Sobre uma perspectiva abrangente, os espectrômetros dispersivos recebem radiação dentro de um determinado intervalo, deste ponto em diante a disposição dos componentes ópticos ficam encarregados de segmentar a fonte policromática o máximo possível, idealmente separando-a em feixes monocromáticos. Nesse sentido, o que se tem é a concentração de diferentes fontes de luz em pontos geométricos distintos. Em um cenário ideal; como visto na \cite{figura 1}, para cada ponto, ou haverá um detector exclusivo, ou movimenta-se o detector para cada localização das diferentes radiações.
+        \par A operação geral de tal equipamento pode ser descrita inicialmente pela luz que entra no sistema sobre uma fenda, a qual precisa ser colimada (os feixes que compõem a radiação são paralelos entre si) antes de atingir o elemento dispersivo (tipicamente o elemento de dispersão será uma grade de difração, entretanto há outros, como prismas e grades holográficas). Se considerarmos como elemento dispersivo, uma grade de difração, a luz colimada será refletida de forma discretizada, ou seja os divergentes comprimentos de onda que a compõem serão refletidos em diferentes ângulos. A operação finaliza com a leitura dos espectros por meio do detector.
+
+        \par [Diagrama esquemático de um espectrômetro de difração]
+
+        \subsection{Abertura de Entrada}
+        \par Trata-se da barreira física que limita o montante de radiação que atingirá os demais componentes do sistema. Sua área determinará portanto o quanto do sinal estará presente, entretanto \cite[Artigo1] escalrece que, a fim de evitar ofuscamento espectral sua dimensão deve ser no máximo equivalente à área do detector.
+
+        \par Com sua área estabelecida, a entendue \cite{EquacaoEntendue} do sistema pode ser estipulada. Em muitos textos da literatura a entendue também e compreendida em outros termos, como rendimento. É uma palavra que deriva do frances e que signifca "espalhamento". Ou seja, descreve o quanto que uma luz esta dispersa em relação a um angulo e area. Em um sistema ideal, ou seja sem perdas, a entendue se conserva e será portanto igual em todas as partes de um sistema óptico. Entretanto, em sistemas reais haverão perda de potência devido há absorções, aberrações, refleoxões, refrações, entre outros. Entretanto, trata-se de um parâmetro relevante que ainda sim fornece um limite teórico que auxilia na determinação paramétrica dos demais elementos do sistema óptico além de informar qualitativamente o quanto de energia passa pelo sistema dentro de um intervalo de tempo.
+
+        \begin{equation}
+        \label{eq:Entendue}
+            \Phi = n^2.A.\Omega
+        \end{equation}
+        \begin{equation}
+        \label{eq:AnguloSolido}
+            \Omega = \frac{\pi.r^2}{f^2}
+        \end{equation}
+        % rever angulo sólido. Precisa bater com o livroFT
+
+        \par Onde $\Phi$ é a entendue, n o indice de reração, A a area que concentra toda a luz e Ohm, o angulo sólido do feixe. Em seu trabalho, \cite{LivroFT} explica que o angulo sólido Ohm será formado pela lente de colimação ou pelo espelho convago na forma descrita pela equação [num?], onde r é o raio que do ópitico de colimação e f o seu comprimento focal. A unidade de medida de Ohm é esterradianos (sr), portanto E normalmente é dado em $sr.crm^2$. Uma vez conhecida sua magnitude, tem-se dimensão, por exemplo diâmetro e comprimento focal que deve-se utilizar na etapa de colimação, isso pois, quanto menor for a área de entrada, maior será seu angulo sólido, exigindo assim ópticos maiores, os quais impactam na dimensão final do dispositivo. Em síntese, projetar um espectrômetro exige domínio \cite{artigo1} da quantidade de radiação disponível. Esta fonte precisa se adequar aos limites operacionais do detector, ao mesmo tempo que impõem dimensões ópticas comercialmente viáveis.
+
+        \subsection{Grades de Difração}
+        \par Como dito anteriormente, há uma diversidade de elementos capazes de difratar a luz. Cada qual possuirá parâmetros de operação e propriedades físicas distintos, que por sua vez irão impor restrições de projeto de forma variada Isso pois, eles podem modular a radiação de entrada \cite{Hasset} de modo alterar a fase, amplitude ou ambas. No escopo deste trabalho utilizou-se o componente chamado rede de difração (ruled diffraction grade). Este é fabricado de modo a conter um conjunto delicado de ranhuras paralelas sobre um revestimento fino; normalmente de alumínio, sobre um subtrato de vidro.
+
+        \par Considerando uma grade de difração sendo atingida por um feixe colimado \cite{Debung}, portanto havendo apenas o angulo de incidência $\alpha$ neste cenário, a radiação cujo comprimento de onda é $\lambda$ respeita a equação \cite{numero}. 
+
+            \begin{equation}
+                \label{eq:DifragaoGeral}
+                d(\sin \alpha \pm \sin \beta) = m\lambda
+            \end{equation}
+            
+        \par Onde d será o espaçamento entre as ranhuras, normalmente dado em quantidade por milimetro (exemplo: 800 ranhuras/mm), $\beta$ o angulo de reflexão associado ao comprimento de onda $\lambda$ e m sendo a ordem de difração. A \cite{Figura2} apresenta um exemplo prático de difração de luz visível. Nela observa-se difrações em três ordens distintas, m=0, m=1 e m=-1. Faz-se a soma das senoides \cite{Debuc} para o caso onde o angulo do sinal de incidência e o angulo de reflexão encontram-se no mesmo lado em relação à normal da grade de difração.
+
+        \par Durante o projeto de espectrômetros dispersivos é fundamental determinar a localização dos raios de interesse, para isso \cite{artigo1} discorre que, considerando um plano focal $x$, cujo elemento de colimação possui comprimento focal $f$, $\lambda$ estará associado ao angulo $\beta$ da forma como é descrita pela equação \cite{equaao4}
+
+            \begin{equation}
+                \label{eq:DirDifracao}
+                x = f.\tan\beta
+            \end{equation}
+
+        \subsection{Detectores}
+        \par Além de sua área, a qual foi previamente discutida, o processo de escolher um detector adequado \cite{MIT} exige considerar a quantidade de radiação disponível comparando-a com dois parâmetros fundamentais; a potência equivalente ao ruído (NEP, noise equivalent power) e sua responsividade. A NEP indica a quantidade de potência luminosa necessária para gerar uma SNR=1. Naturalmente, os fabricantes estabelecem o seu valor em relação ao intervalor de operação do detector. Em outras palavras, a NEP sempre será aplicada dentro de uma largura de banda espectral. Sua unidade de medida é dado pelo ruído de corrente sobre uma frequência (A/raiz(Hz)) dividido pela responsividade (A/W), o que resulta em W/raiz(Hz). Compreende-se como responsividade a corrente produzida pela incidência de radiação equivalente a 1 Watt. 
+        \par Intuitivamente os melhores detectores serão aqueles com menor NEP e maior responsividade.
+        A temperatura de operação estabelece mais um elemento limitante, pois a NEP tende a elevar-se com o aquecimento do detector. Este problema torna-se ainda maior, quando trabalha-se com espectros infravermelho, uma vez que estes tem a capacidade de gerar vibrações moleculares. Portanto tem-se a necessidade da realização de projeto térmico quando faz-se a instrumentação deste dispositivo. 
+        
+        \subsection{Configurações Ótpicas}
+        \subsubsection{Littrow Configuration}
+        \subsubsection{Ebert-Fastie}
+        \subsubsection{Czerny-Turner}
+
+    \section{Espectrômetros de Transformada de Fourier}
+        %Talvez colocar essa parte no design
+    \par Um espectrômetro de transformada de Fourier produz a função espectral a partir da modulação da radiação de entrada no domínio do tempo, a partir da indução de interferência. Em síntese, a informação que será coletada pelo detector será a intensidade luminosa em função do deslocamento dado em cm, realizando a transformada de Fourier tem-se a intensidade em função do inverso do deslocamento ($cm-1$), o qual fisicamente é interpretado como quantidade de ondas, que por sua vez é inversamente proporcional ao comprimento de onda. Para produzir interferência, a radiação de entrada uma parte é refletida para um espelho móvel e a outra para um estático. O deslocamento do espelho móvel gera variações na intensidade que atinge o detector. A imagem \cite{Figura3} ilustra o esquema geral de tal dispositivo.
+
+    \par A titulo de facilitar a leitura, compreende-se nesta dissertação que espectrômetro de transformada de Fourier será abreviado como espectrômetro FT.
+
+    \subsection{Principio de Funcionamento}
+    \label{sub:PrincFuncionamento}
+    \par Interferômetros oferecem um método para extrair funções espectrais modulando a radiação de entrada no domínio do tempo. Idealmente, uma fonte de IR colimada atinge um divisor de feixe, dividindo a radiação em dois caminhos: um é refletido em direção a um espelho fixo ($M_f$), enquanto o outro é transmitido para um espelho móvel ($M_m$). Os feixes refletidos retornam ao divisor de feixe, onde se recombinam para formar uma nova onda eletromagnética. Essa onda é registrada por um fotodetector, cuja intensidade do sinal varia conforme a posição de $M_m$. Ao aplicar uma transformada de Fourier à saída do fotodetector, a função espectral pode ser extraída. Fundamentalmente, o padrão de interferência depende da variação da diferença de caminho óptico (OPD) entre $M_f$ e $M_m$ em relação ao divisor de feixe.
+
+    \par Para compreender a interferência de uma radiação policromática, é útil primeiro considerar o caso monocromático. Imagine uma fonte de laser perfeita com comprimento de onda $\lambda$. Quando a OPD é zero, os feixes refletidos por $M_f$ e $M_m$ estão em fase, resultando em interferência construtiva e na intensidade máxima possível no detector. À medida que $M_m$ desloca-se de modo que OPD=$\lambda/2$, os feixes estão fora de fase, causando interferência destrutiva e reduzindo o sinal do detector a zero. Quando $M_m$ se desloca ainda mais, em OPD=$\lambda$, os feixes voltam a estar em fase, gerando novamente interferência construtiva. Ou seja, o detector registra intensidade máxima quando OPD = $n\lambda$ e intensidade mínima quando OPD = $n\lambda/2$, onde $n$ é um número inteiro. Consequentemente, interferômetros monocromáticos produzem um sinal semelhante a um cosseno à medida que $M_m$ move-se com velocidade constante. Essa modulação pode ser descrita matematicamente como é vista na equação \ref{eq:FreqInterfGeral}.
+    
+    \begin{equation}
+        \label{eq:FreqInterfGeral}
+        f = 2Vv
+    \end{equation}
+    
+    onde $V$ é a velocidade do espelho (cm/s) e $v$ é o número de onda do laser (cm$^{-1}$). Para fontes policromáticas, o interferômetro produz um pico de sinal proeminente em OPD = 0 (quando todos os comprimentos de onda interferem construtivamente), que decai rapidamente à medida que $M_m$ se afasta desse ponto.
+
+    \par Do ponto de vista do design, dois requisitos críticos devem ser atendidos: deslocamento com velocidade constante e amostragem sincronizada. Manter uma velocidade constante do espelho garante que a OPD varie linearmente ao longo do tempo, permitindo uma modulação uniforme do sinal no domínio do tempo gerado pelo detector. A sincronização da amostragem do sinal do detector com o deslocamento do espelho é igualmente essencial para garantir que cada ponto de dados registrado corresponda a uma OPD específica. A falha na sincronização pode levar a erros, como aliasing ou distorções espectrais, devido à interpretação incorreta da relação entre OPD e variação de intensidade. Para enfrentar esses desafios, espectrômetros FT comerciais (Fig. 1) incorporam uma fonte de laser como sensor de posição de referência. Esse laser auxilia no controle do movimento do espelho e na aquisição de dados, fornecendo um sinal de referência cosenoidal para a amostragem do ADC e a sincronização do deslocamento do espelho.
+
+    \subsection{Representação Matemática}
+
+    \par Em sua obra, \cite{LivroFT} realiza uma discorre significativamente a respeito da descrição matemática da interferometria, que por sua vez são a base para estabelecimento de parâmetros de projeto de espectrômetros FT. Imaginando novamente uma radiação perfeitamente monocromática, tal cujo comprimento de onda é $\lambda$, desloca-se no eixo Z com velocidade constante $v$ descrita pela equação \cite{Eq9}
+
+        \begin{equation}
+            \label{eq:Dedu1}
+             U(z,t) = A.\sin(kz-kvt)
+        \end{equation}
+
+    \par Onde A é a amplitude da onda, t o tempo e k é o chamado de numero de propagação.
+
+        \begin{equation}
+            \label{eq:Dedu2}
+            k=\frac{2.\pi}{\lambda}
+        \end{equation}
+
+    \par É possível descrever $\lambda$ em relação a sua frequência f e velocidade de deslocamento $\sigma$ da seguinte forma
+
+        \begin{equation}
+            \label{eq:Dedu3}
+            \lambda = \frac{\sigma}{f}
+        \end{equation}
+
+        \begin{equation}
+            \label{eq:Dedu4}
+            \sigma = \frac{c}{n}
+        \end{equation}
+
+    \par Onde c é a velocidade da luz no vaco (3.10$^8$m/s) e n o índice de refração do meio. A Eq. \cite{Eq9} pode ser reescrita em representação de números complexos da seguinte forma
+
+        \begin{equation}
+            U=A(\cos\rho+j\sin\rho) = Ae^{j\rho}
+        \end{equation}
+        
+        \begin{equation}
+            \rho = kz - kvt
+        \end{equation}
+
+    \par Em um senário hipotético onde há tecnologias de fotodetectores capazes de capturar radiação de alta frequência (e.al: > 10$^{14}$) não haveria a necessidade de produzir-se interferência de luz \cite{LivroFT}, isso pois tal dispositivo seria capaz de capturar o comportamento senoidal da fonte monocromática. Entretanto, na prática, fotodetectores geram corrente cuja magnitude é na verdade a média da intensidade da potência óptica, que por sua vez é o resultado de uma integração realizado por um período de tempo e que é limitado pela largura de banda do dispositivo. Sua representação é dada, portanto da seguinte forma
+        \begin{equation}
+            I={|U|}^2
+        \end{equation}
+
+    \par Quando produz-se interferometria entre duas fontes monocromáticas, a intensidade varia de acordo com a diferença do caminho óptico (OPD) entre os feixes. Considerando que os dois feixes que se recombinam possuem a mesma frequência f$_0$ e amplitude A, o fasor resultante U será a soma das amplitudes complexas U$_1$ e U$_2$
+        \begin{equation}
+            U = U_1 + U_2
+        \end{equation}
+
+    \par Expandindo a equação e representando-a em números complexos tem-se
+
+        \begin{equation}
+            U = A(\cos \rho_1 + j\sin \rho_1) + A(\cos \rho_2 + j\sin \rho_2)
+        \end{equation}
+
+    \par Reescrevendo
+
+        \begin{equation}
+            U^2 = (Re(U_1) + Re(U_2))^2 + (Im(U_1) + Im(U_2))^2
+        \end{equation}
+
+    \begin{equation}
+        U^2 = (A(\cos \rho_1 + \sin \rho_1))^2 + A(\cos \rho_2 + \sin \rho_2))^2 
+    \end{equation}    
+    \begin{equation}
+    U^2 = A^2[\cos^2 \rho_1 + \sin^2 \rho_1 + \cos^2 \rho_2 + \sin^2 \rho_2 + 2(\cos \rho_1.\cos \rho_2 + \sin \rho_1.\sin \rho_2)] 
+    \end{equation}
+
+    Aplicando a identidade trigonométrica cos x.cos y + sen x.sen y = cos(x-y) a aplicando o módulo na equação
+
+    \begin{equation}
+        |U|^2 = |U_1|^2 + |U_2|^2 + 2A^2(\cos(\rho_1-\rho_2))
+    \end{equation}
+
+    \par Sabendo que 
+
+    \begin{equation}
+        |U| = A = I^{\frac{1}{2}}     
+    \end{equation}
+
+    \begin{equation}
+        A^2 = |U_1|.|U_2| = I_1^{\frac{1}{2}}.I_2^{\frac{1}{2}} = (I_1.I_2)^{\frac{1}{2}}   
+    \end{equation}
+
+    \begin{equation}
+        |U|^2 = |U_1|^2 + |U_2|^2 + 2(I_1.I_2)^{\frac{1}{2}}(\cos(\rho_1-\rho_2))     
+    \end{equation}
+
+    \begin{equation}
+        I = I_1 + I_2 + 2(I_1.I_2)^{\frac{1}{2}}.(\cos(\rho_1-\rho_2))
+    \end{equation}
+
+    \par No caso do interferômetro clássico (Michelson) a diferença entre as fases dos feixes ($\rho$$_1$-$\rho$$_2$) esta intimamente ligada ao OPD da seguinte forma
+
+    \begin{equation}
+        OPD = 2x
+    \end{equation}
+
+    \par Onde x é o deslocamento linear do espelho móvel. Pela equação \cite{Eq?}, a qual indica a relação entre a OPD e a ocorrência de recombinações com interferência construtiva persebe-se que n é o múltiplo que condiciona a periodicidade das recombinações, portanto
+
+    \begin{equation}
+        OPD = n\lambda
+    \end{equation}
+
+    \begin{equation}
+        (\rho_1-\rho_2) = \phi = \frac{2\pi OPD}{\lambda} = \frac{4\pi x}{\lambda}
+    \end{equation}
+
+    \par Portanto a intensidade percebida pelo detector pode ser determinada em função da posição x 
+
+    \begin{equation}
+        I(x) = I_1 + I_2 + 2(I_1.I_2)^{\frac{1}{2}}.\cos(\frac{4\pi x}{\lambda})  
+    \end{equation}
+
+    \par Passando para uma análise de interferências causadas por fontes policromáticas, é possível utilizar como base a equação \cite{Eq?} simplificando-a, ignorando as componentes constantes (I$_1$ + I$_2$).
+
+    \begin{equation}
+        I_{ca}(x)=\sum C(\lambda).\cos(\frac{4\pi x}{\lambda})
+    \end{equation}
+
+    \par Onde C($\lambda$) representa a distribuição espectral associada à recombinação gerada para um comprimento de onda $\lambda$.
+
+    \par A última etapa diz respeito à extração da função espectral a partir da transformada de Fourier, para isso basta aplicar a transformada na equação \cite{Eq?} \cite{Livro1}, a qual pode ser visualizada a seguir
+
+    \begin{equation}
+        C(\lambda) = \int I(x)\cos(\frac{4\pi x}{\lambda})dx  
+    \end{equation}
+
+    \subsection{Abertura de Entrada}
+
+    \par A parametrização da fenda de entrada desempenha papel fundamental, pois rege a quantidade de sinal que estará presente no sistema. Assim como na secção \cite{2.2.1}, se não for adequadamente balizada, inconsistências podem ser geradas.
+    
+    \par Antes de discorrer a respeito, é valido brevemente introduzir dois conceitos. O poder de resolução espectral (R) teórico, definida pela equação \cite{Eq5} e a resolução espectral ($\Delta$$\lambda$). A primeira trata-se de um número adimensional e informa a capacidade de distinção entre comprimentos de onda muito próximos. Já ($\Delta$$\lambda$), indica o menor comprimento de onda que o equipamento é capaz de identificar.
+
+    \begin{equation}
+        R= \frac{\lambda}{\Delta \lambda} 
+    \end{equation}
+
+    \par Uma vez compreendido o que R representa é importante salientar que na prática feixes perfeitamente colimados são improváveis de serem produzidos, o que significa dizer que toda radiação terá algum grau de divergência, em relação a sua direcionalidade. Por sua vez, este angulo \cite{Livro1} trará efeitos diretos na resolução atingível do dispositivo. Portanto, é fundamental ajustar a correlação entre a área da fenda de entrada a e o comprimento focal f, do óptico colimador. Considerando uma fonte policromática, ambas os parâmetros são balizadas pelo feixe de menor comprimento, $\lambda$$_{min}$. Nesse sentido, para um sistema de entrada óptico, como apresentado no esquemático da figura \cite{Livro1}, os efeitos do a resultam em raios que percorrem caminhos distintos entre si, portanto em OPD=0, eles não estarão em fase, bem como é ilustrado pela figura \cite{Livro2}.
+
+    \par Pela relação trigonométrica x$'$ pode ser representado da seguinte forma
+
+    \begin{equation}
+        x'=\frac{x}{\cos a}
+    \end{equation}
+
+    \par Portanto, neste caso OPD será definido como
+
+    \begin{equation}
+        OPD = |2(x'-x)| = |2x(\frac{1}{\cos(a)}-1)|
+    \end{equation}
+
+    \par Imaginando que um pequeno angulo de divergência a \cite{LivroFT} cos(a) poder ser aproximado como sendo
+
+    \begin{equation}
+        cos(a) +-= 1-\frac{a^2}{2}
+    \end{equation}
+
+    \begin{equation}
+        OPD = 2x( \frac{a^2}{2-a^2} )
+    \end{equation}
+
+    \par Novamente, para pequenos angulos de divergência
+
+    \begin{equation}
+        OPD +-= xa^2
+    \end{equation}
+
+    \par De modo a minimizar seus efeitos, \cite{Livro1} explica que o $\lambda$$_{min}$ persebivel pelo elemento detector baliza o OPD do equipamento levando em consideração a distância necessária para ocorrer a primeira recombinação destrutiva entre as ondas, ou seja em $\lambda$$_{min}$/2. Neste sentido
+
+    \begin{equation}
+        OPD <= \frac{\lambda_{min}}{2}
+    \end{equation}
+
+    \par Portanto
+
+    \begin{equation}
+        a^2 <=\frac{\lambda_{min}}{x2}
+    \end{equation}
+
+    \par Em sua obra \cite{LivroFT} apresenta que há também uma relação entre aproximada entre OPD e a resolução do equipamento 
+    da seguinte forma
+
+    \begin{equation}
+        OPD +-=\frac{1}{\Delta v}
+    \end{equation}
+
+    \begin{equation}
+        \Delta v +-= \frac{1}{2x}
+    \end{equation}
+    
+    \par Reescrevendo o angulo a
+
+    \begin{equation}
+        a^2 <= \frac{\Delta v}{v_{max}}
+    \end{equation}
+
+    \begin{equation}
+        a^2 <= \frac{1}{R} 
+    \end{equation}
+
+    \par Pelo esquemático da figura \cite{LivroFT}, para um baixo valor de a
+    
+    \begin{equation}
+        a +-=\frac{A}{f}
+    \end{equation}
+
+    \par Isso significa dizer que o comprimento focal necessáriamente precisa ser muito maior que o raio da fenda de abertura. Juntando as equações \cite{Eq?} e \cite{Eq?}
+
+    \begin{equation}
+        a <= \frac{f}{R^{\frac{1}{2}}}
+    \end{equation}
+    
+    \par Considerando que a radiação de entrada atinge toda a área do óptico colimador, a entendue final será descrita pela equação \cite{Eq8}.
+
+% Antes de falar disso tem que falar do OPD e determinação do raio e angulo da fenda de abertura 
+    \subsection{Contraposição com Espectrômetros Dispersivos}
+
+    \par Historicamente, os primeiros dispositivos espectrométricos disponíveis comercialmente e que operavam no infravermelho eram exclusivamente dispersivos \cite{LivroFundamentos}, na época o elemento dispersivo utilizado era o prisma. Em meados da década de 1950, grades de difração foram introduzidas, entretanto para a química analítica, o avanço mais significativo no campo da espectrometria no infravermelho foi a introdução de espectrômetros de transformada de Fourier. Sua relevância pode ser justificada por duas grandes vantagens documentadas pela literatura, sendo elas a vantagem de Jacquinot e Felgett.
+
+    \subsubsection{Jacquinot}
+    \par Para compreende-la é importante resgatar o conceito da entendue, a qual foi descrita anteriormente e definida pela equação \cite{Eq1}. Nesse sentido, \cite{LivroFT} revela que, a entendue será limitada ou pelos ópticos de colimação, os quais são empregados na entrada de radiação do sistema; ou pelos ópticos que direcionam e modulam a radiação ao detector. Em interferômetros, tipicamente a colimação de entrada será o elemento limitador. Portanto será sua geometria que limitará o fluxo luminoso. 
+    
+    \par Sabendo que R será limitado pelo angulo de divergência $\alpha$ \cite{LivroFT}, sua representação pode ser aproximada como é vista na equação \cite{Eq6}
+
+    \begin{equation}
+        R +-=\frac{1}{a^2} +-= \frac{f^2}{a^2}  
+    \end{equation}
+
+    \par Sendo a o raio de abertura da fenda e f o comprimento focal e manipulando a \cite{Eq1}, a entendue do espectrômetro FT pode ser compreendida como é visto na equação \cite{Eq7}, neste sentido $\pi^2.r^2$ compreende-se como sendo a area do feixe. 
+
+    % Falar no texto da entendue da grade de difração, a equação 1.7 do LivroFT
+    \par Quando a entendue do espectrômetro dispersivo \cite {eq?} é comparada com a entendue presente em \cite{Eq8}, \cite{LivroFT}, excalrece que l/f, em dispositivos comerciais nunca ultrapassa 1/20 polegadas. Ou seja, para um mesmo R, o fluxo luminoso de um espectrômetro FT sempre será superior a um dispersivo. Esta característica é então a nomeada, vantagem de Jacquinot.
+
+    \subsubsection{Felgett}
+
+\chapter{Projeto e Implementação do Sistema de Amostragem}
+\label{cap:SisAmostragem}
+    \par A implementação de um interferômetro exige amostragem precisa e repetível \cite{MIT} em relação à posição do espelho móvel. Há duas alternativas para atingir este objetivo. A primeira realiza a aquisição dos dados em intervalos temporais regulares. Já a segunda faz uso de um sinal de referência o qual possui correspondência direta com o posicionamento do espelho móvel. Para desempenhar tal tarefa, a segunda opção foi utilizada.
+    \par Este capitulo portanto, trata da metodologia de projeto e implementação do sistema de amostragem. Será tratado, portanto a respeito da determinação e seleção dos parâmetros e componentes ópticos, respectivamente. Para operacionalizar o equipamento, é fundamental que seja utilizado suportes mecânicos tanto para fixar os componentes ópticos, quanto para ajustar seus respectivos ângulos. Neste sentido realizou-se a concepção e fabricação dos suportes mecânicos necessários.
+    \par O sinal de referência foi gerado por meio do deslocamento de um atuador linear que atua no sistema de modo a criar o movimento do espelho móvel. Em termos gerais, inicialmente uma fonte de luz policromática passa por uma abertura para na sequência ser colimada por um espelho côncavo, o qual tem como função colimar a radiação; posteriormente esta luz atinge uma grade de difração. Da grade é possível determinar a posição em que diferentes comprimentos de onda estarão presentes. Um deles, portanto passa por uma segunda abertura a qual alcança um divisor de feixe que irá transmitir parte da luz para um espelho fixo e outra para o móvel. Ao se recombinarem a interferência resultante é mensurada por um fotodetector comercial.
+    \par Diagrama do sistema de Amostragem
+    \par O acionamento do atuador linear, energização da fonte de luz, leitura do detector e visualização dos dados necessitam de componentes eletrônicos e computacionais específicos. Em relação às necessidades computacionais utilizou-se o microcontrolador Tiva4MC... e recursos de RTOS por meio do kernel FreeRTOS. Para a visualização e armazenamento dos dados amostrados pelo detector, utilizou-se o protocolo de comunicação UART integrado com bibliotecas especificas da linguagem Python.
+    % detecotr IR range -> 5-20um
+    % emissor IR range -> 2-16um
+    % Beam splitter    -> 7-14um
+    % f= 2vV     $f = 2Vv$
+    % objetivos gerias -> parametros de operação/ range espectral. Parâmetros iniciais que irão reger a determinação dos demais componentes.
+    
+    \par Por se tratar de um sistema de amostragem, o parâmetro central que o sustenta é o critério de Nyquist. Portanto, um olhar atento deve ser dado a alguns componentes do sistema. Primeiramente evidencia-se que o sinal de referência que será implementado é tal que gera uma onda senoidal por meio da interferometria de uma radiação monocromática, o que significa que sua frequência precisa ser no mínimo duas vezes maior do que a frequência do fenômeno a ser observado. O interferômetro infravermelho possui um detector capaz de operar, aproximadamente entre 5 a 20 $\mu m$; já o emissor, de 2 a 16 $\mu m$. Por outro lado o divisor de feixes opera no intervalo de 7 a 14 $\mu m$. Nesse sentido, a máxima frequência que poderá ser gerada no sistema será condicionada pela equação \ref{eq:FreqInterfGeral}. Considerando que para ambos os interferômetros, a velocidade de deslocamento é a mesma tem-se que a frequência máxima do interferômetro infravermelho é tal como descrita na equação \ref{eq:VelocidadeFixa}.
+
+        \begin{equation}
+            \label{eq:VelocidadeFixa}
+            f = 2857,14.V
+        \end{equation}
+
+    \par A constatação \ref{eq:VelocidadeFixa} servirá de base para as demais determinações dos parâmetros do equipamento. 
+    
+    \section{Ópticos}
+    \label{sec:Opticos}
+        % Comentar objetivos gerais contraposição com HeNe
+        \par Tipicamente, sistemas de amostragem aplicados para dispositivos da natureza presente neste trabalho fazem uso do laser HeNe. Trata-se de uma fonte de radiação de elevada coerência, baixa divergência e largura de banda reduzida, ou seja possuí um comportamento monocromático quase ideal. Contudo sua energização exige conversores de potência CC de alta tensão (na faixa dos kV), além de em si ser um dispositivo de elevado valor comercial. 
+
+        % talvez valha a pena introduzir o laser diodo dps de ja discorrer sobre o 
+        % led RGB sua montagem e resultados
+        \par Como alternativa, este trabalho explorou duas abordagens distintas com o intuito de gerar o sinal de referência amostral. Uma faz uso de uma fonte de luz de LED RGB (Figura x) e outra de diodo laser (Figura X).
+
+        \par                                  -
+        \par [Diagrama esquemático Sistema LED RGB]
+        \par                                  -
+        \par [Diagrama esquemático Sistema Diodo Laser]
+        \par                                  -
+
+        \par A primeira abordagem (Figura X) faz uso de um espelho concavo (E1) com a intenção de colimar seus feixes, em seguida esta radiação incide sobre a grade de difração G1. Portanto, idealmente, no angulo $\theta$ estará presente um feixe monocromático cujo comprimento de onda é $\lambda$. Deste ponto em diante os fenômenos ópticos são equivalentes aos discutidos na seção \ref{sub:PrincFuncionamento}. Para este caso utilizou-se o LED RGBW K1488 cujo $\lambda$ de pico é 622 nm e FWHM (largura total na metade do máxima, análogo à largura de banda) de aproximadamente 110 nm.
+        \par Já na segunda implementação, com os feixes já colimados a radiação do diodo laser atinge a grade de difração G1, a qual posteriormente produzirá 
+        o comprimento de onda $\lambda$. Fez-se uso do diodo laser RLP006, o qual possuí $\lambda$ de pico em 650 nm e FWHM de 20 nm.
+
+        \par Em relação aos espelhos E1, EF e EM, por questões de custo foram selecionados modelos cujo revestimento é de prata, sua reflexão média é superior a 90\% de 450 $nm$ a 2 $\mu m$ e superior a 95\% entre 2 $\mu m$ e 20 $\mu m$. Seus modelos comerciais são CM127-050-G01 (comprimento focal de 50 mm) e ME05-G01, respectivamente, sendo ambos fabricados pela Thorlabs. 
+        
+        \subsection{Grade de Difração}
+            % lambda maximo da dispersão
+            % alta dispersao 1nm/mm {eq:DifragaoGeral}
+            % How to Design a Spectrometer \ref{eq:DirDifracao}
+            \par A determinação não só deste componente, mas também de todos os demais que serão discorridos neste trabalho levam em consideração o compromisso de equilibrar a viabilidade e flexibilidade operacional em conjunto com a viabilidade financeira. 
+            \par A seleção da grande de difração adequada tem o intuito de garantir que a radiação $\lambda$ atinja o divisor de feixe DF (Figura X) em um angulo de 45º em relação a ele. Outro critério importante diz respeito à magnitude da dispersão da luz (variação de $\lambda$ por mm), a qual deseja-se que seja a menor possível. Isso pois abertura A1 (Figura x) precisa ser atingida por um feixe monocromático. Ao observar as equações \ref{eq:DifragaoGeral} e \ref{eq:DirDifracao} constata-se que o espaçamento entre as ranhuras depende unicamente das alternativas comerciais disponíveis e o comprimento focal $f$ presente em \ref{eq:DirDifracao}, para este caso pode ser reinterpretado como sendo a distância entre o feixe colimado e a grade.
+            
+            \par Escolheu-se a utilização da grade de difração GR13-1205 (Thorlabs, EUA), cujo $d$ é de 1200/mm e dimensões 12,7mm por 12,7mm. Sendo assim, para um $f$ de 110 mm incidindo-se à normal da grade, o angulo $\beta$ correspondente a 622 nm será de 48,28º e a posição no plano x de 123,37 mm.
+
+        \subsection{Divisor de Feixe}
+            \par O divisor de feixe é um componente fundamental no projeto óptico. Trata-se do elemento que permite o inicio do fenômeno referente à interferometria. Os processo de fabricação e princípios físicos que possibilitam sua operação vão além do escopo deste trabalho, porém seus diversos tipos podem ser encontrados em \cite{Bell:MIT}. De forma geral espera-se que tal componente tenha como comportamento ideal a capacidade de transmitir 50\% da radiação de entrada e refletir os outros 50\%.
+            Em termos práticos, cada alternativa comercial será composto de revestimentos, substratos, matérias e formatos, os quais condicionarão a faixa espectral em que o divisor de feixe em si será capaz de transmitir/refletir sua radiação de entrada.
+            \par Interferômetros de Michelson clássicos, os também compreendidos como interferômetros de face única, sofrem como uma de suas grandes desvantagens \cite{MIT} a elevada perda de radiação, devido ao fato de durante a recombinação de feixes, no melhor caso 50\% da informação ser direcionada à fonte de luz (que no caso deste trabalho será a grade de difração).
+            \par Considerando o sistema de amostragem implementado, o divisor de feixe utilizado (EBS1 - Thorlabs) é capaz de transmitir e refletir 50\% e 50\%, respectivamente; para os casos em que o angulo de incidência do feixe de entrada é de 45º. Seu diâmetro é de 12,7 mm e segundo o fabricante seu substrato é um vidro de cal sodada com revestimento de óxido dielétrico refratário com faixa de operação compreendida de 450 $nm$ a 650 $nm$.
+            % substrato Soda Lime Glass 
+            % revestimento Refractory Oxide Dielectric
+            
+        %\subsection{Fenda}
+        %    \par sdsasdsa
+        \subsection{Posicionamento Óptico Final}
+            \par Para implementar o sistema de amostragem, a concepção de vários parâmetros operacionais necessitam ser evidenciados e determinados. A definição de variáveis de projeto destacadas no capitulo \ref{cap:Cap2}, sobretudo nas secessões \ref{cap:sec1}... fornecem as bases necessárias para a obtenção de um design inicial. Em síntese, o intervalo de operação da interferometria no infravermelho baliza, com base no critério de Nyquist, qual deve ser a frequência de operação do sistema de amostragem. Por sua vez este valor é condicionado pelas características operacionais do divisor de feixe escolhido. 
+            \par Em seguida, parâmetros geométricos são escolhidos. Ou seja com base no angulo de incidência na grade de difração é possível saber que o comprimento de onda correspondente a 622 nm estará presente
+            em $\theta= 48,28º$ $x=123,37$ mm.
+            \par Os parâmetros de projeto são apresentados na tabela (XXX). Por fim, o diâmetro do feixe pode ser determinado com base na área do detector selecionado (mais detalhes a respeito deste componente são discutidas na seção \ref{sub:DetectorVis}), que por sua vez é de yy mm. O componente que desempenha esta função é um diafragma óptico com flexibilidade de ajuste de área entre x e y mm. 
+            
+            \par .....
+            \par Tabela
+            \par .....
+        
+    \section{Projeto Mecânico}
+        \par Todo e qualquer dispositivo óptico requer alinhamento robusto, preciso e consequentemente, confiável. A estrutura mecânica desempenha papel fundamental para essa funcionalidade, além de, no contexto de implementação de prototipação, a flexibilidade também torna-se extremamente valiosa. Mais especificamente, os elementos mecânicos devem ser capazes de reduzir os impactos de vibrações, permitir o ajuste da altura dos componentes, fixação dos elementos e alteração angular dos ópticos. Caso contrário, o funcionamento adequado não é atingido gerando, sobretudo, problemas relacionados a desalinhamento. Muitos fornecedores disponibilizam uma gama variada de soluções nesse sentido que vão desde a mesa, até suportes personalizados para cada tipo de geometria que o elemento óptico possa exigir. Apesar de já existirem no mercado vasta variedade de soluções, por questões de custo optou-se por implementar os elementos mecânicos. Para isso fez-se uso dos softwares de CAD FreeCAD, Fusion e Software de corte a laser com o intuito de desenvolver a concepção e dimensões dos componentes. Suas implementações foram realizadas por meio do uso da máquina de corte a laser XXX e a máquina 3D inventorm, modelo XXX.
+        
+        \subsection{Mesa}
+            \par As dimensões deste elemento são XX cm x XX cm (Figura X) com espessura de 9 mm. Possui furos roscados M8 cuja a distância entre o centro de cada um em relação ao seu adjacente é de XX mm. Há 6 pés niveladores roscados (M8), que permitem flexibilidade em termos de ajuste da altura da mesa. A mesa é composta de 3 chapas de MDF as quais foram submetidas a corte a laser.
+            \par ...    ....    ....
+            \par Diagrama esquemático da mesa. Visão 2D. FreeCAD.
+            \par ...    ....    ....
+            \par Há também furos e aberturas especificas cujo propósito é a fixação dos componentes relacionados ao deslocamento dos espelhos. Portanto, em relação ao atuador linear, encontram-se furos de parafusos M3 exclusivos para um motor de passo e um perfil estrutural, além de uma abertura retangular de X mm por Y mm.
+            
+        \subsection{Suportes}
+            \par Implementou-se uma vasta variedade de suportes os quais foram integralmente implementados em máquina 3D. A principio, todos os demais suportes estão associados a um que estabelece a fixação deste com a mesa ao mesmo tempo que oferece a capacidade do ajuste da altura. No escopo deste trabalho, ele será chamado de suporte universal (Fiugra XX).
+
+            \par ...    ....    ....
+            \par Diagrama esquemático do Suporte Universal. Visão 3D. FreeCAD. 
+            \par ...    ....    ....
+
+            \par ...    ....    ....
+            \par Foto do suporte com  a mesa. 
+            \par ...    ....    ....
+
+            \par Apesar de cada óptico exigir um suporte personalizado, genericamente o que eles possibilitam são a conexão entre si e o suporte universal, abertura para posicionamento do componente óptico e fixação entre o óptico e o suporte em si. As imagens X, X1, X.. e Xn demonstram a visualização completa desses elementos.
+
+            \par ...    ....    ....
+            \par Foto dos diferentes suporte ópticos. 
+            \par ...    ....    ....      
+            
+        \subsection{Atuador Linear}
+            \label{sub:AtuadorLinear}
+            \par Trata-se de um elemento composto de várias partes que se integram e sincronizam-se. O atuador linear é o responsável por viabilizar e operacionalizar o deslocamento dos espelhos. Nesse sentido, tal fenômeno é condicionado pelo giro de um motor de passo (NEMA 17), o qual está fixado à uma polia dentada (nome comercial), que por sua vez tangencia uma correia (nome comercial). As extremidades da correia estão presas a dois suportes, (nomeados neste trabalho de suporte atuador espelho, figura) que foram implementados exclusivamente para este propósito. A correia também esta tangente a uma segunda polia dentada (nome comercial).
+            \par Os suportes atuador espelho são tais que além de prenderem-se à correia também possuem furos M3 com dois intuitos. O primeiro é permitir a fixação com o suporte do espelho móvel, já o segundo; a fixação com uma guia MGN. Em conseguinte, a guia é tangente a um trilho (nome comercial). 
+            \par Resumidamente, esses são os elementos que possibilitam o movimento em sentido único do espelho, pois em síntese, conforme o motor gira, a guia (nome comercial) irá deslocar-se, modificando assim a posição do espelho. Por fim, o atuador linear prende-se a mesa por meio do uso de um perfil estrutural T 20x20 de comprimento X mm.
+
+            \par ...    ....    ....
+            \par Fotos do Atuador Linear.
+            \par ...    ....    ....    
+
+            \par ...    ....    ....
+            \par Diagrama do Atuador Linear.
+            \par ...    ....    ....    
+            
+    \section{Instrumentação e Integração ao Microcontrolador}        
+        \subsection{Motor}
+            \par De modo a gerar o giro do motor de passo e consequentemente desencadear todos os fenômenos descritos na subseção \ref{sub:AtuadorLinear} fez-se uso do driver DRV8825. Trata-se de um circuito integrado \cite{data:DrvTexas}, o qual internamente possui duas ponte H capazes de energizar motores DC, drenando até 2,5 A para cada uma das saídas. Sua interface de entrada é composta de pinos de configuração e acionamento. 
+            
+            \par Em relação ao primeiro caso, é possível reduzir os passos que serão percebidos pelo motor de acordo com cada degrau de entrada. Por exemplo, o motor NEMA 17 reproduz uma revolução a cada 200 passos, porém é possível configurar a saída gerada pelo DRV8825 de modo que seja reproduzido 1 passo completo, 1/2, 1/4, 1/8, 1/16 ou 1/32 passos de saída. Configurou-se o ci em 1/32 passos o que significa que ocorre uma revolução nas polias a cada 6400 steps de entrada. Além da resolução dos passos de saída também é possível habilitar/desabitar a saída, reiniciar contadores internos e ativar o modo de baixa potência.
+
+            \par A respeito dos pinos de acionamento, o principio é bastante simples. Há a possibilidade de definir a direção do giro e o pino de step de entrada em si. Em resumo, configurou-se uma GPIO no microcontrolador como intuito de definir o pino de direção e um modulo de PWM cuja a saída conecta-se ao pino STEP do driver DRV8825. A figura X fornece uma visualização completa do diagrama eletrônico dos componentes e suas respectivas tensões de energização.
+
+            \par ...    ....    ....
+            \par Diagrama do NEMA. Tiva + DRV + MOTOR
+            \par ...    ....    ....    
+
+            \par |deduzir step -> deslocamento -> Frequência |
+            \begin{equation}
+            \label{eq:MotorVelo}
+                t_{int}=(ATIME+1)(ASTEP+1)2,78\mu s
+            \end{equation}
+            
+        \subsection{Fonte de Luz}
+            \par Como já comentado e introduzido na seção \ref{sec:Opticos} a fonte de luz empregada é um led RBW. No escopo deste projeto, apenas a radiação vermelha é de interesse, portanto seu circuito de acionamento leva em consideração exclusivamente as características operacionais deste espectro, que são corrente nominal de 500 mA e tensão direta de 2,3V. Sua energização é condicionada por uma saída digital do microcontrolador a qual é entrada de um buffer (opAmp utilizado) cuja a saída aciona o gate do TBJ XXYY. Para estabilizar a corrente empregou-se resistências com tolerância de até 10W. A figura XX apresenta a representação esquemática do circuito de acionamento.
+
+            \par ...    ....    ....
+            \par Diagrama do NEMA. Tiva + Buffer + TBJ + LED + Resistores
+            \par ...    ....    ....    
+            
+        \subsection{Detector}
+        \label{sub:DetectorVis}
+            \par Utilizou-se um dos detectores mais versáteis disponíveis no laboratório. O AS7341 é um circuito integrado com capacidade de medir 8 espectros visíveis, uma faixa espectral no NIR, um canal de flicker e outro de clear. Seus modos de operação são amplos \cite{data:DataAS7341} e altamente flexíveis o que consequentemente torna sua configuração relativamente complexa, justamente por ser carregada de detalhes e particularidades. Há a disponibilidade de configura-lo e opera-lo facilmente via uso da plataforma Arduíno, porém como este trabalho faz uso de um microcontrolador baseado em ARM operando em um ambiente de RTOS, fez-se necessário a implementação de uma biblioteca personalizada. Explicar todas a nuances deste detector extrapolaria e muito o escopo deste trabalho, visto que internamente há mais de 40 registradores, os quais muitas vezes definem em cada bit uma funcionalidade diferente. Portanto serão apresentado apenas os passos e elementos relevantes e associados com a operação utilizada na implementação do sistema de amostragem. 
+            
+            \par Quase que a totalidade da interação entre o microcontrolador e o AS7341 se da na forma de configuração de seus registradores internos, seja para acessar dados que o dispositivo gera, seja para determinar parâmetros de sua operação. Tais procedimentos se dão na forma de requisições as quais respeitam as regras do protocolo de comunicação serial I$^2$C. A exceção a regra vem a ser o procedimento de identificação e sincronização nos casos em que o ci gera interrupções. 
+            
+            \par Sua arquitetura interna, ilustrada na imagem Figura X apresenta 6 canais ópticos independentes \cite{data:DataAS7341} com um conversor luz-frequência de 16 bits dedicado. Isso significa dizer que entre os ADCs e os  11 fotodetectores há um multiplexador que necessita ser configurado. Há a possibilidade de modificar os parâmetros relacionado ao ganho e tempo de integração dos ADCs porém sua alteração impactará na escala total deste componente em termos dos dados de resposta (espectro medido).
+
+            \par ...    ....    ....
+            \par Diagrama do AS7341. Fonte: Datasheet do fabricante.
+            \par ...    ....    ....   
+
+            %   Explicar como eu configurei ele
+            % Boot()
+            %   I2C_init
+            %   PowerOn = 1; //Coloca ci em IDLE. SP_EN =1 para entao entrar em modo ativo
+            %   DeviceConfig()
+            %       Interrupção espectral = 1
+            %       Desenergiza LED auxiliar
+            %       Modo de operação
+            %       Desabilita a utilização de filas
+            
+            % SetStep()
+            % SetTime() % Diferença de step e time
+            % SetGain()
+            % Calcula Fullscale
+            \par A operação do detector AS7341 pode ser simplificada em duas etapas, configuração e acesso as medições. No que diz respeito a configuração o primeiro passo inicia com a habilitação do protocolo de comunicação serial I$^2$C no microcontrolador. A partir desse momento em diante é possível interagir integralmente com o periférico. 
+            \par Em seguida, faz-se a determinação do valores básicos dos registradores mais fundamentais. Escreve-se no registrador PowerOn de modo a colocar o dispositivo em IDLE, na sequência habilita-se a geração do sinal de interrupção por parte do ci, define-se o modo de operação, desabilita-se o uso de filas e por fim desenergiza-se seu LED auxiliar. Não utilizou-se seu LED auxiliar pois este seria fonte de interferência em relação ao sinal de entrada. Internamente, o AS7341 disponibiliza filas cujo o tamanho pode ser monitorado assincronamente ou pode ser associado à uma interrupção que é gerada para quando essa atinge sua capacidade máxima. A fila foi desabilitada, pois a intensão do uso do detector é o acompanhamento o mais rápido possível das transições de intensidade luminosa associadas ao deslocamento dos espelhos.
+            \par Ao fim da configuração dos registradores básicos faz-se a configuração de alguns parâmetros do seu conversor interno de 16 bits. Nesse caso, define-se o ganho de seu ADC além do seu tempo de integração. Este último é o resultado de dois registradores, ATIME e ASTEP. O primeiro estabelece a quantidade de passos de integração, já o segundo diz respeito ao tempo de integração para cada passo, sua resolução é de 2,78$\micro m$. Nesse sentido, \cite{data:DataAS7341} deixa claro que o intervalo total respeita a equação \ref{eq:AS7341_time}. Além do tempo de integração total, ATIME e ASTEP impactam na escala completa do ADC de acorodo como esta está descrito na equação \ref{eq:AS7341_scale}.
+
+            \begin{equation}
+            \label{eq:AS7341_time}
+                t_{int}=(ATIME+1)(ASTEP+1)2,78\mu s
+            \end{equation}
+
+            \begin{equation}
+            \label{eq:AS7341_scale}
+                ADC_{fullscale}=(ATIME+1)(ASTEP+1)
+            \end{equation}
+            
+            % SetSMUX()
+            %   Limite para geração de interrupção
+            %   SetSMUX
+            %       Conectas unicamente o fotodiodo Fx no ADC0. Só ele gera interrupções.
+            %   Habilita Medição Espectral
+            \par Em seguida realiza-se a configuração do elemento de multiplexação (SMUX) dos canais espectrais. Em síntese associou-se o canal Fx ao ADC0 contectando os demais conversores ao GND. Sequencialmente habilitou-se a geração de interrupção exclsuivamente apenas aos casos relacionados às medições do conversor. Desse modo foi possível configurar o AS7341 de modo a garantir que seus sinais de interrupção estariam associados ao canal ADC0. O último passo do procedimento de configuração passa então ao de habilitar a realização de medições espectrais.
+            
+            % SetDeviceStatus
+            % Loop
+            %   WaitInterrupcao
+            %   ReadData()
+            %   RstIntAS3741Mask()
+            %   Normaliza
+            %   UART5_Send()
+            
+            \par Deste ponto em diante sua utilização passa a ser realizada dentro de um loop infinto, o qual inicia-se com o bloqueio da execução da task responsável pela leitura dos valores gerados pelo ci AS7341. Essa por sua vez só será desbloqueada novamente após o microcontrolador receber o sinal referente à interrupção do dispositivo de medição. Nos casos em que tal condição é atendida, realiza-se a leitura do valor medido, reinicializa-se as flags do módulo de interrupção do dispositivo, normaliza-se o valor lido em relação á magnitude máxima ($ADC_{fullscalse}$) e encaminha-se a informação gerada a um segundo canal de comunicação, o qual é implementado sob o protocolo serial UART. O envio do dado normalizado via UART finaliza o ciclo e o procedimento de leitura retoma ao passo 1, cuja função é bloquear a task que roda a funcionalidade descrita.
+
+            \par A figura X exemplifica todo o procedimento de configuração e leitura espectral do sensor AS7341.
+            \par ...    ....    ....
+            \par Fluxograma de configuração e operação do AS7341
+            \par ...    ....    ....   
+
+            %   Explicar como sua configuração condiciona a frequencia de operação e portanto a velocidade
+            %   do atuador linear
+            \par Como dito anteriormente, para a implementação do sistema de amostragem, o AS7341 necessita gerar dados em uma velocidade que atende às especificações geradas pelas demais partes do sistema, como é o caso do atuador linear. Isso pois, constatou-se que a velocidade mínima em que foi possível acionar o motor de passo foi com um PWM de 20Hz portanto, nessas condições, fazendo uso da equação \ref{eq:MotorVelo} determina-se que a frequência do sinal gerado pelo sistema de amostragem será de Xy kHz. Pelo critério de Nyquist, no mínimo a frequência relacionada à interrupção de medição espectral do AS7341 precisa ser de 2Xy kHz.
+            \par Nessas condições, tais critérios podem ser atingidos por meio da manipulação dos valores dos registradores ATIME e ASTEP e o uso da equação \ref{eq:AS7341_time}, uma vez que são os responsáveis pela magnitude final do intervalo de interação. Consequentemente aplicou-se para ATIME e ASTEP os valores x, y respectivamente, culminando em uma frequência amostral de Xy kHz. 
+            
+    \section{Visualização e Armazenamento de Dados}
+        %             |  Python                    |
+        % Tiva UART -> UART PC -> Visualização MatplotLib & Armazenamento em CSV
+        \par Como comentado na subseção \ref{sub:DetectorVis}, os dados gerados pelo detector são enviados por UART. Desse modo é possível integrar os resultados gerados pelo ci com uma interface gráfica para visualização de dados na forma de gráfico. Para isso implementou-se um script Python o qual roda em um PC externo. 
+        \par Para seu desenvolvimento considerou-se inicialmente o volume de dados gerados pelo microcontrolador. Todda vez que uma medição é enviada ao UART envia-se um total de 14 bytes, desses 5 são para indicar o inicio da chegada de um novo dado ao PC, outros 5 o encerramento do pacote e 4 correspondem ao valor em float do dado medido. Nesse contexto, com o AS7341 gerando dados a Xy kHz ten-se uma taxa de transferência de aproximadamente 179 Kbps. Com o intuito de reduzir ao máximo a interferência da comunicação UART com o sistema amostral pensou-se em em uma velocidade de dados que não interferisse com a velocidade com que o AS7341 gera suas medições, portanto usou-se um baudrate de 921.6 Kbps.
+
+        \par A medida que os dados chegam pelo canal UART esses precisam ser lidos, desempacotados, salvos em formato csv e visualizados em forma gráfica. Evidentemente, tal contexto se mostra um ambiente multitarefa, portanto fez-se uso de threads, filas e semáforos para gerenciar os processos associados ao uso dos dados.
+
+        \par A primeira thread diz respeito ao acesso do canal UART, sua função é única e exclusivamente avaliar a quantidade todas de bytes disponíveis no buffer do periférico. Na condição em que há dados disponíveis no componente, todos são lidos e imediatamente enviados a uma fila.
+
+        \par Sequencialmente, a thread que realiza a leitura dos pacotes acessa toda a informação disponível na fila e realiza a distinção do que são bytes de indicação de inicío e fim com os valores float associados à medições. Uma vez acessados, os valores medidos são então adicionados em uma lista. A partir deste ponto é possível facilmente escrever todos os valores presentes na lista em um arquivo csv e simultaneamente utiliza-la como base da dados para a geração de um gráfico. A figura X exemplifica todo os processos envolvidos na visualização e armazenamento dos dados gerados pelo AS7341.
+
+        \par ...    ....    ....
+        \par Fluxograma de configuração e operação do AS7341
+        \par ...    ....    ....   
+        
+        % Seleção do CSV -> Seleção da região (janelamento) -> FFT -> Visualização.
+        
+\chapter{Projeto e Implementação da Interferometria no IR}
+\label{cap:SisIR}
+    \par Em grande medida, no contexto deste trabalho, a concepção e confecção da interferometria no espectro infravermelho é materializada por meio do reaproveitamento dos recursos e conceitos apresentados e discutidos na seção \ref{cap:SisAmostragem}. Entretanto, é fundamental evidenciar o fato de que o sistema de amostragem opera dentro do espectro visível, portanto ao modificar a faixa espectral a grande consequência imediata é o cuidado ao avaliar quais elementos e como esses serão capazes de transmitir energia nessa região física.
+    \par Reaproveitou-se integralmente os softwares e procedimentos relacionados com a concepção e fabricação dos suportes mecânicos.
+    \section{Ópticos}
+        \par Sob uma perspectiva geral, uma fonte de radiação infravermelha policromática trafega até um espelho concavo o qual colima os raios de entrada, esses feixes atingem diretamente um divisor de feixes, cuja faixa de operação é exclusivamente compreendida no espectro infravermelho. Parte da luz é refletida à um espelho plano móvel e a outra para um fixo.
+        \par Parte da radiação recombinada é direcionada à um segundo espelho concavo, o qual é utilizado para elevar a concentração energética que atingirá uma amostra genérica. Nesse momento, dependendo das características químicas do material haverá diferentes graus de interação entre o composto e a luz. Parte dessa luz será refletida e então concentrada, usando um terceiro concavo, o qual irá direcionar a radiação resultante em um detector infravermelho.  
+        \par A figura X ilustra esquematicamente o caminho óptico do sistema descrito.
+
+        \par ...    ....    ....
+        \par Fluxograma do sistema IR
+        \par ...    ....    ....
+        
+        \par Como dito anteriormente, em relação aos espelhos côncavos e planos, os mesmos modelos comerciais descritos na seção \ref{sec:Opticos} foram selecionado. Tratam-se de ópticos com revestimento de prata com capacidade de reflexão superior a 95\% na faixa dos 2 $\mu m$ e 20 $\mu m$.
+        
+        %\subsection{Espelhos Côncavos}
+        %    \par sdasd
+        %\subsection{Espelhos Planos}
+        %    \par sdasd
+        \subsection{Divisor de Feixe}
+            \par Há uma grande variedade de materiais utilizados para esse tipo de dispositivo. Em seu trabalho, \ref{MIT} utilizou um divisor baseado em CaF2, cuja amplitude de operação varia de x um a x um. A fabricante Thermo Fisher utiliza um divisor construido com KBr (Brometo de Potássio). Além desses há também divisores a base de Germanio (Ge) e Silício (Si). Para cada tipo de material base, revestimentos específicos são exigidos de modo a garantir proteção, durabilidade e ampliação das faixas de operação ou redução de sua absorção. 
+            
+            \par No que tange a faixa de operação os divisores de feixe com substrato de KBr apresentam transparência extremamente ampla (2.5 - 25 um), tornando-os a opção ideal para esse tipo de projeto. Contudo, trata-se de um material com adversidades. Sua disponibilidade não é ampla do ponto de vista comercial, os fabricantes desse tipo de divisor o fabricam com base em especificações personalizadas para cada projeto, o que significa que não há modelos fabricados em grande escala. Além do mais, do ponto de vista operacional, o composto KBr é altamente higroscópico, ou seja absorve com facilidade a umidade do ambiente. Se não manipulado corretamente, a umidade absorvida compromete as propriedades ópticas, além de acelerar o fim da vida útil do dispositivo.
+
+            \par Este trabalho fez uso de um divisor de feixe (modelo BSW705, Thorlabs) baseado em Seleneto de Zinco (ZnSe) com capacidade de transmissão e reflexão de 50\% em ambos, para angulo de incidência de 45. Possui diâmetro de 12,7 mm, espessura de 3 mm e faixa de operação de 7 a 14 $\mu m$.
+            
+    \section{Instrumentação e Integração ao Microcontrolador}
+        \subsection{Emissor IR}
+            \par Foi selecionado um emissor térmico para atuar como fonte de radiação (HIS180SMD-S, Infrasolid), trata-se um dispositivo compacto (3x3 mm$^2$) com capacidade emissão entre 2 e 20 $\mu m$. Eletricamente, ele comporta-se como um resistor (resistência equivalente varia de 19 a 21 $\Omega$) com capacidade de consumir no máximo 390 mW, a qual corresponde à 40mW de potência óptica de saída.
+            \par Considerando tais especificações foi utilizado o regulador de tensão LM117, o qual possui capacidade de gerar saída entre 1.25 a 25 V. Portanto, tal dispositivo foi polarizado como é visto na figura X, de modo a gerar uma tensão de saída de 2,6 V. A escolha dessa tensão baseia-se nas especificações fornecidas pelo fabricante do emissor térmico, o qual afirma que o dispositivo pode ser submetido no máximo a 2,8 V. Nessas condições, os valores de R1 e R2, presentes na figura X foram determinados com base na equação (\ref{eq:Vout_LM117}) da tensão de saída fornecida pelo fabricante do regulador de tensão.
+
+            \begin{equation}
+            \label{eq:Vout_LM117}
+                V_{out}=1,25(1+\frac{R2}{R1})
+            \end{equation}
+
+            \par ...    ....    ....
+            \par Esquemático do Emissor IR
+            \par ...    ....    ....
+
+            \par ...    ....    ....
+            \par Fotografia do Emissor IR
+            \par ...    ....    ....
+
+            \par Teoricamente, ao submeter a fonte de radiação a 2,6 V, seu consumo será de 338 mW. De acordo com o gráfico X, o qual é fornecido pelo fabricante, será emitido uma radiação óptica 
+            de aproximadamente 32 mW.
+
+            \par ...    ....    ....
+            \par Gráfico da relação Input Elétrico/ Saída Óptica
+            \par ...    ....    ....
+            
+        \subsection{Detector IR}
+            \par Dispositivos dessa natureza são capazes de converter radiação infravermelha em sinais elétricos mensuráveis. Dentro do contexto de detectores que operam na região do infravermelho médio há dois grandes tipos. Detectores fotônicos e térmicos. Como o nome sugere, dispositivos fotônicos operam por meio do efeito fotoelétrico, portanto fótons na região do MIR exitam os elétrons de um material semicondutor, gerando assim o sinal elétrico. Equipamentos baseados nessa tecnologia apresentam alta sensibilidade e baixo tempo de reposta (na escala de nanosegundos), entretanto possuem elevado custo de aquisição. 
+            \par Os detectores térmicos possuem características mais adequadas para esse trabalho, uma vez que seu custo é menor e a manipulação é mais simples, além de que não exigirem projeto de resfriamento sofisticado. Contudo, seu tempo de resposta é consideravelmente maior (na escala dos milissegundos) e responsividade reduzida em comparação à alternativa anterior. Seu principio de operação é tal que há geração de sinais elétricos com base nas vibrações termodinâmica que os fótons compreendidos no espectro infravermelho causam no material detector. 
+            % Tese da Italiana | Tese MIT
+            \par Fez-se uso da termo pilha ZTP-135 (fabricante Amphenol Advanced Sensors). Importante salientar a escolha de detectores infravermelho devem ser intermediadas por considerações operacionais, tais como descritas por \ref{MIT}, \ref{outros}. Nesse sentido, é fundamental avaliar a potência equivalente ao ruído (NEP, noise equivalent power), a qual indica a potência de sinal necessária para gerar uma resposta elétrica equivalente ao ruído, no sistema de detecção. Em outras palavras, a potência de entrada exigida para gerar uma SNR equivalente a 1. Trata-se de uma grandeza elétrica normalmente informada pelos fabricantes, a qual indica o ruido elétrico presente em uma frequência especifica em unidades de $V/\sqrt{Hz}$ dividido pela responsividade (V/W), resultando na unidade de medida ($W.\sqrt{Hz}$). Sendo a responsividade por sua vez correspondente à tensão produzida para um watt de potência de entrada. Consequentemente, a performance de um detector é ampliada a medida que sua NEP é reduzida, portanto elevando sua SNR. O dispositivo ZTP-135 é tal que sua responsividade é de 60 V/W, NEP de 0,53 $nW.\sqrt{Hz}$, transiente de 25 ms e área 1,4 mm$^2$. 
+            
+            %Procurar estudo que fala sobre espectrometria dos compostos da atmosfera
+            \par Em um cenário ideal, onde não há perdas de sinal desde o instante em que a radiação é emitida até o momento em que atinge o detector; 33mW de potência óptica exita o ZTP-135, resultando em um sinal de 1,98 V. Entretanto, é improvável que tamanha magnitude de potência irá de fato chegar até o alvo, até porque muitas das moléculas na natureza, especialmente as que se encontram na atmosfera (água, dióxido de carbono, metano, monóxido de carbono, oxido nitroso, ozônio, dióxido de nitrogênio, entre outros) vibram, portanto absorvem fótons nessa faixa. Nessas condições torna-se razoável estimar que o sinal de saída do emissor será atenuado em uma escala de 100 vezes, gerando uma saída de no máximo 20 mV pelo detector.
+            \par Nesse contexto, do ponto de vista eletrônico, a instrumentação da informação leva em consideração que o sinal possui característica CC, uma vez que, no máximo será gerado uma saída de 40 Hz e magnitude relativamente baixa (dezenas de mili volts). Portanto, projetou-se um condicionamento de sinal visando a amplificação da resposta, limitando paralelamente os efeitos de offset dos amplificadores operacionais. Em seu trabalho, \ref{tese_italia} realizou a implementação de uma termopilha aplicada na medição de temperatura humana. Em seu projeto é destacado que há duas soluções para esse problema, técnicas de amplificação auto-zero ou estabilização chopper. 
+            
+            % 1. Falar em linhas gerais como funciona Auto-zero e chopper
+            % https://www.ti.com/lit/an/slyt204/slyt204.pdf?ts=1748061218375
+            \par Amplificadores auto-zero (AZA, auto-zero amplifier) são concebidos com o propósito de reduzir tensões indesejadas (offset CC), as quias podem interferir na medição de sinais de baixa magnitude. Tipicamente seu ofsset é de algumas unidades de $\mu V$. Por outro lado amplificadores chopper também possuem a capacidade de amplificar sinais de pouca intensidade. A grande diferença entre eles está no espectro da produção de interferências.
+            %, porém sua largura de banda tende a ser mais ampla, em comparação ao auto-zero. Isso se deve ao como cada técnica opera.
+
+            \par A figura X apresenta um diagrama em blocos simplificado de um amplificador chopper. Nele um sinal CC é modulado por um oscilador de modo a gerar um sinal CA. O sinal V1 é então amplificado e demodulado pelo mesmo oscilador. O sinal V2 é entrada de um filtro passa baixas, gerando assim o sinal Vout. Do ponto de vista matemático, no estágio de modulação, Vin é convolvido por um sinal CA gerando Vin.s(t). Em seguida, modela-se que a tensão de ofsset do amplificador (Vos), tamém chamado ruído 1/f, ruído rosa ou ruído de cintilação; é introduzida ao sistema. 
+            \par No contexto da instrumentação em que se esta implementando, a fonte do ruído rosa provém de múltiplos fatores dos amplificadores operacionais \ref{Artigo_TI}, as quais destacam-se as variações paramétricas (transistores, resistores e demais componentes) internas, deslocamento de temperatura e até mesmo a degradação funcional devido aos transcorrer do tempo. A equação \ref{chopper_Bef_Amp} ilustra o sinal de entrada durante o estágio de amplificação.
+
+            \begin{equation}
+            \label{eq:chopper_Bef_Amp}
+                V_{Ain}=V_{in}.s(t) + V_{os}
+            \end{equation}
+
+            \par No estágio de demodulação o sinal amplificado ($A.(V_{in}.s(t) + V_{os})$) é convolvido novamente por s(t), resultando em um sinal mostrado pela equação \ref{chopper_Demod}. Nessas condições é valido enfatizar que $s(t)^2=1$ uma vez que trata-se de uma chave, a qual pode ser modulada como $sig(sen(x))$, que nas condições do sistema apenas pode assumir valores de +1 e -1, portanto o sinal resultante, após a demodulação é tal como demonstrado pela equação \ref{chopper_Demod1}. Após aplicar um filtro passa baixa com frequência de corte superior ao sinal $s(t)$ é possível assim atenuar drasticamente o ruído intrínseco ao amplificador, culminando em um sinal final equivalente a $A.V_{in}$.
+
+            \begin{equation}
+            \label{eq:chopper_Demod}
+                V_{demod}=A.(V_{in}.s(t)^2+ V_{os}.s(t))
+            \end{equation}
+
+            \begin{equation}
+            \label{eq:chopper_Demod1}
+                V_{demod}=A.(V_{in}+ V_{os}.s(t))
+            \end{equation}
+
+            \par As grandes desvantagens dessa técnica repousam no fato de que trata-se de um amplificador com terminação única, não inversora, portanto não comporta diferenciação de sinal sem fazer uso de circuitos adicionais. Além de tratar-se de uma abordagem que constitui-se um sistema de amostragem \ref{artigo_TI} cuja largura de banda é fortemente limitada pela frequência de chaveamento, que por sua vez é limitada pelas restrições impostas pelo ganho de fase, o quais são induzidos pelo tempo de resposta das chaves. Portanto, a manutenção de uma performance adequada envolve manter a magnitude dessas interferências baixas, o que consequentemente culmina em frequências de chaveamento de alguns quilo hertz (kHz), resultando em uma largura de banda geralmente baixa. 
+
+            \par Em contraposição, AZA possuem um principio de funcionamento diferente. A figura X ilustra uma topologia desse tipo de dispositivo. Nela há dois amplificadores, um sendo o principal ($A_{p}$) e outro de anulamento ($A_{n}$), ambos com seus respectivos offsets, $V_{osp}$ e $V_{osn}$, os quais \ref{artigo_TI} modela como sendo fontes CC em série com as entradas não inversoras. Além dos ganhos de malha aberta ($A_{p}$ e $A_{n}$) há entradas de tensão adicionais cujos ganhos são $B_{p}$ e $-B_{n}$. Quando as chaves encontram-se na posição 1, a saída do amplificador de anulamento é conectado ao capacitor $C1$, nessa configuração a tensão sobre ele pode ser representada como é vista na equação \ref{AZA_C1}
+            
+            \begin{equation}
+            \label{eq:AZA_C1}
+                V_{C1}=A_{n}.V_{osn} - B_{n}.V_{C1}
+            \end{equation}
+
+            \begin{equation}
+            \label{eq:AZA_C1_1}
+                V_{C1}=V_{osn}.\frac{A_{n}}{1+B_{n}}
+            \end{equation}
+
+            \par Quando as chaves posicionam-se em 2, a tensão $V_{C1}$, idealmente, mantêm-se igual como descrita em \ref{eq:AZA_C1_1}. Simultaneamente o amplificador de anulamento, aplica um ganho em $V_{C1}$ equivalente a $B_{n}$ subtraindo-o por $A_{n}(V_{in}+V_{osn})$. Nessas condições a tensão que carrega o capacitor $C2$ é tal como demonstrado pela equação \ref{eq:AZA_C2}.
+
+            \begin{equation}
+            \label{eq:AZA_C1_1}
+                V_{C2}=A_{n}(V_{in}+V_{osn}) - B_{n}V_{C1}
+            \end{equation}
+
+            \par Substituindo $V_{C1}$ pela equação \ref{eq:AZA_C1_1} tem-se que:
+
+            \begin{equation}
+            \label{eq:AZA_C1_2}
+                V_{C2}=A_{n}(V_{in} + \frac{V_{osn}}{1+B_{n}})
+            \end{equation}
+
+            \par A partir deste ponto é possível identificar que na equação \ref{eq:AZA_C1_2} é demonstrado que o ruído rosa do amplificador de anulamento é atenuado a medida que projeta-se um ganho $B_{n}$ de alta magnitude. Em seu trabalho, \ref{artigo_TI} modela que a saída do estágio de anulamento ($V_{on}$) é equivalente à $V_{C2}$. Em seguida, a tensão $V_{C2}$ ao ser conectada à entrada adicional do amplificador principal gera uma tensão de saída $V_{out}$ equivalente à equação \ref{eq:AZA_Vout}
+
+            \begin{equation}
+            \label{eq:AZA_Vout}
+                V_{out}=A_{m}(V_{in}+V_{osm}) + B_{m}V_{C2}
+            \end{equation}
+
+            \par Expandindo $V_{C2}$
+
+            \begin{equation}
+                V_{out}=V_{in}(A_{m}+A_{n}B_{n}) + V_{osm}A_{m}+ V_{osn}\frac{A_{n}B_{m}}{1+B_{n}}
+            \end{equation}
+
+            \par Ao projetar uma topologia AZA \ref{arigo_TI} os parâmetros são tais que o sistema é otimizado de forma que $A_{n}=A_{m}$, $B_{m}=B_{n}$ e $B_{n}>>1$, podendo portanto gerar uma simplificação como é apresentada pela sequência de equações que vão de \ref{eq:AZA_Vout_i} até \ref{eq:AZA_Vout_f}
+
+            \begin{equation}
+            \label{eq:AZA_Vout_i}
+                V_{out}=V_{in}(A_{n}+A_{n}B_{n}) + V_{osm}A_{n}+ V_{osn}\frac{A_{n}B_{n}}{1+B_{n}}
+            \end{equation}
+
+            \begin{equation}
+                V_{out}=V_{in}(A_{n}+A_{n}B_{n}) + V_{osm}A_{n}+ V_{osn}A_{n}
+            \end{equation}
+
+            \begin{equation}
+            \label{eq:AZA_Vout}
+                V_{out}=A_{n}(V_{in}+V_{in}B_{n} + V_{osm}+ V_{osn})
+            \end{equation}
+
+            \begin{equation}
+                V_{out}=A_{n}(V_{in}(1+B_{n}) + V_{osm}+ V_{osn})
+            \end{equation}
+
+            \par Considerando que $B_{n}>>1$
+
+            \begin{equation}
+            \label{eq:AZA_Vout_f}
+                V_{out}=A_{n}B_{n}(V_{in} + \frac{V_{osm}+ V_{osn}}{B_{n}})
+            \end{equation}
+
+            \par A partir da equação \ref{eq:AZA_Vout_f} fica evidente que o ruído rosa é reduzido a medida que projeta-se amplificadores com elevado valor de $B_{n}$.
+            
+            \par Bem como os amplificadores choppers, o AZA também é um sistema de amostragem ($f_{AZA}$), porém com processos \ref{artigo_TI} de soma e subtração da frequência do sinal de entrada ($f_{s}$). As somas das frequências ($f_{AZA}+f_{s}$) podem ser facilmente lidadas fazendo o uso de filtros. Entretanto, a diferenciação gera aliasing caso a frequência do sinal não respeite o critério de Nyquist ($f_{s} <= \frac{f_{AZA}}{2}$). Em síntese, AZA resultam em redução do ruído CC dos amplificadores ao custo de impor uma restrição maior no que tange a frequência do sinal, do contrário o sistema será uma fonte de aliasing na sua largura de banda. Por outro lado, amplificadores choppers também reduzem o offset dos amplificadores, ampliando a concentração de ruído na sua frequência de chaveamento. 
+
+            % Falar do comparativo entre Chopper e Auto Zero
+            %Auto-zeroing results in low noise energy at the auto-zeroing frequency, at the expense of higher low frequency noise due to aliasing of wideband noise into the auto-zeroed frequency band. Chopping results in lower low frequency noise at the expense of larger noise energy at the chopping frequency
+
+                        
+            % 2. Falr do AD8628
+            \par O condicionamento da termopilha deste trabalho fez uso de um amplificador operacional que possui uma combinação dos dois sistemas. Escolheu-se o amplificador AD8628 (Analog Devices), o qual possui frequência de amostragem de 15 kHz. A instrumentação final é ilustrada pelo diagrama da figura X, nela um divisor resistivo serve de fonte para gerar uma tensão de 100 mV, a qual é um sinal de modo comum entre as entradas do amplificador AD8628. A tensão de modo comum $V_{cm}$ é saída de um buffer, o qual é utilizado para isolar possíveis oscilações que possam existir na instrumentação, de modo que não sejam trasferidas para outros componentes do sistema que também fazer uso da mesma fonte de alimentação ($V_{cc}=3,3V$).
+            \par A representação elétrica de uma termopilha faz uso de uma fonte de tensão CC em série à uma resistência (na faixa das dezenas de $k\Omega$). Sua saída é entrada de um amplificador com realimentação. Seu ganho naturalmente é condicionado por $R_{4}$ e $R_{5}$. A intensidade da corrente de saída dos dois amplificadores são limitas por $R_{3}$ e $R_{6}$. Os capacitores $C_{1}$ e $C_{2}$ são utilizados para desacoplar os sinais do sistema, do ruído CA. Por fim um filtro passa baixa de primeira ordem (circuito $RC$) é empregado para reduzir o impacto do chaveamento interno do AD8628. Idealmente a saída $V_{Tout}$ é representada pela equação \ref{eq:DecIR_inst}, onde há apenas o sinal CC de baixa intensidade oriundo da termopilha ($V_{T}$) multiplicado pelo ganho do amplificador com realimentação não inversora. 
+
+            \begin{equation}
+            \label{eq:DecIR_inst1}
+                V_{Tout}=AV_{T}
+            \end{equation}
+            
+            \begin{equation}
+            \label{eq:DecIR_inst}
+                V_{Tout}=V_{T}(1+\frac{R_5}{R_4})
+            \end{equation}
+            
+            % 3. Circuito Final, Vref Buffer | Tensão de Bias Melhoramento da Linearização |
+            % Vref é usando para avitar problemas de grimpagem devido ao fato do sinal de saída ser de baixa
+            % magnitude, o que poderia saturar o sinal em GND.
+            % Esquematico, Fotos da eletronica
+            \par ...    ....    ....
+            \par Esquemático do detector IR
+            \par ...    ....    ....
+            
+            % 4. Sinal e o Firmware -> ADC / DMA -> UART / RAM  # Tempo entre ADC trigger e UART send
+            \par Em poucas palavras, o que se descreveu nessa seção foi o detalhamento do produto comercial utilizado para armazenar potência óptica no infravermelho e a instrumentação eletrônica associada a esse dispositivo. Contudo de alguma forma o sinal $V_{Tout}$ precisa ser amostrado, armazenado e transferido pelo microcontrolador utilizado neste trabalho (Tiva4C). Para desempenhar essa tarefa implementou-se uma infraestrutura de firmware cuja operação é ilustrada na figura X. Uma GPIO é configurada de forma a operar como entrada. Dentro dessa sistemática esse sinal ($D_{aa}$) desempenha o papel de acionar a amostragem de $V_{Tout}$. A amostragem por sua vez é concretizada por meio do uso do conversor analógico digital interno do microcontrolador. Internamente o microcontrolador TM4C123GH possui um ADC de 12 bits de resolução, com a possibilidade de ser configurado para lidar com entradas diferenciais ou única (single-ended input), podendo atingir até até 1 milhão de amostras por segundo (1 Msps).
+            Configurou-se uma interrupção acionada pelos eventos de borda de subida de $D_{aa}$, sua principal instrução é solicitar ao ADC o inicio da coleta de $V_{Tout}$. Quando esse processo é finalizado, a interrupção do ADC é executada de modo a iniciar a transferência do resultado, o qual está presente em um registrador interno do periférico ADC ($Reg_{ADC}$); diretamente ao registrador de transferência de dados UART ($UART_{TX}$). Esse fluxo de dados é materializado através do hardware de DMA (Direct Memory Acess), o qual é periférico interno do microcontrolador. Em síntese, a cada interrupção do ADC transfere-se 16 bits a um dos barramentos UART. Fez-se uso do hardware de DMA com o intuito de reduzir ao máximo o impacto dos delays associados com a comunicação entre os dados espectrais coletados e seu respectivo armazenamento externo, de tal modo que o sistema computacional não fosse fator de interferências ou limitante no que diz respeito à velocidade de operação e consequentemente, deslocamento do espelho.
+            
+            % 5. Falar sucintamente das caracteristicas/configuração do ADC, DMA (o q é)
+            % 6. Caracteristicas do UART (velocidade e encapsulamento dos dados) | UART -> Sistema de Armazenamento
+
+    %Simulação e Resultados Práticos
+\chapter{Resultados e Simulação}
+\label{cap:Resultados}
+\chapter{Conclusão}
+\label{cap:Conclusao}
+\apendice %%%% TEXTOS A PARIR DESTE PONTO SERAO CONSIDERADOS APENDICES
+\chapter{Artigo IEEE IoT 2025}
+\label{cap:Artigo}
+    
+        
+            
+        
+\chapter{Tabelas, figuras, quadros, ilustrações e gráficos}
+         
+         \par Na MDT da UFSM há uma clara diferença entre tabelas e quadros, quanto a sua apresentação. Aqui, para inserir tabelas usa-se o ambiente tradicionalmente definido \textit{table}. A partir deste modelo simples:
+        
+         \begin{verbatim}
+		\begin{table}[ht]
+		\centering
+		\caption{Modelo de tabela para MDT-UFSM.}
+		\begin{tabular}{ c c c }
+		\hline
+		Abacate & Banana & Canela \\
+		\hline
+		21 & 34 & 56 \\
+		-3 & 245 & 23 \\
+		-25 & -0,57 & 2 \\
+                \hline
+                 \end{tabular}
+		\fonte{Adaptado de \citeonline{livro:halliday28ed}.}
+		\end{table}
+	  \end{verbatim}
+         
+         \noindent resulta:
+         
+         \begin{table}[ht]
+         \centering
+         \caption{Modelo de tabela para MDT-UFSM.}
+         \begin{tabular}{ c c c }
+         \hline
+         Abacate & Banana & Canela \\
+         \hline
+         21 & 34 & 56 \\
+         -3 & 245 & 23 \\
+         -25 & -0,57 & 2 \\
+         \hline
+         \end{tabular}
+          \fonte{Adaptado de \citeonline{livro:halliday28ed}.}
+         \end{table}
+         
+         \par Note que, adicionalmente, foi definido um comando novo: ``fonte''. Ele serve para indicar a fonte da tabela quando necessário, mas também pode ser usado em outros ambientes.
+         
+         \par Para inserir quadros foi criado um novo ambiente: ``quadro''. O ambiente ``quadro'' deve ser usado de forma semelhante a tabela, como o ambiente tabular. Contudo, neste caso, as linhas verticais e horizontais estão sempre presentes. Um exemplo simples é o seguinte: 
+         
+         
+         \begin{verbatim}
+	    \begin{quadro}
+   	    \caption{Modelo de quadro para MTD-UFSM.}
+	    \centering
+	    \begin{tabular}{| c |c |c }
+	    \hline
+	    Abacate & Banana & Canela \\
+	    \hline
+	    21 & 34 & 56 \\
+	    \hline
+	    -3 & 245 & 23 \\
+	    \hline
+	    -25 & -0,57 & 2 \\
+	    \hline
+	    \end{tabular}
+	    \fonte{Adaptado de \citeonline{livro:halliday28ed}.}
+	    \end{quadro}
+         \end{verbatim}
+         
+         \noindent resultando:
+         
+	    \begin{quadro}
+	    \caption{Modelo de quadro para MTD-UFSM.}
+	    \centering
+	    \begin{tabular}{| c |c |c |}
+	    \hline
+	    Abacate & Banana & Canela \\
+	    \hline
+	    21 & 34 & 56 \\
+	    \hline
+	    -3 & 245 & 23 \\
+	    \hline
+	    -25 & -0,57 & 2 \\
+	    \hline
+	    \end{tabular}
+    	    \fonte{Adaptado de \citeonline{livro:halliday28ed}.}
+	    \end{quadro}
+	    
+	    
+         \noindent Assim como para as tabelas, já está definida uma lista de quadros. Além disso, o comando ``fonte'' também pode ser usado aqui se necessário. Vale lembrar que, na MDT-UFSM, as legendas para figuras, tabelas, quadros, ilustrações e gráficos devem ser inseridas no topo da(o) mesma(o). A fonte sempre embaixo.
+         
+         \par As figuras devem ser inseridas com o ambiente padrão: \textit{figure}. Veja um exemplo simples:
+         
+         \begin{verbatim}
+	    \begin{figure}[ht]
+		\caption{\label{exepretex}Sequência dos elementros pré-testuais da MDT-UFSM.}
+		\centering
+		\includegraphics[width=0.6\textwidth]{figuras/pretextuais.png}
+		\fonte{Adaptado de \citeonline{man:MDTUFSM2015}.}
+	    \end{figure}
+         \end{verbatim}
+         
+         \begin{figure}[ht]
+     	    \caption{\label{exepretex}Sequência dos elementros pré-testuais da MDT-UFSM.}
+	    \centering
+	    \includegraphics[width=0.6\textwidth]{figuras/pretextuais.png}
+            \fonte{Adaptado de \citeonline{man:MDTUFSM2015}.}
+         \end{figure}
+        
+	\par Para inserir ilustrações e gráficos, foram criados novos ambientes: ``ilustracao'' e ``grafico''. Estes ambientes são semelhantes ao ambiente ``figure'', porém geram sua própria lista. A seguir, exemplos da utilização nos novos ambientes.
+	
+	\begin{verbatim}
+	    \begin{ilustracao}[ht]
+		\caption{\label{exepretex1}Sequência dos elementros pré-testuais da MDT-UFSM}
+                \centering
+		\includegraphics[width=0.6\textwidth]{figuras/pretextuais.png}
+		\fonte{Adaptado de \citeonline{man:MDTUFSM2015}.}
+	    \end{ilustracao}
+         \end{verbatim}
+         
+         \begin{ilustracao}[ht]
+     	    \caption{\label{exepretex1}Sequência dos elementros pré-testuais da MDT-UFSM.}
+	    \centering
+	    \includegraphics[width=0.6\textwidth]{figuras/pretextuais.png}
+            \fonte{Adaptado de \citeonline{man:MDTUFSM2015}.}
+         \end{ilustracao}
+	
+         
+	\begin{verbatim}
+	    \begin{grafico}[ht]
+		\centering
+		\includegraphics[width=0.6\textwidth]{figuras/estrutura_com.pdf}
+		\caption{\label{exepretex3} Um exemplo de utilização do ambiente ``grafico''.}
+		\fonte{Próprio autor.}
+	    \end{grafico}
+         \end{verbatim}
+         
+	    \begin{grafico}[ht]
+	\caption{\label{exepretex3}Um exemplo de utilização do ambiente ``grafico''.}
+             \centering
+		\includegraphics[width=0.6\textwidth]{figuras/estrutura_com.pdf}
+		\fonte{Próprio autor.}
+	    \end{grafico}
+         
+\chapter{Conclusão}
+
+	\par Conclusão do trabalho.
+	\lipsum[1-5]
+
+
+	
+	
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
+% % % % % % % % % % % % FIM DAS PAGINAS TEXTUAIS % % % % % % % % % % % % % % 
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
+
+
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 	
+% % % % % % % % % % % % % BIBLIOGRAFIA  % % % % % % % % % % % % % % % % % % 
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 	
+
+\startbibliography % comando para formatar na MDT UFSM
+\bibliography{referencias}
+
+	
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 	
+% % % % % % % % % % % % % APENDICES % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 	
+\apendice %%%% TEXTOS A PARIR DESTE PONTO SERAO CONSIDERADOS APENDICES
+
+\chapter{Demonstração de algo}
+        \par Algo como apêndice.  
+         \lipsum[2-10]
+
+          
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 	
+% % % % % % % % % % % % % % % ANEXOS  % % % % % % % % % % % % % % % % % % % 
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 	
+        \anexo    %%%% TEXTOS A PARIR DESTE PONTO SERAO CONSIDERADOS ANEXOS
+        
+\chapter{Algo interessante que alguém fez}
+         \par Algo como anexo.
+         \lipsum[2-10]
+                  
+        \begin{grafico}[ht]
+     	    \caption{\label{exepretex2}Orientações para a lombada do trabalho.}
+	    \centering
+	    \includegraphics[width=0.6\textwidth]{figuras/lombada.png}
+            \fonte{Adaptado de \citeonline{man:MDTUFSM2015}.}
+         \end{grafico}         
+         
+         \lipsum[2-10]
+
+      
+         
+\end{document}
+
