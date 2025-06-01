@@ -75,8 +75,7 @@ step_z = 0.1 * um  # Step size
 num_steps = int(delta_z / step_z)  # Number of steps
 
 ItotalLED_lock = Lock()
-I_total_LED          = np.zeros((len(y), len(x)))
-I_total_LED_physical = np.zeros((len(y), len(x))) 
+I_total_LED = np.zeros((len(y), len(x)))
 
 
 diameter = 40 * um      # LED emitting area diameter
@@ -85,7 +84,7 @@ radius = diameter / 2
 LED_num_points = 24  # Number of point sources (adjust for accuracy vs. computation time)
 
 P_source = 0.001  # 1 mW
-area = np.pi*((slit_width_param/2)**2)  # 4 × 10⁻⁶ m²
+area = np.pi*(slit_width_param)**2  # 4 × 10⁻⁶ m²
 
 theta = np.linspace(0, 2 * np.pi, LED_num_points, endpoint=False)
 r = np.linspace(0, radius, LED_num_points // 2) # '//' r = np.linspace(0, radius, LED_num_points // 2). It divides and truncates the result down to the nearest integer
@@ -115,7 +114,6 @@ def propagate_through_system(source_params):
   """
   x_s, y_s, i = source_params
   global I_total_LED
-  global I_total_LED_physical
 
   # radial distance from the origin (LED center) to the specific point source (x_s, y_s)."
   """
@@ -287,7 +285,6 @@ This initializes the scalar field u0 to be a Gaussian beam.
 #https://www.rp-photonics.com/optical_intensity.html
 # Isso daqui já é a PSF, porém adimencional
   with ItotalLED_lock:
-    I_total_LED_physical = I_total_LED * (I_source / np.max(np.abs(u0.u)**2))
     I_total_LED+=np.abs(u_detector.RS(z=z_detector).u)**2
   u_detector.normalize()
   #print("quality = {}".format(u_detector.quality))
@@ -301,9 +298,7 @@ for i in range(num_steps):
   
   # Avalisa-se a propagação do LED, simulando multiplos feixes interagindo em
   # cada posição Z+step 
-  I_total_LED          = np.zeros((len(y), len(x)))
-  I_total_LED_physical = np.zeros((len(y), len(x)))
-  I_source = P_source / area  # 250 W/m²
+  I_total_LED = np.zeros((len(y), len(x)))
   source_params = [(x_s,y_s, i) for x_s, y_s in zip(X_sources, Y_sources)]
 
   print(f"\nPropagacao do LED multhread\n")
@@ -316,9 +311,11 @@ for i in range(num_steps):
   print(f"\nPropagacao do LED feita com sucesso\n")
   print(f"\nPlot >  \n")
   plt.clf()
-  P_total = np.sum(I_total_LED_physical) * dx * dy
+  I_source = P_source / area  # 250 W/m²
+  P_total = np.sum(I_total_LED) * dx * dy
   # Plot interference pattern
-  plt.imshow(np.abs(I_total_LED_physical), 
+  I_total_LED_physical = I_total_LED * (I_source / np.max(np.abs(u0.u)**2))
+  plt.imshow(np.abs(I_total_LED), 
              extent=[x.min()/um, x.max()/um, y.min()/um, y.max()/um], 
              cmap='inferno', origin='lower',vmax=0.002, vmin=0.000005)
              #cmap='inferno', origin='lower')

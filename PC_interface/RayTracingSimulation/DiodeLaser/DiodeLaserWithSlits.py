@@ -42,15 +42,17 @@ degress = np.pi/180
 print("X,Y")
 x = np.linspace(-simulation_width / 2, simulation_width / 2, num_points)
 y = np.linspace(-simulation_width / 2, simulation_width / 2, num_points)
+dx = (x[1] - x[0]) #* 1e-6  # Grid spacing in meters (x in micrometers)
+dy = (y[1] - y[0]) #* 1e-6  # Grid spacing in meters
 
 print("Def 2")
 # Component positions and angles
 # as Dimensoes da simulacao sao 1k vezes menores que as dimensoes reaias
 z_source = 0*um
 focal_length = 5 * um  # Desired focal length
-aperture_radius_param = 40*um
+aperture_radius_param = 15*um
 
-slit_width_param = 3*um
+slit_width_param = 2.5*um
 slit_prop_param  = 5*um
 
 
@@ -75,8 +77,12 @@ num_steps = int(delta_z / step_z)  # Number of steps
 # Create light source (plane wave)
 
 print("Scalar Source")
+P_source = 0.001  # 1 mW
+area = np.pi*((slit_width_param/2)**2)  # 4 × 10⁻⁶ m²
+I_source = P_source / area
+
 u0 = Scalar_source_XY(x, y, wavelength)
-u0.gauss_beam(A=2.5, w0=6*um, r0=(0*um, 0*um), z0=0, theta=0) # nao sei qual o valor real
+u0.gauss_beam(A=1, w0=6*um, r0=(0*um, 0*um), z0=0, theta=0) # nao sei qual o valor real
 
 # Step 4: Apply the phase mask to the source
 print("Incoherent Source 5")
@@ -89,8 +95,10 @@ concave = Scalar_mask_XY(x, y, wavelength)
 
 print("concave Mirror 1 Init")
 # Method 2: Built-in function (equivalent)
-concave.lens(r0=(0, 0), radius=(aperture_radius, aperture_radius), \
-                        focal=(focal_length, focal_length), angle=0)
+#concave.lens(r0=(0, 0), radius=(aperture_radius, aperture_radius), \
+#                       focal=(focal_length, focal_length), angle=0)
+concave.lens(r0=(0, 0), radius=(aperture_radius),
+                       focal=(focal_length), angle=0)
 
 # Add a circular aperture to limit the concave size
 #concave.circle(r0=(0, 0), radius=aperture_radius, angle=0)
@@ -212,13 +220,23 @@ for i in range(num_steps):
   
   # Plot interference pattern
   #plt.imshow(np.abs(u_detector.u)**2, extent=[x.min()/um, x.max()/um, y.min()/um, y.max()/um], 
-  plt.imshow(np.abs(u_detector.RS(z=z_detector).u)**2, 
+
+  print(f"\nI_source: ", I_source)
+  print(f"\nMAX do abs u0: ", np.max(np.abs(u0.u)**2))
+  print(f"\nI_source/MAX ", I_source/np.max(np.abs(u0.u)**2))
+  I_total_LED=np.abs(u_detector.RS(z=z_detector).u)**2
+  I_total_LED_physic = I_total_LED*I_source/np.max(np.abs(u0.u)**2)
+  P_total = np.sum(I_total_LED_physic) * dx * dy
+  #plt.imshow(np.abs(u_detector.RS(z=z_detector).u)**2, 
+  plt.imshow(I_total_LED_physic, 
              extent=[x.min()/um, x.max()/um, y.min()/um, y.max()/um], 
-             cmap='inferno', origin='lower',vmax=0.75, vmin=0.0005)
-  plt.colorbar(label="Intensity (a.u.)")
+             cmap='inferno', origin='lower', vmax=4*1e-6, vmin=0.5*1e-7 ) 
+  #, vmax=0.2125, vmin=0.0005)
+  #plt.colorbar(label="Intensity (a.u.) ")
+  plt.colorbar(label="PSF (W/m²) ")
   plt.xlabel("X (um)")
   plt.ylabel("Y (um)")
-  plt.title(f"Interference Pattern at Detector, z_m2 = {z_m2/um:.1f} um")
+  plt.title(f"Potência Total {P_total*1000:.2f} mW  |  EM  {z_m2/um:.2f} um")
   
   # Update display
   plt.draw()
