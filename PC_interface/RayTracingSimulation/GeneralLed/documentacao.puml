@@ -1,0 +1,82 @@
+@startuml
+start
+
+:**Definições Parametricas**:
+  Wavelength              = 633 nm 
+  Largura                 = 60 um  
+  Numero de Pontos        = 128   
+  Distancia de Propacação = 60 um 
+
+  X = -Largura/2 : Largura/2, Numero de Pontos 
+  Y = -Largura/2 : Largura/2, Numero de Pontos
+  
+  Deslocamento de EM      = 40 um
+  Step de Deslocamento    = 0.1 um;
+  
+    
+:**Definições de Localização**:
+  Fonte              = 0  um 
+  Beam Splitter (BS) = 30 um 
+  Espelho Fixo  (EF) = 40 um 
+  Espelho Móvel (EM) = 39 um 
+  Detector           = 30 um
+
+  Raio dos Espelhos = 12 um;
+
+
+:**Inclinações**:
+  Teta do EF = 0
+  Teta do EM = 0;
+
+:**Parametrização Geométricas da Fonte de Luz LED**:
+  Diametro = 50 um
+  Raio     = 25 um
+  Numero de Pontos = 24
+  Teta[] = 0: 180, distribuidos entre 24 partes igualmente espaçadas
+  r[]    = 0:raio, distribuidos entre 24 partes igualmente espaçadas
+  Feixe_X[] = Coordenas Cartesinas das Coordenadas polares r,Theta
+  Feixe_Y[] = Coordenas Cartesinas das Coordenadas polares r,Theta;
+  
+'note as N1
+'  Intensidade[] = 0:1, proporcional ao angulo de incidencia no detector, respeitando a lei de projeção de cosseno
+'  Feixe = Feixe Gausiano centrado em um das coordenadas presentes em Feixe_X[] e Feixe_Y[]
+'  Feixe = Feixe x Deslocamento Aleatorio. Cria Incoerencia espacial;
+'@endnote
+
+:**Configuração dos Feixes do LED em Z+step**;
+
+
+'note as N2
+'  Comp. Focal       = 10 um
+'  Raio de curvatura = 2 X Com.Focal
+'  Tamanho Fisico do Espelho = 12 um
+'  Concavo na distancia focal certa
+'  Feixe ----> Concavo 
+'  Concavo ----> BS
+'  
+'    |-----------> MM
+'  BS|
+'    |-----------> MF;
+'@endnote
+:**Config. e Prop. dos Feixes sobre os Ópticos**;
+  
+ ' Tragetória do Feixe = 2*Comp.Focal ???
+ ' Força fonte de luz ter formato concavo pra dps colimar novamente usando 
+
+
+:**Interferometria**:
+  MM é refletido de volta ao BS
+  MF é refletido de volta ao BS
+
+  Detecotr = (MM+MF)/2
+  Intensidade no Detector = np.abs(u_detector.RS(z=z_detector).u)**2;
+
+  ' if (Condition?) then (yes)
+  '   :Action for Yes;
+  ' else (no)
+  '   :Action for No;
+  ' endif
+
+:Next action;
+  stop
+@enduml

@@ -33,9 +33,8 @@ print("Numpy and Matplot importation Done")
 
 print("Def 1")
 wavelength = 633*nm  # Wavelength of light (micrometers)
-simulation_width = 60*um # Width of simulation area (micrometers)
+simulation_width = 15*um # Width of simulation area (micrometers)
 num_points = 1024*1  # Number of points in simulation
-propagation_distance = 60*um  # Distance to screen (micrometers)
 
 degress = np.pi/180
 
@@ -48,38 +47,44 @@ print("Def 2")
 # Component positions and angles
 # as Dimensoes da simulacao sao 1k vezes menores que as dimensoes reaias
 z_source = 0*um
+focal_length = 5 * um  # Desired focal length
+aperture_radius_param = 12.7/2*um
+
+slit_width_param = 5*um
+slit_prop_param  = 5*um
+
+
 #z_bs = 140 * um  # Beamsplitter Z position
-z_bs = 30 * um  # Beamsplitter Z position
+z_bs = (14+focal_length) * um  # Beamsplitter Z position
 #z_m1 = 150 * um  # Mirror 1 Z position
-z_m1 = 40 * um  # Mirror 1 Z position
+z_m1 = (15+focal_length) * um  # Mirror 1 Z position
 #z_m2_initial = 150 * um  # Mirror 2 Z position
-z_m2_initial = 36 * um  # Mirror 2 Z position
+z_m2_initial = (14.8+focal_length) * um  # Mirror 2 Z position
 #z_detector = 140*um
-z_detector = 30*um
+z_detector = (14+focal_length)*um
 
 theta_m1 = 0   # Mirror 1 tilt angle
 theta_m2 = 0   # Mirror 2 tilt angle
-R_mirror = 5*12 * um  # Mirror radius (finite size)
+R_mirror = 12.7/2 * um  # Mirror radius (finite size)
 x_m1, y_m1 = 0 * um, 0 * um  # Mirror 1 center
 x_m2, y_m2 = 0 * um, 0 * um  # Mirror 2 center
 
 delta_z = 40 * um  # Total distance to move Mirror 2
-step_z = 0.1 * um  # Step size
+step_z = 0.05 * um  # Step size
 num_steps = int(delta_z / step_z)  # Number of steps
 # Create light source (plane wave)
 
 print("Scalar Source")
 u0 = Scalar_source_XY(x, y, wavelength)
-u0.gauss_beam(A=1, w0=6*um, r0=(0*um, 0*um), z0=0, theta=0) # nao sei qual o valor real
+u0.gauss_beam(A=2.5, w0=6*um, r0=(0*um, 0*um), z0=0, theta=0) # nao sei qual o valor real
 
 # Step 4: Apply the phase mask to the source
 print("Incoherent Source 5")
 u0.u *=np.exp(1j * np.random.uniform(0, np.pi/4, size=u0.u.shape)) #  # Modify the field to introduce incoherence
 
 print("concave Mirror 1 Param")
-focal_length = 50 * um  # Desired focal length
 R = 2 * focal_length   # Radius of curvature (R = 2f for mirrors)
-aperture_radius = 4*12*um  # Physical size of the mirror
+aperture_radius = aperture_radius_param  # Physical size of the mirror
 concave = Scalar_mask_XY(x, y, wavelength)
 
 print("concave Mirror 1 Init")
@@ -93,34 +98,37 @@ concave.lens(r0=(0, 0), radius=(aperture_radius, aperture_radius), \
 # Step 2: Propagate Light Source to Concave
 print("concave Mirror 1 Optical Input")
 # Method 2: Built-in function (equivalent)
-concav_refl = u0.RS(z=2*focal_length)
-u_concav = concav_refl*concave
-u_concav_dbg = u_concav.RS(z=2*focal_length+1*um)
+#concav_refl = u0.RS(z=2*focal_length)
+#u_concav = concav_refl*concave
+#u_concav_dbg = u_concav.RS(z=2*focal_length+1*um)
 #u_concav_dbg.draw(kind='intensity')
 print("concave Mirror 1 Optical Propagation/Output")
 print("concave Mirror 1 ---> Slit ")
 # Propagate to the image plane (another 2f = 20 µm, total 40 µm from source)
-u_at_slit = u_concav.RS(z=2*focal_length)
+#u_at_slit = u_concav.RS(z=2*focal_length)
+#u_at_slit = u0.RS(z=1*focal_length)
 
 # Create a mask for the slit
 slit_mask   = Scalar_mask_XY(x, y, wavelength)
-slit_width  = 400*um  # 10 µm
-slit_mask.u = np.where(np.abs(slit_mask.X) < slit_width / 2, 1, 0)
+slit_width  = slit_width_param  # 10 µm
+slit_mask.circle(r0=(0, 0), radius=slit_width / 2)
+#slit_mask.u = np.where(np.abs(slit_mask.X) < slit_width / 2, 1, 0)
 
 # Apply the mask to the source
-slit_masked = u_at_slit * slit_mask
+u_at_slit = u0.RS(z=slit_prop_param)
+u_at_slit.u *= slit_mask.u
 # Propagate the light using FFT
 
 print("concave Mirror 2 Param")
-focal_length2 = 50 * um  # Desired focal length
-R = 2 * focal_length2   # Radius of curvature (R = 2f for mirrors)
-aperture2_radius = 4*12 * um  # Physical size of the mirror
-concave2 = Scalar_mask_XY(x, y, wavelength)
+#focal_length2 = 50 * um  # Desired focal length
+#R = 2 * focal_length2   # Radius of curvature (R = 2f for mirrors)
+#aperture2_radius = 1*12 * um  # Physical size of the mirror
+#concave2 = Scalar_mask_XY(x, y, wavelength)
 
 print("concave Mirror 2 Init")
 # Method 2: Built-in function (equivalent)
-concave2.lens(r0=(0, 0), radius=(aperture2_radius, aperture2_radius), \
-                        focal=(focal_length2, focal_length2), angle=0)
+#concave2.lens(r0=(0, 0), radius=(aperture2_radius, aperture2_radius), \
+#                        focal=(focal_length2, focal_length2), angle=0)
 
 # Add a circular aperture to limit the concave size
 #concave.circle(r0=(0, 0), radius=aperture_radius, angle=0)
@@ -128,10 +136,12 @@ concave2.lens(r0=(0, 0), radius=(aperture2_radius, aperture2_radius), \
 # Step 2: Propagate Light Source to Concave
 print("concave Mirror 2 Optical Input")
 # Method 2: Built-in function (equivalent)
-concav_refl2 = slit_masked.RS(z=focal_length2)
-u_concav2 = concav_refl2*concave2
-u_concav_dbg2 = u_concav2.RS(z=focal_length2+1*um)
+#concav_refl2 = slit_masked.RS(z=focal_length2)
+#u_concav2 = concav_refl2*concave2
+#u_concav_dbg2 = u_concav2.RS(z=focal_length2+1*um)
 #u_concav_dbg2.draw(kind='intensity')
+u2 = u_at_slit.RS(z=focal_length) #, new_field=True) #(Laser+Propagacao)
+u_concav2 = u2 *concave
 
 print("From Concav to BM")
 
