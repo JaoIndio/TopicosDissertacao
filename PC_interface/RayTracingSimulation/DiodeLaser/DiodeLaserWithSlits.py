@@ -33,7 +33,7 @@ print("Numpy and Matplot importation Done")
 
 print("Def 1")
 wavelength = 633*nm  # Wavelength of light (micrometers)
-simulation_width = 15*um # Width of simulation area (micrometers)
+simulation_width = 20*um # Width of simulation area (micrometers)
 num_points = 1024*1  # Number of points in simulation
 
 degress = np.pi/180
@@ -48,9 +48,9 @@ print("Def 2")
 # as Dimensoes da simulacao sao 1k vezes menores que as dimensoes reaias
 z_source = 0*um
 focal_length = 5 * um  # Desired focal length
-aperture_radius_param = 12.7/2*um
+aperture_radius_param = 40*um
 
-slit_width_param = 5*um
+slit_width_param = 3*um
 slit_prop_param  = 5*um
 
 
@@ -211,7 +211,9 @@ for i in range(num_steps):
   plt.clf()
   
   # Plot interference pattern
-  plt.imshow(np.abs(u_detector.u)**2, extent=[x.min()/um, x.max()/um, y.min()/um, y.max()/um], 
+  #plt.imshow(np.abs(u_detector.u)**2, extent=[x.min()/um, x.max()/um, y.min()/um, y.max()/um], 
+  plt.imshow(np.abs(u_detector.RS(z=z_detector).u)**2, 
+             extent=[x.min()/um, x.max()/um, y.min()/um, y.max()/um], 
              cmap='inferno', origin='lower',vmax=0.75, vmin=0.0005)
   plt.colorbar(label="Intensity (a.u.)")
   plt.xlabel("X (um)")
