@@ -230,7 +230,7 @@ for i in range(num_steps):
   #plt.imshow(np.abs(u_detector.RS(z=z_detector).u)**2, 
   plt.imshow(I_total_LED_physic, 
              extent=[x.min()/um, x.max()/um, y.min()/um, y.max()/um], 
-             cmap='inferno', origin='lower', vmax=4*1e-6, vmin=0.5*1e-7 ) 
+             cmap='inferno', origin='lower', vmax=4*1e-6, vmin=0.5*1e-7) 
   #, vmax=0.2125, vmin=0.0005)
   #plt.colorbar(label="Intensity (a.u.) ")
   plt.colorbar(label="PSF (W/m²) ")

@@ -32,8 +32,8 @@ matplotlib.use('TkAgg')  # Non-interactive backend
 import matplotlib.pyplot as plt
 
 wavelength           = 633*nm # Wavelength of light (micrometers)
-simulation_width     = 10*um  # Width of simulation area (micrometers)
-num_points           = 128 #128*1  # Number of points in simulation
+simulation_width     = 35*um  # Width of simulation area (micrometers)
+num_points           = 256 #128*1  # Number of points in simulation
 #propagation_distance = 10*um  # Distance to screen (micrometers)
 
 degress = np.pi/180
@@ -42,8 +42,8 @@ degress = np.pi/180
 x = np.linspace(-simulation_width / 2, simulation_width / 2, num_points)
 y = np.linspace(-simulation_width / 2, simulation_width / 2, num_points)
 
-dx = (x[1] - x[0]) * 1e-6  # Grid spacing in meters (x in micrometers)
-dy = (y[1] - y[0]) * 1e-6  # Grid spacing in meters
+dx = (x[1] - x[0])# * 1e-6  # Grid spacing in meters (x in micrometers)
+dy = (y[1] - y[0])# * 1e-6  # Grid spacing in meters
 
 #Parametros Espelho Concavo
 focal_length_param    = 5*um#10*um
@@ -79,25 +79,26 @@ I_total_LED          = np.zeros((len(y), len(x)))
 I_total_LED_physical = np.zeros((len(y), len(x))) 
 
 
-diameter = 40 * um      # LED emitting area diameter
-radius = diameter / 2
+LED_diameter = 40 * um      # LED emitting area diameter
+radius = LED_diameter / 2
 # Discretize LED into point sources
-LED_num_points = 24  # Number of point sources (adjust for accuracy vs. computation time)
+LED_num_points = 32  # Number of point sources (adjust for accuracy vs. computation time)
 
 P_source = 0.001  # 1 mW
-area = np.pi*((slit_width_param/2)**2)  # 4 × 10⁻⁶ m²
+area = np.pi*((LED_diameter/2)**2)  # 4 × 10⁻⁶ m²
+I_source = P_source / area
 
-theta = np.linspace(0, 2 * np.pi, LED_num_points, endpoint=False)
-r = np.linspace(0, radius, LED_num_points // 2) # '//' r = np.linspace(0, radius, LED_num_points // 2). It divides and truncates the result down to the nearest integer
-
-
-#It creates a grid of coordinates in polar space for all possible combinations of r and theta. This is useful to describe points in a circular area (e.g., the LED emitting surface).
-R, Theta = np.meshgrid(r, theta) #takes two 1D arrays and produces coordinate matrices from them.
-
-#This converts polar coordinates (R, Theta) into Cartesian coordinates:
-#  converts the 2D array into a 1D array.
-X_sources = (R * np.cos(Theta)).flatten() 
-Y_sources = (R * np.sin(Theta)).flatten()
+#--------------------------------------------------------
+#Tentativa 1
+#theta = np.linspace(0, 2 * np.pi, LED_num_points, endpoint=False)
+#r = np.linspace(0, radius, LED_num_points // 2) # '//' r = np.linspace(0, radius, LED_num_points // 2). It divides and truncates the result down to the nearest integer
+##It creates a grid of coordinates in polar space for all possible combinations of r and theta. This is useful to describe points in a circular area (e.g., the LED emitting surface).
+#R, Theta = np.meshgrid(r, theta) #takes two 1D arrays and produces coordinate matrices from them.
+#
+##This converts polar coordinates (R, Theta) into Cartesian coordinates:
+##  converts the 2D array into a 1D array.
+#X_sources = (R * np.cos(Theta)).flatten() 
+#Y_sources = (R * np.sin(Theta)).flatten()
 
 #assign each point source an equal share of the total intensity.
 # Model the LED as a set of uniformly distributed point emitters.   
@@ -107,13 +108,37 @@ Y_sources = (R * np.sin(Theta)).flatten()
 # Assign a uniform intensity to each point.
 #intensity_per_source = 1 / len(X_sources)  # Uniform intensity
 
+#--------------------------------------------------------
+#Tentativa 2
+X_sources = np.random.uniform(-LED_diameter, LED_diameter, LED_num_points)
+Y_sources = np.random.uniform(-LED_diameter, LED_diameter, LED_num_points)
+mask = np.sqrt(X_sources**2 + Y_sources**2) <= LED_diameter
+X_sources = X_sources[mask]
+Y_sources = Y_sources[mask]
+LED_num_points = len(X_sources)  # Update number of valid points
+
+# Precompute weights for Lambertian emission
+weights = []
+for x_s, y_s in zip(X_sources, Y_sources):
+  r = np.sqrt(x_s**2 + y_s**2)
+  if r == 0:
+    w = 1  # On-axis intensity
+  else:
+    theta = np.arctan(r / z_detector)
+    w = np.cos(theta)  # Lambertian profile
+  weights.append(w)
+weights = np.array(weights)
+norm = np.sum(weights)  # Normalization factor
+P_per_source = P_source * weights / norm  # Power per point source (W)
+
+
 # Function to propagate through your optical system
 def propagate_through_system(source_params):
   """
   Propagate a point source field through mirrors, concave mirrors, and beamsplitters.
   Customize this based on your system configuration.
   """
-  x_s, y_s, i = source_params
+  x_s, y_s, P_i = source_params
   global I_total_LED
   global I_total_LED_physical
 
@@ -156,8 +181,13 @@ Scalar_source_XY is a Diffractio class for defining monochromatic scalar fields 
   """
 This initializes the scalar field u0 to be a Gaussian beam.
   """
-  #u0.gauss_beam(A=intensity, w0=1 * um, r0=(x_s, y_s), z0=0, theta=0)
-  u0.gauss_beam(A=1, w0=1 * um, r0=(x_s, y_s), z0=0, theta=0)
+  #intensity = I_source*intensity/LED_num_points
+  #print(intensity)
+  w0 = 1 * um  # Gaussian waist
+  # Power of Gaussian beam: P = (|A|^2 * pi * w0^2) / 2
+  A = np.sqrt(2 * P_i / (np.pi * w0**2))  # Amplitude in field units
+  u0.gauss_beam(A=A, w0=1 * um, r0=(x_s, y_s), z0=0, theta=0)
+  #u0.gauss_beam(A=1, w0=1 * um, r0=(x_s, y_s), z0=0, theta=0)
 
   """
   This applies a random phase shift to every point in the field u0.u.
@@ -287,10 +317,12 @@ This initializes the scalar field u0 to be a Gaussian beam.
 #https://www.rp-photonics.com/optical_intensity.html
 # Isso daqui já é a PSF, porém adimencional
   with ItotalLED_lock:
-    I_total_LED_physical = I_total_LED * (I_source / np.max(np.abs(u0.u)**2))
-    I_total_LED+=np.abs(u_detector.RS(z=z_detector).u)**2
+    I_total_LED+=np.abs((u_detector.RS(z=z_detector).u)**2)
+    #I_total_LED_physical = I_total_LED * (I_source / np.max(np.abs(u0.u)**2))
+    I_total_LED_physical = I_total_LED
   u_detector.normalize()
   #print("quality = {}".format(u_detector.quality))
+  #print(f"\nI_source/MAX ", I_source/np.max(np.abs(u0.u)**2))
   return np.abs(u_detector.RS(z=10*nm).u)**2
 
 
@@ -303,8 +335,8 @@ for i in range(num_steps):
   # cada posição Z+step 
   I_total_LED          = np.zeros((len(y), len(x)))
   I_total_LED_physical = np.zeros((len(y), len(x)))
-  I_source = P_source / area  # 250 W/m²
-  source_params = [(x_s,y_s, i) for x_s, y_s in zip(X_sources, Y_sources)]
+  I_source = P_source / area  # W/m²
+  source_params = [(x_s,y_s, P_i) for x_s, y_s, P_i in zip(X_sources, Y_sources, P_per_source)]
 
   print(f"\nPropagacao do LED multhread\n")
   with ThreadPoolExecutor(max_workers=6) as executor:
@@ -314,19 +346,21 @@ for i in range(num_steps):
   
   count=0
   print(f"\nPropagacao do LED feita com sucesso\n")
-  print(f"\nPlot >  \n")
+  print(f"Plot >  ")
   plt.clf()
   P_total = np.sum(I_total_LED_physical) * dx * dy
+
+  print(f"P_total >  ", P_total)
   # Plot interference pattern
   plt.imshow(np.abs(I_total_LED_physical), 
              extent=[x.min()/um, x.max()/um, y.min()/um, y.max()/um], 
-             cmap='inferno', origin='lower',vmax=0.002, vmin=0.000005)
+             cmap='inferno', origin='lower',vmax=1*1e-10, vmin=1*1e-12)
              #cmap='inferno', origin='lower')
   #plt.colorbar(label="PSF (a.u.)")
-  plt.colorbar(label="PSF (W/m²) ")
+  plt.colorbar(label="Intensidade (W/m²) ")
   plt.xlabel("X (um)")
   plt.ylabel("Y (um)")
-  plt.title(f"Potência  {P_total*1000} mW  |  EM  {z_m2/um:.1f} um")
+  plt.title(f"Potência  {P_total*1000*1000*1000:.2f} nW  |  EM  {z_m2/um:.1f} um")
   #plt.title(f"Interference Pattern at Detector, z_m2 = {z_m2/um:.1f} um")
   
   # Update display
