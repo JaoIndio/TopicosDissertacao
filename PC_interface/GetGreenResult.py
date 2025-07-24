@@ -50,6 +50,8 @@ DIR = "./GreenRawResults"
 filename = "."
 
 def save_csv_func():
+  # drain_queue
+
   while True:
     #get potins
     with data_lock:
@@ -375,8 +377,8 @@ def decode_packet(packet):
 
 filename = get_next_filename()
 print("\nData wil be save at",filename ,"\n")
-thread = threading.Thread(target=read_packet, daemon=True)
-read_thread = threading.Thread(target=read_uart, daemon=True)
+thread          = threading.Thread(target=read_packet, daemon=True)
+read_thread     = threading.Thread(target=read_uart, daemon=True)
 save_csv_thread = threading.Thread(target=save_csv_func, daemon=True)
 
 save_csv_thread.start()

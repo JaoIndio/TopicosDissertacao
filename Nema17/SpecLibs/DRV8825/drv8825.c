@@ -133,7 +133,7 @@ void TriggerPWMSigmoidFrequency(float* actual_freq, float target_freq){
   
   // Analog output y=0.0003667x−0.3667
   // Duty = 0.011111*frequency−11.111111
-  //UARTprintf("\r\t\tActual Freq %d\n", (int)(*actual_freq));
+  UARTprintf("\r\t\tActual Freq %d\n", (int)(*actual_freq));
   for (step = 0; step <= totalSteps; step++) {
     // Calculate the sigmoid value for this step
     sigmoidValue = sigmoid((float)step / totalSteps * SIGMOID_X0 * 2);
@@ -290,12 +290,12 @@ void NemaInterruptionConfig(){
   //float min_freq = 5*KILO_HZ;
   //float max_freq = 10*KILO_HZ; // <- Freq Maxima da Senoide
   float min_freq = 5;
-  float max_freq = 20;
+  float max_freq = 5*KILO_HZ;
   float actual_freq = min_freq;
 
   GPIOPinWrite(GPIO_PORTB_BASE, ENABLE_PIN, 0);
   GPIOPinWrite(GPIO_PORTB_BASE, SLEEP_PIN, SLEEP_PIN);
-  //TriggerPWMSigmoidFrequency(&actual_freq, max_freq);
+  TriggerPWMSigmoidFrequency(&actual_freq, max_freq);
 
 
   float dutyEq =0;

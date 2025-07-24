@@ -185,8 +185,27 @@ u_detector = Scalar_field_XY(x, y, wavelength)
 
 # Initialize figure
 # **Set Up Plotting**
-plt.figure(figsize=(8, 6))
+#plt.figure(figsize=(8, 6))
 plt.ion()  # Enable interactive mode for dynamic updates
+
+fig, ax = plt.subplots(figsize=(16, 12))
+I_total_LED_physic = np.zeros((len(y), len(x))) 
+im = ax.imshow(I_total_LED_physic, 
+           extent=[x.min()/um, x.max()/um, y.min()/um, y.max()/um], 
+           cmap='inferno', origin='lower', vmax=4*1e-6, vmin=0.5*1e-7)
+
+#plt.colorbar(label="PSF (a.u.)")
+cbar = fig.colorbar(im, ax=ax, pad=0.1)
+cbar.set_label(label="Intensidade (W/m²)",fontsize=20)
+cbar.ax.tick_params(labelsize=20)
+cbar.ax.yaxis.offsetText.set_fontsize(20)
+
+ax.set_xlabel("X (\u03bcm)",fontsize=20)
+ax.set_ylabel("Y (\u03bcm)",fontsize=20)
+
+#Axis tick labels with larger font
+plt.xticks(fontsize=20)
+plt.yticks(fontsize=20)
 
 for i in range(num_steps):
   z_m2 = z_m2_initial + i*step_z
@@ -216,7 +235,7 @@ for i in range(num_steps):
   u_detector.u = u_detector_trans.u + u_detector_refl.u
   
   # Clear previous plot
-  plt.clf()
+  #plt.clf()
   
   # Plot interference pattern
   #plt.imshow(np.abs(u_detector.u)**2, extent=[x.min()/um, x.max()/um, y.min()/um, y.max()/um], 
@@ -228,15 +247,16 @@ for i in range(num_steps):
   I_total_LED_physic = I_total_LED*I_source/np.max(np.abs(u0.u)**2)
   P_total = np.sum(I_total_LED_physic) * dx * dy
   #plt.imshow(np.abs(u_detector.RS(z=z_detector).u)**2, 
-  plt.imshow(I_total_LED_physic, 
-             extent=[x.min()/um, x.max()/um, y.min()/um, y.max()/um], 
-             cmap='inferno', origin='lower', vmax=4*1e-6, vmin=0.5*1e-7) 
+  #plt.imshow(I_total_LED_physic, 
+  #           extent=[x.min()/um, x.max()/um, y.min()/um, y.max()/um], 
+  #           cmap='inferno', origin='lower', vmax=4*1e-6, vmin=0.5*1e-7) 
   #, vmax=0.2125, vmin=0.0005)
   #plt.colorbar(label="Intensity (a.u.) ")
-  plt.colorbar(label="PSF (W/m²) ")
-  plt.xlabel("X (um)")
-  plt.ylabel("Y (um)")
-  plt.title(f"Potência Total {P_total*1000:.2f} mW  |  EM  {z_m2/um:.2f} um")
+  #plt.colorbar(label="PSF (W/m²) ")
+  #plt.xlabel("X (um)")
+  #plt.ylabel("Y (um)")
+  im.set_data(np.abs(I_total_LED_physic))
+  ax.set_title(f"Potência Total {P_total*1000:.2f} mW  |  EM  {z_m2/um:.2f} µm", fontsize=20)
   
   # Update display
   plt.draw()

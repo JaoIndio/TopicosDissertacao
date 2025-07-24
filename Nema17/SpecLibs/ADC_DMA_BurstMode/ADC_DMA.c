@@ -9,6 +9,8 @@
 //! the channel UDMA_CHANNEL_SW is used and for error interrupts.  The
 //! interrupts for each peripheral channel are handled through the individual
 //! peripheral interrupt handlers.
+
+colormake -k -j12 all <- Pra compilar
 ****************************/
 
 #include "ADC_DMA.h"
@@ -96,7 +98,7 @@ void ADCIntHanlder(void){
                            UDMA_MODE_BASIC,\
                            (void *) ADC_rslt, \
                            (void *)(UART5_BASE + UART_O_DR),\
-                           2);
+                           1);
 
     uDMAChannelEnable(UDMA_CH7_UART5TX);
     errorStatus = uDMAErrorStatusGet();

@@ -569,15 +569,14 @@ int main(void){
   xTaskCreate(NemaTaskCreation, "NemaTask", configMINIMAL_STACK_SIZE+50, \
                 NULL, configMAX_PRIORITIES-1, \
                 NULL);
-// /*
+/*
   
   xTaskCreate(AS7341_Begin, "AS7341", configMINIMAL_STACK_SIZE+50, 
                 NULL, configMAX_PRIORITIES-1, 
                 &AS7341_Handle);
-
-// */
+*/
   xTaskCreate(ADC_DMA_Reader, "AdcDMA", configMINIMAL_STACK_SIZE+50, \
-                NULL, configMAX_PRIORITIES-1, \
+                NULL, configMAX_PRIORITIES-2, \
                 NULL);
 // */
 
@@ -691,7 +690,7 @@ void ADC_DMA_Reader(){
 
   ADCTriggerDbgRst();
   while(1){
-    vTaskDelay(pdMS_TO_TICKS(150));
+    //vTaskDelay(pdMS_TO_TICKS(150));
     UART5_SendByte(START_BYTE);  // Send the Start Byte
     UART5_SendByte(START_BYTE);  // Send the Start Byte
     UART5_SendByte(START_BYTE);  // Send the Start Byte

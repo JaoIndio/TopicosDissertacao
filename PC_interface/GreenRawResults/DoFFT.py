@@ -21,6 +21,7 @@ from scipy.signal import fftconvolve
 #from scipy.fftpack import fft
 from numpy.fft import fft 
 
+from scipy.signal import detrend, windows
 import numpy as np
     
 # Configuration
@@ -42,7 +43,7 @@ data_counts = []
 data_values = []
 max_values_over_time = []
 
-fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(12, 10))
+fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(8, 8))
 plt.subplots_adjust(top=0.85, right=0.85)
 
 
@@ -114,9 +115,9 @@ def load_csv(event):
 
   ax1.clear()
   ax1.plot(data_values, label='Sensor Data')
-  ax1.set_xlabel('Sample Index (Displacement)')
-  ax1.set_ylabel('Intensity')
-  ax1.set_title(f'Data from {csv_filename}')
+  ax1.set_xlabel('Sample Index (Displacement)', fontsize=20)
+  ax1.set_ylabel('Intensity',fontsize=20)
+  ax1.set_title(f'Data from {csv_filename}',fontsize=20)
   ax1.legend()
   fig.canvas.draw_idle()
 # Mouse interaction handlers
@@ -189,39 +190,83 @@ def run_fft(event):
 
   # Remove DC component
   selected_data -= np.mean(selected_data)
+  # Detrend to remove linear trends
+  selected_data = detrend(selected_data)
+  # Apply Hann window to reduce edge effects
+  window = windows.hann(len(selected_data))
+  selected_data = selected_data * window
 
   # FFT
-  fft_vals = np.fft.fft(selected_data)
-  fft_vals = np.abs(fft_vals[:len(fft_vals)//2])
+  fft_result = np.fft.fft(selected_data)
+  # Magnitude spectrum (normalize by N for amplitude)
+  fft_magnitude = np.abs(fft_result) / len(selected_data)
+  #fft_vals = np.abs(fft_vals[:len(fft_vals)//2])
+  # Only keep positive frequencies (up to Nyquist)
+  N = len(selected_data)
+  fft_magnitude = fft_magnitude[:N//2]
 
   N = len(selected_data)
   dx = 75.301e-9  # 75.301 nm in meters
 
-  freqs = np.fft.fftfreq(N, d=dx)[:N//2]
+  #freqs = np.fft.fftfreq(N, d=dx)[:N//2]
+  delta_x_nm = 75.301  # Sampling interval in nm
+  delta_x_mm = delta_x_nm * 1e-6  # Convert to mm
+
+  freqs = np.fft.fftfreq(N)[:N//2]
   valid = (freqs > 0)
   freqs = freqs[valid]
-  fft_vals = fft_vals[valid]
+  fft_magnitude = fft_magnitude[valid]
+  
+  freq_mm = freqs / delta_x_mm
+  freq_m = freq_mm * 1000  # Spatial frequency in cycles/m
+  # Spectroscopic Wavenumber (cm⁻¹)
+  # For single-side interferometer, σ = f / 2 (m⁻¹), then convert to cm⁻¹
+  sigma_cm = (freq_m / 2) * 1e-2  # 1 m⁻¹ = 10⁻² cm⁻¹
+
 
   display_mode = domain_selector.value_selected
-
+  fft_mag = fft_magnitude
+  x_vals = sigma_cm
   if display_mode == 'Wavelength (nm)':
-    wavelengths = 1 / freqs  # in meters
-    x_vals = wavelengths * 1e9  # convert to nm
+    #wavelengths = 1 / freqs  # in meters
+    #x_vals = wavelengths * 1e9  # convert to nm
     x_label = "Wavelength (nm)"
+    # Wavelength (nm)
+# For double-pass interferometer, λ = 2 / f (m), then to nm
+    wavelength_nm = (2 / freq_m) * 1e9  # λ_m * 10⁹ = λ_nm
+    wavelength_nm = wavelength_nm[::-1]  # Reverse for increasing wavelength
+    x_vals = wavelength_nm
+    fft_magnitude_wavelength = fft_magnitude[::-1]
+    fft_mag = fft_magnitude_wavelength
+
+
   elif display_mode == 'Wavenumber (cm⁻¹)':
-    wavenumbers = freqs / 100  # convert 1/m to 1/cm
-    x_vals = wavenumbers
+    #wavenumbers = freqs / 100  # convert 1/m to 1/cm
+    #x_vals = wavenumbers
+    x_vals = sigma_cm 
     x_label = "Wavenumber (cm⁻¹)"
+    fft_mag = fft_magnitude
   else:
-    x_vals = freqs
-    x_label = "Frequency (1/m)"
+    #x_vals = freqs
+    #x_label = "Frequency (1/m)"
+    x_vals = sigma_cm 
+    x_label = "Wavenumber (cm⁻¹)"
+    fft_mag = fft_magnitude
 
   ax2.clear()
-  ax2.plot(x_vals, fft_vals)
-  ax2.set_xlabel(x_label)
-  ax2.set_ylabel("Amplitude")
-  ax2.set_title("FFT Result")
-  ax2.set_xlim(min(x_vals), max(x_vals))
+  ax2.plot(x_vals, fft_mag)
+  ax2.set_xlabel(x_label, fontsize=20)
+  ax2.set_ylabel("Amplitude", fontsize=20)
+  ax2.set_title("FFT Result", fontsize=20)
+  ax2.tick_params(axis='y', labelsize=20)
+  ax2.tick_params(axis='x', labelsize=20)
+
+  if display_mode == 'Wavelength (nm)':
+    ax2.set_xlim(100, 1500)
+  else:
+    ax2.set_xlim(min(x_vals), max(x_vals))
+  
+  ax2.set_ylim(0, max(fft_mag)*1.3)
   fig.canvas.draw_idle()
 
 
@@ -272,15 +317,15 @@ def onselect(xmin, xmax):
 ax1.cla()  # Clear the plot
 #data_values = read_csv_values("./acquisition_227.csv")
 #ax1.plot(data_values, label='Sensor Data')
-ax1.set_xlabel('Time')
-ax1.set_ylabel('Voltage')
-ax1.set_title('Real-time UART Data')
+ax1.set_xlabel('Time', fontsize = 20)
+ax1.set_ylabel('Voltage', fontsize=20)
+ax1.set_title('Real-time UART Data', fontsize=20)
 ax1.legend()
 
 fft_line, = ax2.plot([], [], label='FFT')
-ax2.set_title('FFT')
-ax2.set_xlabel('Frequency (1/m)')
-ax2.set_ylabel('Amplitude')
+ax2.set_title('FFT',fontsize=20)
+ax2.set_xlabel('Frequency (1/m)',fontsize=20)
+ax2.set_ylabel('Amplitude',fontsize=20)
 ax2.legend()
 
 fft_button.on_clicked(run_fft)
@@ -288,6 +333,12 @@ reset_button.on_clicked(reset)
 fig.canvas.mpl_connect('button_press_event', on_press)
 fig.canvas.mpl_connect('button_release_event', on_release)
 load_button.on_clicked(load_csv)
+
+ax1.tick_params(axis='y', labelsize=20)
+ax1.tick_params(axis='x', labelsize=20)
+ax2.tick_params(axis='y', labelsize=20)
+ax2.tick_params(axis='x', labelsize=20)
+
 
 span = SpanSelector(ax1, onselect, 'horizontal',
                     useblit=True,

@@ -327,8 +327,28 @@ This initializes the scalar field u0 to be a Gaussian beam.
 
 
 # Loop over point sources
-plt.figure(figsize=(8, 6))
+#plt.figure(figsize=(16, 12))
 plt.ion()  # Enable interactive mode for dynamic updates
+fig, ax = plt.subplots(figsize=(16, 12))
+
+im = ax.imshow(np.abs(I_total_LED_physical), 
+           extent=[x.min()/um, x.max()/um, y.min()/um, y.max()/um], 
+           cmap='inferno', origin='lower',vmax=1*1e-10, vmin=1*1e-12)
+           #cmap='inferno', origin='lower')
+#plt.colorbar(label="PSF (a.u.)")
+cbar = fig.colorbar(im, ax=ax, pad=0.1)
+cbar.set_label(label="Intensidade (W/m²)",fontsize=18)
+cbar.ax.tick_params(labelsize=16)
+cbar.ax.yaxis.offsetText.set_fontsize(16)
+
+ax.set_xlabel("X (\u03bcm)",fontsize=16)
+ax.set_ylabel("Y (\u03bcm)",fontsize=16)
+
+#Axis tick labels with larger font
+plt.xticks(fontsize=16)
+plt.yticks(fontsize=16)
+
+#ax.set_title(f"Potência  {P_total*1000*1000*1000:.2f} nW  |  EM  {z_m2/um:.1f} \u03bcm",fontsize=20)
 for i in range(num_steps):
   
   # Avalisa-se a propagação do LED, simulando multiplos feixes interagindo em
@@ -347,20 +367,18 @@ for i in range(num_steps):
   count=0
   print(f"\nPropagacao do LED feita com sucesso\n")
   print(f"Plot >  ")
-  plt.clf()
+  #plt.clf()
+  #ax.clear()
   P_total = np.sum(I_total_LED_physical) * dx * dy
 
   print(f"P_total >  ", P_total)
   # Plot interference pattern
-  plt.imshow(np.abs(I_total_LED_physical), 
-             extent=[x.min()/um, x.max()/um, y.min()/um, y.max()/um], 
-             cmap='inferno', origin='lower',vmax=1*1e-10, vmin=1*1e-12)
-             #cmap='inferno', origin='lower')
-  #plt.colorbar(label="PSF (a.u.)")
-  plt.colorbar(label="Intensidade (W/m²) ")
-  plt.xlabel("X (um)")
-  plt.ylabel("Y (um)")
-  plt.title(f"Potência  {P_total*1000*1000*1000:.2f} nW  |  EM  {z_m2/um:.1f} um")
+  # Update the plot instead of recreating it
+  im.set_data(np.abs(I_total_LED_physical))
+  #im.set_extent([x.min()/um, x.max()/um, y.min()/um, y.max()/um])  # Optional, if your axes change
+
+  ax.set_title(f"Potência  {P_total*1e9:.2f} nW  |  EM  {z_m2/um:.1f} µm", fontsize=20)
+
   #plt.title(f"Interference Pattern at Detector, z_m2 = {z_m2/um:.1f} um")
   
   # Update display
