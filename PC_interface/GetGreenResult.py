@@ -179,7 +179,6 @@ def read_packet():
 
         #print("\t\t[data_thread] buffer len ",len(buffer))
         data = data_queue.get(timeout=0.02)
-
         buffer += data
         while True:
           try:
@@ -285,7 +284,7 @@ def update_plot(frame):
   ax1.plot(max_count, max_value, 'ro')  # 'ro' means red color, circle marker
 
   # Annotate the maximum value
-    #arrowprops=dict(facecolor='red', shrink=0.005),\
+  #  arrowprops=dict(facecolor='red', shrink=0.005),\
   ax1.annotate(f'{max_count:.1f}' ,
     xy=(max_count, max_value), 
     xytext=(max_count, max_value + 0.001), 

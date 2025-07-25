@@ -11,6 +11,7 @@ import sys
 import csv
 import os
 import glob
+import collections
 
 import tkinter as tk
 import matplotlib
@@ -28,7 +29,7 @@ BAUD_RATE = 921600*1    # 4.5Mbps
 ADC_SIZE = 2         # Size of each float in bytes
 ADC_FULLSCALE = 4095         # Size of each float in bytes
     
-WAVELENGHT_SIZE  = 1024*40*1024
+WAVELENGHT_SIZE  = 1024*40
 # Initialize serial port
 ser = serial.Serial(PORT, BAUD_RATE, timeout=0.5, parity='N')
 
@@ -41,8 +42,9 @@ max_values_over_time = []
 
 fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(8, 8))
 
-data_queue = queue.Queue(maxsize=16*1024*1024)
-ADC_DataQueue = queue.Queue(maxsize=16*1024*1024)
+data_queue    = queue.Queue(maxsize=43*1024*1024)
+ADC_DataQueue = queue.Queue(maxsize=43*1024*1024) 
+data_deque = collections.deque(maxlen=1000000)
 
 DIR = "./ADC_DMA_RawResults"
 filename = "."
@@ -90,6 +92,7 @@ def save_csv_func():
       items = [] 
       try:
         items.append(ADC_DataQueue.get_nowait())  # non-blocking
+
         #global_DataCounts+=1
         #data_values[global_DataCounts] = items[global_DataCounts]
         #data_counts[global_DataCounts] = global_DataCounts
@@ -136,27 +139,29 @@ def read_packet():
 
             for count, value in data_point:
 
-              data_values[global_DataCounts] = value
-              data_counts[global_DataCounts] = global_DataCounts
-              global_DataCounts+=1
+              #data_values[global_DataCounts] = value
+              #data_counts[global_DataCounts] = global_DataCounts
+              #global_DataCounts+=1
+              #data_values[global_DataCounts] = 0
               
               #if value < 1.1 and value > -0.7:
               ADC_DataQueue.put(value)
+              data_deque.append(value) 
             
             buffer = buffer[stop_bytes + len(stop_sequence):]
           
           except Exception as e:
-            print(f"Error in process_data: {e}")
+            print(f"Error in process_data 1: {e}")
             continue
         
       except queue.Empty:
         #print("\t\t[data_thread] | Exception| Bytes waiting in buffer:", ser.in_waiting)
         continue
       except Exception as e:
-        print(f"Error in process_data: {e}")
+        print(f"Error in process_data 2: {e}")
         continue
   except Exception as e:
-    print(f"Error in process_data: {e}")
+    print(f"Error in process_data 3: {e}")
 
 '''
       #start_bytes = ser.read(5)
@@ -200,10 +205,17 @@ def update_plot(frame):
   ax1.cla()  # Clear the plot
   ax2.cla()  # Clear the plot
     
+  points = [data_points for data_points in data_deque]
+  
   # Find the maximum value and its index
-  max_index = data_values.index(max(data_values))
-  max_value = data_values[max_index]
-  max_count = data_counts[max_index]
+  if points:
+    max_index = points.index(max(points))
+    max_value = points[max_index]
+    max_count = max_index
+  else:
+    max_index = 0
+    max_value = -0.15
+    max_count = 0
   #print("\t\t[Update Plot]  Len: ", max_count)
   #print("\t\t[Update Plot]  Max Index: ", max_index)
 
@@ -218,7 +230,8 @@ def update_plot(frame):
     fontsize=10, color='red')
 
   #print("values", data_counts)
-  ax1.plot(data_counts, data_values, label='Sensor Data')
+  #ax1.plot(data_counts, data_values, label='Sensor Data')
+  ax1.plot(points, label='Sensor Data')
   ax1.set_xlabel('Time')
   ax1.set_ylabel('Voltage')
   ax1.set_title('Real-time UART Data')
@@ -230,9 +243,11 @@ def update_plot(frame):
          
   # Limit the list to the most recent 120 ms window
   # Assuming an update every 125 ms, keep only the last 10 values
-  if len(max_values_over_time) > 10:
+  if len(max_values_over_time) > 10000:
     max_values_over_time.pop(0)
-                                    
+
+  plt.tight_layout()
+'''
   # Plot the maximum value trend over time
   ax2.plot(max_values_over_time, 'r-', label='Max Value over Time')
   ax2.set_xlabel('Time (approx. 120ms per point)')  
@@ -240,8 +255,7 @@ def update_plot(frame):
   ax2.set_title('Maximum Value Over Time')
   ax2.legend()
   ax2.set_ylim(min(max_values_over_time) - 0.01, max(max_values_over_time) + 0.01)
-
-  plt.tight_layout()
+'''
 
 
 def decode_packet(packet):
