@@ -69,10 +69,20 @@ void PortDIntHanlder(){
   //UARTprintf("\r\t\t\t[PortDIntHandler]\n");
   // Entre o primeiro falling edge até seu rst são necessários
   // 300 us
-  GPIOIntClear(GPIO_PORTD_BASE, GPIO_PIN_0);
+  // Esse handler é executado em aprox. 5us
+  //  A liberação do semaforo ocorre em 5us
+
+  //AS7341_PerformanceDbgSet();    
+  
   BaseType_t xHigherPriorityTaskWoken = pdFALSE;
-  xSemaphoreGiveFromISR(AS7341_Semphr, &xHigherPriorityTaskWoken);
-  portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+  GPIOIntClear(GPIO_PORTD_BASE, GPIO_PIN_0);
+
+  vTaskNotifyGiveFromISR(AS7341_Handle, &xHigherPriorityTaskWoken);
+  //xSemaphoreGiveFromISR(AS7341_Semphr, &xHigherPriorityTaskWoken);
+  
+  //AS7341_PerformanceDbgClr();   
+  portYIELD();
+  //portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
 }
 
 void I2C1_IntHandler(){
@@ -83,10 +93,16 @@ void I2C1_IntHandler(){
 }
 
 bool WaitACK(){
-  if(xSemaphoreTake(I2C1_Semphr, pdMS_TO_TICKS(25))==pdFALSE)
+  // O tempo de agurado de um ACK leva aprox. 74.3us
+  //AS7341_PerformanceDbgSet();    
+  if(xSemaphoreTake(I2C1_Semphr, pdMS_TO_TICKS(25))==pdFALSE){
+    //AS7341_PerformanceDbgClr();   
     return false;
-  else
+  }
+  else{
+    //AS7341_PerformanceDbgClr();   
     return true;
+  }
 }
 
 bool AS7341_write(uint8_t regAdd, uint8_t data){
@@ -217,16 +233,18 @@ bool AS7341_i2cInit(){
 
   // Enables PD0 to handle AS7341 Interruptions
   AS7341_Semphr = xSemaphoreCreateBinary();
+
   SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOD);
   GPIOUnlockPin(GPIO_PORTD_BASE, GPIO_PIN_0 | GPIO_PIN_1);
   GPIOPinTypeGPIOInput(GPIO_PORTD_BASE, GPIO_PIN_0);
+  GPIOPadConfigSet(GPIO_PORTD_BASE, GPIO_PIN_0, GPIO_STRENGTH_8MA, GPIO_PIN_TYPE_STD_WPD);
   GPIOIntTypeSet(GPIO_PORTD_BASE, GPIO_PIN_0, \
                  GPIO_FALLING_EDGE); //|GPIO_LOW_LEVEL);
 
   GPIOIntClear(GPIO_PORTD_BASE, GPIO_PIN_0);
   GPIOIntEnable(GPIO_PORTD_BASE, GPIO_INT_PIN_0);
   
-  IntPrioritySet(INT_GPIOD, 0x2);
+  IntPrioritySet(INT_GPIOD, 0x7);
   IntRegister(INT_GPIOD,PortDIntHanlder);
   IntEnable(INT_GPIOD);
   IntMasterEnable();
@@ -1133,7 +1151,8 @@ void AS7341_Debaunce(void *ptr) {
 }
 
 bool AS7341_WaitIntSig(){
-  if(xSemaphoreTake(AS7341_Semphr, pdMS_TO_TICKS(25))==pdFALSE) //portMAX_DELAY); //SINT_MUX interruption
+
+  if(xSemaphoreTake(AS7341_Semphr, pdMS_TO_TICKS(1500))==pdFALSE) //portMAX_DELAY); //SINT_MUX interruption
     return false;
   else
     return true;
@@ -1844,7 +1863,7 @@ TimerIntRegister(uint32_t ui32Base, uint32_t ui32Timer,
 */
   TimerIntEnable(TIMER0_BASE, TIMER_TIMA_TIMEOUT);
   TimerIntRegister(TIMER0_BASE, TIMER_A, AS7341_Debaunce);
-  IntPrioritySet(INT_GPIOF, 0x04);
+  IntPrioritySet(INT_GPIOF, 0x05);
   IntMasterEnable();
   
   // Start Timer
@@ -1854,7 +1873,7 @@ TimerIntRegister(uint32_t ui32Base, uint32_t ui32Timer,
     //UARTprintf("\t\t\tDelay Init\n");
     //GPIOPinWrite(GPIO_PORTB_BASE, SLEEP_PIN, SLEEP_PIN);
     ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
-    xSemaphoreGive(AS7341_Semphr);
+    //xSemaphoreGive(AS7341_Semphr);
     //GPIOPinWrite(GPIO_PORTB_BASE, SLEEP_PIN, 0);
     UARTprintf("\t\t\t\t\t\t - AS7341 [WATCH DOG]\n");
     //xSemaphoreTake(xAS7341_DebaunceIntHandle, portMAX_DELAY); //SINT_MUX interruption

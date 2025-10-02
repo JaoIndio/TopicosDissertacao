@@ -229,15 +229,15 @@ void AS7341_Begin(void *ptr){
   ADC_ID2[1] =  CONNECT_TO_GND;    
   //ADC_ID2[2] =  CONNECT_TO_ADC0;    
   ADC_ID2[2] =  CONNECT_TO_GND;    
-  ADC_ID2[3] =  CONNECT_TO_GND;    
+  ADC_ID2[3] =  CONNECT_TO_ADC0;    
   ADC_ID2[4] =  CONNECT_TO_GND;    
   ADC_ID2[5] =  CONNECT_TO_GND;    
   ADC_ID2[6] =  CONNECT_TO_GND;    
   //ADC_ID2[7] =  CONNECT_TO_ADC1;   
-  ADC_ID2[7] =  CONNECT_TO_ADC0;   
+  ADC_ID2[7] =  CONNECT_TO_GND;   
   
   //ADC_ID2[8]  = CONNECT_TO_ADC1<<4 | CONNECT_TO_GND;    
-  ADC_ID2[8]  = CONNECT_TO_ADC0<<4 | CONNECT_TO_GND;    
+  ADC_ID2[8]  = CONNECT_TO_GND<<4 | CONNECT_TO_GND;    
   ADC_ID2[9]  = CONNECT_TO_GND<<4 | CONNECT_TO_GND;   
   ADC_ID2[10] = CONNECT_TO_GND;   
   //ADC_ID2[11] = CONNECT_TO_ADC0;   
@@ -305,14 +305,16 @@ void AS7341_Begin(void *ptr){
 
   // Maxima frequencia de operação prolongada do AS7341: 550Hz com RC paralelo, R da ponteira e C 1nF(cap.ceramico)
   // Com isso a freqeuncia máxima do NEMA precisa ser 13Hz
-  uint16_t StepADC = 10;
+  //uint16_t StepADC = 66;
+  uint16_t StepADC = 12;
 #endif
   if(!AS7341_SetStepADC(StepADC))
     UARTprintf("\rSet STEP Error\n");
 #if AS7341_MONO == 0
   uint8_t TimeADC  = 99;
 #else
-  uint8_t TimeADC  = 5;
+  //uint8_t TimeADC  = 33;
+  uint8_t TimeADC  = 7;
 #endif
   if(!AS7341_SetTimeADC(TimeADC))
     UARTprintf("\rSet Time Error a\n");
@@ -370,28 +372,39 @@ void AS7341_Begin(void *ptr){
   char actualTask[] = "\t\t\t[SMUX]\t\t";
   //UBaseType_t unusedStackWords = uxTaskGetStackHighWaterMark(NULL);
   //size_t unusedStackBytes = unusedStackWords * sizeof(StackType_t);
-  while(1){
-    AS7341_PerformanceDbgSet();    
+  status_rslt.value = 0x88;
 
-    //UARTprintf("\t\t\t - AS7341 Waiting Int. Signal\n");
-    if(!AS7341_WaitIntSig()){
-      while(1){
-        UARTprintf("\t\t\t - AS7341 Waiting Int. Signal ERROR\n");
-        vTaskDelay(pdMS_TO_TICKS(2500));
-      }
-    }
-    AS7341_PerformanceDbgClr();   
-    //TimerLoadSet(TIMER0_BASE, TIMER_A, (SysCtlClockGet() / 1e6) * us-1);
-    //TimerEnable(TIMER0_BASE, TIMER_A);
+  AS7341_pooling = false;
+  while(1){
     
+    //Ou leva 562us pra ler e reconfigurar AS7341, e enviar UART
+    // Ou leva 278us
+    AS7341_PerformanceDbgSet();    
+    
+    //while(1){
+    //  if(AS7341_pooling) break;
+    //}
+    //AS7341_pooling = false;
+
+    ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+    //if(!AS7341_WaitIntSig()){
+    //  while(1){
+    //    UARTprintf("\t\t\t - AS7341 Waiting Int. Signal ERROR\n");
+    //    vTaskDelay(pdMS_TO_TICKS(2500));
+    //  }
+    //}
+    AS7341_PerformanceDbgClr();   
+    
+
     if(!AS7341_BankAcessSet(AS7341_REG_CH0_DATA_L))
       UARTprintf("\t\t\t - AS7341 Bank ERROR\n");
-    //AS7341_read(AS7341_REG_CH0_DATA_L, ADC_count);
     //AS7341_read(AS7341_REG_CH0_DATA_H, ADC_count+1);
     if(!AS7341_read(AS7341_REG_CH0_DATA_L, ADC_count)){
       UARTprintf("\t\t\t - AS7341 DATA Low ERROR\n");
-      ADC_count[0]=255;
+      ADC_count[0]=60;
     }
+    if(!AS7341_SetAcessAndWrite(AS7341_REG_STATUS, status_rslt.value))
+      UARTprintf("\t\t\t - AS7341 Status Read ERROR\n");
     //AS7341_read(AS7341_REG_CH0_DATA_H, ADC_count+1);
     //AS7341_readMultiples(AS7341_REG_CH1_DATA_L, ADC_count+2,2);
 
@@ -408,18 +421,19 @@ void AS7341_Begin(void *ptr){
     //AS7341_read(AS7341_REG_FDATA_H, ADC_count+3);    
     
     //AS7341_DeviceStatus(AS7341_REG_STATUS,  &status_rslt.value);
-    status_rslt.value = 0x88;
-    if(!AS7341_SetAcessAndWrite(AS7341_REG_STATUS, status_rslt.value))
-      UARTprintf("\t\t\t - AS7341 Status Read ERROR\n");
 
     
     //joinADC(ADC_count, ADC_raw);
     //F5_intensity = (float)ADC_raw[0]*1.8f/ADC_fullscale;
-    F4_intensity = (float)ADC_count[0]*1.8f/ADC_fullscale;
+
+    //AS7341_PerformanceDbgSet();    
+    F4_intensity = (float)ADC_count[0]*1.0f/ADC_fullscale;
     //AS7341_AnalogAproxDutySet(F4_intensity*0.5);
     //AS7341_AnalogAproxDutySet(1.8*0.65*0.5);
 
     UART5_SendDataPacket(&F4_intensity, 1);
+    //AS7341_PerformanceDbgClr();   
+    
     //DelayUs(125, &AS7341_Handle);
     //IntEnable(INT_GPIOD);
     // Fazer um WatchDog pra qndo o AS7341 para de responder
@@ -430,7 +444,7 @@ void AS7341_Begin(void *ptr){
 /*
     UARTprintf("-------------------------------\n");
     UARTprintf("\t\t\t\tADC Full Scale %d\n", (int)(ADC_fullscale*10000));
-    UARTprintf("\t\t\t\tADC Raw F4     %x\n", ADC_count[0]);
+    UARTprintf("\t\t\t\tADC Raw F7     %x\n", ADC_count[0]);
     UARTprintf("\t\t\t\tADC Raw F5     %x\n", ADC_count[1]);
     UARTprintf("\t\t\t\t* F5 Voltage   %d\n", (int)(F5_intensity*10000));
     UARTprintf("\t\t\t\t* F4 Voltage   %d\n", (int)(F4_intensity*10000));
@@ -555,15 +569,14 @@ int main(void){
   xTaskCreate(NemaTaskCreation, "NemaTask", configMINIMAL_STACK_SIZE+50, \
                 NULL, configMAX_PRIORITIES-1, \
                 NULL);
-// */
+/*
   
-  xTaskCreate(AS7341_Begin, "AS7341", configMINIMAL_STACK_SIZE+50, \
-                NULL, configMAX_PRIORITIES-1, \
+  xTaskCreate(AS7341_Begin, "AS7341", configMINIMAL_STACK_SIZE+50, 
+                NULL, configMAX_PRIORITIES-1, 
                 &AS7341_Handle);
-
-// /*
+*/
   xTaskCreate(ADC_DMA_Reader, "AdcDMA", configMINIMAL_STACK_SIZE+50, \
-                NULL, configMAX_PRIORITIES-1, \
+                NULL, configMAX_PRIORITIES-2, \
                 NULL);
 // */
 
@@ -677,7 +690,7 @@ void ADC_DMA_Reader(){
 
   ADCTriggerDbgRst();
   while(1){
-    vTaskDelay(pdMS_TO_TICKS(150));
+    //vTaskDelay(pdMS_TO_TICKS(150));
     UART5_SendByte(START_BYTE);  // Send the Start Byte
     UART5_SendByte(START_BYTE);  // Send the Start Byte
     UART5_SendByte(START_BYTE);  // Send the Start Byte

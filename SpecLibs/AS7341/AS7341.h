@@ -790,6 +790,9 @@ typedef union{
 //-------------------------------------------
 //-------------------------------------------
 //-------------------------------------------
+extern TaskHandle_t AS7341_Handle;
+bool AS7341_pooling;
+
 bool AS7341_SetAcessAndWrite(uint8_t regAdd, uint8_t data);
 bool AS7341_SetAcessAndRead(uint8_t regAdd, uint8_t *data);
 bool AS7341_write(uint8_t regAdd, uint8_t data);

@@ -1,0 +1,38 @@
+
+------------------------------------------------------------------------------------------------------------------------
+!TASK: Migrating from source-tool 'ARM Compiler' (com.ti.ccstudio.buildDefinitions.TMS470_20.2.exe.compilerDebug.1343919870) ... [Thu Oct 02 10:37:22 BRT 2025]
+
+	!CONFIGURATION: 'Debug' (com.ti.ccstudio.buildDefinitions.TMS470.Debug.597565085)
+
+		!TOOL: 'Arm Compiler' (com.ti.ccstudio.buildDefinitions.TMS470_TICLANG_4.0.exe.compilerDebug.758713368)
+
+			!ERROR: java.io.IOException: Cannot run program "" (in directory "/home/jao/Documentos/tiva_test/Nema17/Debug"): error=2, Arquivo ou diretório inexistente
+				at java.base/java.lang.ProcessBuilder.start(Unknown Source)
+				at java.base/java.lang.ProcessBuilder.start(Unknown Source)
+				at java.base/java.lang.Runtime.exec(Unknown Source)
+				at com.ti.ccs.project.initializer.ConfigurationInitializer.getCanonicalizedToolSettings(ConfigurationInitializer.java:2129)
+				at com.ti.ccs.project.initializer.ConfigurationInitializer.migrateBuildOptions(ConfigurationInitializer.java:1654)
+				at com.ti.ccs.project.initializer.ConfigurationInitializer.doCopyBuildOptions(ConfigurationInitializer.java:1300)
+				at com.ti.ccs.project.initializer.ConfigurationInitializer.copyBuildOptions(ConfigurationInitializer.java:430)
+				at com.ti.ccs.project.initializer.ConfigurationInitializer.internalCopyBuildOptions(ConfigurationInitializer.java:1223)
+				at com.ti.ccs.project.initializer.ConfigurationInitializer.internalInitializeBuildOptions(ConfigurationInitializer.java:882)
+				at com.ti.ccs.project.initializer.ConfigurationInitializer.initializeFromExisting(ConfigurationInitializer.java:286)
+				at com.ti.ccs.project.services.ProjectModifier$1.run(ProjectModifier.java:1246)
+				at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2315)
+				at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2340)
+				at com.ti.ccs.project.services.ProjectModifier.modifyCCSProject(ProjectModifier.java:1208)
+				at com.ti.ccs.project.services.ProjectModifier.modifyCCSProject(ProjectModifier.java:1166)
+				at com.ti.ccs.server.handlers.ProjectPropertiesHandler.cmd_modifyProjectProperties_end(ProjectPropertiesHandler.java:1540)
+				at com.ti.ccs.server.handlers.ProjectPropertiesHandler$14.handle(ProjectPropertiesHandler.java:604)
+				at com.ti.ccs.server.events.IServerRequestHandler$Impl.handle(IServerRequestHandler.java:34)
+				at com.ti.ccs.server.CCSServer$RequestHandlerJob.run(CCSServer.java:176)
+				at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+			Caused by: java.io.IOException: error=2, Arquivo ou diretório inexistente
+				at java.base/java.lang.ProcessImpl.forkAndExec(Native Method)
+				at java.base/java.lang.ProcessImpl.<init>(Unknown Source)
+				at java.base/java.lang.ProcessImpl.start(Unknown Source)
+				... 20 more
+			
+
+!END_TASK: [Thu Oct 02 10:37:22 BRT 2025]
+

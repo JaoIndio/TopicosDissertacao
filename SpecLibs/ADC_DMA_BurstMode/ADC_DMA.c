@@ -9,6 +9,8 @@
 //! the channel UDMA_CHANNEL_SW is used and for error interrupts.  The
 //! interrupts for each peripheral channel are handled through the individual
 //! peripheral interrupt handlers.
+
+colormake -k -j12 all <- Pra compilar
 ****************************/
 
 #include "ADC_DMA.h"
@@ -53,7 +55,8 @@ void GPIOFIntHandler(void) {
     if(StepCount.CycleCount<StepCount.CycleThrshld)
       StepCount.Count++;
 
-    if(StepCount.Count>=160*5.5){
+    if(StepCount.Count>=160*5){
+    //if(StepCount.Count>=80){
       StepCount.Count = 0;
       StepCount.CycleCount++;
       vTaskNotifyGiveFromISR(xTrackInterfMovHandle, &xHigherPriorityTaskWoken);
@@ -95,7 +98,7 @@ void ADCIntHanlder(void){
                            UDMA_MODE_BASIC,\
                            (void *) ADC_rslt, \
                            (void *)(UART5_BASE + UART_O_DR),\
-                           2);
+                           1);
 
     uDMAChannelEnable(UDMA_CH7_UART5TX);
     errorStatus = uDMAErrorStatusGet();
@@ -156,7 +159,7 @@ void InitGPIOTrigger(){
   GPIOIntEnable(GPIO_PORTF_BASE, GPIO_PIN_4); // Step 3: Configure the interrupt
   UARTprintf("%s INT CallBackSet\n", actualTask);
   IntRegister(INT_GPIOF, GPIOFIntHandler);
-  IntPrioritySet(INT_GPIOF, 0x3);
+  IntPrioritySet(INT_GPIOF, 0x6);
   IntEnable(INT_GPIOF);
   
   //Performance Pin Configuration
@@ -239,7 +242,7 @@ void InitDMA(){
   //uDMAChannelRequest(DMA_CHANNEL); DMA_CHANNEL
 }
 void InitInterruptions(){
-  IntPrioritySet(ADC_INT_SEQ, 0x1); // Set highest priority
+  IntPrioritySet(ADC_INT_SEQ, 0x7); // Set highest priority
   IntEnable(ADC_INT_SEQ);
   ADCIntEnableEx(ADC0_BASE, ADC_INT_SS0|ADC_INT_DMA_SS0);
   IntRegister(ADC_INT_SEQ, ADCIntHanlder);

@@ -283,7 +283,7 @@ FaultISR(void)
 {
     //
     // Enter an infinite loop.
-    //
+    //BaseType_t xHigherPriorityTaskWoken = pdFALSE;
 
     while(1)
     {
