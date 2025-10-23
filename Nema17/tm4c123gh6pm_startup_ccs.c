@@ -36,6 +36,7 @@ static void NmiSR(void);
 static void FaultISR(void);
 static void IntDefaultHandler(void);
 extern void I2C1_IntHandler(void);   //Handler do I2C
+extern void I2C2_IntHandler(void);   //Handler do I2C
 extern void PortDIntHanlder(void);
 extern void uDMAIntHandler(void);
 extern void uDMAErrIntHandler(void);
@@ -159,7 +160,7 @@ void (* const g_pfnVectors[])(void) =
     0,                                      // Reserved
     0,                                      // Reserved
     0,                                      // Reserved
-    IntDefaultHandler,                      // I2C2 Master and Slave
+    I2C2_IntHandler,                      // I2C2 Master and Slave
     IntDefaultHandler,                      // I2C3 Master and Slave
     IntDefaultHandler,                      // Timer 4 subtimer A
     IntDefaultHandler,                      // Timer 4 subtimer B

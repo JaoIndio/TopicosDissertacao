@@ -21,7 +21,7 @@ from matplotlib.animation import FuncAnimation
 # Configuration
 START_BYTE = 0xAA
 STOP_BYTE = 0x55
-PORT = '/dev/ttyUSB0'  # Serial port for your USB-to-UART adapter
+PORT = '/dev/ttyUSB1'  # Serial port for your USB-to-UART adapter
 BAUD_RATE = 921600*1    # 4.5Mbps
 ADC_SIZE = 4         # Size of each float in bytes
 ADC_FULLSCALE = 16261         # Size of each float in bytes

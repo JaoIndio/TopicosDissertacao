@@ -85,29 +85,62 @@ void PWM_SetDutyCycle(float dutyCycle){
   uint32_t pulseWidth = (uint32_t)((load * dutyCycle) / 100.0f);
 
   //UARTprintf("\r\t\tDuty %d\n", (int)((load * pulseWidth) / 100) );
-  PWMPulseWidthSet(PWM0_BASE, PWM_OUT_1, pulseWidth);
+  PWMPulseWidthSet(PWM0_BASE, PWM_OUT_2, pulseWidth);
 }
 void AnalogInit(){
+/*
   //SysCtlPeripheralEnable(SYSCTL_PERIPH_PWM0);
 
   // Configure the pin muxing for PWM1 on PB7
-  GPIOPinConfigure(GPIO_PB7_M0PWM1);
+  GPIOPinConfigure(GPIO_PB4_M0PWM2);
   
   // Configure the PWM generator for countdown mode with immediate updates to the parameters
-  PWMGenConfigure(PWM0_BASE, PWM_GEN_0, PWM_GEN_MODE_DOWN | PWM_GEN_MODE_NO_SYNC);
+  PWMGenConfigure(PWM0_BASE, PWM_GEN_1, PWM_GEN_MODE_DOWN | PWM_GEN_MODE_NO_SYNC);
   // Set the PWM period to 10 kHz
   uint32_t pwmClock = SysCtlClockGet() / 64; // Assuming a PWM clock divider of 64
-  uint32_t load = (pwmClock / KILO_HZ) - 1; // For a 10 kHz frequency
-  PWMGenPeriodSet(PWM0_BASE, PWM_GEN_0, load);
+  uint32_t load = (pwmClock / 10*KILO_HZ) - 1; // For a 10 kHz frequency
+  PWMGenPeriodSet(PWM0_BASE, PWM_GEN_1, load);
 
   // Set the PWM duty cycle to 50% initially
-  PWMPulseWidthSet(PWM0_BASE, PWM_OUT_1, load / 2);
+  PWMPulseWidthSet(PWM0_BASE, PWM_OUT_2, load / 2);
 
   // Enable the PWM output
-  PWMOutputState(PWM0_BASE, PWM_OUT_1_BIT, true);
+  PWMOutputState(PWM0_BASE, PWM_OUT_2_BIT, true);
 
   // Enable the PWM generator
-  PWMGenEnable(PWM0_BASE, PWM_GEN_0);
+  PWMGenEnable(PWM0_BASE, PWM_GEN_1);
+*/
+  // Step 1: Enable PWM1 and GPIOF peripherals
+  SysCtlPeripheralEnable(SYSCTL_PERIPH_PWM1);
+  SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOF);
+
+  // Step 2 & 3: Configure PF1 as M1PWM5 and set pin type to PWM
+  GPIOPinConfigure(GPIO_PF1_M1PWM5);
+  GPIOPinTypePWM(GPIO_PORTF_BASE, GPIO_PIN_1);
+
+  // Step 4: Set PWM clock to system clock (16 MHz in this case)
+  PWMClockSet(PWM1_BASE, PWM_SYSCLK_DIV_64);
+  //SysCtlPWMClockSet(SYSCTL_PWMDIV_64);
+
+  // Step 5: Configure PWM generator 2 for down-count mode
+  PWMGenConfigure(PWM1_BASE, PWM_GEN_2, PWM_GEN_MODE_DOWN | PWM_GEN_MODE_NO_SYNC);
+
+  // Step 6: Set PWM period to 1000 cycles (16 kHz PWM frequency at 16 MHz clock)
+  uint32_t frequency, pwmClock, load, step;
+  frequency = 5*KILO_HZ;
+  pwmClock = SysCtlClockGet() /64;
+  load = (pwmClock / frequency) - 1;
+  
+  PWMGenPeriodSet(PWM1_BASE, PWM_GEN_2, load);
+
+  // Step 7: Set pulse width to 500 cycles (50% duty cycle)
+  PWMPulseWidthSet(PWM1_BASE, PWM_OUT_5, load/2);
+
+  // Step 8: Enable PWM output for M1PWM5
+  PWMOutputState(PWM1_BASE, PWM_OUT_5_BIT, true);
+
+  // Step 9: Enable PWM generator 2
+  PWMGenEnable(PWM1_BASE, PWM_GEN_2);
 }
 
 float sigmoid(float x) {
@@ -158,7 +191,7 @@ void TriggerPWMSigmoidFrequency(float* actual_freq, float target_freq){
     // Set PB7 pin configured as PWM also, but with a RC that is used to
     // simulate an analog signal
     dutyEq = 0.111111111*((0.1*(float)frequency) -100);
-    PWM_SetDutyCycle(dutyEq);
+    //PWM_SetDutyCycle(dutyEq);
 
     // Delay to allow the change to take effect
     SysCtlDelay(SysCtlClockGet() / (100 * totalSteps));
@@ -290,7 +323,7 @@ void NemaInterruptionConfig(){
   //float min_freq = 5*KILO_HZ;
   //float max_freq = 10*KILO_HZ; // <- Freq Maxima da Senoide
   float min_freq = 5;
-  float max_freq = 5*KILO_HZ;
+  float max_freq = 2*KILO_HZ;
   float actual_freq = min_freq;
 
   GPIOPinWrite(GPIO_PORTB_BASE, ENABLE_PIN, 0);
@@ -305,7 +338,6 @@ void NemaInterruptionConfig(){
   PWMGenPeriodSet(PWM0_BASE, PWM_GEN_1, load);
   PWMPulseWidthSet(PWM0_BASE, PWM_OUT_3, load / 2);
 
-
   UARTprintf("\r\t\t\t\t\tNEMA Config Done\n");
 
 }
@@ -315,9 +347,14 @@ void NemaConfig(){
 
   SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOB);
   SysCtlPeripheralEnable(SYSCTL_PERIPH_PWM0);
-  GPIOPinTypePWM(GPIO_PORTB_BASE, GPIO_PIN_5 | GPIO_PIN_7);
+
+  GPIOUnlockPin(GPIO_PORTB_BASE, GPIO_PIN_4);
+  GPIOPinTypeGPIOOutput(GREEN_LIGHT_PORT, GREEN_LIGHT_PIN);
+  
+  GPIOPinTypePWM(GPIO_PORTB_BASE, GPIO_PIN_5 | GPIO_PIN_7 | GPIO_PIN_4);
   SysCtlPWMClockSet(SYSCTL_PWMDIV_64);
-  AnalogInit();
+  //AnalogInit();
+  AS7341_AnalogAproxConfig(5*KILO_HZ);
   
   // Configure PB5 as an cbcpin
   //GPIOPinTypeGPIOOutput(GPIO_PORTB_BASE, STEP_PIN);

@@ -1,0 +1,27 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Nema17",
+            "type": "ccs-debug",
+            "request": "launch",
+            "projectInfo": {
+                "name": "Nema17",
+                "resourceId": "/Nema17"
+            },
+            "connections": [
+                {
+                    "name": "Stellaris In-Circuit Debug Interface",
+                    "cores": [
+                        {
+                            "name": "CORTEX_M4_0",
+                            "debuggerSettings": {
+                                "data": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\" ?>\n<PropertyValues/>\n"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

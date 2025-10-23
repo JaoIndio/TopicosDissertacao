@@ -68,6 +68,8 @@
 #define configTIMER_QUEUE_LENGTH            10
 #define configTIMER_TASK_STACK_DEPTH        256
 
+#define configUSE_STATS_FORMATTING_FUNCTIONS 1
+
 //#define configMAX_PRIORITIES                ( ( unsigned portBASE_TYPE ) 16 )
 #define configMAX_PRIORITIES ( 16 )
 #define configMAX_CO_ROUTINE_PRIORITIES     ( 2 )

@@ -2,8 +2,6 @@
 # Automatically-generated file. Do not edit!
 ################################################################################
 
-CG_TOOL_ROOT := /home/jao/ti/ccs1010/ccs/tools/compiler/ti-cgt-arm_20.2.1.LTS
-
 GEN_OPTS__FLAG := 
 GEN_CMDS__FLAG := 
 
@@ -11,6 +9,8 @@ ORDERED_OBJS += \
 "./main.obj" \
 "./startup_ccs.obj" \
 "./drivers/rtos_hw_drivers.obj" \
+"./external_devices/AS7341_photo.obj" \
+"./external_devices/XML_Gen2_GreenLight.obj" \
 "./hellow_dir/hello_task.obj" \
 "./hellow_dir/myLib.obj" \
 "./third_party/FreeRTOS/Source/croutine.obj" \
@@ -37,6 +37,7 @@ RMDIR := rm -rf
 -include sources.mk
 -include subdir_vars.mk
 -include drivers/subdir_vars.mk
+-include external_devices/subdir_vars.mk
 -include hellow_dir/subdir_vars.mk
 -include third_party/FreeRTOS/Source/subdir_vars.mk
 -include third_party/FreeRTOS/Source/portable/CCS/ARM_CM4F/subdir_vars.mk
@@ -44,6 +45,7 @@ RMDIR := rm -rf
 -include utils/subdir_vars.mk
 -include subdir_rules.mk
 -include drivers/subdir_rules.mk
+-include external_devices/subdir_rules.mk
 -include hellow_dir/subdir_rules.mk
 -include third_party/FreeRTOS/Source/subdir_rules.mk
 -include third_party/FreeRTOS/Source/portable/CCS/ARM_CM4F/subdir_rules.mk
@@ -145,16 +147,10 @@ endif
 
 # Add inputs and outputs from these tool invocations to the build variables 
 EXE_OUTPUTS += \
-hello.out \
+hello.out 
 
 EXE_OUTPUTS__QUOTED += \
-"hello.out" \
-
-BIN_OUTPUTS += \
-hello.bin \
-
-BIN_OUTPUTS__QUOTED += \
-"hello.bin" \
+"hello.out" 
 
 
 # All Target
@@ -164,30 +160,22 @@ all: hello.out
 hello.out: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
 	@echo 'Building target: "$@"'
 	@echo 'Invoking: ARM Linker'
-	"/home/jao/ti/ccs1010/ccs/tools/compiler/ti-cgt-arm_20.2.1.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me -Ooff --define=ccs="ccs" --define=TARGET_IS_TM4C123_RB1 --define=PART_TM4C123GH6PM -g --gcc --diag_warning=225 --diag_wrap=off --display_error_number --gen_func_subsections=on --abi=eabi --ual -z -m"hello.map" --heap_size=0 --stack_size=4096 -i"/home/jao/ti/ccs1010/ccs/tools/compiler/ti-cgt-arm_20.2.1.LTS/lib" -i"/home/jao/ti/ccs1010/ccs/tools/compiler/ti-cgt-arm_20.2.1.LTS/include" --reread_libs --diag_wrap=off --display_error_number --warn_sections --xml_link_info="hello_linkInfo.xml" --rom_model -o "hello.out" $(ORDERED_OBJS)
+	"" -z -m"hello.map" --heap_size=0 --stack_size=4096 -i"/lib" -i"/include" --reread_libs --diag_wrap=off --display_error_number --warn_sections --xml_link_info="hello_linkInfo.xml" --rom_model -o "hello.out" $(ORDERED_OBJS)
 	@echo 'Finished building target: "$@"'
-	@echo ' '
-	@$(MAKE) --no-print-directory post-build
-
-hello.bin: $(EXE_OUTPUTS)
-	@echo 'Building files: $(strip $(EXE_OUTPUTS__QUOTED))'
-	@echo 'Invoking: ARM Hex Utility'
-	"/home/jao/ti/ccs1010/ccs/tools/compiler/ti-cgt-arm_20.2.1.LTS/bin/armhex"  -o "hello.bin" $(EXE_OUTPUTS__QUOTED)
-	@echo 'Finished building: $(strip $(EXE_OUTPUTS__QUOTED))'
 	@echo ' '
 	@$(MAKE) --no-print-directory post-build
 
 # Other Targets
 clean:
-	-$(RM) $(BIN_OUTPUTS__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "main.obj" "startup_ccs.obj" "drivers/rtos_hw_drivers.obj" "hellow_dir/hello_task.obj" "hellow_dir/myLib.obj" "third_party/FreeRTOS/Source/croutine.obj" "third_party/FreeRTOS/Source/list.obj" "third_party/FreeRTOS/Source/queue.obj" "third_party/FreeRTOS/Source/tasks.obj" "third_party/FreeRTOS/Source/timers.obj" "third_party/FreeRTOS/Source/portable/CCS/ARM_CM4F/port.obj" "third_party/FreeRTOS/Source/portable/CCS/ARM_CM4F/portasm.obj" "third_party/FreeRTOS/Source/portable/MemMang/heap_2.obj" "utils/uartstdio.obj" "utils/ustdlib.obj" 
-	-$(RM) "main.d" "startup_ccs.d" "drivers/rtos_hw_drivers.d" "hellow_dir/hello_task.d" "hellow_dir/myLib.d" "third_party/FreeRTOS/Source/croutine.d" "third_party/FreeRTOS/Source/list.d" "third_party/FreeRTOS/Source/queue.d" "third_party/FreeRTOS/Source/tasks.d" "third_party/FreeRTOS/Source/timers.d" "third_party/FreeRTOS/Source/portable/CCS/ARM_CM4F/port.d" "third_party/FreeRTOS/Source/portable/MemMang/heap_2.d" "utils/uartstdio.d" "utils/ustdlib.d" 
+	-$(RM) $(EXE_OUTPUTS__QUOTED)
+	-$(RM) "main.obj" "startup_ccs.obj" "drivers/rtos_hw_drivers.obj" "external_devices/AS7341_photo.obj" "external_devices/XML_Gen2_GreenLight.obj" "hellow_dir/hello_task.obj" "hellow_dir/myLib.obj" "third_party/FreeRTOS/Source/croutine.obj" "third_party/FreeRTOS/Source/list.obj" "third_party/FreeRTOS/Source/queue.obj" "third_party/FreeRTOS/Source/tasks.obj" "third_party/FreeRTOS/Source/timers.obj" "third_party/FreeRTOS/Source/portable/CCS/ARM_CM4F/port.obj" "third_party/FreeRTOS/Source/portable/CCS/ARM_CM4F/portasm.obj" "third_party/FreeRTOS/Source/portable/MemMang/heap_2.obj" "utils/uartstdio.obj" "utils/ustdlib.obj" 
+	-$(RM) "main.d" "startup_ccs.d" "drivers/rtos_hw_drivers.d" "external_devices/AS7341_photo.d" "external_devices/XML_Gen2_GreenLight.d" "hellow_dir/hello_task.d" "hellow_dir/myLib.d" "third_party/FreeRTOS/Source/croutine.d" "third_party/FreeRTOS/Source/list.d" "third_party/FreeRTOS/Source/queue.d" "third_party/FreeRTOS/Source/tasks.d" "third_party/FreeRTOS/Source/timers.d" "third_party/FreeRTOS/Source/portable/CCS/ARM_CM4F/port.d" "third_party/FreeRTOS/Source/portable/MemMang/heap_2.d" "utils/uartstdio.d" "utils/ustdlib.d" 
 	-$(RM) "third_party/FreeRTOS/Source/portable/CCS/ARM_CM4F/portasm.d" 
 	-@echo 'Finished clean'
 	-@echo ' '
 
 post-build:
-	-"/home/jao/ti/ccs1010/ccs/utils/tiobj2bin/tiobj2bin" "hello.out" "hello.bin" "/home/jao/ti/ccs1010/ccs/tools/compiler/ti-cgt-arm_20.2.1.LTS/bin/armofd" "/home/jao/ti/ccs1010/ccs/tools/compiler/ti-cgt-arm_20.2.1.LTS/bin/armhex" "/home/jao/ti/ccs1010/ccs/utils/tiobj2bin/mkhex4bin"
+	-"/home/jao/ti/ccs2031/ccs//utils/tiobj2bin/tiobj2bin" "hello.out" "hello.bin" "/bin/armofd" "/bin/armhex" "/home/jao/ti/ccs2031/ccs//utils/tiobj2bin/mkhex4bin"
 	-@echo ' '
 
 .PHONY: all clean dependents

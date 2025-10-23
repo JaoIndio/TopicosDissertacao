@@ -78,8 +78,8 @@ CPP_DEPS :=
 SA_DEPS := 
 C++_DEPS__QUOTED := 
 OPT_DEPS__QUOTED := 
-S_UPPER_DEPS__QUOTED := 
 SA_DEPS__QUOTED := 
+S_UPPER_DEPS__QUOTED := 
 C??_DEPS__QUOTED := 
 S67_DEPS__QUOTED := 
 C55_DEPS__QUOTED := 
@@ -113,6 +113,7 @@ PDE_DEPS__QUOTED :=
 SUBDIRS := \
 . \
 drivers \
+external_devices \
 hellow_dir \
 third_party/FreeRTOS/Source \
 third_party/FreeRTOS/Source/portable/CCS/ARM_CM4F \

@@ -81,9 +81,19 @@ void PortDIntHanlder(){
   //xSemaphoreGiveFromISR(AS7341_Semphr, &xHigherPriorityTaskWoken);
   
   //AS7341_PerformanceDbgClr();   
-  portYIELD();
-  //portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+  //portYIELD();
+  //portEND_SWITCHING_ISR(xHigherPriorityTaskWoken);
+  portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
 }
+
+///*
+void I2C2_IntHandler(){
+  I2CMasterIntClear( I2C2_BASE ); 
+  BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+  xSemaphoreGiveFromISR(I2C1_Semphr, &xHigherPriorityTaskWoken);
+  portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+}
+//*/
 
 void I2C1_IntHandler(){
   I2CMasterIntClear( I2C1_BASE ); 
@@ -94,13 +104,16 @@ void I2C1_IntHandler(){
 
 bool WaitACK(){
   // O tempo de agurado de um ACK leva aprox. 74.3us
-  //AS7341_PerformanceDbgSet();    
+  xSemaphoreTake(I2C1_Semphr, portMAX_DELAY);
+  return true;
+
   if(xSemaphoreTake(I2C1_Semphr, pdMS_TO_TICKS(25))==pdFALSE){
     //AS7341_PerformanceDbgClr();   
     return false;
   }
   else{
     //AS7341_PerformanceDbgClr();   
+    //UARTprintf("\n\r\t\t\t\t\tWaitACK");
     return true;
   }
 }
@@ -212,25 +225,47 @@ bool AS7341_readMultiples( uint8_t startReg, uint8_t *data, uint32_t length){
 
 bool AS7341_i2cInit(){
   I2C1_Semphr = xSemaphoreCreateBinary();
+// / *
   SysCtlPeripheralEnable(SYSCTL_PERIPH_I2C1);
   while(!SysCtlPeripheralReady(SYSCTL_PERIPH_I2C1))
   {
   }
   
-  //SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOA);
+  SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOA);
   GPIOUnlockPin(GPIO_PORTA_BASE, GPIO_PIN_6|GPIO_PIN_7);
 
   GPIOPinConfigure(GPIO_PA6_I2C1SCL);
   GPIOPinConfigure(GPIO_PA7_I2C1SDA);
   GPIOPinTypeI2CSCL(GPIO_PORTA_BASE, GPIO_PIN_6);
-  //GPIOPadConfigSet(GPIO_PORTA_BASE, GPIO_PIN_6 | GPIO_PIN_7, GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_OD);
+  //GPIOPadConfigSet(GPIO_PORTA_BASE, GPIO_PIN_6 | GPIO_PIN_7, GPIO_STRENGTH_12MA, GPIO_PIN_TYPE_STD_WPU);
   //GPIOPinTypeI2C(GPIO_PORTA_BASE, GPIO_PIN_7|GPIO_PIN_6);
   GPIOPinTypeI2C(GPIO_PORTA_BASE, GPIO_PIN_7);
 
   I2CMasterInitExpClk(I2C1_BASE, SysCtlClockGet(), true);
   I2CMasterIntEnableEx( I2C1_BASE, I2C_MASTER_INT_DATA );
   IntEnable(INT_I2C1);
+  IntPrioritySet(INT_I2C1, 0x7);
+// * /
+/*
+  SysCtlPeripheralEnable(SYSCTL_PERIPH_I2C2);
+  while(!SysCtlPeripheralReady(SYSCTL_PERIPH_I2C2))
+  {
+  }
+  
+  //SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOA);
+  GPIOUnlockPin(GPIO_PORTE_BASE, GPIO_PIN_5|GPIO_PIN_4);
 
+  GPIOPinConfigure(GPIO_PE4_I2C2SCL);
+  GPIOPinConfigure(GPIO_PE5_I2C2SDA);
+  GPIOPinTypeI2CSCL(GPIO_PORTE_BASE, GPIO_PIN_4);
+  //GPIOPadConfigSet(GPIO_PORTA_BASE, GPIO_PIN_6 | GPIO_PIN_7, GPIO_STRENGTH_12MA, GPIO_PIN_TYPE_STD_WPU);
+  //GPIOPinTypeI2C(GPIO_PORTA_BASE, GPIO_PIN_7|GPIO_PIN_6);
+  GPIOPinTypeI2C(GPIO_PORTE_BASE, GPIO_PIN_5);
+
+  I2CMasterInitExpClk(I2C2_BASE, SysCtlClockGet(), true);
+  I2CMasterIntEnableEx( I2C2_BASE, I2C_MASTER_INT_DATA );
+  IntEnable(INT_I2C2);
+*/
   // Enables PD0 to handle AS7341 Interruptions
   AS7341_Semphr = xSemaphoreCreateBinary();
 
@@ -588,13 +623,13 @@ bool AS7341_BankAcessSet(uint8_t RegAdd){
 }
 
 bool AS7341_SetAcessAndWrite(uint8_t regAdd, uint8_t data){
-  AS7341_BankAcessSet(regAdd);
+  if(!AS7341_BankAcessSet(regAdd)) return false;
   if(!AS7341_write(regAdd, data)) return false;
   return true;
 }
 bool AS7341_SetAcessAndRead(uint8_t regAdd, uint8_t *data){
   
-  AS7341_BankAcessSet(regAdd);
+  if(!AS7341_BankAcessSet(regAdd)) return false;
   if(!AS7341_read(regAdd, data)) return false;
   return true;
 }
@@ -972,8 +1007,8 @@ bool AS7341_ReadChannelsMini(uint8_t* photoDiode, uint8_t* ADC_ID, uint8_t* ADC_
                                       (uint32_t)integrationTime,\
                                       readcount1,\
                                       readcount2);
-  AS7341_BankAcessSet(AS7341_REG_CH0_DATA_L);
-  AS7341_read(AS7341_REG_CH0_DATA_L, ADC_count);
+  if(!AS7341_BankAcessSet(AS7341_REG_CH0_DATA_L)) return false;
+  if(!AS7341_read(AS7341_REG_CH0_DATA_L, ADC_count)) return false;
   AS7341_read(AS7341_REG_CH0_DATA_H, ADC_count+1);
   if(!AS7341_read(AS7341_REG_CH1_DATA_L, ADC_count+2)) return false;
   if(!AS7341_read(AS7341_REG_CH1_DATA_H, ADC_count+3)) return false;
