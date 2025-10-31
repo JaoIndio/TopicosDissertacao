@@ -324,7 +324,7 @@ void NemaInterruptionConfig(){
   //float max_freq = 10*KILO_HZ; // <- Freq Maxima da Senoide
   float min_freq = 5;
   //float max_freq = 0.5*KILO_HZ;
-  float max_freq = 48;
+  float max_freq = 12;
   float actual_freq = min_freq;
 
   GPIOPinWrite(GPIO_PORTB_BASE, ENABLE_PIN, 0);
@@ -396,7 +396,7 @@ void NemaConfig(){
   LinearMov_Mngr.Began      = false;
   LinearMov_Mngr.Count      = 0;
   LinearMov_Mngr.CycleCount = 0;
-  LinearMov_Mngr.CycleThrshld = 6;
+  LinearMov_Mngr.CycleThrshld = 60;
 
   StepCount.Began      = false;
   StepCount.Count      = 0;

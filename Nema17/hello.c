@@ -333,7 +333,7 @@ void AS7341_Begin(void *ptr){
 
   // ****Aumentar Tempo de Intetracao***
 #if AS7341_MONO == 0
-  if(!AS7341_SetGainADC(7))
+  if(!AS7341_SetGainADC(1))
 #else
   if(!AS7341_SetGainADC(10))
 #endif

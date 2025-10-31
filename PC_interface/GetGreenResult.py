@@ -21,7 +21,7 @@ from matplotlib.animation import FuncAnimation
 # Configuration
 START_BYTE = 0xAA
 STOP_BYTE = 0x55
-PORT = '/dev/ttyUSB1'  # Serial port for your USB-to-UART adapter
+PORT = '/dev/ttyUSB0'  # Serial port for your USB-to-UART adapter
 BAUD_RATE = 921600*1    # 4.5Mbps
 ADC_SIZE = 4         # Size of each float in bytes
 ADC_FULLSCALE = 16261         # Size of each float in bytes
@@ -31,7 +31,7 @@ DATA_POINTS  = 10000*10*10*5
 # Initialize serial port
 ser = serial.Serial(PORT, BAUD_RATE, timeout=1, parity='N')
 data_queue = queue.Queue(maxsize=43*1024)
-data_deque = collections.deque(maxlen=1000000)
+data_deque = collections.deque(maxlen=10000000)
 data_lock = threading.Lock()
 serial_queue_lock = threading.Lock()
 # Increase read buffer size
