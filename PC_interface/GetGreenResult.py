@@ -27,7 +27,7 @@ ADC_SIZE = 4         # Size of each float in bytes
 ADC_FULLSCALE = 16261         # Size of each float in bytes
     
 WAVELENGHT_SIZE  = 1024*40
-DATA_POINTS  = 10000*10*10
+DATA_POINTS  = 10000*10*10*5
 # Initialize serial port
 ser = serial.Serial(PORT, BAUD_RATE, timeout=1, parity='N')
 data_queue = queue.Queue(maxsize=43*1024)

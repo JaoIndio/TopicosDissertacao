@@ -1,4 +1,4 @@
-#include <stdio.h>
+  #include <stdio.h>
 #include <stdbool.h>
 #include <stdint.h>
 
@@ -145,22 +145,6 @@ void joinADC(uint8_t* ADC_count, uint16_t* ADC_raw){
     j++;
   }
 }
-
-void app_idle(void* pvArg){
-  uint32_t delayValue;
-  while(1){
-    //7KHz FreeRTOS Clock
-    // 1ms   = 7 Ticks
-    //   426us = 3 Ticks
-    //   284us = 2 Ticks
-    // ± 142us = 1 Ticks
-    delayValue = pdMS_TO_TICKS(1)/2;
-    //UARTprintf("\nd1 %d\n", delayValue);
-    //vTaskDelay(10);
-    vTaskDelay(pdMS_TO_TICKS(3));
-  }
-}
-
 void AS7341_Begin(void *ptr){
   
   int dummy = 0;
@@ -337,7 +321,7 @@ void AS7341_Begin(void *ptr){
   uint8_t TimeADC  = 99;
 #else
   //uint8_t TimeADC  = 33;
-  uint8_t TimeADC  = 10;
+  uint8_t TimeADC  = 7;
 #endif
   if(!AS7341_SetTimeADC(TimeADC))
     UARTprintf("\rSet Time Error a\n");
@@ -401,14 +385,25 @@ void AS7341_Begin(void *ptr){
   AS7341_pooling = false;
   UARTprintf("\n\tLOOP 1\n");
   uint32_t printControl = 0;
-  char buffer[512+256];
+  //char buffer[1024];
   UBaseType_t stack_free = uxTaskGetStackHighWaterMark(NULL);
   uint32_t notify_fb;
   size_t free_heap;
-  TickType_t count_start=0, count_stop=0, count_mid=0;
-  uint32_t printCnt =0;
   while(1){
-    count_start = xTaskGetTickCount();
+    printControl++;
+/*
+    if(printControl == 8000){
+      printControl = 0;
+      stack_free = uxTaskGetStackHighWaterMark(NULL);
+      UARTprintf("\n\r\t\t\t - echo\n");
+      UARTprintf("Free stack = %u bytes\n",stack_free * sizeof(StackType_t));
+      vTaskList(buffer);  // Requires configUSE_TRACE_FACILITY and configUSE_STATS_FORMATTING_FUNCTIONS
+      UARTprintf("%s\n", buffer);
+
+      free_heap = xPortGetFreeHeapSize();
+      UARTprintf("Free heap = %u byte\n", free_heap);
+    }
+*/
     
     //Ou leva 562us pra ler e reconfigurar AS7341, e enviar UART
     // Ou leva 278us
@@ -420,27 +415,8 @@ void AS7341_Begin(void *ptr){
     //  if(AS7341_pooling) break;
     //}
     //AS7341_pooling = false;
-    // 4 = 400us
-    notify_fb = ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
-    
-    count_stop = xTaskGetTickCount();
-/*
-    printControl++;
-    if(printControl == 4000){
-      printControl = 0;
-      printCnt++;
-      stack_free = uxTaskGetStackHighWaterMark(NULL);
-      UARTprintf("\n\r\t\t\t - echo %d | sensor %d \n", printCnt, ADC_count[0]);
-      UARTprintf("Free stack = %u bytes\n",stack_free * sizeof(StackType_t));
-      vTaskList(buffer);  // Requires configUSE_TRACE_FACILITY and configUSE_STATS_FORMATTING_FUNCTIONS
-      UARTprintf("%s\n", buffer);
-
-      free_heap = xPortGetFreeHeapSize();
-      UARTprintf("Free heap = %u byte\n", free_heap);
-      UARTprintf("freq %d Ticks\n", count_stop-count_start);
-    }
-*/
-    //if(notify_fb==0) continue;
+    notify_fb = ulTaskNotifyTake(pdTRUE, pdMS_TO_TICKS(2));
+    if(notify_fb==0) continue;
 
     //if(!AS7341_WaitIntSig()){
     //  while(1){
@@ -621,24 +597,20 @@ int main(void){
   //UARTprintf("Hello World!\n");
   
   //verificar se criou certo
-/*  
+///*  
   xTaskCreate(NemaTaskCreation, "NemaTask", configMINIMAL_STACK_SIZE+50, \
                 NULL, configMAX_PRIORITIES-1, \
                 NULL);
-*/
-  
-  xTaskCreate(AS7341_Begin, "AS7341", 1024, 
+//*/
+///*
+  xTaskCreate(AS7341_Begin, "AS7341", configMINIMAL_STACK_SIZE+256, 
                 NULL, configMAX_PRIORITIES-1, 
                 &AS7341_Handle);
+//*/
+
 /*
   xTaskCreate(ADC_DMA_Reader, "AdcDMA", configMINIMAL_STACK_SIZE+50, \
                 NULL, configMAX_PRIORITIES-2, \
-                NULL);
-*/
-  
-/*
-  xTaskCreate(app_idle, "appIdL", configMINIMAL_STACK_SIZE+5, \
-                NULL, configMAX_PRIORITIES-7, \
                 NULL);
 */
 
@@ -711,7 +683,7 @@ void vApplicationTickHook( void )
 void vApplicationIdleHook( void )
 {
     /* vApplicationIdleHook() will only be called if configUSE_IDLE_HOOK is set
-    to 1 in FreeRTOSConfig.h.  It will be called on each iteration of the tor reset haltidle
+    to 1 in FreeRTOSConfig.h.  It will be called on each iteration of the idle
     task.  It is essential that code added to this hook function never attempts
     to block in any way (for example, call xQueueReceive() with a block time
     specified, or call vTaskDelay()).  If the application makes use of the
