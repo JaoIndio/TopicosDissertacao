@@ -322,6 +322,7 @@ void NemaInterruptionConfig(){
   
   //float min_freq = 5*KILO_HZ;
   //float max_freq = 10*KILO_HZ; // <- Freq Maxima da Senoide
+  // cm = 10^-2m 0,0075cm = 7,5*10^-3.10^-2 = 7,5.10^-5m/s = 75 µm/s
   float min_freq = 5;
   //float max_freq = 0.5*KILO_HZ;
   float max_freq = 12;
