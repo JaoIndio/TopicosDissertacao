@@ -25,7 +25,7 @@ from scipy.signal import detrend, windows
 import numpy as np
 
 # Configuration
-SAMPLING_INTERVAL_NM = 45.1807  # Sampling interval in nanometers
+SAMPLING_INTERVAL_NM = 45.8996  # Sampling interval in nanometers
 # IMPORTANT: This is configured for a SINGLE-PASS interferometer
 
 # Initialize plot

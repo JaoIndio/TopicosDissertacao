@@ -42,7 +42,6 @@ volatile float IntTime;
 volatile float Gain;
 volatile float32_t Spectral400_600[SPEC_TOTAL_WAVELENGHT];
 
-extern volatile uint8_t ADC_rslt[2];
 //extern uint32_t adc_count;
 /**
  * hello.c
