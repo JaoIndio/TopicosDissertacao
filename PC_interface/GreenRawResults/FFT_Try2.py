@@ -91,7 +91,7 @@ def load_csv(event):
         return
     
     ax1.clear()
-    ax1.plot(data_values, label='Sensor Data', linewidth=0.5)
+    ax1.plot(data_values, label='Sensor Data', linewidth=0.125)
     ax1.set_xlabel('Sample Index', fontsize=12)
     ax1.set_ylabel('Intensity', fontsize=12)
     ax1.set_title(f'Data from {csv_filename}', fontsize=14)
@@ -121,7 +121,7 @@ def onselect(xmin, xmax):
         (xmin, ax1.get_ylim()[0]),
         xmax - xmin,
         ax1.get_ylim()[1] - ax1.get_ylim()[0],
-        linewidth=1.5,
+        linewidth=0.125,
         edgecolor='red',
         facecolor='none',
         alpha=0.5
@@ -229,7 +229,7 @@ def run_fft(event):
     
     # Plot FFT result
     ax2.clear()
-    ax2.plot(x_vals, y_vals, linewidth=1)
+    ax2.plot(x_vals, y_vals, linewidth=0.125)
     ax2.set_xlabel(x_label, fontsize=12)
     ax2.set_ylabel("Amplitude", fontsize=12)
     ax2.set_title(f"FFT Result - Double Pass ({N} points, Δx = {SAMPLING_INTERVAL_NM:.2f} nm)", fontsize=14)
