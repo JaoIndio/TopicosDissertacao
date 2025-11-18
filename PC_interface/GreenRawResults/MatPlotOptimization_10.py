@@ -1,47 +1,25 @@
 #!/usr/bin/python3
 """
-Sliding Window FFT Analyzer - ULTRA-OPTIMIZED with FIXED Blitting
-Pre-computes all FFTs + uses blitting for instantaneous display updates
-WITH MANUAL WINDOW SIZE ENTRY + LARGE DATASET OPTIMIZATIONS
-
-FIXES APPLIED:
-- Removed flush_events() that caused hanging
-- Added matplotlib performance optimizations for large datasets
-- Fixed blit() timing issues
-- Added proper error handling for blitting failures
-- Optimized line rendering for massive datasets
-
-HARDWARE OPTIMIZATION:
-- Configured for: AMD Ryzen 5 PRO 5675U (6 cores / 12 threads)
-- Memory: 16 GB DDR4-2400 dual-channel
-- Process usage: 11 workers (92% utilization)
-- Overlap: 85% for ultra-smooth display
+PROPER FIX: Event-Based Synchronization
+Uses threading.Event (like FreeRTOS EventGroup) to wait for renderer
+NO MORE ARBITRARY SLEEPS!
 """
 
-import serial
-import struct
 import threading
 from concurrent.futures import ProcessPoolExecutor, as_completed
 import multiprocessing
 from queue import Queue, Empty
-from threading import Thread, Lock
 
 import csv
-import os
-import glob
-
 import tkinter as tk
 import matplotlib
 matplotlib.use("TkAgg")
 
-# MATPLOTLIB PERFORMANCE OPTIMIZATIONS FOR LARGE DATASETS
 import matplotlib.pyplot as plt
-matplotlib.rcParams['path.simplify'] = True  # Simplify paths for faster rendering
-matplotlib.rcParams['path.simplify_threshold'] = 1.0  # Aggressive simplification
-matplotlib.rcParams['agg.path.chunksize'] = 10000  # Render in chunks for large data
-matplotlib.rcParams['figure.max_open_warning'] = 0  # Disable warnings
+matplotlib.rcParams['path.simplify'] = True
+matplotlib.rcParams['path.simplify_threshold'] = 1.0
+matplotlib.rcParams['agg.path.chunksize'] = 10000
 
-from matplotlib.animation import FuncAnimation
 from matplotlib.widgets import TextBox, SpanSelector, Button, RadioButtons
 from scipy.signal import detrend, windows
 import numpy as np
@@ -49,9 +27,8 @@ import time
 
 # Configuration
 SAMPLING_INTERVAL_NM = 45.8996
-OVERLAP_PERCENTAGE = 85
+OVERLAP_PERCENTAGE = 99.95
 MAX_WORKERS = 11
-USE_BACKGROUND_THREAD = True
 
 # Global variables
 selected_rect = None
@@ -119,7 +96,6 @@ zoom_reset_ax = plt.axes([0.6, 0.475, 0.08, 0.035])
 zoom_reset_button = Button(zoom_reset_ax, 'Reset Zoom')
 
 status_text = fig.text(0.5, 0.02, '', ha='center', fontsize=10, color='blue', weight='bold')
-
 processed_region_patch = None
 
 
@@ -144,7 +120,7 @@ def read_csv_values(filename):
 
 
 def load_csv(event):
-    """Load and plot CSV file - OPTIMIZED for large datasets."""
+    """Load and plot CSV file."""
     global data_values, fft_cache, blit_cache
     csv_filename = filename_box.text.strip()
     
@@ -158,39 +134,36 @@ def load_csv(event):
     
     ax1.clear()
     
-    # OPTIMIZATION: Downsample if dataset is huge (>100k points)
     if len(data_values) > 100000:
-        # Plot every Nth point for initial display
         stride = len(data_values) // 50000
         ax1.plot(range(0, len(data_values), stride), data_values[::stride], 
                 linewidth=0.3, color='blue', alpha=0.7, rasterized=True)
-        print(f"Downsampled plot for performance: showing every {stride}th point")
     else:
         ax1.plot(data_values, linewidth=0.5, color='blue', alpha=0.7)
     
     ax1.set_xlabel('Sample Index', fontsize=12)
     ax1.set_ylabel('Intensity', fontsize=12)
-    ax1.set_title(f'Data: {csv_filename} ({len(data_values)} points) | Zoom in to analyze', fontsize=14)
+    ax1.set_title(f'Data: {csv_filename} ({len(data_values)} pts)', fontsize=14)
     ax1.legend(loc='upper right')
     ax1.grid(True, alpha=0.3)
     
-    status_text.set_text(f"✓ Loaded {len(data_values)} points | Zoom to region, select window, press FFT")
+    status_text.set_text(f"✓ Loaded {len(data_values)} points")
     fig.canvas.draw()
 
 
 def set_manual_window(event):
-    """Set window size manually from text box."""
+    """Set window size manually."""
     global selected_rect, selection_text, selected_start, selected_end, manual_window_center
     
     if not data_values:
-        status_text.set_text("❌ No data loaded")
+        status_text.set_text("❌ No data")
         return
     
     try:
         manual_size = int(window_size_box.text.strip())
         
         if manual_size < 4 or manual_size > len(data_values):
-            status_text.set_text(f"❌ Invalid window size")
+            status_text.set_text(f"❌ Invalid size")
             return
         
         if selected_rect:
@@ -225,7 +198,7 @@ def set_manual_window(event):
         selection_text = ax1.text(
             (selected_start + selected_end) / 2,
             ax1.get_ylim()[1] * 0.98,
-            f"Manual: {manual_size} samples",
+            f"Manual: {manual_size}",
             color='blue',
             ha='center',
             fontsize=10,
@@ -233,11 +206,11 @@ def set_manual_window(event):
             bbox=dict(boxstyle="round,pad=0.3", facecolor="white", alpha=0.9)
         )
         
-        status_text.set_text(f"✓ Window set: {manual_size} samples | Press FFT")
+        status_text.set_text(f"✓ Window: {manual_size}")
         fig.canvas.draw()
         
     except ValueError:
-        status_text.set_text(f"❌ Invalid window size")
+        status_text.set_text(f"❌ Invalid input")
 
 
 def compute_single_fft(args):
@@ -280,7 +253,7 @@ def compute_single_fft(args):
 
 
 def compute_all_ffts_parallel(data, win_size, mode, sampling_interval):
-    """Compute all FFTs in parallel using TRUE multiprocessing."""
+    """Compute all FFTs in parallel."""
     n_samples = len(data)
     hop_size = max(1, int(win_size * (1 - OVERLAP_PERCENTAGE / 100)))
     
@@ -294,8 +267,7 @@ def compute_all_ffts_parallel(data, win_size, mode, sampling_interval):
         window_data.append((data[start_idx:end_idx], len(positions)-1, mode, sampling_interval))
     
     n_windows = len(positions)
-    print(f"\nComputing {n_windows} FFTs | Window: {win_size} | Hop: {hop_size}")
-    print(f"Using {MAX_WORKERS} processes (multiprocessing)")
+    print(f"\nComputing {n_windows} FFTs | Workers: {MAX_WORKERS}")
     
     status_text.set_text(f"⏳ Computing {n_windows} FFTs...")
     fig.canvas.draw()
@@ -313,11 +285,10 @@ def compute_all_ffts_parallel(data, win_size, mode, sampling_interval):
             completed += 1
             
             if completed % max(1, n_windows // 10) == 0:
-                progress = (completed / n_windows) * 100
-                print(f"Progress: {progress:.1f}% ({completed}/{n_windows})")
+                print(f"Progress: {100*completed/n_windows:.0f}%")
     
     elapsed = time.time() - start_time
-    print(f"✓ Done in {elapsed:.2f}s ({n_windows/elapsed:.1f} FFTs/sec)\n")
+    print(f"✓ Done in {elapsed:.2f}s\n")
     
     x_axis = results[0][0]
     n_freqs = len(x_axis)
@@ -329,29 +300,53 @@ def compute_all_ffts_parallel(data, win_size, mode, sampling_interval):
 
 
 def calculate_fwhm(x_vals, y_vals, peak_idx):
-    """Calculate Full Width at Half Maximum."""
+    """Calculate FWHM."""
     peak_y = y_vals[peak_idx]
     half_max = peak_y / 2.0
     
+    # Find points on left side of peak where signal crosses half maximum
     left_indices = np.where((x_vals < x_vals[peak_idx]) & (y_vals <= half_max))[0]
     if len(left_indices) == 0:
+        print("fwhm: None")
         return None, None, None
-    left_idx = left_indices[-1]
+    left_idx = left_indices[-1]  # Closest to peak
     
+    # Find points on right side of peak where signal crosses half maximum
     right_indices = np.where((x_vals > x_vals[peak_idx]) & (y_vals <= half_max))[0]
     if len(right_indices) == 0:
+        print("fwhm: None")
         return None, None, None
-    right_idx = right_indices[0]
+    right_idx = right_indices[0]  # Closest to peak
     
-    x_left = x_vals[left_idx]
-    x_right = x_vals[right_idx]
+    # Linear interpolation for precise FWHM
+    if left_idx + 1 < len(x_vals):
+        # Interpolate on left side
+        x1, x2 = x_vals[left_idx], x_vals[left_idx + 1]
+        y1, y2 = y_vals[left_idx], y_vals[left_idx + 1]
+        if y2 != y1:
+            x_left = x1 + (half_max - y1) * (x2 - x1) / (y2 - y1)
+        else:
+            x_left = x_vals[left_idx]
+    else:
+        x_left = x_vals[left_idx]
+    
+    if right_idx > 0:
+        # Interpolate on right side
+        x1, x2 = x_vals[right_idx - 1], x_vals[right_idx]
+        y1, y2 = y_vals[right_idx - 1], y_vals[right_idx]
+        if y2 != y1:
+            x_right = x1 + (half_max - y1) * (x2 - x1) / (y2 - y1)
+        else:
+            x_right = x_vals[right_idx]
+    else:
+        x_right = x_vals[right_idx]
+    
     fwhm = abs(x_right - x_left)
-    
     return fwhm, x_left, x_right
 
 
 def data_preparation_worker():
-    """Background thread for preparing FFT data."""
+    """Background thread for data prep."""
     global thread_running
     
     print("Background thread started")
@@ -375,6 +370,7 @@ def data_preparation_worker():
             peak_y = y_vals[peak_idx]
             
             fwhm, x_left, x_right = calculate_fwhm(x_vals, y_vals, peak_idx)
+            print("\t\tfwhm: ", fwhm)
             
             result = {
                 'idx': idx,
@@ -400,17 +396,17 @@ def data_preparation_worker():
         except Empty:
             continue
         except Exception as e:
-            print(f"Background thread error: {e}")
+            print(f"BG thread error: {e}")
             continue
 
 
 def start_background_thread():
-    """Start background data prep thread."""
+    """Start background thread."""
     global data_prep_thread, thread_running
     
     if not thread_running:
         thread_running = True
-        data_prep_thread = Thread(target=data_preparation_worker, daemon=True)
+        data_prep_thread = threading.Thread(target=data_preparation_worker, daemon=True)
         data_prep_thread.start()
 
 
@@ -421,72 +417,104 @@ def stop_background_thread():
 
 
 def init_blitting():
-    """Initialize blitting for fast updates - FIXED VERSION."""
+    """
+    Initialize blitting - PROPER EVENT-BASED SYNCHRONIZATION!
+    Uses threading.Event like FreeRTOS EventGroup - NO ARBITRARY SLEEPS!
+    """
     global blit_cache
     
     if not fft_cache['computed']:
         return
     
-    # Clear and setup
+    # Setup axes
     ax2.clear()
     ax2.set_xlabel(f"{fft_cache['mode']}", fontsize=12)
     ax2.set_ylabel("Amplitude", fontsize=12)
     ax2.grid(True, alpha=0.3)
     
     # Create animated artists
-    blit_cache['line'], = ax2.plot([], [], linewidth=0.8, color='green', alpha=0.8, animated=True)
-    blit_cache['peak_line'] = ax2.axvline(0, color='red', linestyle='--', alpha=0.5, linewidth=1, animated=True)
+    blit_cache['line'], = ax2.plot([], [], linewidth=0.008, color='green', alpha=0.005, animated=True)
+    blit_cache['peak_line'] = ax2.axvline(0, color='white', linestyle='--', alpha=0.005, linewidth=0.001, animated=True)
     blit_cache['fwhm_line'] = ax2.hlines(0, 0, 1, colors='orange', linestyles='-', linewidth=1.5, alpha=0.7, animated=True)
     blit_cache['fwhm_markers'], = ax2.plot([], [], 'o', color='orange', markersize=4, animated=True)
     blit_cache['peak_text'] = ax2.text(0, 0, '', fontsize=10, color='red',
                                         bbox=dict(boxstyle="round,pad=0.3", facecolor="white", alpha=0.8),
                                         animated=True)
     
-    # Draw once to capture background
-    fig.canvas.draw()
-    fig.canvas.flush_events()  # OK here, just once
+    # ========== PROPER SYNCHRONIZATION (Like FreeRTOS EventGroup) ==========
+    print("Initializing blitting with event synchronization...")
     
-    # Small delay to ensure canvas is ready
-    time.sleep(0.05)
+    # Create Event (like FreeRTOS EventGroup)
+    draw_complete_event = threading.Event()
     
-    # Capture background
+    # Callback when draw completes (sets the event)
+    def on_draw_complete(event):
+        draw_complete_event.set()
+        print("  → Draw complete event received!")
+    
+    # Connect callback to draw_event
+    draw_connection = fig.canvas.mpl_connect('draw_event', on_draw_complete)
+    
     try:
+        # Request draw
+        print("  → Requesting draw...")
+        fig.canvas.draw()
+        
+        # WAIT FOR EVENT (with timeout) - Like xEventGroupWaitBits()
+        print("  → Waiting for draw completion event...")
+        event_received = draw_complete_event.wait(timeout=2.0)  # 2 second timeout
+        
+        if not event_received:
+            raise Exception("Draw complete event timeout after 2 seconds")
+        
+        print("  → Event received, checking renderer...")
+        
+        # Double-check renderer is actually ready
+        if not hasattr(fig.canvas, 'renderer') or fig.canvas.renderer is None:
+            raise Exception("Renderer is None even after draw event")
+        
+        print("  → Renderer ready! Capturing background...")
+        
+        # NOW we can safely capture background
         blit_cache['background'] = fig.canvas.copy_from_bbox(ax2.bbox)
         blit_cache['enabled'] = True
-        print("✓ Blitting initialized successfully")
+        
+        print("✓ Blitting ENABLED with event synchronization!")
+        
     except Exception as e:
-        print(f"Blitting init failed: {e}")
+        print(f"✗ Blitting init failed: {e}")
+        print("  Using fallback mode (still fast!)")
         blit_cache['enabled'] = False
+        blit_cache['background'] = None
+    
+    finally:
+        # Disconnect the callback
+        fig.canvas.mpl_disconnect(draw_connection)
 
 
 def update_fft_display_blit(result_data):
-    """Update FFT plot using blitting - FIXED VERSION (No Hang!)."""
+    """Update FFT using blitting."""
     
     if not blit_cache['enabled'] or blit_cache['background'] is None:
-        # Fallback to full redraw
-        print("1")
         update_fft_display_full(result_data.get('actual_position', 0))
         return
     
     try:
         # Restore background
-        print("2")
         fig.canvas.restore_region(blit_cache['background'])
         
         # Update line data
-        print("3")
         blit_cache['line'].set_data(result_data['x_vals'], result_data['y_vals'])
         
         # Update peak line
-        print("4")
         peak_x = result_data['peak_x']
         peak_y = result_data['peak_y']
         blit_cache['peak_line'].set_xdata([peak_x, peak_x])
         blit_cache['peak_line'].set_ydata([0, peak_y])
         
         # Update FWHM
-        print("5")
         if result_data['fwhm'] is not None:
+            print("\t\t\tresult_data['fwhm']")
             half_max = peak_y / 2.0
             blit_cache['fwhm_line'].set_segments([[(result_data['fwhm_left'], half_max), 
                                                      (result_data['fwhm_right'], half_max)]])
@@ -499,32 +527,25 @@ def update_fft_display_blit(result_data):
                 f"Peak: {peak_x:.1f} {result_data['x_label']}\nFWHM: {result_data['fwhm']:.1f}"
             )
         else:
-            # Hide FWHM
-            print("6")
             blit_cache['fwhm_line'].set_segments([[(0, 0), (0, 0)]])
             blit_cache['fwhm_markers'].set_data([], [])
             blit_cache['peak_text'].set_position((peak_x + 100, peak_y * 0.80))
             blit_cache['peak_text'].set_text(f"Peak: {peak_x:.1f}")
         
         # Redraw artists
-        print("7")
+        print("\t\t\tDraw artist")
         ax2.draw_artist(blit_cache['line'])
         ax2.draw_artist(blit_cache['peak_line'])
         ax2.draw_artist(blit_cache['fwhm_line'])
         ax2.draw_artist(blit_cache['fwhm_markers'])
         ax2.draw_artist(blit_cache['peak_text'])
         
-        # CRITICAL FIX: Just blit, nothing else!
-        print("7_1")
+        # Just blit - NO flush_events()!
+        print("\t\t\tcanvas blit")
         fig.canvas.blit(ax2.bbox)
-        print("8")
-        fig.canvas.flush_events()
-        print("9")
-        # NO flush_events() - causes hang!
-        # NO draw_idle() - defeats blitting purpose!
         
     except Exception as e:
-        print(f"Blit error: {e}, disabling blitting")
+        print(f"Blit error: {e}, disabling")
         blit_cache['enabled'] = False
         update_fft_display_full(result_data.get('actual_position', 0))
 
@@ -551,22 +572,26 @@ def update_fft_display_full(center_position):
         peak_idx = np.argmax(y_vals)
         peak_x = x_vals[peak_idx]
         peak_y = y_vals[peak_idx]
-        ax2.axvline(peak_x, color='red', linestyle='--', alpha=0.5)
-        ax2.text(peak_x + 100, peak_y * 0.95, f'Peak: {peak_x:.1f}', fontsize=10, color='red')
+        #ax2.axvline(peak_x, color='red', linestyle='--', alpha=0.05)
+        ax2.text(peak_x + 100, peak_y * 0.95, f'Peak: {peak_x:.1f}', 
+                fontsize=10, color='red')
     
     fig.canvas.draw_idle()
 
 
 def check_result_queue():
-    """Check for prepared data and update display."""
+  global data_prep_thread, thread_running
+  
+  """Check for prepared data and update display."""
+  while True:
     try:
-        result = result_queue.get_nowait()
-        update_fft_display_blit(result)
+      result = result_queue.get()
+      update_fft_display_blit(result)
     except Empty:
-        pass
+      pass
     
     if thread_running and blit_cache['enabled']:
-        fig.canvas.get_tk_widget().after(10, check_result_queue)
+      fig.canvas.get_tk_widget().after(450, check_result_queue)
 
 
 def zoom_reset(event):
@@ -598,7 +623,7 @@ def run_fft(event):
     visible_data = data_values[visible_start:visible_end]
     
     if len(visible_data) < window_size:
-        status_text.set_text("❌ Zoom out or reduce window size")
+        status_text.set_text("❌ Zoom out or reduce window")
         return
     
     # Visual indicator
@@ -637,7 +662,7 @@ def run_fft(event):
     
     # Start background thread
     start_background_thread()
-    check_result_queue()
+    #check_result_queue()
     
     status_text.set_text(f"✓ {len(positions_abs)} FFTs ready | Drag window")
     
@@ -738,7 +763,7 @@ def reset(event):
     ax2.clear()
     ax1.set_xlabel('Sample Index', fontsize=12)
     ax1.set_ylabel('Intensity', fontsize=12)
-    ax1.set_title('Load data to begin', fontsize=14)
+    ax1.set_title('Load data', fontsize=14)
     ax1.grid(True, alpha=0.3)
     
     ax2.set_xlabel('Frequency', fontsize=12)
@@ -753,7 +778,7 @@ def reset(event):
 # Initialize
 ax1.set_xlabel('Sample Index', fontsize=12)
 ax1.set_ylabel('Intensity', fontsize=12)
-ax1.set_title('Load data | Use zoom tools', fontsize=14)
+ax1.set_title('Load data | Use zoom', fontsize=14)
 ax1.grid(True, alpha=0.3)
 
 ax2.set_xlabel('Frequency', fontsize=12)
@@ -762,12 +787,15 @@ ax2.set_title('FFT Result', fontsize=14)
 ax2.grid(True, alpha=0.3)
 
 # Connect events
-print("\nInitializing OPTIMIZED FFT Analyzer...")
+print("\n" + "="*60)
+print("EVENT-SYNCHRONIZED FFT Analyzer")
+print("="*60)
 print(f"CPU cores: {multiprocessing.cpu_count()}")
-print(f"Workers: {MAX_WORKERS} processes")
-print(f"Overlap: {OVERLAP_PERCENTAGE}%")
-print("Matplotlib optimizations: ENABLED")
-print("Blitting: FIXED (no hang!)")
+print(f"Workers: {MAX_WORKERS}")
+print("✓ Event-based synchronization (like FreeRTOS EventGroup)")
+print("✓ NO arbitrary sleep() delays!")
+print("✓ Waits for actual draw_event signal")
+print("="*60 + "\n")
 
 fft_button.on_clicked(run_fft)
 reset_button.on_clicked(reset)
@@ -785,6 +813,11 @@ span = SpanSelector(
 )
 
 status_text.set_text("Ready | Load CSV")
+
+#create the update fft thread plot
+t = threading.Thread(target=check_result_queue)
+t.deamon=True
+t.start()
 
 plt.tight_layout()
 plt.show()
